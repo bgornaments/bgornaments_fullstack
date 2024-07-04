@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
-import imageSrc from '../assets/image.png';
+import logo from '../assets/image.png';
+import img1 from "/src/assets/img1.png"
+import img2 from "/src/assets/img2.png"
 
 
 const Core_2 = () => {
@@ -7,7 +9,7 @@ const Core_2 = () => {
     <>
       <div className="h-screen w-full  flex flex-col items-center gap-[8vw] mt-[1vw] bg-[#fff9f5]">
         <div className="w-[15vw]">
-          <img src={imageSrc} alt="" />
+          <img src={logo} alt="" />
         </div>
         <div className="text-customGreen text-[9vw] text-center">
           <h1>
@@ -21,12 +23,12 @@ const Core_2 = () => {
               <img
                 className="absolute w-[25vw] h-[35vw] top-[10vw] right-0"
                 alt="Pexels cottonbro"
-                src="/src/assets/img2.png"
+                src={img2}
               />
               <img
                 className="absolute w-[45vw] h-[60vw]  top-[6vw] right-[40%]"
                 alt="Pexels arif"
-                src="/src/assets/img1.png"
+                src={img1}
               />
             </div>
           </div>
