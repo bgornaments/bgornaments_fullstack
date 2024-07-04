@@ -1,12 +1,30 @@
 import icon from "/src/assets/image.png";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent} from "react";
+
 import axios from "axios";
 
+interface Question {
+  id: number;
+  text: string;
+  // Add more properties as needed
+}
+
+interface Answer {
+  text: string;
+  option: string;
+}
+
 const AIGenerated = () => {
-  const [questions, setQuestions] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState({});
-  const [loading, setLoading] = useState(true);
+  //const [questions, setQuestions] = useState([]);
+  //const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  //const [answers, setAnswers] = useState({});
+  //const [loading, setLoading] = useState(true);
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+
+  const [answers, setAnswers] = useState<{ [key: number]: Answer }>({});
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
 
   useEffect(() => {
     axios
@@ -18,7 +36,7 @@ const AIGenerated = () => {
       .catch((error) => console.error("Error fetching questions:", error));
   }, []);
 
-  const handleAnswerChange = (event) => {
+  const handleAnswerChange = (event: ChangeEvent<HTMLInputElement>) => {
     setAnswers({
       ...answers,
       [currentQuestionIndex]: {
@@ -28,8 +46,9 @@ const AIGenerated = () => {
     });
   };
 
-  const handleOptionChange = (event) => {
-    setAnswers({
+  //const handleOptionChange = (event) => {
+  const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setAnswers({
       ...answers,
       [currentQuestionIndex]: {
         ...answers[currentQuestionIndex],
