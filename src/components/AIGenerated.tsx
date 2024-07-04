@@ -1,162 +1,207 @@
-import icon from "/src/assets/image.png";
-import { useState, useEffect, ChangeEvent} from "react";
-
+import { useState, useEffect } from "react";
 import axios from "axios";
-
-interface Question {
-  id: number;
-  options: string[];
-  question: string[];
-  // Add more properties as needed
-}
-
-interface Answer {
-  text: string;
-  option: string;
-}
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setImageData } from "../redux/formSlice";
+import { RootState } from "../redux/store"
 
 const AIGenerated = () => {
-  //const [questions, setQuestions] = useState([]);
-  //const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  //const [answers, setAnswers] = useState({});
-  //const [loading, setLoading] = useState(true);
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const formData = useSelector((state: RootState) => state.form.formData);
+  console.log(formData);
+  const [questions, setQuestions] = useState<string[]>([]);
+  const [answers, setAnswers] = useState<string[]>([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const maxQuestions = 5;
 
+  const temp_sys_prompt_1 = `
+    You are a friendly and engaging chatbot for a jewelry company. Based on the information provided below, please ask one follow-up question to the customer to understand their needs better. Follow these guidelines:
 
-  const [answers, setAnswers] = useState<{ [key: number]: Answer }>({});
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
+    1. Question Specificity: Ask one short, one-liner question containing only one key entity to understand the customer's needs better.
+    2. Inclusion of Options: Yes : Frame every question to include options in the framed sentence itself related to the question providing the user a choice.
+    4. Entity Specification: Clearly mention the key entity in the question. Do not include entities such as metal or size.
+    5. Context Awareness: Do not repeat key entities already covered in the basic information provided below.
+    6. Conciseness: Print only the follow-up question and nothing extra, such as explanations or additional comments.
+    7. Tone: Use a warm and friendly tone to make the user feel welcomed and valued.
+    8. Relevance to Outfit: If outfit description is provided also consider the details of the outfit to ask the follow up question.
+  `;
 
-  useEffect(() => {
-    axios
-      .get("/questions.json")
-      .then((response) => {
-        setQuestions(response.data);
-        setLoading(false);
-      })
-      .catch((error) => console.error("Error fetching questions:", error));
-  }, []);
-
-  const handleAnswerChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setAnswers({
-      ...answers,
-      [currentQuestionIndex]: {
-        ...answers[currentQuestionIndex],
-        text: event.target.value,
-      },
-    });
+  const generateBasicInfoString = () => {
+    return `Occasion: ${formData.occasion}, \nGift or Personal Purchase: ${
+      formData.recipient
+    }, \nGender: ${formData.gender}, \nAge Group: ${
+      formData.ageGroup
+    }, \nReligion: ${formData.religion}, \nType of Jewelry: ${
+      formData.jewelryType
+    }, \nBudget: ${formData.budget}, \nOutfit Image Provided: ${
+      formData.photo ? "Yes" : "No"
+    }`;
   };
 
-  //const handleOptionChange = (event) => {
-  const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
-      setAnswers({
-      ...answers,
-      [currentQuestionIndex]: {
-        ...answers[currentQuestionIndex],
-        option: event.target.value,
-      },
-    });
-  };
-
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    } else {
-      console.log("User Answers:", answers);
+  const fetchInitialQuestion = async () => {
+    try {
+      const response = await axios.post(
+        "https://yh6w674h63.execute-api.us-east-1.amazonaws.com/default/",
+        {
+          sys_prompt: temp_sys_prompt_1,
+          user_prompt: generateBasicInfoString(),
+        }
+      );
+      const firstQuestion = response.data.body;
+      setQuestions([firstQuestion]);
+    } catch (error) {
+      console.error("Error fetching initial question:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleFinishQuiz = () => {
-    console.log("User Answers:", answers);
-    window.location.href = "/aiimages";
+  const fetchNextQuestion = async (userAnswer:string) => {
+    setIsLoading(true);
+    const updatedAnswers = [...answers, userAnswer];
+    setAnswers(updatedAnswers);
+
+    const userPrompt = `${generateBasicInfoString()}, \nQuestions and Answers:\n${questions
+      .map(
+        (q, index) =>
+          `Q${index + 1}: ${q}\nA${index + 1}: ${
+            updatedAnswers[index] || userAnswer
+          }`
+      )
+      .join("\n")}`;
+
+    console.log("User Prompt:", userPrompt);
+
+    try {
+      const response = await axios.post(
+        "https://yh6w674h63.execute-api.us-east-1.amazonaws.com/default/",
+        {
+          sys_prompt: temp_sys_prompt_1,
+          user_prompt: userPrompt,
+        }
+      );
+      const followUpQuestion = response.data.body;
+      setQuestions([...questions, followUpQuestion]);
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } catch (error) {
+      console.error("Error fetching follow-up question:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleBackQuiz = () => {
-    window.location.href = "/form";
+  const generateImages = async () => {
+    setIsLoading(true);
+    const finalPrompt = `${generateBasicInfoString()}, \nQuestions and Answers:\n${questions
+      .map(
+        (q, index) => `Q${index + 1}: ${q}\nA${index + 1}: ${answers[index]}`
+      )
+      .join("\n")}`;
+
+    console.log("Final Prompt:", finalPrompt);
+
+    try {
+      const response = await axios.post(
+        "https://pi85ecdrbi.execute-api.us-east-1.amazonaws.com/default/",
+        { prompt: finalPrompt }
+      );
+      const imageResponse = response.data.body;
+
+      console.log(imageResponse);
+      dispatch(
+        setImageData(
+          Array.isArray(imageResponse) ? imageResponse : [imageResponse]
+        )
+      );
+      navigate("/aiimages");
+    } catch (error) {
+      console.error("Error generating images:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  if (loading) return <div>Loading...</div>;
+  useEffect(() => {
+    fetchInitialQuestion();
+  }, []);
 
-  const currentQuestion = questions[currentQuestionIndex];
+  const handleNext = () => {
+    //const answer = document.getElementById("user-answer").value;
+    const answerElement = document.getElementById("user-answer") as HTMLInputElement;
+    const answer = answerElement?.value.trim();
+    if (answer) {
+      if (currentQuestionIndex < maxQuestions - 1) {
+        fetchNextQuestion(answer);
+      } else {
+        generateImages();
+      }
+      answerElement.value = "";
+    }
+  };
 
   return (
-    <>
-      <div className="flex flex-col items-center bg-[#fff9f6] pt-[2vw] min-h-screen">
-        <div>
-          <img src={icon} alt="" className="w-[5vh]" />
-        </div>
-        <div className="w-[80%] sm:w-[60%] mt-[3vw] flex flex-col gap-[1vw]">
-          <h2 className="text-[1.2rem] sm:text-[1.5rem] font-secondary text-customBlack ">
-            Let&#39;s design your perfect piece
-          </h2>
-          <div className="bg-customBeige min-h-[6vh] p-[2.5vw] text-customGreen font-bold leading-loose rounded-3xl">
-           <div className="text-[1.5vw]  font-serif font-bold">
-            {currentQuestion.question}
-           </div>
-          <div className="flex flex-wrap gap-[1vw] mt-[1.5vw]">
-            {currentQuestion.options?.map((option: string, index: number) => (
-              <label
-                key={index}
-                className={`cursor-pointer px-[1vw] py-[0.3vw] text-[1vw] rounded-full ${
-                  answers[currentQuestionIndex]?.option === option
-                    ? "bg-customGreen text-customBeige"
-                    : "bg-[#fff9f6] text-customBlack "
-                }`}
-              >
+    <div className="p-8 bg-[#fff9f6] min-h-screen flex flex-col items-center justify-center">
+      {isLoading ? (
+        <p className="text-2xl">Loading...</p>
+      ) : (
+        <>
+          <div className="flex flex-col items-center bg-[#fff9f6] pt-[2vw] min-h-screen">
+            <div>
+              <img src="src/assets/image.png" alt="" className="w-[5vh]" />
+            </div>
+            <div className="w-[80%] sm:w-[60%] mt-[3vw] flex flex-col gap-[1vw]">
+              <h2 className="text-[1.2rem] sm:text-[1.5rem] font-secondary text-customBlack w-full">
+                Let&#39;s design your perfect piece
+              </h2>
+              <div className="bg-customBeige min-h-[6vh] p-[2.5vw] text-customGreen font-bold leading-loose rounded-3xl w-full">
+                <div className="text-[1.5vw] font-serif font-bold w-full">
+                  {questions[currentQuestionIndex]}
+                </div>
+              </div>
+              <div className="mt-2 w-full">
                 <input
-                  type="radio"
-                  name="option"
-                  value={option}
-                  onChange={handleOptionChange}
-                  className="hidden"
+                  id="user-answer"
+                  type="text"
+                  className="custom-input w-full p-[1.5vw] text-[1.2vw] rounded-3xl bg-customBeige border-none placeholder-customBlack text-customGreen focus:outline-none focus:ring-2 focus:ring-customGreen"
+                  placeholder="Share an input about something you love"
                 />
-                {option}
-              </label>
-            ))}
+              </div>{" "}
+            </div>{" "}
+            <div className="absolute bottom-[5vw] mt-[5vw] flex justify-around w-[80%]">
+              <div>
+                <button
+                  type="submit"
+                  className="bg-customGreen text-customBeige px-[2vh] sm:px-[5vw] py-[1vh] rounded-full font-secondary text-[0.7rem] md:text-[1.2rem]"
+                >
+                  {"<"}- Back
+                </button>
+              </div>
+              <div className="flex gap-[2vw]">
+                <button
+                  onClick={generateImages}
+                  type="submit"
+                  className="bg-customGreen text-customBeige px-[2vh] sm:px-[5vw] py-[1vh] rounded-full font-secondary text-[0.7rem] md:text-[1.2rem]"
+                >
+                  Generate Designs
+                </button>
+                <button
+                  onClick={handleNext}
+                  type="submit"
+                  className="bg-customGreen text-customBeige px-[2vh] sm:px-[5vw] py-[1vh] rounded-full font-secondary text-[0.7rem] md:text-[1.2rem]"
+                  disabled={currentQuestionIndex >= maxQuestions}
+                >
+                  {currentQuestionIndex < maxQuestions - 1
+                    ? "Next ->"
+                    : "Generate Designs"}
+                </button>
+              </div>
+            </div>
           </div>
-          </div>
-
-
-          <div className="mt-2">
-            <input
-              type="text"
-              value={answers[currentQuestionIndex]?.text || ""}
-              onChange={handleAnswerChange}
-              className="custom-input w-full p-[1.5vw] text-[1vw] rounded-3xl bg-customBeige border-none placeholder-gray-400 text-customBlack focus:outline-none focus:ring-2 focus:ring-customGreen"
-              placeholder="Share an input about something you love"
-            />
-          </div>
-        </div>
-
-        <div className="absolute bottom-[5vw] mt-[5vw] flex justify-around w-[80%]">
-          <div>
-            <button
-              onClick={handleBackQuiz}
-              type="submit"
-              className="bg-customGreen text-customBeige px-[2vh] sm:px-[5vw] py-[1vh] rounded-full font-secondary text-[0.7rem] md:text-[1.2rem]"
-            >
-              {"<"}- Back
-            </button>
-          </div>
-          <div className="flex gap-[2vw]">
-            <button
-              onClick={handleFinishQuiz}
-              type="submit"
-              className="bg-customGreen text-customBeige px-[2vh] sm:px-[5vw] py-[1vh] rounded-full font-secondary text-[0.7rem] md:text-[1.2rem]"
-            >
-              Generate Designs
-            </button>
-            <button
-              onClick={handleNextQuestion}
-              type="submit"
-              className="bg-customGreen text-customBeige px-[2vh] sm:px-[5vw] py-[1vh] rounded-full font-secondary text-[0.7rem] md:text-[1.2rem]"
-            >
-              Next -{">"}
-            </button>
-          </div>
-        </div>
-      </div>
-    </>
+        </>
+      )}
+    </div>
   );
 };
 

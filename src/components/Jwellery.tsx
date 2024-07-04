@@ -1,41 +1,38 @@
-import icon from "/src/assets/image.png";
-import { useState } from "react";
+import icon from '/src/assets/image.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateFormData, setFormSubmitted } from '../redux/formSlice';
+import { useNavigate } from 'react-router-dom';
+import { RootState } from "../redux/store"
 
 
 const JewelryForm = () => {
-
-  const [formData, setFormData] = useState({
-    occasion: "",
-    recipient: "",
-    gender: "",
-    ageGroup: "",
-    religion: "",
-    jewelryType: "",
-    budget: "", 
-    photo: null,
-  });
+  const dispatch = useDispatch();
+  const formData = useSelector((state: RootState) => state.form.formData);
+  const isFormSubmitted = useSelector((state: RootState) => state.form.isFormSubmitted);
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, files } = e.target;
-    setFormData({
-      ...formData,
-      //[name]: type === "file" ? files[0] : value,
-      [name]: type === "file" ? (files && files.length > 0 ? files[0] : null) : value,
-    });
+    const newValue = type === 'file' ? (files && files.length > 0 ? files[0] : null) : value;
+    dispatch(updateFormData({ [name]: newValue }));
   };
 
   const handleBudgetChange = (budgetOption: string) => {
-    const newBudgetValue = budgetOption === "Custom Budget" ? "" : budgetOption; 
-    setFormData({
-      ...formData,
-      budget: newBudgetValue,
-    });
+    const newBudgetValue = budgetOption === 'Custom Budget' ? '' : budgetOption;
+    dispatch(updateFormData({ budget: newBudgetValue }));
   };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
-    window.location.href = "/aiquestions";
+    console.log('Form Data on Submit:', formData);
+    dispatch(setFormSubmitted(true));
+    console.log('Form Submitted:', isFormSubmitted);
+    navigate('/aiquestions');
+  };
+  
+
+  const isFormValid = () => {
+    const { occasion, recipient, gender, ageGroup, jewelryType, budget } = formData;
+    return occasion && recipient && gender && ageGroup && jewelryType && budget;
   };
 
   return (
@@ -48,38 +45,40 @@ const JewelryForm = () => {
           Tell us about the recipient
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6 py-[3vh]">
+          {/* Form fields remain the same */}
           <div>
             <label className="text-customGreen font-secondary font-bold text-[1rem] sm:text-[1.2rem] py-[1.5vw]">
               Occasion
             </label>
             <div className="flex flex-row flex-wrap gap-[1vw] mt-[1.5vw] font-serif">
               {[
-                "Wedding",
-                "Engagement",
-                "Festival",
-                "Religious Ceremonies",
-                "Birthday",
-                "Daily wear",
-                "Anniversary",
-                "Corporate Event",
-                "Social Gatherings",
-                "Other",
+                'Wedding',
+                'Engagement',
+                'Festival',
+                'Religious Ceremonies',
+                'Birthday',
+                'Daily wear',
+                'Anniversary',
+                'Corporate Event',
+                'Social Gatherings',
+                'Other',
               ].map((occasion) => (
                 <button
                   key={occasion}
                   type="button"
                   className={` text-[0.6rem] sm:text-[1rem] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer ${
                     formData.occasion === occasion
-                      ? "bg-customGreen text-white"
-                      : "bg-transparent text-[#656462] border border-[#e5e0dc]"
+                      ? 'bg-customGreen text-white'
+                      : 'bg-transparent text-[#656462] border border-[#e5e0dc]'
                   }`}
-                  onClick={() => setFormData({ ...formData, occasion })}
+                  onClick={() => dispatch(updateFormData({ occasion }))}
                 >
                   {occasion}
                 </button>
               ))}
             </div>
           </div>
+
 
           <div>
             <label className="text-customGreen font-secondary font-bold text-[1rem] sm:text-[1.2rem] py-[1.5vw]">
@@ -95,7 +94,7 @@ const JewelryForm = () => {
                       ? "bg-customGreen text-white"
                       : "bg-transparent text-[#656462] border border-[#e5e0dc]"
                   }`}
-                  onClick={() => setFormData({ ...formData, recipient })}
+                  onClick={() => dispatch(updateFormData({ recipient }))}
                 >
                   {recipient}
                 </button>
@@ -117,7 +116,7 @@ const JewelryForm = () => {
                       ? "bg-customGreen text-white"
                       : "bg-transparent text-[#656462] border border-[#e5e0dc]"
                   }`}
-                  onClick={() => setFormData({ ...formData, gender })}
+                  onClick={() => dispatch(updateFormData({ gender }))}
                 >
                   {gender}
                 </button>
@@ -147,7 +146,7 @@ const JewelryForm = () => {
                       ? "bg-customGreen text-white"
                       : "bg-transparent text-[#656462] border border-[#e5e0dc]"
                   }`}
-                  onClick={() => setFormData({ ...formData, ageGroup })}
+                  onClick={() => dispatch(updateFormData({ ageGroup }))}
                 >
                   {ageGroup}
                 </button>
@@ -195,7 +194,7 @@ const JewelryForm = () => {
                       ? "bg-customGreen text-white"
                       : "bg-transparent text-[#656462] border border-[#e5e0dc] "
                   }`}
-                  onClick={() => setFormData({ ...formData, jewelryType })}
+                  onClick={() => dispatch(updateFormData({ jewelryType }))}
                 >
                   {jewelryType}
                 </button>
@@ -217,7 +216,6 @@ const JewelryForm = () => {
                 "₹1,00,000 - ₹2,00,000",
                 "₹2,00,000 - ₹5,00,000",
                 "Above ₹5,00,000",
-                "Custom Budget",
                 "No Budget Limit"
               ].map((budgetOption) => (
                 <button
@@ -234,16 +232,7 @@ const JewelryForm = () => {
                 </button>
               ))}
             </div>
-            {formData.budget === "Custom Budget" && (
-              <input
-                type="text"
-                name="budget"
-                value={formData.budget}
-                onChange={handleChange}
-                placeholder="Enter custom budget"
-                className="font-serif text-[0.6rem] sm:text-[1rem] text-[#877563] placeholder-[0.6rem] sm:placeholder-[1rem] rounded-xl bg-[#f6f2f0] placeholder-[#877563] py-[1vw] px-[1.5vw] w-[60%]"
-              />
-            )}
+
           </div>
           
           
@@ -266,12 +255,17 @@ const JewelryForm = () => {
           </div>
 
           <div className="flex justify-end py-[2vw]">
-            <button
-              type="submit"
-              className= " bg-customGreen text-customBeige px-[2vh] sm:px-[7vw] py-[1vh] rounded-3xl font-secondary text-[1rem] md:text-[1.2rem]"
-            >
-              Continue
-            </button>
+          <button
+            type="submit"
+            className={`px-[3vh] py-[1.5vh] text-[0.8rem] sm:text-[1.2rem] rounded-xl cursor-pointer ${
+              isFormValid()
+                ? "bg-customGreen text-white"
+                : "bg-gray-300 text-gray-600 cursor-not-allowed"
+            }`}
+            disabled={!isFormValid()}
+          >
+            Continue
+          </button>
           </div>
         </form>
       </div>
