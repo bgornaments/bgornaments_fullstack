@@ -1,0 +1,34 @@
+[
+    {
+        "question": "What metal would you prefer for your jewelry?",
+        "options": ["Gold", "Silver", "Platinum", "Other"]
+    },
+    {
+        "question": "What gemstone would you like to include, if any?",
+        "options": ["Diamond", "Sapphire", "Ruby", "Other"]
+    },
+    {
+        "question": "What is the occasion for this jewelry piece?",
+        "options": ["Wedding", "Anniversary", "Birthday", "Other"]
+    },
+    {
+        "question": "Do you have a specific design in mind or would you like suggestions?",
+        "options": ["Specific Design", "Suggestions"]
+    },
+    {
+        "question": "What is your budget range for this jewelry piece?",
+        "options": ["<$500", "$500-$1000", "$1000-$5000", "> $5000"]
+    },
+    {
+        "question": "What is your preferred style?",
+        "options": ["Classic", "Modern", "Vintage", "Other"]
+    },
+    {
+        "question": "What type of jewelry would you like to create?",
+        "options": ["Ring", "Necklace", "Bracelet", "Other"]
+    },
+    {
+        "question": "Do you have any specific requirements or personalization requests?",
+        "options": ["Engraving", "None"]
+    }
+]
