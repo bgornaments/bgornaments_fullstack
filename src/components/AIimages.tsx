@@ -1,4 +1,3 @@
-import React from "react";
 import icon from "/src/assets/image.png";
 import { useState, useEffect } from "react";
 import axios from "axios";

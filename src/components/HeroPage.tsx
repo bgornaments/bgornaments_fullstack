@@ -1,4 +1,3 @@
-import React from "react";
 import Core_2 from "./Core_2";
 import Core from "./Core";
 import Page1 from "./Page1";

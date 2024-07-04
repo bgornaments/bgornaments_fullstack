@@ -1,5 +1,5 @@
 import icon from "/src/assets/image.png";
-import React, { useState } from "react";
+import { useState } from "react";
 
 
 const JewelryForm = () => {
