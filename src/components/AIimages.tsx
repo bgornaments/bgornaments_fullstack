@@ -2,11 +2,17 @@ import icon from "/src/assets/image.png";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+interface Image {
+  id: number;
+  url: string;
+  alt: string;
+  // other properties
+}
 
 const AIimages = () => {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<Image[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<null | string>(null); //meaning it can either be null or a string.
 
   useEffect(() => {
     axios

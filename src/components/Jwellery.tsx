@@ -15,15 +15,16 @@ const JewelryForm = () => {
     photo: null,
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, files } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "file" ? files[0] : value,
+      //[name]: type === "file" ? files[0] : value,
+      [name]: type === "file" ? (files && files.length > 0 ? files[0] : null) : value,
     });
   };
 
-  const handleBudgetChange = (budgetOption) => {
+  const handleBudgetChange = (budgetOption: string) => {
     const newBudgetValue = budgetOption === "Custom Budget" ? "" : budgetOption; 
     setFormData({
       ...formData,
@@ -31,7 +32,7 @@ const JewelryForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(formData);
     window.location.href = "/aiquestions";

@@ -5,7 +5,8 @@ import axios from "axios";
 
 interface Question {
   id: number;
-  text: string;
+  options: string[];
+  question: string[];
   // Add more properties as needed
 }
 
@@ -93,7 +94,7 @@ const AIGenerated = () => {
             {currentQuestion.question}
            </div>
           <div className="flex flex-wrap gap-[1vw] mt-[1.5vw]">
-            {currentQuestion.options?.map((option, index) => (
+            {currentQuestion.options?.map((option: string, index: number) => (
               <label
                 key={index}
                 className={`cursor-pointer px-[1vw] py-[0.3vw] text-[1vw] rounded-full ${
