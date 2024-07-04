@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
+import imageSrc from '../assets/image.png';
+
 
 const Core_2 = () => {
   return (
     <>
       <div className="h-screen w-full  flex flex-col items-center gap-[8vw] mt-[1vw] bg-[#fff9f5]">
         <div className="w-[15vw]">
-          <img src="/src/assets/image.png" alt="" />
+          <img src={imageSrc} alt="" />
         </div>
         <div className="text-customGreen text-[9vw] text-center">
           <h1>
