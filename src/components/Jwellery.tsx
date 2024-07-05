@@ -1,4 +1,4 @@
-import icon from '/src/assets/image.png';
+import logo from '/src/assets/image.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFormData, setFormSubmitted } from '../redux/formSlice';
 import { useNavigate } from 'react-router-dom';
@@ -38,7 +38,7 @@ const JewelryForm = () => {
   return (
     <div className="bg-[#fff9f6] h-full flex flex-col items-center pt-[2vw]">
       <div className=" ">
-        <img src={icon} alt="" className="w-[5vh]" />
+        <img src={logo} alt="" className="w-[5vh]" />
       </div>
       <div className="w-[80%] sm:w-[60%] mt-[3vw]">
         <h2 className="text-[1.2rem] sm:text-[1.5rem] font-secondary text-customBlack ">

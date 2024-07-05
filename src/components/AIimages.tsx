@@ -1,4 +1,4 @@
-import icon from "/src/assets/image.png";
+import logo from "/src/assets/image.png";
 import { useState } from "react";
 import axios from "axios";
 import { useSelector } from 'react-redux';
@@ -55,7 +55,7 @@ const AIimages = () => {
     <>
       <div className=" flex flex-col items-center bg-[#fff9f6] pt-[2vw] min-h-screen">
         <div className=" ">
-          <img src={icon} alt="" className="w-[5vh]" />
+          <img src={logo} alt="" className="w-[5vh]" />
         </div>
         <div className="w-[80%] sm:w-[60%] mt-[3vw] flex flex-col gap-[3vw]">
           <h2 className="text-[1.2rem] sm:text-[1.5rem] font-secondary text-customBlack ">
