@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import img from "src/assets/image.png"
+import logo from "src/assets/image.png"
 import img1 from "/src/assets/img1.png"
 import img2 from "/src/assets/img2.png"
 import img3 from "/src/assets/img3.svg"
@@ -11,7 +11,7 @@ const Core = () => {
   return (
     <div className=" div1 w-full h-screen  ">
       <div className="absolute right-1/2  p-[2vw]">
-        <img src={img} alt="" className="w-[3.5vw]" />
+        <img src={logo} alt="" className="w-[3.5vw]" />
       </div>
       <div className="bg-[#fff9f5] h-2/3 flex">
         <div className="w-9/12 flex items-center ">
