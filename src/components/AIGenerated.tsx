@@ -3,7 +3,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setImageData } from "../redux/formSlice";
-import logo from '/src/assets/image.png';
+import logo from "/src/assets/image.png";
 
 interface FormData {
   occasion: string;
@@ -29,8 +29,7 @@ const AIGenerated: React.FC = () => {
   const navigate = useNavigate();
   const maxQuestions: number = 3;
 
-  const temp_sys_prompt_1: string = 
-    `You are a friendly and engaging chatbot for a jewelry company. Based on the information provided below, please ask one follow-up question to the customer to understand their needs better. Follow these guidelines:
+  const temp_sys_prompt_1: string = `You are a friendly and engaging chatbot for a jewelry company. Based on the information provided below, please ask one follow-up question to the customer to understand their needs better. Follow these guidelines:
 
     1. Question Specificity: Ask one short, one-liner question containing only one key entity to understand the customer's needs better.
     2. Inclusion of Options: Yes : Frame every question to include options in the framed sentence itself related to the question providing the user a choice.
@@ -50,9 +49,7 @@ const AIGenerated: React.FC = () => {
       formData.jewelryType
     }, \nBudget: ${formData.budget}, \nOutfit Image Provided: ${
       formData.photo ? "Yes" : "No"
-    }, \nOutfit Caption: ${
-      formData.outfitCaption ? "Yes" : "No"
-    }`;
+    }, \nOutfit Caption: ${formData.outfitCaption ? "Yes" : "No"}`;
   };
 
   const fetchInitialQuestion = async () => {
@@ -113,21 +110,29 @@ const AIGenerated: React.FC = () => {
     setAnswers(updatedAnswers);
 
     const finalPrompt = `${generateBasicInfoString()}, \nQuestions and Answers:\n${questions
-      .map((q, index) => `Q${index + 1}: ${q}\nA${index + 1}: ${updatedAnswers[index] || userAnswer}`)
-      .join('\n')}`;
-    console.log('Final Prompt:', finalPrompt);
+      .map(
+        (q, index) =>
+          `Q${index + 1}: ${q}\nA${index + 1}: ${
+            updatedAnswers[index] || userAnswer
+          }`
+      )
+      .join("\n")}`;
+    console.log("Final Prompt:", finalPrompt);
 
     const finalSysPrompt =
       "Using this context generate only one small prompt for a text to image generator model to create accurate jewelry designs according to user's requirements";
 
     try {
-      const response = await axios.post('https://yh6w674h63.execute-api.us-east-1.amazonaws.com/default/', {
-        sys_prompt: finalSysPrompt,
-        user_prompt: finalPrompt,
-      });
-      console.log(response)
+      const response = await axios.post(
+        "https://yh6w674h63.execute-api.us-east-1.amazonaws.com/default/",
+        {
+          sys_prompt: finalSysPrompt,
+          user_prompt: finalPrompt,
+        }
+      );
+      console.log(response);
       generateImages(response.data.body);
-    } catch (error : any) {
+    } catch (error: any) {
       if (error.response) {
         console.error(`${error.response.status}`);
       } else if (error.request) {
@@ -135,49 +140,46 @@ const AIGenerated: React.FC = () => {
       } else {
         console.error(error.message);
       }
-    } 
-  
+    }
   };
 
   const generateImages = async (finalPrompt: string) => {
     setIsLoading(true);
-    console.log("started")
+    console.log("started");
     try {
       const response = await axios.post(
-        'https://pi85ecdrbi.execute-api.us-east-1.amazonaws.com/default/',
+        "https://pi85ecdrbi.execute-api.us-east-1.amazonaws.com/default/",
         { prompt: finalPrompt }
       );
       const imageResponse = response.data.body;
       // const images: HTMLImageElement[] = [];
-      
+
       // for (let i = 0; i < numImages; i++) {
       //   const image = new Image();
       //   image.src = `data:image/png;base64,${imageResponse}`;
       //   images.push(image);
       // }
-  
+
       // console.log(images); // For debugging purposes
       // const imageBase64Strings = images.map(img => img.src);
       // dispatch(setImageData(imageBase64Strings));
 
       dispatch(
-              setImageData(
-                Array.isArray(imageResponse) ? imageResponse : [imageResponse]
-              )
-            );
+        setImageData(
+          Array.isArray(imageResponse) ? imageResponse : [imageResponse]
+        )
+      );
       navigate("/aiimages");
-  
     } catch (error) {
       console.error("Error generating images:", error);
     } finally {
-       setIsLoading(false);
+      setIsLoading(false);
     }
-   };
-  
+  };
+
   useEffect(() => {
     fetchInitialQuestion();
   }, []);
-
 
   const handleNext = () => {
     const answer: string = (
@@ -231,15 +233,23 @@ const AIGenerated: React.FC = () => {
                 </button>
               </div>
               <div className="flex gap-[2vw]">
-                {/* {currentQuestionIndex < maxQuestions - 1 && (
+                {currentQuestionIndex < maxQuestions - 1 && (
                   <button
-                    onClick={generatePrompt}
+                    onClick={() =>
+                      generatePrompt(
+                        (
+                          document.getElementById(
+                            "user-answer"
+                          ) as HTMLInputElement
+                        ).value
+                      )
+                    }
                     type="submit"
                     className="bg-customGreen text-customBeige px-[2vh] sm:px-[5vw] py-[1vh] rounded-full font-secondary text-[0.7rem] md:text-[1.2rem]"
                   >
                     Generate Designs
                   </button>
-                )} */}
+                )}
                 <button
                   onClick={handleNext}
                   type="submit"
