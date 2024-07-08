@@ -1,75 +1,124 @@
-import logo from '/src/assets/image.png';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateFormData, setFormSubmitted } from '../redux/formSlice';
-import { useNavigate } from 'react-router-dom';
-import { RootState } from "../redux/store"
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateFormData, setFormSubmitted } from "../redux/formSlice";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import icon from "/src/assets/image.png";
 
-
-const JewelryForm = () => {
+const JewelryForm: React.FC = () => {
   const dispatch = useDispatch();
-  const formData = useSelector((state: RootState) => state.form.formData);
-  const isFormSubmitted = useSelector((state: RootState) => state.form.isFormSubmitted);
+  const formData = useSelector((state: any) => state.form.formData); // Adjust the type according to your Redux state structure
+  const isFormSubmitted = useSelector(
+    (state: any) => state.form.isFormSubmitted
+  ); 
   const navigate = useNavigate();
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, files } = e.target;
-    const newValue = type === 'file' ? (files && files.length > 0 ? files[0] : null) : value;
-    dispatch(updateFormData({ [name]: newValue }));
+  const handleChange = async (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, type } = e.target;
+
+    if (type === "file") {
+      const fileInput = e.target as HTMLInputElement;
+      const files = fileInput.files;
+
+      if (files && files[0]) {
+        const file = files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = async () => {
+          const base64String = reader.result?.toString().split(",")[1]; // Extract base64 string from data URL
+          if (base64String) {
+            dispatch(updateFormData({ [name]: base64String }));
+          } else {
+            console.error("Error converting file to base64");
+          }
+        };
+
+        reader.readAsDataURL(file);
+      }
+    } else {
+      const { value } = e.target;
+      dispatch(updateFormData({ [name]: value }));
+    }
   };
 
   const handleBudgetChange = (budgetOption: string) => {
-    const newBudgetValue = budgetOption === 'Custom Budget' ? '' : budgetOption;
+    const newBudgetValue = budgetOption === "Custom Budget" ? "" : budgetOption;
     dispatch(updateFormData({ budget: newBudgetValue }));
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form Data on Submit:', formData);
+
+    if (formData.photo) {
+      try {
+        setUploadingPhoto(true);
+        const response = await axios.post(
+          "https://i8g5wzii0m.execute-api.us-east-1.amazonaws.com/default/",
+          { image_path: formData.photo }
+        );
+        console.log("Photo Upload Response:", response.data);
+        dispatch(updateFormData({ outfitCaption: response.data.body }));
+      } catch (error) {
+        console.error("Error uploading photo:", error);
+      } finally {
+        setUploadingPhoto(false);
+      }
+    } else {
+      console.log("No photo uploaded.");
+      console.log(uploadingPhoto);
+    }
+    
+    navigate('/aiquestions')
+    console.log("Form Data on Submit:", formData);
     dispatch(setFormSubmitted(true));
-    console.log('Form Submitted:', isFormSubmitted);
-    navigate('/aiquestions');
+    console.log("Form Submitted:", isFormSubmitted);
   };
-  
 
   const isFormValid = () => {
-    const { occasion, recipient, gender, ageGroup, jewelryType, budget } = formData;
+    const { occasion, recipient, gender, ageGroup, jewelryType, budget } =
+      formData;
     return occasion && recipient && gender && ageGroup && jewelryType && budget;
   };
 
   return (
     <div className="bg-[#fff9f6] h-full flex flex-col items-center pt-[2vw]">
       <div className=" ">
-        <img src={logo} alt="" className="w-[5vh]" />
+        <img src={icon} alt="" className="w-[5vh]" />
       </div>
-      <div className="w-[80%] sm:w-[60%] mt-[3vw]">
+      <div className="w-[80vw] sm:w-[65vw] mt-[3vw]">
         <h2 className="text-[1.2rem] sm:text-[1.5rem] font-secondary text-customBlack ">
           Tell us about the recipient
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6 py-[3vh]">
-          {/* Form fields remain the same */}
           <div>
             <label className="text-customGreen font-secondary font-bold text-[1rem] sm:text-[1.2rem] py-[1.5vw]">
               Occasion
             </label>
             <div className="flex flex-row flex-wrap gap-[1vw] mt-[1.5vw] font-serif">
               {[
-                'Wedding',
-                'Engagement',
-                'Festival',
-                'Religious Ceremonies',
-                'Birthday',
-                'Daily wear',
-                'Anniversary',
-                'Corporate Event',
-                'Social Gatherings',
-                'Other',
+                "Wedding",
+                "Engagement",
+                "Festival",
+                "Religious Ceremonies",
+                "Birthday",
+                "Daily wear",
+                "Anniversary",
+                "Corporate Event",
+                "Social Gatherings",
+                "Other",
               ].map((occasion) => (
                 <button
                   key={occasion}
                   type="button"
                   className={` text-[0.6rem] sm:text-[1rem] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer ${
                     formData.occasion === occasion
-                      ? 'bg-customGreen text-white'
-                      : 'bg-transparent text-[#656462] border border-[#e5e0dc]'
+                      ? "bg-customGreen text-white"
+                      : "bg-transparent text-[#656462] border border-[#e5e0dc]"
                   }`}
                   onClick={() => dispatch(updateFormData({ occasion }))}
                 >
@@ -78,7 +127,6 @@ const JewelryForm = () => {
               ))}
             </div>
           </div>
-
 
           <div>
             <label className="text-customGreen font-secondary font-bold text-[1rem] sm:text-[1.2rem] py-[1.5vw]">
@@ -184,7 +232,7 @@ const JewelryForm = () => {
                 "Kadas",
                 "Chains",
                 "Anklets",
-                "Other"
+                "Other",
               ].map((jewelryType) => (
                 <button
                   key={jewelryType}
@@ -216,7 +264,7 @@ const JewelryForm = () => {
                 "₹1,00,000 - ₹2,00,000",
                 "₹2,00,000 - ₹5,00,000",
                 "Above ₹5,00,000",
-                "No Budget Limit"
+                "No Budget Limit",
               ].map((budgetOption) => (
                 <button
                   key={budgetOption}
@@ -232,10 +280,7 @@ const JewelryForm = () => {
                 </button>
               ))}
             </div>
-
           </div>
-          
-          
 
           <div>
             <label className="text-customGreen font-secondary font-bold text-[1rem] xs:text-[1.2rem] py-[1.5vw]">
@@ -255,17 +300,17 @@ const JewelryForm = () => {
           </div>
 
           <div className="flex justify-end py-[2vw]">
-          <button
-            type="submit"
-            className={`px-[3vh] py-[1.5vh] text-[0.8rem] sm:text-[1.2rem] rounded-xl cursor-pointer ${
-              isFormValid()
-                ? "bg-customGreen text-white"
-                : "bg-gray-300 text-gray-600 cursor-not-allowed"
-            }`}
-            disabled={!isFormValid()}
-          >
-            Continue
-          </button>
+            <button
+              type="submit"
+              className={`px-[3vh] py-[1.5vh] text-[0.8rem] sm:text-[1.2rem] rounded-xl cursor-pointer ${
+                isFormValid()
+                  ? "bg-customGreen text-white"
+                  : "bg-gray-300 text-gray-600 cursor-not-allowed"
+              }`}
+              disabled={!isFormValid()}
+            >
+              Continue
+            </button>
           </div>
         </form>
       </div>

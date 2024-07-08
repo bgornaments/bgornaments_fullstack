@@ -1,6 +1,24 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
+export interface FormData {
+  occasion: string;
+  recipient: string;
+  gender: string;
+  ageGroup: string;
+  religion: string;
+  jewelryType: string;
+  budget: string;
+  photo: string | null; // Changed to string to store base64 string
+  outfitCaption: string;
+}
+
+export interface FormState {
+  formData: FormData;
+  imageData: string[]; // Assuming imageData is an array of strings (URLs)
+  isFormSubmitted: boolean;
+}
+
+const initialState: FormState = {
   formData: {
     occasion: "",
     recipient: "",
@@ -10,8 +28,9 @@ const initialState = {
     jewelryType: "",
     budget: "",
     photo: null,
+    outfitCaption:"",
   },
-  imageData: [], // Initialize as an empty array
+  imageData: [],
   isFormSubmitted: false,
 };
 
@@ -19,13 +38,13 @@ const formSlice = createSlice({
   name: 'form',
   initialState,
   reducers: {
-    updateFormData: (state, action) => {
+    updateFormData: (state, action: PayloadAction<Partial<FormData>>) => {
       state.formData = { ...state.formData, ...action.payload };
     },
-    setImageData: (state, action) => {
+    setImageData: (state, action: PayloadAction<string[]>) => {
       state.imageData = action.payload;
     },
-    setFormSubmitted: (state, action) => {
+    setFormSubmitted: (state, action: PayloadAction<boolean>) => {
       state.isFormSubmitted = action.payload;
     },
   },
