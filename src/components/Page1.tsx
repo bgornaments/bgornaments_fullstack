@@ -1,5 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import img10 from "/src/assets/img10.png"
+import frame1 from "/src/assets/Frame (1).svg"
+import frame2 from "/src/assets/Frame (2).svg"
 
 const Page1: React.FC = () => {
   return (
@@ -13,7 +16,7 @@ const Page1: React.FC = () => {
         <section className="flex flex-col md:flex-row w-full h-full items-center justify-center xs:gap-[5vh] md:gap-[25vh]">
           <div className="flex justify-center items-center">
             <img
-              src="/src/assets/img10.png"
+              src={img10}
               alt="Jewelry Design Example"
               className="xs:w-[45vw] md:w-[25vw]"
             />
@@ -31,7 +34,7 @@ const Page1: React.FC = () => {
             <div className="xs:text-[3vw] md:text-[1.2vw] flex flex-col gap-[1vw]">
               <div className="flex gap-[1vw] items-center">
                 <img
-                  src="/src/assets/Frame (1).svg"
+                  src={frame1}
                   alt="Interactive Design Process"
                   className="xs:w-[3vw] md:w-[1.5vw]"
                 />
@@ -47,7 +50,7 @@ const Page1: React.FC = () => {
             <div className="xs:text-[3vw] md:text-[1.2vw] flex flex-col gap-[1vw]">
               <div className="flex gap-[1vw] items-center">
                 <img
-                  src="/src/assets/Frame (2).svg"
+                  src={frame2}
                   alt="Tailored to Your Taste"
                   className="xs:w-[3vw] md:w-[1.5vw]"
                 />

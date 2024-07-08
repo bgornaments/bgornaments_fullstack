@@ -1,11 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from "/src/assets/image.png"
+import img1 from "/src/assets/img1.png"
+import img2 from "/src/assets/img2.png"
+import img3 from "/src/assets/img3.svg"
+import img4 from "/src/assets/img3.png"
+import img7 from "/src/assets/img7.svg"
+import img8 from "/src/assets/img8.svg"
+import img9 from "/src/assets/img9.svg"
 
 const Core: React.FC = () => {
   return (
     <div className="div1 w-full h-screen">
       <div className="absolute right-1/2 p-[2vw]">
-        <img src="/src/assets/image.png" alt="" className="w-[3.5vw]" />
+        <img src={logo} alt="" className="w-[3.5vw]" />
       </div>
       <div className="bg-[#fff9f5] h-2/3 flex">
         <div className="w-9/12 flex items-center">
@@ -22,7 +30,7 @@ const Core: React.FC = () => {
               </Link>
               <button className="flex justify-center items-center gap-3 text-[1vw] text-customGreen">
                 <div className="rounded-full border-2 border-customGreen p-[1vw]">
-                  <img src="/src/assets/img3.svg" alt="" className="w-[1vw]" />
+                  <img src={img3} alt="" className="w-[1vw]" />
                 </div>
                 <div>Play Video</div>
               </button>
@@ -34,12 +42,12 @@ const Core: React.FC = () => {
           <img
             className="absolute w-[12vw] h-[20vw] top-[10vw] right-0"
             alt="Pexels cottonbro"
-            src="/src/assets/img2.png"
+            src={img2}
           />
           <img
             className="absolute w-[20vw] h-[28vw] top-[6vw] right-[40%]"
             alt="Pexels arif"
-            src="/src/assets/img1.png"
+            src={img1}
           />
         </div>
         <div className="w-3/12 bg-[#f5e8d7] h-[72.2vh]"></div>
@@ -47,24 +55,24 @@ const Core: React.FC = () => {
       <div className="bg-[#fff9f5] h-1/3 flex items-center">
         <div className="w-1/5 h-[75%] bg-customGreen">
           <div className="w-[90%] flex justify-center">
-            <img src="/src/assets/img3.png" alt="" className="sm:w-[60%] md:w-[45%] xl:w-[35%]" />
+            <img src={img4} alt="" className="sm:w-[60%] md:w-[45%] xl:w-[35%]" />
           </div>
         </div>
         <div className="h-2/3 w-[55%] bg-[#f5e8d7] flex">
           <div className="border-r border-[#b9944c] w-1/3 flex flex-col gap-6 justify-center items-center text-customGreen">
-            <img src="/src/assets/img9.svg" alt="" className="size-[2.5vw]" />
+            <img src={img9} alt="" className="size-[2.5vw]" />
             <p className="max-w-[60%] text-center text-[1.2vw]">
               Personalised Bespoke Designs
             </p>
           </div>
           <div className="border-r border-[#b9944c] w-1/3 flex flex-col gap-6 justify-center items-center text-customGreen">
-            <img src="/src/assets/img8.svg" alt="" className="size-[2.5vw]" />
+            <img src={img8} alt="" className="size-[2.5vw]" />
             <p className="max-w-[60%] text-center text-[1.2vw]">
               Data-Driven Insights
             </p>
           </div>
           <div className="w-1/3 flex flex-col gap-6 justify-center items-center text-customGreen">
-            <img src="/src/assets/img7.svg" alt="" className="size-[2.5vw]" />
+            <img src={img7} alt="" className="size-[2.5vw]" />
             <p className="max-w-[60%] text-center text-[1.2vw]">
               Seamless User Experience
             </p>
