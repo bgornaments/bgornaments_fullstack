@@ -3,7 +3,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setImageData } from "../redux/formSlice";
-import logo from "src/assets/image.png"
+import logo from '/src/assets/image.png';
 
 interface FormData {
   occasion: string;
@@ -231,15 +231,15 @@ const AIGenerated: React.FC = () => {
                 </button>
               </div>
               <div className="flex gap-[2vw]">
-                {/* {currentQuestionIndex < maxQuestions - 1 && (
+                {currentQuestionIndex < maxQuestions - 1 && (
                   <button
-                    onClick={generateImages}
+                    onClick={generatePrompt}
                     type="submit"
                     className="bg-customGreen text-customBeige px-[2vh] sm:px-[5vw] py-[1vh] rounded-full font-secondary text-[0.7rem] md:text-[1.2rem]"
                   >
                     Generate Designs
                   </button>
-                )} */}
+                )}
                 <button
                   onClick={handleNext}
                   type="submit"
