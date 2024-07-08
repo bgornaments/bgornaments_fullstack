@@ -3,6 +3,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setImageData } from "../redux/formSlice";
+import logo from "src/assets/image.png"
 
 interface FormData {
   occasion: string;
@@ -200,7 +201,7 @@ const AIGenerated: React.FC = () => {
         <>
           <div className="flex flex-col items-center bg-[#fff9f6] pt-[2vw] min-h-screen">
             <div>
-              <img src="src/assets/image.png" alt="" className="w-[5vh]" />
+              <img src={logo} alt="" className="w-[5vh]" />
             </div>
             <div className="w-[80vw] sm:w-[65vw] mt-[3vw] flex flex-col gap-[1vw]">
               <h2 className="text-[1.2rem] sm:text-[1.5rem] font-secondary text-customBlack w-full">
