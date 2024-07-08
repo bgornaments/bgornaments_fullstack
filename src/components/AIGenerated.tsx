@@ -231,7 +231,7 @@ const AIGenerated: React.FC = () => {
                 </button>
               </div>
               <div className="flex gap-[2vw]">
-                {currentQuestionIndex < maxQuestions - 1 && (
+                {/* {currentQuestionIndex < maxQuestions - 1 && (
                   <button
                     onClick={generatePrompt}
                     type="submit"
@@ -239,7 +239,7 @@ const AIGenerated: React.FC = () => {
                   >
                     Generate Designs
                   </button>
-                )}
+                )} */}
                 <button
                   onClick={handleNext}
                   type="submit"
