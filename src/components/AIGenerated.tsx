@@ -130,7 +130,7 @@ const AIGenerated: React.FC = () => {
           user_prompt: finalPrompt,
         }
       );
-      console.log(response);
+      console.log(response.data.body);
       generateImages(response.data.body);
     } catch (error: any) {
       if (error.response) {
