@@ -62,7 +62,7 @@ const JewelryForm: React.FC = () => {
         console.log(formData);
   
         const response = await axios.post(
-          "/api",
+          "https://i8g5wzii0m.execute-api.us-east-1.amazonaws.com/default/",
           { image_base64: formData.photo },
           {
             headers: {
