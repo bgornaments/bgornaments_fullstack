@@ -14,21 +14,22 @@ const JewelryForm: React.FC = () => {
   const navigate = useNavigate();
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
+
   const handleChange = async (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
     const { name, type } = e.target;
-
+  
     if (type === "file") {
       const fileInput = e.target as HTMLInputElement;
       const files = fileInput.files;
-
+  
       if (files && files[0]) {
         const file = files[0];
         const reader = new FileReader();
-
+  
         reader.onloadend = async () => {
           const base64String = reader.result?.toString().split(",")[1]; // Extract base64 string from data URL
           if (base64String) {
@@ -37,7 +38,7 @@ const JewelryForm: React.FC = () => {
             console.error("Error converting file to base64");
           }
         };
-
+  
         reader.readAsDataURL(file);
       }
     } else {
@@ -45,23 +46,30 @@ const JewelryForm: React.FC = () => {
       dispatch(updateFormData({ [name]: value }));
     }
   };
-
+  
   const handleBudgetChange = (budgetOption: string) => {
     const newBudgetValue = budgetOption === "Custom Budget" ? "" : budgetOption;
     dispatch(updateFormData({ budget: newBudgetValue }));
   };
 
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     if (formData.photo) {
       try {
         setUploadingPhoto(true);
+        console.log(formData);
+  
         const response = await axios.post(
-          "https://i8g5wzii0m.execute-api.us-east-1.amazonaws.com/default/",
-          { image_path: formData.photo }
+          "/api",
+          { image_base64: formData.photo },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
-        console.log("Photo Upload Response:", response.data);
         dispatch(updateFormData({ outfitCaption: response.data.body }));
       } catch (error) {
         console.error("Error uploading photo:", error);
@@ -72,12 +80,14 @@ const JewelryForm: React.FC = () => {
       console.log("No photo uploaded.");
       console.log(uploadingPhoto);
     }
-    
-    navigate('/aiquestions')
+  
+    navigate('/aiquestions');
     console.log("Form Data on Submit:", formData);
     dispatch(setFormSubmitted(true));
-    console.log("Form Submitted:", isFormSubmitted);
+    console.log(isFormSubmitted)
   };
+  
+  
 
   const isFormValid = () => {
     const { occasion, recipient, gender, ageGroup, jewelryType, budget } =
