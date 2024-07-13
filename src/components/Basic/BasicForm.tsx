@@ -3,6 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateFormData, setFormSubmitted } from "../../redux/formSlice";
 import { useNavigate } from "react-router-dom";
 import icon from "/src/assets/image.png";
+import necklaceIcon from "/src/assets/jewelry (1).png";
+import pendantIcon from "/src/assets/necklace.png";
+import earringIcon from "/src/assets/flower.png";
+import bangleIcon from "/src/assets/bangles.png";
+import ringIcon from "/src/assets/wedding-ring.png";
+import chainIcon from "/src/assets/pendant.png";
+import braceletIcon from "/src/assets/bracelet.png";
+import femaleIcon from "/src/assets/female-icon.png";
+import maleIcon from "/src/assets/male-icon.png";
 
 const JewelryForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -30,43 +39,43 @@ const JewelryForm: React.FC = () => {
       <div className="mt-[2vw]">
         <img src={icon} alt="" className="w-[3vw]" />
       </div>
-      <div className="  w-full  justify-center flex flex-col items-center">
-        <h2 className="text-[1.5vw] font-secondary text-customBlack  ">
+      <div className="w-full justify-center flex flex-col items-center">
+        <h2 className="text-[1.5vw] font-secondary text-customBlack">
           Tell us about the recipient
         </h2>
         <form
           onSubmit={handleSubmit}
-          className="py-[5vw] flex gap-[3vw] w-[70vw] flex-col "
+          className="py-[5vw] flex gap-[3vw] w-[70vw] flex-col"
         >
           <div className="flex items-center gap-[0.5vw]">
-            <label className="text-customGreen  font-secondary font-bold text-[1.2vw] w-3/12 ">
+            <label className="text-customGreen font-secondary font-bold text-[1.2vw] w-3/12">
               Type of Jewellery
             </label>
-            <div className="flex flex-wrap  gap-4 w-9/12">
+            <div className="flex flex-wrap gap-4 w-9/12">
               {[
-                { type: "Necklaces", icon: "/src/assets/jewelry (1).png" },
-                { type: "Pendants", icon: "/src/assets/necklace.png" },
-                { type: "Earrings", icon: "/src/assets/flower.png" },
-                { type: "Bangles", icon: "/src/assets/bangles.png" },
-                { type: "Rings", icon: "/src/assets/wedding-ring.png" },
-                { type: "Chains", icon: "/src/assets/pendant.png" },
-                { type: "Bracelets", icon: "/src/assets/bracelet.png" },
+                { type: "Necklaces", icon: necklaceIcon },
+                { type: "Pendants", icon: pendantIcon },
+                { type: "Earrings", icon: earringIcon },
+                { type: "Bangles", icon: bangleIcon },
+                { type: "Rings", icon: ringIcon },
+                { type: "Chains", icon: chainIcon },
+                { type: "Bracelets", icon: braceletIcon },
               ].map((jewelry) => (
                 <button key={jewelry.type} type="button">
                   <div
                     onClick={() =>
                       dispatch(updateFormData({ jewelryType: jewelry.type }))
                     }
-                    className={`flex flex-col items-center text-customBlack p-[1vw]   rounded-full cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
+                    className={`flex flex-col items-center text-customBlack p-[1vw] rounded-full cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
                       formData.jewelryType === jewelry.type
                         ? "bg-[#F5E8D7] text-white"
-                        : " text-black border border-[#F5E8D7]"
+                        : "text-black border border-[#F5E8D7]"
                     }`}
                   >
                     <img
                       src={jewelry.icon}
                       alt={jewelry.type}
-                      className="w-[2vw] "
+                      className="w-[2vw]"
                     />
                   </div>
                   <p className="pt-[1vw] text-[1vw] text-customBlack">
@@ -78,7 +87,7 @@ const JewelryForm: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-[0.5vw]">
-            <label className="text-customGreen font-secondary font-bold text-[1.2vw] w-3/12 ">
+            <label className="text-customGreen font-secondary font-bold text-[1.2vw] w-3/12">
               Occasion
             </label>
             <div className="flex flex-row flex-wrap gap-[1vw] font-serif w-9/12">
@@ -92,9 +101,9 @@ const JewelryForm: React.FC = () => {
                 <button
                   key={occasion}
                   type="button"
-                  className={` text-[1.2vw] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all  ${
+                  className={`text-[1.2vw] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
                     formData.occasion === occasion
-                      ? "bg-[#F5E8D7] "
+                      ? "bg-[#F5E8D7]"
                       : "bg-transparent text-customBlack border border-[#F5E8D7]"
                   }`}
                   onClick={() => dispatch(updateFormData({ occasion }))}
@@ -106,13 +115,13 @@ const JewelryForm: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-[0.5vw]">
-            <label className="text-customGreen font-secondary font-bold text-[1.2vw] w-3/12 ">
+            <label className="text-customGreen font-secondary font-bold text-[1.2vw] w-3/12">
               Gender
             </label>
-            <div className="flex flex-row flex-wrap gap-[2vw] font-serif  w-9/12">
+            <div className="flex flex-row flex-wrap gap-[2vw] font-serif w-9/12">
               {[
-                { gender: "Female", icon: "/src/assets/female-icon.png" },
-                { gender: "Male", icon: "/src/assets/male-icon.png" },
+                { gender: "Female", icon: femaleIcon },
+                { gender: "Male", icon: maleIcon },
               ].map((option) => (
                 <button
                   key={option.gender}
@@ -120,11 +129,10 @@ const JewelryForm: React.FC = () => {
                   className="flex flex-col items-center"
                 >
                   <div
-                    key={option.gender}
                     className={`cursor-pointer flex items-center gap-2 shadow-md shadow-[#F5E8D7] transition-all rounded-xl ${
                       formData.gender === option.gender
-                        ? "bg-[#F5E8D7]  text-white"
-                        : "bg-transparent "
+                        ? "bg-[#F5E8D7] text-white"
+                        : "bg-transparent"
                     }`}
                     onClick={() =>
                       dispatch(updateFormData({ gender: option.gender }))
@@ -136,26 +144,25 @@ const JewelryForm: React.FC = () => {
                       className="w-[4.5vw]"
                     />
                   </div>
-                  {/* <p className="text-customBlack">{option.gender}</p> */}
                 </button>
               ))}
             </div>
           </div>
 
           <div className="flex items-center gap-[0.5vw]">
-            <label className="text-customGreen font-secondary font-bold text-[1.2vw] w-3/12 ">
+            <label className="text-customGreen font-secondary font-bold text-[1.2vw] w-3/12">
               Age group
             </label>
-            <div className="flex flex-row flex-wrap gap-[1vw] font-serif  w-9/12">
+            <div className="flex flex-row flex-wrap gap-[1vw] font-serif w-9/12">
               {["0 - 12", "13 - 19", "20 - 34", "35 - 44", "Above 45"].map(
                 (ageGroup) => (
                   <button
                     key={ageGroup}
                     type="button"
-                    className={`text-[1.2vw] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all  ${
+                    className={`text-[1.2vw] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
                       formData.ageGroup === ageGroup
                         ? "bg-[#F5E8D7] text-black"
-                        : "bg-transparent  border border-[#F5E8D7] text-customBlack"
+                        : "bg-transparent border border-[#F5E8D7] text-customBlack"
                     }`}
                     onClick={() => dispatch(updateFormData({ ageGroup }))}
                   >
@@ -179,8 +186,6 @@ const JewelryForm: React.FC = () => {
               Continue
             </button>
           </div>
-
-          
         </form>
       </div>
     </div>
