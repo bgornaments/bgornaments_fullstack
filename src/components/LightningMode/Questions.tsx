@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import logo from "/src/assets/image.png";
@@ -26,8 +26,8 @@ const AIGenerated: React.FC = () => {
     const [options, setOptions] = useState<string[]>([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    // const dispatch = useDispatch();
+    // const navigate = useNavigate();
     const maxQuestions: number = 5;
   
     const generateBasicInfoString = (): string => {

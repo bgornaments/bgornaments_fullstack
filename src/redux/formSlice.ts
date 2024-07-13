@@ -2,14 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface FormData {
   occasion: string;
-  recipient: string;
+  // recipient: string;
   gender: string;
   ageGroup: string;
-  religion: string;
+  // religion: string;
   jewelryType: string;
-  budget: string;
-  photo: string | null; // Changed to string to store base64 string
-  outfitCaption: string;
+  // budget: string;
+  // photo: string | null; // Changed to string to store base64 string
+  // outfitCaption: string;
 }
 
 export interface FormState {
@@ -21,14 +21,14 @@ export interface FormState {
 const initialState: FormState = {
   formData: {
     occasion: "",
-    recipient: "",
+    // recipient: "",
     gender: "",
     ageGroup: "",
-    religion: "",
+    // religion: "",
     jewelryType: "",
-    budget: "",
-    photo: null,
-    outfitCaption:"",
+    // budget: "",
+    // photo: null,
+    // outfitCaption:"",
   },
   imageData: [],
   isFormSubmitted: false,

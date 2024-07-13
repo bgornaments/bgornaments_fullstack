@@ -2,10 +2,13 @@
 //import { generateClient } from "aws-amplify/data";
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HeroPage from "./components/HeroPage.tsx";
-import JewelryForm from "./components/Jwellery.tsx";
+import HeroPage from "./components/LandingPage/HeroPage.tsx";
 import AIGenerated from "./components/AIGenerated.tsx";
 import AIimages from "./components/AIimages.tsx";
+import BasicForm from "./components/Basic/BasicForm.tsx"
+import Option from "./components/Basic/Option.tsx"
+import Modes from "./components/Basic/Modes.tsx";
+import Questions from "./components/LightningMode/Questions.tsx";
 
 //const client = generateClient<Schema>();
 
