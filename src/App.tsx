@@ -15,8 +15,20 @@ const router = createBrowserRouter([
     element: <HeroPage />,
   },
   {
+    path: "/option",
+    element: <Option />,
+  },
+  {
+    path: "/modes",
+    element: <Modes />,
+  },
+  {
     path: "/form",
-    element: <JewelryForm />,
+    element: <BasicForm />,
+  },
+  {
+    path:"/lightningMode",
+    element:<Questions/>
   },
   {
     path: "/aiquestions",

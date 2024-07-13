@@ -7,20 +7,18 @@ import logo from "/src/assets/image.png";
 
 interface FormData {
   occasion: string;
-  recipient: string;
+  // recipient: string;
   gender: string;
   ageGroup: string;
-  religion: string;
+  // religion: string;
   jewelryType: string;
-  budget: string;
-  photo?: File;
-  outfitCaption: string;
+  // budget: string;
+  // photo?: File;
+  // outfitCaption: string;
 }
 
 const AIGenerated: React.FC = () => {
   const formData = useSelector((state: any) => state.form.formData) as FormData;
-  // console.log(formData);
-
   const [questions, setQuestions] = useState<string[]>([]);
   const [answers, setAnswers] = useState<string[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
@@ -41,16 +39,21 @@ const AIGenerated: React.FC = () => {
     `;
 
   const generateBasicInfoString = (): string => {
-    return `Occasion: ${formData.occasion}, \nGift or Personal Purchase: ${
-      formData.recipient
-    }, \nGender: ${formData.gender}, \nAge Group: ${
-      formData.ageGroup
-    }, \nReligion: ${formData.religion}, \nType of Jewelry: ${
-      formData.jewelryType
-    }, \nBudget: ${formData.budget}, \nOutfit Image Provided: ${
-      formData.photo ? "Yes" : "No"
-    }, \nOutfit Caption: ${formData.outfitCaption ? "Yes" : "No"}`;
+    // return `Occasion: ${formData.occasion}, 
+    // \nGift or Personal Purchase: ${formData.recipient},
+    //  \nGender: ${formData.gender}, 
+    //  \nAge Group: ${formData.ageGroup}, 
+    // \nReligion: ${formData.religion}, 
+    // \nType of Jewelry: ${formData.jewelryType }, 
+    // \nBudget: ${formData.budget}, 
+    // \nOutfit Image Provided: ${formData.photo ? "Yes" : "No" }, 
+    // \nOutfit Caption: ${formData.outfitCaption}`;
+  return `Occasion: ${formData.occasion}, 
+     \nGender: ${formData.gender}, 
+     \nAge Group: ${formData.ageGroup},  
+    \nType of Jewelry: ${formData.jewelryType }, `;
   };
+
 
   const fetchInitialQuestion = async () => {
     try {
