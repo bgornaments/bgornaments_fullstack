@@ -33,14 +33,14 @@ const router = createBrowserRouter([
     path:"/lightningMode",
     element:<Questions/>
   },
-  {
-    path: "/aiquestions",
-    element: <AIGenerated />,
-  },
-  {
-    path: "/aiimages",
-    element: <AIimages />,
-  },
+  // {
+  //   path: "/aiquestions",
+  //   element: <AIGenerated />,
+  // },
+  // {
+  //   path: "/aiimages",
+  //   element: <AIimages />,
+  // },
 ]);
 
 const App: React.FC = () => {
