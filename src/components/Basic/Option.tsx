@@ -24,7 +24,8 @@ const App: React.FC = () => {
               pSize="1vw"
               imgWidth="9vw"
               gap="2vw"
-              link="/form"
+              //link="/form"
+              link="/option"
             />
             <Card
               img={assistant}
