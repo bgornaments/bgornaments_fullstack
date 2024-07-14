@@ -98,7 +98,7 @@ const AIGenerated: React.FC = () => {
         setIsLoading(false);
       }
     };
-  
+  /*
     const handleOptionSelect = (selectedOption: string) => {
       if (currentQuestionIndex < maxQuestions - 1) {
         fetchNextQuestion(selectedOption);
@@ -113,6 +113,7 @@ const AIGenerated: React.FC = () => {
   
       }
     };
+  */
 
     const generateText2ImagePrompt = async () => {
       const finalPrompt = `user: ${generateBasicInfoString()}\n${questions
