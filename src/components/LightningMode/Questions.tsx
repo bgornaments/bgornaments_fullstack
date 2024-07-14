@@ -34,7 +34,7 @@ const AIGenerated: React.FC = () => {
 
     // const dispatch = useDispatch();
     // const navigate = useNavigate();
-    const maxQuestions: number = 3;
+    const maxQuestions: number = 5;
   
     const generateBasicInfoString = (): string => {
     //  return `Occasion: ${formData.occasion}, 
