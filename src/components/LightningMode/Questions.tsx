@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 // import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import logo from "/src/assets/image.png";
+import { LIGHTENING_MODE, SUMMARIZER, IMAGE_GENERATOR } from '../../constantsAWS';
+import { useNavigate } from "react-router-dom";
 
 
 interface FormData {
@@ -24,23 +26,28 @@ const AIGenerated: React.FC = () => {
     const [answers, setAnswers] = useState<string[]>([]);
     const [currentQuestion, setCurrentQuestion] = useState<string>('');
     const [options, setOptions] = useState<string[]>([]);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(1);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [selectedChoice, setSelectedChoice] = useState<string>('');
+    const [selectedChoiceFlag, setSelectedChoiceFlag] = useState<boolean>(false);
+    const navigate = useNavigate();
+
     // const dispatch = useDispatch();
     // const navigate = useNavigate();
-    const maxQuestions: number = 5;
+    const maxQuestions: number = 3;
   
     const generateBasicInfoString = (): string => {
-      return `Occasion: ${formData.occasion}, 
-        \nGender: ${formData.gender}, 
-        \nAge Group: ${formData.ageGroup},  
-        \nType of Jewelry: ${formData.jewelryType}`;
+    //  return `Occasion: ${formData.occasion}, 
+    //    \nGender: ${formData.gender}, 
+    //    \nAge Group: ${formData.ageGroup},  
+    //    \nType of Jewelry: ${formData.jewelryType}`;
+        return `I want a ${formData.jewelryType} for ${formData.occasion} for a ${formData.gender} aged ${formData.ageGroup}`
     };
   
     const cleanUpChoicesString = (choicesString: string): string[] => {
       try {
-        const cleanedString = choicesString.replace(/\[|\]|"/g, '').split(',');
-        return cleanedString.map(option => option.trim());
+        const cleanedString = choicesString.split('\',');
+        return cleanedString.map(option => option.replace(/\[|\]|"|'/g, '').trim());
       } catch (error) {
         console.error('Error cleaning up choices:', error);
         return [];
@@ -49,14 +56,14 @@ const AIGenerated: React.FC = () => {
   
     const fetchInitialQuestion = async () => {
       setIsLoading(true);
-      console.log(generateBasicInfoString())
+      //console.log(generateBasicInfoString())
       const userPrompt = generateBasicInfoString();
       try {
-        const response = await axios.post('https://je8ad5wqs5.execute-api.us-east-1.amazonaws.com/default/LighteningMode', {
+        const response = await axios.post(LIGHTENING_MODE, {
           user_prompt: userPrompt,
         });
         const data = JSON.parse(response.data.body);
-        setCurrentQuestion(data.question);
+        setCurrentQuestion(data.question);        
         setOptions(cleanUpChoicesString(data.choices));
         setIsLoading(false);
       } catch (error) {
@@ -67,16 +74,22 @@ const AIGenerated: React.FC = () => {
   
     const fetchNextQuestion = async (selectedOption: string) => {
       setIsLoading(true);
-      const userPrompt = generateBasicInfoString() + `\nQ${currentQuestionIndex + 1}: ${currentQuestion}\nA${currentQuestionIndex + 1}: ${selectedOption}`;
-    //  console.log(userPrompt)
+      const userPrompt = `user: ${generateBasicInfoString()}\n${questions
+            .map(
+              (q, index) =>
+                `bot: ${q}\nuser: ${answers[index]
+                }`
+            )
+            .join("\n")}` + `\nbot: ${currentQuestionIndex + 1}: ${currentQuestion}\nuser: ${currentQuestionIndex + 1}: ${selectedOption}`;
+      //console.log(userPrompt)
       try {
-        const response = await axios.post('https://je8ad5wqs5.execute-api.us-east-1.amazonaws.com/default/LighteningMode', {
+        const response = await axios.post(LIGHTENING_MODE, {
           user_prompt: userPrompt,
         });
         const data = JSON.parse(response.data.body);
-        setQuestions((prevQuestions) => [...prevQuestions, currentQuestion]);
         setAnswers((prevAnswers) => [...prevAnswers, selectedOption]);
         setCurrentQuestion(data.question);
+        setQuestions((prevQuestions) => [...prevQuestions, data.question]);
         setOptions(cleanUpChoicesString(data.choices));
         setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
         setIsLoading(false);
@@ -100,7 +113,89 @@ const AIGenerated: React.FC = () => {
   
       }
     };
-  
+
+    const generateText2ImagePrompt = async () => {
+      const finalPrompt = `user: ${generateBasicInfoString()}\n${questions
+        .map(
+          (q, index) =>
+            `bot: ${q}\nuser: ${answers[index]
+            }`
+        )
+        .join("\n")}` + `\nbot: ${currentQuestion}\nuser: ${selectedChoice}`;
+
+      //console.log("Final Prompt:", finalPrompt);
+      try {
+        const response = await axios.post(
+           SUMMARIZER,
+                 {user_prompt: finalPrompt }
+            );
+        const data = JSON.parse(response.data.body);
+        //console.log("Final Prompt:", data)
+        return data;
+      } catch (error) {
+        console.error("Error generating text-to-image prompt:", error);
+      }
+
+    }
+
+    const handleChoiceSubmit = async () => {
+      if (currentQuestionIndex < maxQuestions){
+        if (selectedChoice !== "" && selectedChoiceFlag) {
+            fetchNextQuestion(selectedChoice);
+          }
+        setSelectedChoiceFlag(false)
+      }
+      else{
+        setIsLoading(true);
+        if (selectedChoice !== "" && selectedChoiceFlag) {
+          const t2i_prompt =  await generateText2ImagePrompt();
+          await generateImages(t2i_prompt);
+
+        }
+      }
+    };
+
+   const generateImages = async (t2i_prompt: string) => {
+     setIsLoading(true);
+     //console.log('Inside Genertate Images', t2i_prompt)
+     try {
+      console.log(t2i_prompt)
+       const response = await axios.post(
+        IMAGE_GENERATOR,
+         { prompt: t2i_prompt }
+       );
+       const imageResponse = response.data.body;
+       console.log(imageResponse);
+       navigate("/aiimages", { state: { images: imageResponse } });
+      }catch (error) {
+     console.error("Error generating images:", error);
+     }
+    }
+       // const images: HTMLImageElement[] = [];
+
+//       // for (let i = 0; i < numImages; i++) {
+//       //   const image = new Image();
+//       //   image.src = `data:image/png;base64,${imageResponse}`;
+//       //   images.push(image);
+//       // }
+
+//       // console.log(images); // For debugging purposes
+//       // const imageBase64Strings = images.map(img => img.src);
+//       // dispatch(setImageData(imageBase64Strings));
+
+//       dispatch(
+//         setImageData(
+//           Array.isArray(imageResponse) ? imageResponse : [imageResponse]
+//         )
+//       );
+//       navigate("/aiimages");
+//     } catch (error) {
+//       console.error("Error generating images:", error);
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
     useEffect(() => {
       fetchInitialQuestion();
     }, []);
@@ -128,12 +223,20 @@ const AIGenerated: React.FC = () => {
                 </div>
               </div>
               <div className="options-container flex gap-10 ">
-            {options.map((option, index) => (
-              <button key={index} onClick={() => handleOptionSelect(option)} className=' rounded-full cursor-pointer shadow-md shadow-[#F5E8D7] transition-all text-black border border-[#F5E8D7] px-[3vw] py-[1vw]'>
-                {option}
-              </button>
-            ))}
-          </div>
+                {options.map((option, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {setSelectedChoice(option); setSelectedChoiceFlag(true)}}
+                    className={`rounded-full cursor-pointer shadow-md shadow-[#F5E8D7] transition-all px-[3vw] py-[1vw] ${
+                      selectedChoice === option
+                        ? "bg-[#F5E8D7] text-white"
+                        : "text-black border border-[#F5E8D7]"
+                    }`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
               
               {/* <div className="mt-2 w-full">
                 <input
@@ -143,8 +246,8 @@ const AIGenerated: React.FC = () => {
                   placeholder="Share an input about something you love"
                 />
               </div>{" "} */}
-      
-            {/* <div className="absolute bottom-[5vw] mt-[5vw] flex justify-around w-[80%]">
+            
+            { <div className="absolute bottom-[5vw] mt-[5vw] flex justify-around w-[80%]">
               <div>
                 <button
                   type="submit"
@@ -153,36 +256,29 @@ const AIGenerated: React.FC = () => {
                   {"<"}- Back
                 </button>
               </div>
-              <div className="flex gap-[2vw]">
+              {/*<div className="flex gap-[2vw]">
                 {currentQuestionIndex < maxQuestions - 1 && (
                   <button
-                    onClick={() =>
-                      generatePrompt(
-                        (
-                          document.getElementById(
-                            "user-answer"
-                          ) as HTMLInputElement
-                        ).value
-                      )
-                    }
                     type="submit"
                     className="bg-customGreen text-customBeige px-[2vh] sm:px-[5vw] py-[1vh] rounded-full font-secondary text-[0.7rem] md:text-[1.2rem]"
                   >
                     Generate Designs
                   </button>
                 )}
-                <button
-                  onClick={handleNext}
+              </div>
+              */}
+              <div>
+                <button               
                   type="submit"
                   className="bg-customGreen text-customBeige px-[2vh] sm:px-[5vw] py-[1vh] rounded-full font-secondary text-[0.7rem] md:text-[1.2rem]"
-                  disabled={currentQuestionIndex >= maxQuestions}
+                  onClick={() => handleChoiceSubmit()}
                 >
-                  {currentQuestionIndex < maxQuestions - 1
-                    ? "Next ->"
-                    : "Generate Designs"}
+                {currentQuestionIndex >= maxQuestions ? "Generate Designs" : "Next ->"}
                 </button>
               </div>
-            </div> */}
+            </div> }
+
+
           </div>
         </>
       )}

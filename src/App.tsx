@@ -4,7 +4,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HeroPage from "./components/LandingPage/HeroPage.tsx";
 // import AIGenerated from "./components/AIGenerated.tsx";
-// import AIimages from "./components/AIimages.tsx";
+import AIimages from "./components/AIimages.tsx";
 import BasicForm from "./components/Basic/BasicForm.tsx"
 import Option from "./components/Basic/Option.tsx"
 import Modes from "./components/Basic/Modes.tsx";
@@ -37,10 +37,10 @@ const router = createBrowserRouter([
   //   path: "/aiquestions",
   //   element: <AIGenerated />,
   // },
-  // {
-  //   path: "/aiimages",
-  //   element: <AIimages />,
-  // },
+  {
+    path: "/aiimages",
+    element: <AIimages />,
+   },
 ]);
 
 const App: React.FC = () => {
