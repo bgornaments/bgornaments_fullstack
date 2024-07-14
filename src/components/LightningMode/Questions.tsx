@@ -44,10 +44,20 @@ const AIGenerated: React.FC = () => {
         return `I want a ${formData.jewelryType} for ${formData.occasion} for a ${formData.gender} aged ${formData.ageGroup}`
     };
   
+    const capitalizeWords = (str: string): string => {
+      return str.replace(/\b\w/g, char => char.toUpperCase()); //\b\w matches the first letter of each word
+    };
+
     const cleanUpChoicesString = (choicesString: string): string[] => {
       try {
-        const cleanedString = choicesString.split('\',');
-        return cleanedString.map(option => option.replace(/\[|\]|"|'/g, '').trim());
+        console.log(choicesString)
+        const cleanedString = choicesString.split(/['"],/);
+        const cleanedOptions = cleanedString.map(option => 
+          capitalizeWords(option.replace(/\[|\]|"|'/g, '').trim()));
+        cleanedOptions.push('None');
+        return cleanedOptions;        
+        //cleanedString.map(option => option.replace(/\[|\]|"|'/g, '').trim());
+        //return cleanedString.map(option => option.replace(/\[|\]|"|'/g, '').trim());
       } catch (error) {
         console.error('Error cleaning up choices:', error);
         return [];
