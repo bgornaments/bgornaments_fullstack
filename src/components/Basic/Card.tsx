@@ -34,7 +34,7 @@ const Card: React.FC<CardProps> = ({
     >
       <div className="bg-[#F5E8D7] w-full flex text-center justify-center items-center">
       <h4
-        className="text-customGreen text-center font-bold py-[1.5vw] max-w-[20vw]"
+        className="text-customGreen text-center font-bold py-[1.5vw] xs:max-w-[32vw] xl:max-w-[20vw]"
         style={{ fontSize: h4Size }}
       >
         {h4Text}
@@ -42,7 +42,7 @@ const Card: React.FC<CardProps> = ({
       </div>
       <img src={img} alt="card image " style={{ width: imgWidth }} />
       <p
-        className="text-customBlack text-center max-w-[16vw] "
+        className="text-customBlack text-center xs:max-w-[35vw] md:max-w- xl:max-w-[16vw] "
         style={{ fontSize: pSize }}
       >
         {pText}
