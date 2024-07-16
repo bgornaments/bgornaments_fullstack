@@ -11,7 +11,7 @@ import {
   IMAGE_GENERATOR,
 } from "../../constantsAWS";
 import Lottie from "react-lottie";
-import loading from "/src/assets/loading.json";
+import LoadingData from "/src/assets/Animation.json"
 
 
 interface FormData {
@@ -45,7 +45,7 @@ const AIGenerated: React.FC = () => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
-    animationData: loading,
+    animationData: LoadingData,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },
