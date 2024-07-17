@@ -26,11 +26,7 @@ const Modes: React.FC = () => {
               h4Size="1.5vw"
               pText="Quick and Effortless Design for Beginners"
               pSize="1.1vw"
-<<<<<<< HEAD
-              imgWidth="9vw"
-=======
               imgWidth="8.4vw"
->>>>>>> origin/frontend_vanshika
               gap="2vw"
               link="/lightningMode"
             />
