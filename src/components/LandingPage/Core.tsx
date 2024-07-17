@@ -12,8 +12,8 @@ import img9 from "/src/assets/img9.svg"
 const Core: React.FC = () => {
   return (
     <div className="div1 w-full h-screen">
-      <div className="absolute right-1/2 p-[2vw]">
-        <img src={logo} alt="" className="w-[3.5vw]" />
+      <div className="absolute top-5 left-1/2 transform -translate-x-1/2 ">
+        <img src={logo} alt="" className="w-[12vw]" />
       </div>
       <div className="bg-[#fff9f5] h-2/3 flex">
         <div className="w-9/12 flex items-center">
@@ -37,7 +37,7 @@ const Core: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="absolute w-[40vw] h-[72.2vh] right-[4vw] md:top-[15%] xl:top-[1%]">
+        <div className="absolute w-[40vw] h-[72.2vh] right-[4vw] md:top-[5vh] lg:top-[3vh] ">
           <div className="absolute w-[39vw] h-[10vw] top-[15vw] right-[15%] rounded-[80%/90%] border border-solid border-[#b9944c] rotate-[-55.00deg]" />
           <img
             className="absolute w-[12vw] h-[20vw] top-[10vw] right-0"
@@ -55,7 +55,7 @@ const Core: React.FC = () => {
       <div className="bg-[#fff9f5] h-1/3 flex items-center">
         <div className="w-1/5 h-[75%] bg-customGreen">
           <div className="w-[90%] flex justify-center">
-            <img src={img4} alt="" className="sm:w-[60%] md:w-[45%] xl:w-[35%]" />
+            <img src={img4} alt="" className="w-[11vh]" />
           </div>
         </div>
         <div className="h-2/3 w-[55%] bg-[#f5e8d7] flex">

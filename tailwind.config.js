@@ -18,7 +18,7 @@ export default {
         customBlack: '#00000066'
       },
       boxShadow: {
-        'green': '-3px 3px 15px 0px rgba(22, 103, 103, 1)',
+        'green': '-3px 3px 15px 0px rgba(22, 103, 103, 0.5)',
       }
     },
   },

@@ -12,7 +12,7 @@ const Core_2: React.FC = () => {
   return (
     <>
       <div className="h-screen w-full flex flex-col items-center gap-[8vw] mt-[1vw] bg-[#fff9f5]">
-        <div className="w-[15vw]">
+        <div className="w-[48vw]">
           <img src={logo} alt="" />
         </div>
         <div className="text-customGreen text-[9vw] text-center">
