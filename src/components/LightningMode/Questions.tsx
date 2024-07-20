@@ -44,7 +44,7 @@ const AIGenerated: React.FC = () => {
   const [optionsHistory, setOptionsHistory] = useState<string[][]>([]);
   const [questionsAnswered, setQuestionsAnswered] = useState<number>(0);
   const navigate = useNavigate();
-  const maxQuestions: number = 5;
+  const maxQuestions: number = 2;
 
   const defaultOptions = {
     loop: true,
@@ -121,6 +121,7 @@ const AIGenerated: React.FC = () => {
       setQuestionsHistory([...questionsHistory, currentQuestion]);
       setOptionsHistory([...optionsHistory, options]);
       setCurrentQuestion(data.question);
+      console.log(data.question)
       console.log(data.choices)
       setOptions(cleanUpChoicesString(data.choices));
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
@@ -138,14 +139,13 @@ const AIGenerated: React.FC = () => {
         .map((q, index) => `bot: ${q}\nuser: ${answers[index]}`)
         .join("\n")}` + `\nbot: ${currentQuestion}\nuser: ${selectedChoice}`;
 
-      
-
     try {
       const response = await axios.post(SUMMARIZER, {
         user_prompt: finalPrompt,
       });
       const data = JSON.parse(response.data.body);
-      return data;
+      //const chat_link = data["chat_s3_link"]; //TO SAVE IN MongoDB
+      return data["t2i_prompt"];
     } catch (error) {
       console.error("Error generating text-to-image prompt:", error);
     }
@@ -283,6 +283,14 @@ const AIGenerated: React.FC = () => {
                       {currentQuestion}
                     </div>
                   </div>
+                  <button
+                    onClick={() => {
+                      setSelectedChoiceFlag(true);
+                    }}
+                    className="my-[1rem] px-[1.5rem] py-[0.8rem] bg-customGreen text-white rounded-xl shadow-md transition-all hover:bg-customDarkGreen"
+                  >
+                    Regenerate Question
+                  </button>
                   <div className="flex flex-wrap w-full justify-around font-serif font-semibold border border-[#F5E8D7] xs:py-[2rem] md:py-[3.5vw] xl:py-[2vw] xs:rounded-lg md:rounded-3xl ">
                     {options.map((option, index) => (
                       <button
