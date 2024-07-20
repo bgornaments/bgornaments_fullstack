@@ -44,7 +44,7 @@ const AIGenerated: React.FC = () => {
   const [optionsHistory, setOptionsHistory] = useState<string[][]>([]);
   const [questionsAnswered, setQuestionsAnswered] = useState<number>(0);
   const navigate = useNavigate();
-  const maxQuestions: number = 2;
+  const maxQuestions: number = 5;
 
   const defaultOptions = {
     loop: true,
