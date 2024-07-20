@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import logo from "/src/assets/image.png";
 import { useNavigate } from "react-router-dom";
@@ -11,8 +11,10 @@ import {
   IMAGE_GENERATOR,
 } from "../../constantsAWS";
 import Lottie from "react-lottie";
-import LoadingData from "/src/assets/Animation.json"
-
+import LoadingData from "/src/assets/Loading.json";
+import chat from "/src/assets/chat.png";
+import Feedback from "./Feedback";
+import { updateFormData } from "../../redux/formSlice";
 
 interface FormData {
   occasion: string;
@@ -20,6 +22,7 @@ interface FormData {
   ageGroup: string;
   jewelryType: string;
 }
+
 interface RootState {
   form: {
     formData: FormData;
@@ -27,6 +30,7 @@ interface RootState {
 }
 
 const AIGenerated: React.FC = () => {
+  const dispatch = useDispatch();
   const formData = useSelector((state: RootState) => state.form.formData);
   const [questions, setQuestions] = useState<string[]>([]);
   const [answers, setAnswers] = useState<string[]>([]);
@@ -53,30 +57,30 @@ const AIGenerated: React.FC = () => {
 
   const generateBasicInfoString = (): string => {
     return `I want a ${formData.jewelryType} for ${formData.occasion} for a ${formData.gender} aged ${formData.ageGroup}`;
+    console.log(formData)
   };
 
   const capitalizeWords = (str: string): string => {
-    return str.replace(/\b\w/g, char => char.toUpperCase()); 
+    return str.replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
   const cleanUpChoicesString = (choicesString: string): string[] => {
     try {
-      console.log(choicesString)
       const cleanedString = choicesString.split(/['"],/);
-      const cleanedOptions = cleanedString.map(option => 
-        capitalizeWords(option.replace(/\[|\]|"|'/g, '').trim()));
-      cleanedOptions.push('None');
-      return cleanedOptions;        
+      const cleanedOptions = cleanedString.map((option) =>
+        capitalizeWords(option.replace(/\[|\]|"|'/g, "").trim())
+      );
+      cleanedOptions.push("None");
+      return cleanedOptions;
     } catch (error) {
-      console.error('Error cleaning up choices:', error);
+      console.error("Error cleaning up choices:", error);
       return [];
     }
   };
 
-  const fetchInitialQuestion = async () => {
+  const fetchInitialQuestion = async (updatedFormData: FormData) => {
     setIsLoading(true);
-    console.log(generateBasicInfoString());
-    const userPrompt = generateBasicInfoString();
+    const userPrompt = `I want a ${updatedFormData.jewelryType} for ${updatedFormData.occasion} for a ${updatedFormData.gender} aged ${updatedFormData.ageGroup}`;
     try {
       const response = await axios.post(LIGHTENING_MODE, {
         user_prompt: userPrompt,
@@ -105,7 +109,7 @@ const AIGenerated: React.FC = () => {
       .join("\n")}${
       selectedOption ? `\nbot: ${currentQuestion}\nuser: ${selectedOption}` : ""
     }`;
-    console.log(userPrompt);
+    console.log(userPrompt)
     try {
       const response = await axios.post(LIGHTENING_MODE, {
         user_prompt: userPrompt,
@@ -117,7 +121,7 @@ const AIGenerated: React.FC = () => {
       setQuestionsHistory([...questionsHistory, currentQuestion]);
       setOptionsHistory([...optionsHistory, options]);
       setCurrentQuestion(data.question);
-      console.log(data.choices);
+      console.log(data.choices)
       setOptions(cleanUpChoicesString(data.choices));
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       setSelectedChoice("");
@@ -134,13 +138,13 @@ const AIGenerated: React.FC = () => {
         .map((q, index) => `bot: ${q}\nuser: ${answers[index]}`)
         .join("\n")}` + `\nbot: ${currentQuestion}\nuser: ${selectedChoice}`;
 
-    console.log("Final Prompt:", finalPrompt);
+      
+
     try {
       const response = await axios.post(SUMMARIZER, {
         user_prompt: finalPrompt,
       });
       const data = JSON.parse(response.data.body);
-      console.log("Final Prompt:", data);
       return data;
     } catch (error) {
       console.error("Error generating text-to-image prompt:", error);
@@ -158,6 +162,7 @@ const AIGenerated: React.FC = () => {
       setIsLoading(true);
       if (selectedChoice !== "" && selectedChoiceFlag) {
         const t2i_prompt = await generateText2ImagePrompt();
+        console.log(t2i_prompt)
         await generateImages(t2i_prompt);
       }
     }
@@ -165,14 +170,11 @@ const AIGenerated: React.FC = () => {
 
   const generateImages = async (t2i_prompt: string) => {
     setIsLoading(true);
-    console.log("Inside Generate Images", t2i_prompt);
     try {
-      console.log(t2i_prompt);
       const response = await axios.post(IMAGE_GENERATOR, {
         prompt: t2i_prompt,
       });
       const imageResponse = response.data.body;
-      console.log(imageResponse);
       navigate("/aiimages", { state: { images: imageResponse } });
     } catch (error) {
       console.error("Error generating images:", error);
@@ -205,85 +207,130 @@ const AIGenerated: React.FC = () => {
     }
   };
 
-  // const handleSkip = async () => {
-  //   await fetchNextQuestion(null);
-  // };
-
   const progressPercentage = Math.min(
-    (questionsAnswered / maxQuestions) * 100,
+    ((questionsAnswered + 1) / maxQuestions) * 100,
     100
   );
 
   useEffect(() => {
-    fetchInitialQuestion();
+    if (
+      formData.occasion === "" &&
+      formData.gender === "" &&
+      formData.ageGroup === "" &&
+      formData.jewelryType === ""
+    ) {
+      const savedFormData = localStorage.getItem("formData");
+      if (savedFormData) {
+        const parsedFormData = JSON.parse(savedFormData);
+        dispatch(updateFormData(parsedFormData));
+        fetchInitialQuestion(parsedFormData);
+      }
+    } else {
+      fetchInitialQuestion(formData);
+    }
   }, []);
 
   return (
-    <div className="bg-[#FFF9F5] w-full min-h-screen flex flex-col  items-center">
-      {isLoading ? (
-        <div className="text-xl min-h-screen flex justify-center items-center">
-          <Lottie options={defaultOptions} height={300} width={300} />
-        </div>
-      ) : (
-        <>
-          <div className="mt-[2vw]">
-            <img src={logo} alt="" className="w-[12vw]" />
-          </div>
-          <h2 className="text-[1.5vw] font-secondary text-customBlack">
-            Let&#39;s design your perfect piece
-          </h2>
-          <div className="w-[70vw] justify-center flex flex-col items-center gap-[1vw] mt-[2.3vw]">
-            <div className="w-[98%] h-[1vh] bg-customBeige rounded-2xl overflow-hidden">
-              <div
-                className="h-full bg-customGreen"
-                style={{ width: `${progressPercentage}%` }}
-              ></div>
+    <>
+      <div className="bg-[#FFF9F5] w-full min-h-screen flex flex-col  items-center justify-center">
+        {isLoading ? (
+          questionsAnswered+1 === maxQuestions ? (
+            <>
+            <Feedback />
+            <div className="text-xl min-h-screen flex justify-center items-center">
+              <Lottie options={defaultOptions} height={300} width={300} />
             </div>
-            <div className="bg-customBeige min-h-[6vh] p-[2.5vw] text-customGreen font-bold leading-loose rounded-3xl w-full">
-              <div className="text-[1.5vw] font-serif font-bold w-full flex justify-center">
-                {currentQuestion}
+            </>
+
+          ) : (
+            <div className="text-xl min-h-screen flex justify-center items-center">
+              <Lottie options={defaultOptions} height={300} width={300} />
+            </div>
+          )
+        ) : (
+          <>
+            <div className="xs:w-full xl:w-[75vw] flex flex-col  items-center xs:gap-[2.5vh] h-[100vh] overflow-scroll">
+              <div className="flex flex-col gap-[1vh] items-center pt-[1vh] ">
+                <img
+                  src={logo}
+                  alt=""
+                  className="xs:w-[10rem] md:w-[12rem] xl:w-[14rem]"
+                />
+
+                <h2 className="xs:text-[1.2rem] md:text-[1.7rem] font-secondary text-customBlack flex justify-center">
+                  Let&#39;s design your perfect piece
+                </h2>
               </div>
-            </div>
-            <div className="flex flex-wrap w-full justify-around font-serif font-semibold border border-[#F5E8D7] py-[2vw] rounded-3xl">
-              {options.map((option, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    setSelectedChoice(option);
-                    setSelectedChoiceFlag(true);
-                  }}
-                  className={`text-[1.3vw] px-[1.2vw] py-[0.8vw] mx-[0.5vw] mt-[0.5vw] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
-                    selectedChoice === option
-                      ? "bg-[#F5E8D7] text-customBlack"
-                      : "text-customGreen border border-[#F5E8D7]"
-                  }`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-            <div className="absolute bottom-[5vw] mt-[5vw] flex justify-between w-[70vw] text-[1.3vw] text-customBlack">
-              <div>
+
+              <div className="flex-1 xs:w-[90vw] md:w-[90vw] xl:w-[70vw] flex-col justify-center items-center ">
+                <div className="xs:py-[1rem] md:py-0 flex xs:gap-[2rem] xl:gap-[1rem] flex-col items-center ">
+                  <div className="w-[98%] flex flex-col gap-[0.3rem] text-customBlack xs:text-[0.6rem] md:text-[1rem]">
+                    <p>{questionsAnswered + 1} out of {maxQuestions} Questions</p>
+                    <div className="w-full h-[1vh] bg-customBeige rounded-2xl overflow-hidden ">
+                      <div
+                        className="h-full bg-customGreen"
+                        style={{ width: `${progressPercentage}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div className="bg-customBeige xs:min-h-[15vh] xl:min-h-[15vh] p-[2rem] text-customGreen font-bold leading-loose rounded-3xl w-full flex justify-center items-center gap-[1rem]">
+                    <img
+                      src={chat}
+                      alt=""
+                      className="xs:w-[3rem] md:w-[4rem] xl:w-[5rem]"
+                    />
+                    <div className="xs:text-[1rem] md:text-[1.7rem] xl:text-[1.5rem] font-serif font-bold text-center">
+                      {currentQuestion}
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap w-full justify-around font-serif font-semibold border border-[#F5E8D7] xs:py-[2rem] md:py-[3.5vw] xl:py-[2vw] xs:rounded-lg md:rounded-3xl ">
+                    {options.map((option, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          setSelectedChoice(option);
+                          setSelectedChoiceFlag(true);
+                        }}
+                        className={`xs:text-[0.8rem] md:text-[1.4rem] xl:text-[1.3rem] xs:px-[1.7vw] xs:py-[1.2vw] md:px-[1.8vw] md:py-[1vw] xl:px-[1.2vw] xl:py-[0.8vw]  mx-[0.5vw] xs:mt-[3vw] md:mt-[1vw] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
+                          selectedChoice === option
+                            ? "bg-[#F5E8D7] text-customBlack"
+                            : "text-customGreen border border-[#F5E8D7]"
+                        }`}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-between xs:w-[90vw] md:w-[90vw] xl:w-[70vw] xs:text-[3vw] md:text-[2.3vw] xl:text-[1.3vw] text-customBlack p-5">
                 <button type="button" onClick={handleBack}>
-                  <img src={back} alt="" className="w-[4.5vw] mb-[0.3vw]" />
+                  <img
+                    src={back}
+                    alt=""
+                    className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.8rem] mb-[0.3vw]"
+                  />
                   Back
                 </button>
-              </div>
-              <div className="flex gap-[2.5vw]  items-center justify-normal">
                 <button
                   type="button"
                   onClick={handleChoiceSubmit}
                   disabled={!selectedChoiceFlag}
                 >
-                  <img src={next} alt="" className="w-[4.5vw] mb-[0.3vw]" />
+                  <img
+                    src={next}
+                    alt=""
+                    className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.8rem] mb-[0.3vw]"
+                  />
                   Next
                 </button>
               </div>
             </div>
-          </div>
-        </>
-      )}
-    </div>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 

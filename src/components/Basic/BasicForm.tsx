@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateFormData, setFormSubmitted } from "../../redux/formSlice";
 import { useNavigate } from "react-router-dom";
@@ -16,10 +16,20 @@ import maleIcon from "/src/assets/male-icon.png";
 const JewelryForm: React.FC = () => {
   const dispatch = useDispatch();
   const formData = useSelector((state: any) => state.form.formData);
-  const isFormSubmitted = useSelector(
-    (state: any) => state.form.isFormSubmitted
-  );
+  const isFormSubmitted = useSelector((state: any) => state.form.isFormSubmitted);
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    localStorage.setItem('formData', JSON.stringify(formData));
+  }, [formData]);
+
+  useEffect(() => {
+    const savedFormData = localStorage.getItem('formData');
+    if (savedFormData) {
+      dispatch(updateFormData(JSON.parse(savedFormData)));
+    }
+  }, [dispatch]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,27 +37,27 @@ const JewelryForm: React.FC = () => {
     console.log("Form Data on Submit:", formData);
     dispatch(setFormSubmitted(true));
     console.log(isFormSubmitted);
+    // localStorage.removeItem('formData'); // Clear formData from local storage on submit
   };
 
-  const isFormValid = () => {
+    const isFormValid = () => {
     const { occasion, gender, ageGroup, jewelryType } = formData;
     return occasion && gender && ageGroup && jewelryType;
   };
-
   return (
     <>
-      <div className="bg-[#FFF9F5] w-full min-h-screen flex justify-center items-center">
-        <div className="xs:w-full xl:w-[75vw] flex flex-col justify-center items-center xs:gap-[2.5vh] ">
-          <div className="flex flex-col gap-[1vh] items-center pt-[1vh]">
-            <img src={icon} alt="" className="xs:w-[24vw] md:w-[19vh] xl:w-[12vw]" />
-            <h2 className="xs:text-[4vw] md:text-[3vw]  xl:text-[1.5vw] font-secondary text-customBlack flex justify-center">
+      <div className="bg-[#FFF9F5] w-full min-h-screen flex flex-col  items-center justify-center">
+        <div className="xs:w-full xl:w-[75vw] flex flex-col justify-center items-center xs:gap-[2.5vh]">
+          <div className="flex flex-col gap-[1vh] items-center pt-[1vh] ">
+            <img src={icon} alt="" className="xs:w-[10rem] md:w-[12rem] xl:w-[14rem]" />
+            <h2 className="xs:text-[1.2rem] md:text-[1.7rem] font-secondary text-customBlack flex justify-center">
               Tell us about the recipient
             </h2>
           </div>
-          <div className="w-full justify-center flex flex-col items-center">
+          <div className="w-full justify-center flex flex-col items-center ">
             <form
               onSubmit={handleSubmit}
-              className="py-[5vw] flex md:gap-[6vh] xl:gap-[5vh]  xs:w-[90vw] md:w-[90vw] xl:w-[70vw] h-full flex-col"
+              className="py-[5vw] flex xs:gap-[2.5rem] md:gap-[4.5rem] xl:gap-[3rem]  xs:w-[90vw] md:w-[90vw] xl:w-[70vw] h-full flex-col "
             >
               <div className="flex xs:flex-col md:flex-row justify-center items-center xs:gap-[2vh] md:gap-[0.5vh]">
                 <label className="text-customGreen font-secondary font-bold xs:text-[3.2vw] md:text-[2.7vw] xl:text-[1.2vw] xs:w-full md:w-3/12 xs:text-center md:text-start">
@@ -70,16 +80,16 @@ const JewelryForm: React.FC = () => {
                             updateFormData({ jewelryType: jewelry.type })
                           )
                         }
-                        className={`flex flex-col items-center text-customBlack xs:p-[2vw] xl:p-[1vw] rounded-full cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
+                        className={`flex flex-col items-center text-customBlack xs:p-[0.7rem] xl:p-[1vw] rounded-full cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
                           formData.jewelryType === jewelry.type
-                            ? "bg-[#F5E8D7] text-white"
+                            ? "bg-[#f3ddc0] text-white"
                             : "text-black border border-[#F5E8D7]"
                         }`}
                       >
                         <img
                           src={jewelry.icon}
                           alt={jewelry.type}
-                          className="xs:w-[5vw] md:w-[5vw] xl:w-[2vw]"
+                          className="xs:w-[1.5rem] md:w-[5vw] xl:w-[2vw]"
                         />
                       </div>
                       <p className="xs:pt-[1.5vw] xl:pt-[1vw] xs:text-[2.5vw] md:text-[2vw] xl:text-[1vw] text-customBlack">
@@ -107,7 +117,7 @@ const JewelryForm: React.FC = () => {
                       type="button"
                       className={`xs:text-[2.5vw] md:text-[2.4vw] xl:text-[1vw] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
                         formData.occasion === occasion
-                          ? "bg-[#F5E8D7]"
+                          ? "bg-[#f3ddc0]"
                           : "bg-transparent text-customBlack border border-[#F5E8D7]"
                       }`}
                       onClick={() => dispatch(updateFormData({ occasion }))}
@@ -133,9 +143,9 @@ const JewelryForm: React.FC = () => {
                       className="flex flex-col items-center"
                     >
                       <div
-                        className={`cursor-pointer flex items-center gap-[1vw] shadow-md shadow-[#F5E8D7] transition-all rounded-xl ${
+                        className={`cursor-pointer flex items-center gap-[1vw] shadow-md shadow-[#F5E8D7] transition-all rounded-xl p-[0.2vw] ${
                           formData.gender === option.gender
-                            ? "bg-[#F5E8D7] text-white"
+                            ? "bg-[#f3d9b7] text-white"
                             : "bg-transparent"
                         }`}
                         onClick={() =>
@@ -145,7 +155,7 @@ const JewelryForm: React.FC = () => {
                         <img
                           src={option.icon}
                           alt={option.gender}
-                          className="xs:w-[11vw] md:w-[10vw] xl:w-[4.5vw]"
+                          className="xs:w-[9.9vw] md:w-[8.4vw] xl:w-[3.8vw]"
                         />
                       </div>
                     </button>
@@ -165,7 +175,7 @@ const JewelryForm: React.FC = () => {
                         type="button"
                         className={`xs:text-[2.5vw] md:text-[2.4vw] xl:text-[1vw] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
                           formData.ageGroup === ageGroup
-                            ? "bg-[#F5E8D7] text-black"
+                            ? "bg-[#f3ddc0] text-black"
                             : "bg-transparent border border-[#F5E8D7] text-customBlack"
                         }`}
                         onClick={() => dispatch(updateFormData({ ageGroup }))}

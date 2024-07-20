@@ -9,6 +9,8 @@ import BasicForm from "./components/Basic/BasicForm.tsx"
 import Option from "./components/Basic/Option.tsx"
 import Modes from "./components/Basic/Modes.tsx";
 import Questions from "./components/LightningMode/Questions.tsx";
+import Navbar from "./components/LandingPage/Navbar.jsx";
+import Footer from "./components/LandingPage/Footer.jsx";
 
 //const client = generateClient<Schema>();
 
@@ -30,16 +32,20 @@ const router = createBrowserRouter([
     element: <BasicForm />,
   },
   {
+    path: "/Navbar",
+    element: <Navbar />,
+  },
+  {
     path:"/lightningMode",
     element:<Questions/>
   },
-  // {
-  //   path: "/aiquestions",
-  //   element: <AIGenerated />,
-  // },
   {
     path: "/aiimages",
     element: <AIimages />,
+   },
+   {
+    path: "/footer",
+    element: <Footer />,
    },
 ]);
 

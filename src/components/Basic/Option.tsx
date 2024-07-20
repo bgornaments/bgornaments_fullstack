@@ -6,10 +6,11 @@ import assistant from "/src/assets/assistant.png"
 const App: React.FC = () => {
   return (
     <div className="bg-[#FFF9F5] w-full min-h-screen flex justify-center items-center">
-        <div className="xs:w-[90vw] xl:w-[75vw] flex flex-col justify-center items-center xs:gap-[5vh] md:gap-[10vh] ">
+        <div className="xs:w-[90vw] xl:w-[75vw] flex flex-col justify-center items-center xs:gap-[2rem] md:gap-[10vh]">
           <div className="flex flex-col gap-[3vh] items-center ">
-          <h4 className="text-customGreen text-center xs:text-[4.3vw] md:text-[4.4vw] xl:text-[2.2vw] pt-[1vh]">Discover Your Perfect Jewellery Design</h4>
-          <p className="text-customBlack text-center xs:text-[2.5vw] md:text-[2.4vw] xl:text-[1vw]">Choose from our curated catalogue or create your own unique piece"</p>
+          <h4 className="text-customGreen text-center xs:text-[1.2rem] md:text-[1.7rem] xl:text-[2rem] pt-[1rem]">Discover Your Perfect Jewellery Design</h4>
+          <p className="text-customBlack text-center xs:text-[0.6rem] md:text-[1rem] xl:text-[1.2rem]">
+          Choose from our catalogue or create your own design</p>
           </div>
           <div className="hidden xl:block">
           <div className="flex  gap-[8vw] ">
@@ -45,26 +46,26 @@ const App: React.FC = () => {
           <div className="flex  gap-[8vw]">
           <Card
               img={catalogue}
-              height="55vw"
+              height="50vh"
               width="38vw"
               h4Text="Browse Designs from Catalogue"
-              h4Size="2.6vw"
+              h4Size="1.5rem"
               pText="Explore our curated collection of stunning jewellery designs."
-              pSize="2vw"
-              imgWidth="18vw"
-              gap="4vw"
+              pSize="1rem"
+              imgWidth="8rem"
+              gap="2.3rem"
               link="/form"
             />
             <Card
               img={assistant}
-             height="55vw"
+              height="50vh"
               width="38vw"
               h4Text="Create Your Own Design"
-              h4Size="2.6vw"
+              h4Size="1.5rem"
               pText="Unleash your creativity and design a piece that's uniquely yours."
-              pSize="2vw"
-              imgWidth="18vw"
-              gap="4vw"
+              pSize="1rem"
+              imgWidth="8rem"
+              gap="2.3rem"
               link="/modes"
             />
 
