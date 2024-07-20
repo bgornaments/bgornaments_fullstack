@@ -22,7 +22,7 @@ const Core: React.FC = () => {
               From Imagination <br /> to Adornment
             </h1>
             <h2 className="ml-[2.5vw] px-[3vw] text-[1.5vw] text-customBlack">
-              Welcome to KinMitra
+              Welcome to KinVision
             </h2>
             <div className="ml-[2.5vw] px-[3vw] flex gap-10">
               <Link to="/form" className="rounded-full bg-customGreen px-[2vw] py-[1vw] text-white/80 md:text-[1.5vw] xl:text-[1vw]">

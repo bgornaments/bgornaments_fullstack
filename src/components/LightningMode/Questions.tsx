@@ -70,7 +70,7 @@ const AIGenerated: React.FC = () => {
       const cleanedOptions = cleanedString.map((option) =>
         capitalizeWords(option.replace(/\[|\]|"|'/g, "").trim())
       );
-      cleanedOptions.push("None");
+      //cleanedOptions.push("None");
       return cleanedOptions;
     } catch (error) {
       console.error("Error cleaning up choices:", error);
@@ -144,7 +144,7 @@ const AIGenerated: React.FC = () => {
         user_prompt: finalPrompt,
       });
       const data = JSON.parse(response.data.body);
-      //const chat_link = data["chat_s3_link"]; //TO SAVE IN MongoDB
+      //const chat_link = data["chat_s3_link"]; //TO SAVE IN MongoDB/DynamoDB
       return data["t2i_prompt"];
     } catch (error) {
       console.error("Error generating text-to-image prompt:", error);
@@ -167,6 +167,11 @@ const AIGenerated: React.FC = () => {
       }
     }
   };
+
+  const handleRegenerate = async () => {
+      //TODO
+  };
+
 
   const generateImages = async (t2i_prompt: string) => {
     setIsLoading(true);
@@ -285,7 +290,7 @@ const AIGenerated: React.FC = () => {
                   </div>
                   <button
                     onClick={() => {
-                      setSelectedChoiceFlag(true);
+                      handleRegenerate;
                     }}
                     className="my-[1rem] px-[1.5rem] py-[0.8rem] bg-customGreen text-white rounded-xl shadow-md transition-all hover:bg-customDarkGreen"
                   >
