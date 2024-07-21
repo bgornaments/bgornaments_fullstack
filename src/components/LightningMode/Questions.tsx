@@ -175,6 +175,7 @@ const AIGenerated: React.FC = () => {
         prompt: t2i_prompt,
       });
       const imageResponse = response.data.body;
+      console.log(imageResponse)
       navigate("/aiimages", { state: { images: imageResponse } });
     } catch (error) {
       console.error("Error generating images:", error);
@@ -249,7 +250,7 @@ const AIGenerated: React.FC = () => {
           )
         ) : (
           <>
-            <div className="xs:w-full xl:w-[75vw] flex flex-col  items-center xs:gap-[2.5vh] h-[100vh] ">
+            <div className="xs:w-full xl:w-[75vw] flex flex-col  items-center xs:gap-[2.5vh] h-[100vh] overflow-scroll">
               <div className="flex flex-col gap-[1vh] items-center pt-[1vh] ">
                 <img
                   src={logo}
@@ -257,7 +258,7 @@ const AIGenerated: React.FC = () => {
                   className="xs:w-[10rem] md:w-[12rem] xl:w-[14rem]"
                 />
 
-                <h2 className="xs:text-[1.2rem] md:text-[1.7rem] font-secondary text-customBlack flex justify-center">
+                <h2 className="xs:text-[1.2rem] md:text-[1.4rem] font-secondary text-customBlack flex justify-center">
                   Let&#39;s design your perfect piece
                 </h2>
               </div>
@@ -277,9 +278,9 @@ const AIGenerated: React.FC = () => {
                     <img
                       src={chat}
                       alt=""
-                      className="xs:w-[3rem] md:w-[4rem] xl:w-[5rem]"
+                      className="xs:w-[3rem] md:w-[4rem] xl:w-[4.3rem]"
                     />
-                    <div className="xs:text-[1rem] md:text-[1.7rem] xl:text-[1.5rem] font-serif font-bold text-center">
+                    <div className="xs:text-[1rem] md:text-[1.7rem] xl:text-[1.3rem] font-serif font-bold text-center">
                       {currentQuestion}
                     </div>
                   </div>
@@ -291,7 +292,7 @@ const AIGenerated: React.FC = () => {
                           setSelectedChoice(option);
                           setSelectedChoiceFlag(true);
                         }}
-                        className={`xs:text-[0.8rem] md:text-[1.4rem] xl:text-[1.3rem] xs:px-[1.7vw] xs:py-[1.2vw] md:px-[1.8vw] md:py-[1vw] xl:px-[1.2vw] xl:py-[0.8vw]  mx-[0.5vw] xs:mt-[3vw] md:mt-[1vw] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
+                        className={`xs:text-[0.8rem] md:text-[1.4rem] xl:text-[1.1rem] xs:px-[1.7vw] xs:py-[1.2vw] md:px-[1.8vw] md:py-[1vw] xl:px-[1.2vw] xl:py-[0.8vw]  mx-[0.5vw] xs:mt-[3vw] md:mt-[1vw] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
                           selectedChoice === option
                             ? "bg-[#F5E8D7] text-customBlack"
                             : "text-customGreen border border-[#F5E8D7]"
@@ -304,12 +305,12 @@ const AIGenerated: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex justify-between xs:w-[90vw] md:w-[90vw] xl:w-[70vw] xs:text-[3vw] md:text-[2.3vw] xl:text-[1.3vw] text-customBlack p-5">
+              <div className="flex justify-between xs:w-[90vw] md:w-[90vw] xl:w-[70vw] xs:text-[3vw] md:text-[2.3vw] xl:text-[1.1vw] text-customBlack p-5">
                 <button type="button" onClick={handleBack}>
                   <img
                     src={back}
                     alt=""
-                    className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.8rem] mb-[0.3vw]"
+                    className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw]"
                   />
                   Back
                 </button>
@@ -321,7 +322,7 @@ const AIGenerated: React.FC = () => {
                   <img
                     src={next}
                     alt=""
-                    className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.8rem] mb-[0.3vw]"
+                    className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw]"
                   />
                   Next
                 </button>

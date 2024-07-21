@@ -50,7 +50,7 @@ const JewelryForm: React.FC = () => {
         <div className="xs:w-full xl:w-[75vw] flex flex-col justify-center items-center xs:gap-[2.5vh]">
           <div className="flex flex-col gap-[1vh] items-center pt-[1vh] ">
             <img src={icon} alt="" className="xs:w-[10rem] md:w-[12rem] xl:w-[14rem]" />
-            <h2 className="xs:text-[1.2rem] md:text-[1.7rem] font-secondary text-customBlack flex justify-center">
+            <h2 className="xs:text-[1.2rem] md:text-[1.5rem] font-secondary text-customBlack flex justify-center">
               Tell us about the recipient
             </h2>
           </div>
