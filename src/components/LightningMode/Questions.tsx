@@ -162,8 +162,8 @@ const AIGenerated: React.FC = () => {
       setIsLoading(true);
       if (selectedChoice !== "" && selectedChoiceFlag) {
         const t2i_prompt = await generateText2ImagePrompt();
-        console.log(t2i_prompt)
-        await generateImages(t2i_prompt);
+        console.log(t2i_prompt.t2i_prompt)
+        await generateImages(t2i_prompt.t2i_prompt);
       }
     }
   };
@@ -174,13 +174,14 @@ const AIGenerated: React.FC = () => {
       const response = await axios.post(IMAGE_GENERATOR, {
         prompt: t2i_prompt,
       });
-      const imageResponse = response.data.body;
-      console.log(imageResponse)
-      navigate("/aiimages", { state: { images: imageResponse } });
+      const imageResponse = response.data;
+      console.log(imageResponse.body)
+      navigate("/aiimages", { state: { images: imageResponse.body } });
     } catch (error) {
       console.error("Error generating images:", error);
     }
   };
+
 
   const handleBack = () => {
     if (currentQuestionIndex > 0) {
