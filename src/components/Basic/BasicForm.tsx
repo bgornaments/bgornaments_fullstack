@@ -46,7 +46,7 @@ const JewelryForm: React.FC = () => {
   };
   return (
     <>
-      <div className="bg-[#FFF9F5] w-full min-h-screen flex flex-col  items-center justify-center">
+      <div className="bg-[#FFFFFF] w-full min-h-screen flex flex-col  items-center justify-center">
         <div className="xs:w-full xl:w-[75vw] flex flex-col justify-center items-center xs:gap-[2.5vh]">
           <div className="flex flex-col gap-[1vh] items-center pt-[1vh] ">
             <img src={icon} alt="" className="xs:w-[10rem] md:w-[12rem] xl:w-[14rem]" />

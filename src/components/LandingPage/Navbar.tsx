@@ -2,10 +2,11 @@ import React from "react";
 import logo from "/src/assets/image.png";
 import { Link } from "react-router-dom";
 
+//f5e8d7
 const Navbar: React.FC = () => {
   return (
     <>
-      <div className="w-full h-[10vh] bg-[#f5e8d7] flex xs:justify-center md:justify-between items-center top-0 md:px-[2.5rem] xl:px-[4rem] shadow-xl  shadow-[#b9944c] ">
+      <div className="w-full h-[10vh] bg-[#fff9f5] flex xs:justify-center md:justify-between items-center top-0 md:px-[2.5rem] xl:px-[4rem] shadow-xl  shadow-[#b9944c] ">
         <div className="hidden md:block">
           <img src={logo} alt="" className="md:w-[15vh] xl:w-[22vh]" />
         </div>
