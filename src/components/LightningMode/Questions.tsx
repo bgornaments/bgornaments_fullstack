@@ -189,20 +189,39 @@ const AIGenerated: React.FC = () => {
   const generateImages = async (t2i_prompt: string) => {
     setIsLoading(true);
     try {
-      const response = await axios.post(IMAGE_GENERATOR, {
-        prompt: t2i_prompt,
+      const payload = {
+        body: JSON.stringify({
+          prompt: t2i_prompt, 
+          taskType: "TEXT_IMAGE", 
+          numImages: 3, 
+        }),
+      };
+  
+      const response = await axios.post(IMAGE_GENERATOR, payload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
-      const imageResponse = response.data;
-      console.log(imageResponse);
-      dispatch(setImageData(imageResponse.body));
-      Navigate('/aiimages');
+
+      const parsedBody = JSON.parse(response.data.body);
+      console.log("Parsed Body:", parsedBody);
+ 
+      const imageData = parsedBody.uploaded_image_urls;
+      console.log("Extracted Image Data:", imageData);
+  
+      if (Array.isArray(imageData)) {
+        dispatch(setImageData(imageData));
+        Navigate('/aiimages');
+      } else {
+        console.error("No image URLs found in response.");
+      }
     } catch (error) {
       console.error("Error generating images:", error);
     } finally {
       setIsLoading(false);
     }
   };
-
+  
   const handleBack = () => {
     if (currentQuestionIndex > 0) {
       const previousQuestionIndex = currentQuestionIndex - 1;
@@ -336,7 +355,7 @@ const AIGenerated: React.FC = () => {
                             <img
                               src={otherImg}
                               alt=""
-                              className="xs:w-[1rem] md:w-[1.4rem] xl:w-[1.4rem]"
+                              className="xs:w-[1rem] md:w-[1.4rem] xl:w-[2rem]"
                             />
                           ) : (
                             <img
