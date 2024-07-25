@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import logo from "/src/assets/image.png";
-import { useNavigate } from "react-router-dom";
 import next from "/src/assets/next.png";
 import back from "/src/assets/previous.png";
+import info from "/src/assets/info.png";
+import otherImg from "/src/assets/otherimg.png";
 import {
   LIGHTENING_MODE,
   SUMMARIZER,
@@ -13,8 +14,10 @@ import {
 import Lottie from "react-lottie";
 import LoadingData from "/src/assets/Loading.json";
 import chat from "/src/assets/chat.png";
-import Feedback from "./Feedback";
-import { updateFormData } from "../../redux/formSlice";
+// import Feedback from "./Feedback";
+import { setImageData, updateFormData } from "../../redux/formSlice";
+import { useNavigate } from "react-router-dom";
+import Meaning from "./Meaning";
 
 interface FormData {
   occasion: string;
@@ -43,7 +46,9 @@ const AIGenerated: React.FC = () => {
   const [questionsHistory, setQuestionsHistory] = useState<string[]>([]);
   const [optionsHistory, setOptionsHistory] = useState<string[][]>([]);
   const [questionsAnswered, setQuestionsAnswered] = useState<number>(0);
-  const navigate = useNavigate();
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const [meaningOption, setMeaningOption] = useState<string | null>(null);
+  const Navigate = useNavigate();
   const maxQuestions: number = 5;
 
   const defaultOptions = {
@@ -57,11 +62,28 @@ const AIGenerated: React.FC = () => {
 
   const generateBasicInfoString = (): string => {
     return `I want a ${formData.jewelryType} for ${formData.occasion} for a ${formData.gender} aged ${formData.ageGroup}`;
-    console.log(formData)
+    console.log(formData);
   };
 
   const capitalizeWords = (str: string): string => {
     return str.replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+  const handleMouseEnter = (index: number) => {
+    setHoverIndex(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoverIndex(null);
+  };
+
+  const handleInfoClick = (event: React.MouseEvent, option: string) => {
+    event.stopPropagation();
+    setMeaningOption(option);
+    console.log(`Info image clicked for option: ${option}`);
+  };
+
+  const handleCancelClick = () => {
+    setMeaningOption(null);
   };
 
   const cleanUpChoicesString = (choicesString: string): string[] => {
@@ -70,7 +92,7 @@ const AIGenerated: React.FC = () => {
       const cleanedOptions = cleanedString.map((option) =>
         capitalizeWords(option.replace(/\[|\]|"|'/g, "").trim())
       );
-      cleanedOptions.push("None");
+      console.log(cleanedOptions);
       return cleanedOptions;
     } catch (error) {
       console.error("Error cleaning up choices:", error);
@@ -109,7 +131,7 @@ const AIGenerated: React.FC = () => {
       .join("\n")}${
       selectedOption ? `\nbot: ${currentQuestion}\nuser: ${selectedOption}` : ""
     }`;
-    console.log(userPrompt)
+    console.log(userPrompt);
     try {
       const response = await axios.post(LIGHTENING_MODE, {
         user_prompt: userPrompt,
@@ -121,7 +143,6 @@ const AIGenerated: React.FC = () => {
       setQuestionsHistory([...questionsHistory, currentQuestion]);
       setOptionsHistory([...optionsHistory, options]);
       setCurrentQuestion(data.question);
-      console.log(data.choices)
       setOptions(cleanUpChoicesString(data.choices));
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       setSelectedChoice("");
@@ -137,9 +158,6 @@ const AIGenerated: React.FC = () => {
       `user: ${generateBasicInfoString()}\n${questions
         .map((q, index) => `bot: ${q}\nuser: ${answers[index]}`)
         .join("\n")}` + `\nbot: ${currentQuestion}\nuser: ${selectedChoice}`;
-
-      
-
     try {
       const response = await axios.post(SUMMARIZER, {
         user_prompt: finalPrompt,
@@ -162,7 +180,7 @@ const AIGenerated: React.FC = () => {
       setIsLoading(true);
       if (selectedChoice !== "" && selectedChoiceFlag) {
         const t2i_prompt = await generateText2ImagePrompt();
-        console.log(t2i_prompt.t2i_prompt)
+        console.log(t2i_prompt.t2i_prompt);
         await generateImages(t2i_prompt.t2i_prompt);
       }
     }
@@ -175,13 +193,15 @@ const AIGenerated: React.FC = () => {
         prompt: t2i_prompt,
       });
       const imageResponse = response.data;
-      console.log(imageResponse.body)
-      navigate("/aiimages", { state: { images: imageResponse.body } });
+      console.log(imageResponse);
+      dispatch(setImageData(imageResponse.body));
+      Navigate('/aiimages');
     } catch (error) {
       console.error("Error generating images:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
-
 
   const handleBack = () => {
     if (currentQuestionIndex > 0) {
@@ -214,6 +234,11 @@ const AIGenerated: React.FC = () => {
     100
   );
 
+  const handleChoiceChange = (choice: string) => {
+    setSelectedChoice(choice);
+    setSelectedChoiceFlag(true);
+  };
+
   useEffect(() => {
     if (
       formData.occasion === "" &&
@@ -236,14 +261,17 @@ const AIGenerated: React.FC = () => {
     <>
       <div className="bg-[#FFF9F5] w-full min-h-screen flex flex-col  items-center justify-center">
         {isLoading ? (
-          questionsAnswered+1 === maxQuestions ? (
+          questionsAnswered + 1 === maxQuestions ? (
             <>
-            <Feedback />
-            <div className="text-xl min-h-screen flex justify-center items-center">
-              <Lottie options={defaultOptions} height={300} width={300} />
-            </div>
+              {/* <Feedback /> */}
+              <div className="text-xl min-h-screen flex flex-col justify-center items-center text-customGreen text-[3vw] xl:text-[1vw] text-center">
+                <p>
+                  Crafting your Personalized Design <br />
+                  Please Wait!
+                </p>
+                <Lottie options={defaultOptions} height={300} width={300} />
+              </div>
             </>
-
           ) : (
             <div className="text-xl min-h-screen flex justify-center items-center">
               <Lottie options={defaultOptions} height={300} width={300} />
@@ -264,11 +292,13 @@ const AIGenerated: React.FC = () => {
                 </h2>
               </div>
 
-              <div className="flex-1 xs:w-[90vw] md:w-[90vw] xl:w-[70vw] flex-col justify-center items-center ">
+              <div className="flex-1 xs:w-[90vw] md:w-[90vw] xl:w-[70vw] flex-col justify-center items-center no-scrollbar">
                 <div className="xs:py-[1rem] md:py-0 flex xs:gap-[2rem] xl:gap-[1rem] flex-col items-center ">
                   <div className="w-[98%] flex flex-col gap-[0.3rem] text-customBlack xs:text-[0.6rem] md:text-[1rem]">
-                    <p>{questionsAnswered + 1} out of {maxQuestions} Questions</p>
-                    <div className="w-full h-[1vh] bg-customBeige rounded-2xl overflow-hidden ">
+                    <p>
+                      {questionsAnswered + 1} out of {maxQuestions} Questions
+                    </p>
+                    <div className="w-full h-[1vh] bg-customBeige rounded-2xl overflow-hidden no-scrollbar">
                       <div
                         className="h-full bg-customGreen"
                         style={{ width: `${progressPercentage}%` }}
@@ -285,24 +315,62 @@ const AIGenerated: React.FC = () => {
                       {currentQuestion}
                     </div>
                   </div>
-                  <div className="flex flex-wrap w-full justify-around font-serif font-semibold border border-[#F5E8D7] xs:py-[2rem] md:py-[3.5vw] xl:py-[2vw] xs:rounded-lg md:rounded-3xl ">
+                  <div className="flex flex-wrap w-full justify-around font-serif font-semibold border border-[#F5E8D7] xs:py-[2rem] md:py-[3.5vw] xl:py-[2vw] xs:rounded-lg md:rounded-3xl">
                     {options.map((option, index) => (
                       <button
                         key={index}
-                        onClick={() => {
-                          setSelectedChoice(option);
-                          setSelectedChoiceFlag(true);
-                        }}
-                        className={`xs:text-[0.8rem] md:text-[1.4rem] xl:text-[1.1rem] xs:px-[1.7vw] xs:py-[1.2vw] md:px-[1.8vw] md:py-[1vw] xl:px-[1.2vw] xl:py-[0.8vw]  mx-[0.5vw] xs:mt-[3vw] md:mt-[1vw] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
+                        onClick={() => handleChoiceChange(option)}
+                        className={`flex justify-center gap-[2vw] items-center xs:text-[0.8rem] md:text-[1.4rem] xl:text-[1rem] xs:px-[1.7vw] xs:py-[1.2vw] md:px-[1.8vw] md:py-[1vw] xl:px-[1.2vw] xl:py-[0.8vw] mx-[0.5vw] xs:mt-[3vw] md:mt-[1vw] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
                           selectedChoice === option
                             ? "bg-[#F5E8D7] text-customBlack"
                             : "text-customGreen border border-[#F5E8D7]"
                         }`}
                       >
-                        {option}
+                        <p>{option}</p>
+                        <div
+                          onMouseEnter={() => handleMouseEnter(index)}
+                          onMouseLeave={handleMouseLeave}
+                          onClick={(event) => handleInfoClick(event, option)}
+                        >
+                          {hoverIndex === index ? (
+                            <img
+                              src={otherImg}
+                              alt=""
+                              className="xs:w-[1rem] md:w-[1.4rem] xl:w-[1.4rem]"
+                            />
+                          ) : (
+                            <img
+                              src={info}
+                              alt=""
+                              className="xs:w-[1rem] md:w-[1.4rem] xl:w-[1.1rem]"
+                            />
+                          )}
+                        </div>
                       </button>
                     ))}
+                    {meaningOption && (
+                      <Meaning
+                        option={meaningOption}
+                        onCancel={handleCancelClick}
+                      />
+                    )}
                   </div>
+                  {/* <div className="flex flex-wrap w-full justify-around font-serif font-semibold border border-[#F5E8D7] xs:py-[2rem] md:py-[3.5vw] xl:py-[2vw] xs:rounded-lg md:rounded-3xl ">
+                    {options.map((option, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleChoiceChange(option)}
+                        className={`flex justify-center gap-[2vw] items-center xs:text-[0.8rem] md:text-[1.4rem] xl:text-[1.1rem] xs:px-[1.7vw] xs:py-[1.2vw] md:px-[1.8vw] md:py-[1vw] xl:px-[1.2vw] xl:py-[0.8vw]  mx-[0.5vw] xs:mt-[3vw] md:mt-[1vw] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
+                          selectedChoice === option
+                            ? "bg-[#F5E8D7] text-customBlack"
+                            : "text-customGreen border border-[#F5E8D7]"
+                        }`}
+                      >
+                        <p>{option}</p>
+                        <img src={info} alt="" className="xs:w-[1rem] md:w-[1.4rem] xl:w-[1.1rem]" />
+                      </button>
+                    ))}
+                  </div> */}
                 </div>
               </div>
 
