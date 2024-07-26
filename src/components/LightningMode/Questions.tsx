@@ -298,7 +298,7 @@ const AIGenerated: React.FC = () => {
           )
         ) : (
           <>
-            <div className="xs:w-full xl:w-[75vw] flex flex-col  items-center xs:gap-[2.5vh] h-[100vh] overflow-scroll">
+            <div className="xs:w-full xl:w-[75vw] flex flex-col  items-center xs:gap-[2.5vh] h-[100vh] overflow-scroll no-scrollbar">
               <div className="flex flex-col gap-[1vh] items-center pt-[1vh] ">
                 <img
                   src={logo}
