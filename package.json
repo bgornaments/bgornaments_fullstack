@@ -15,18 +15,11 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.16.4",
     "@mui/material": "^5.16.4",
-<<<<<<< HEAD
     "@reduxjs/toolkit": "^2.2.6",
-    "@types/react-redux": "^7.1.33",
-    "@types/react-router-dom": "^5.3.3",
-=======
-    "@aws-amplify/ui-react": "^6.1.9",
     "@types/algoliasearch": "^4.0.0",
     "@types/react-redux": "^7.1.33",
     "@types/react-router-dom": "^5.3.3",
-    "@reduxjs/toolkit": "^2.2.6",
     "algoliasearch": "^4.24.0",
->>>>>>> origin/frontend_vanshika
     "autoprefixer": "^10.4.19",
     "aws-amplify": "^6.2.0",
     "axios": "^1.7.2",
