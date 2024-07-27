@@ -105,9 +105,13 @@ const AIGenerated: React.FC = () => {
     setIsLoading(true);
     const userPrompt = `I want a ${updatedFormData.jewelryType} for ${updatedFormData.occasion} for a ${updatedFormData.gender} aged ${updatedFormData.ageGroup}`;
     try {
-      const response = await axios.post(LIGHTENING_MODE, {
-        user_prompt: userPrompt,
-      });
+      const payload = {
+        body: JSON.stringify({
+            user_prompt: userPrompt,
+            donotask: "",
+        })
+      };
+      const response = await axios.post(LIGHTENING_MODE, payload);
       const data = JSON.parse(response.data.body);
       setCurrentQuestion(data.question);
       setOptions(cleanUpChoicesString(data.choices));
@@ -134,9 +138,13 @@ const AIGenerated: React.FC = () => {
     }`;
     console.log(userPrompt);
     try {
-      const response = await axios.post(LIGHTENING_MODE, {
-        user_prompt: userPrompt,
-      });
+      const payload = {
+        body: JSON.stringify({
+            user_prompt: userPrompt,
+            donotask: "",
+        })
+      };
+      const response = await axios.post(LIGHTENING_MODE, payload);
       const data = JSON.parse(response.data.body);
 
       setQuestions([...updatedQuestions, currentQuestion]);
@@ -182,8 +190,8 @@ const AIGenerated: React.FC = () => {
       setIsLoading(true);
       if (selectedChoice !== "" && selectedChoiceFlag) {
         const t2i_prompt = await generateText2ImagePrompt();
-        console.log(t2i_prompt.t2i_prompt);
-        await generateImages(t2i_prompt.t2i_prompt);
+        console.log(t2i_prompt);
+        await generateImages(t2i_prompt);
       }
     }
   };
