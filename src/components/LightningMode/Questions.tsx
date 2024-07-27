@@ -188,10 +188,6 @@ const AIGenerated: React.FC = () => {
     }
   };
 
-  const handleRegenerate = async () => {
-      //TODO
-  };
-
 
   const generateImages = async (t2i_prompt: string) => {
     setIsLoading(true);
