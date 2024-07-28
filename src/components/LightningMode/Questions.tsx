@@ -402,6 +402,9 @@ const AIGenerated: React.FC = () => {
                   />
                   Back
                 </button>
+
+                <div>
+                  
                 <button
                   type="button"
                   onClick={handleChoiceSubmit}
@@ -414,6 +417,7 @@ const AIGenerated: React.FC = () => {
                   />
                   Next
                 </button>
+                </div>
               </div>
             </div>
           </>

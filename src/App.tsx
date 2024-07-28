@@ -11,6 +11,7 @@ import Modes from "./components/Basic/Modes.tsx";
 import Questions from "./components/LightningMode/Questions.tsx";
 import Navbar from "./components/LandingPage/Navbar.jsx";
 import Footer from "./components/LandingPage/Footer.jsx";
+import Login from "./components/Login.tsx";
 
 //const client = generateClient<Schema>();
 
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
    {
     path: "/footer",
     element: <Footer />,
+   },
+   {
+    path: "/login",
+    element: <Login />,
    },
 ]);
 
