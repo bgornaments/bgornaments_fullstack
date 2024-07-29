@@ -1,0 +1,21 @@
+[
+    {
+      "id": 1,
+      "title": "Stayin' Alive",
+      "text": "No, Rose, they are not breathing. And they have no arms or legs … Where are they? You know what? If we come across somebody with no arms or legs, do we bother resuscitating them? I mean, what quality of life do we have there?",
+      "author": "Michael Scott"
+    },
+    {
+      "id": 2,
+      "title": "Another Testimonial",
+      "text": "This is another testimonial text for demonstration purposes. It should be replaced with actual content.",
+      "author": "Jane Doe"
+    },
+    {
+      "id": 3,
+      "title": "Yet Another Review",
+      "text": "Here's yet another testimonial text. You can add as many testimonials as you want.",
+      "author": "John Smith"
+    }
+  ]
+  

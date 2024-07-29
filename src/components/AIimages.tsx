@@ -7,6 +7,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
 import { setImageData } from "../redux/formSlice";
 import { IMAGE_GENERATOR } from "../constantsAWS";
+import Lottie from "react-lottie";
+import genData from "/src/assets/genData.json";
 
 const AIimages: React.FC = () => {
   const images = useSelector((state: RootState) => state.form.imageData);
@@ -16,6 +18,14 @@ const AIimages: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const dispatch = useDispatch();
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: genData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   useEffect(() => {
     if (images.length > 0) {
@@ -142,7 +152,9 @@ const AIimages: React.FC = () => {
         )}
         {isLoading && (
           <p className="text-center text-lg text-gray-500 mt-4">
-            Generating image variations, please wait...
+            {/* Generating image variations, please wait... */}
+            <Lottie options={defaultOptions} height={100} width={300} />
+
           </p>
         )}
         <div className="flex flex-col items-center justify-center mt-[1vw] xs:gap-[2vh] xl:gap-[3vh]">

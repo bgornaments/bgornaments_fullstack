@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import img10 from "/src/assets/img10.png";
 import frame1 from "/src/assets/Frame (1).svg";
 import frame2 from "/src/assets/Frame (2).svg";
-import Footer from "./Footer";
+// import Footer from "./Footer";
 
 const Page1: React.FC = () => {
   return (
     <>
-      <div className="bg-[#fff9f5] min-h-screen flex flex-col w-full p-[2rem] justify-center items-center gap-[1.3rem] md:gap-[2rem] xl:gap-[5rem]">
+      <div className="bg-[#fff9f5] min-h-screen flex flex-col w-full p-[2rem] justify-center items-center gap-[1.3rem] md:gap-[2rem] xl:gap-[3.5rem]">
         <header>
           <h2 className="text-customGreen xs:text-[1.5rem] md:text-[2rem] xl:text-[3rem] leading-loose text-center w-full">
             Personalised Design Made Easy
@@ -78,7 +78,6 @@ const Page1: React.FC = () => {
           </section>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

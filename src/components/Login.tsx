@@ -1,11 +1,15 @@
-import React from 'react';
+// import React from 'react';
+// import { Amplify } from 'aws-amplify';
+
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
-const Login: React.FC = () => {
+// import awsExports from './aws-exports';
+// Amplify.configure(awsExports);
+
+export default function App() {
   return (
-    <div className='flex justify-center items-center w-full min-h-screen'>
-    <Authenticator>
+    <Authenticator socialProviders={['facebook', 'google']}>
       {({ signOut, user }) => (
         <main>
           <h1>Hello {user?.username}</h1>
@@ -13,8 +17,5 @@ const Login: React.FC = () => {
         </main>
       )}
     </Authenticator>
-    </div>
   );
-};
-
-export default Login;
+}
