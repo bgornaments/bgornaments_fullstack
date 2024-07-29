@@ -9,7 +9,7 @@ import '@aws-amplify/ui-react/styles.css';
 
 export default function App() {
   return (
-    <Authenticator socialProviders={['facebook', 'google']}>
+    <Authenticator>
       {({ signOut, user }) => (
         <main>
           <h1>Hello {user?.username}</h1>
