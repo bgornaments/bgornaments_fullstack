@@ -1,18 +1,23 @@
-//import type { Schema } from "../amplify/data/resource";
-//import { generateClient } from "aws-amplify/data";
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HeroPage from "./components/LandingPage/HeroPage.tsx";
-// import AIGenerated from "./components/AIGenerated.tsx";
 import AIimages from "./components/AIimages.tsx";
-import BasicForm from "./components/Basic/BasicForm.tsx"
-import Option from "./components/Basic/Option.tsx"
+import BasicForm from "./components/Basic/BasicForm.tsx";
+import Option from "./components/Basic/Option.tsx";
 import Modes from "./components/Basic/Modes.tsx";
 import Questions from "./components/LightningMode/Questions.tsx";
 import Navbar from "./components/LandingPage/Navbar.jsx";
 import Footer from "./components/LandingPage/Footer.jsx";
+import Login from "./components/Login.tsx";
+import { Authenticator } from "@aws-amplify/ui-react";
 
-//const client = generateClient<Schema>();
+// const RequireAuth: React.FC<{ children: ReactNode }> = ({ children }) => {
+//   const { route } = useAuthenticator();
+//   if (route !== "authenticated") {
+//     return <Navigate to="/login" />;
+//   }
+//   return <>{children}</>;
+// };
 
 const router = createBrowserRouter([
   {
@@ -36,22 +41,28 @@ const router = createBrowserRouter([
     element: <Navbar />,
   },
   {
-    path:"/lightningMode",
-    element:<Questions/>
+    path: "/lightningMode",
+    element: <Questions />,
   },
   {
     path: "/aiimages",
     element: <AIimages />,
-   },
-   {
+  },
+  {
     path: "/footer",
     element: <Footer />,
-   },
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
 ]);
 
 const App: React.FC = () => {
   return (
-    <RouterProvider router={router} />
+    <Authenticator.Provider>
+      <RouterProvider router={router} />
+    </Authenticator.Provider>
   );
 };
 

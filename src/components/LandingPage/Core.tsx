@@ -10,9 +10,13 @@ import img9 from "/src/assets/img9.svg"
 import Navbar from './Navbar';
 
 //bg:fff9f5
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
 //f5e8d7
 const Core: React.FC = () => {
+  const { user } = useAuthenticator();
+  // console.log(user.signInDetails?.loginId)
+
   return (
     <>
     <Navbar/>
@@ -24,7 +28,7 @@ const Core: React.FC = () => {
               From Imagination <br /> to Adornment
             </h1>
             <h2 className="ml-[2.5vw] px-[3vw] text-[1.5vw] text-customBlack">
-              Welcome to KinVision
+             Welcome to KinVision {user && `, ${user.signInDetails?.loginId}`}
             </h2>
             <div className="ml-[2.5vw] px-[3vw] flex gap-10">
               <Link to="/form" className="rounded-full bg-customGreen px-[2vw] py-[1vw] text-white/80 md:text-[1.5vw] xl:text-[1vw]">
@@ -82,3 +86,11 @@ const Core: React.FC = () => {
 };
 
 export default Core;
+// {
+//   "username": "84680408-5021-7095-5833-9fb9b96f8876",
+//   "userId": "84680408-5021-7095-5833-9fb9b96f8876",
+//   "signInDetails": {
+//       "loginId": "vanshikas2022@gmail.com",
+//       "authFlowType": "USER_SRP_AUTH"
+//   }
+// }

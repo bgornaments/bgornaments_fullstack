@@ -6,6 +6,7 @@ import next from "/src/assets/next.png";
 import back from "/src/assets/previous.png";
 import info from "/src/assets/info.png";
 import otherImg from "/src/assets/otherimg.png";
+import regen from "/src/assets/loading-arrow.png";
 import {
   LIGHTENING_MODE,
   SUMMARIZER,
@@ -18,6 +19,7 @@ import chat from "/src/assets/chat.png";
 import { setImageData, updateFormData } from "../../redux/formSlice";
 import { useNavigate } from "react-router-dom";
 import Meaning from "./Meaning";
+import Images from "/src/assets/generateImages.png";
 
 interface FormData {
   occasion: string;
@@ -48,6 +50,7 @@ const AIGenerated: React.FC = () => {
   const [questionsAnswered, setQuestionsAnswered] = useState<number>(0);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [meaningOption, setMeaningOption] = useState<string | null>(null);
+  const [donotask, setDonotask] = useState<string[]>([]);
   const Navigate = useNavigate();
   const maxQuestions: number = 5;
 
@@ -107,10 +110,11 @@ const AIGenerated: React.FC = () => {
     try {
       const payload = {
         body: JSON.stringify({
-            user_prompt: userPrompt,
-            donotask: "",
-        })
+          user_prompt: userPrompt,
+          donotask: donotask.join(","),
+        }),
       };
+      console.log(payload);
       const response = await axios.post(LIGHTENING_MODE, payload);
       const data = JSON.parse(response.data.body);
       setCurrentQuestion(data.question);
@@ -140,10 +144,12 @@ const AIGenerated: React.FC = () => {
     try {
       const payload = {
         body: JSON.stringify({
-            user_prompt: userPrompt,
-            donotask: "",
-        })
+          user_prompt: userPrompt,
+          donotask: donotask.join(","),
+        }),
       };
+      console.log(payload);
+
       const response = await axios.post(LIGHTENING_MODE, payload);
       const data = JSON.parse(response.data.body);
 
@@ -158,6 +164,38 @@ const AIGenerated: React.FC = () => {
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching next question:", error);
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegenerate = async () => {
+    setIsLoading(true);
+    const updatedDonotask = [...donotask, currentQuestion];
+
+    const userPrompt = `user: ${generateBasicInfoString()}\n${questions
+      .map((q, index) => `bot: ${q}\nuser: ${answers[index]}`)
+      .join("\n")}${
+      selectedChoice ? `\nbot: ${currentQuestion}\nuser: ${selectedChoice}` : ""
+    }`;
+    console.log(userPrompt);
+    try {
+      const payload = {
+        body: JSON.stringify({
+          user_prompt: userPrompt,
+          donotask: updatedDonotask.join(","),
+        }),
+      };
+      console.log(payload);
+
+      const response = await axios.post(LIGHTENING_MODE, payload);
+      const data = JSON.parse(response.data.body);
+
+      setDonotask(updatedDonotask);
+      setCurrentQuestion(data.question);
+      setOptions(cleanUpChoicesString(data.choices));
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error regenerating question:", error);
       setIsLoading(false);
     }
   };
@@ -202,27 +240,27 @@ const AIGenerated: React.FC = () => {
     try {
       const payload = {
         body: JSON.stringify({
-          prompt: t2i_prompt, 
-          taskType: "TEXT_IMAGE", 
-          numImages: 3, 
+          prompt: t2i_prompt,
+          taskType: "TEXT_IMAGE",
+          numImages: 3,
         }),
       };
-  
+
       const response = await axios.post(IMAGE_GENERATOR, payload, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       const parsedBody = JSON.parse(response.data.body);
       console.log("Parsed Body:", parsedBody);
- 
+
       const imageData = parsedBody.uploaded_image_urls;
       console.log("Extracted Image Data:", imageData);
-  
+
       if (Array.isArray(imageData)) {
         dispatch(setImageData(imageData));
-        Navigate('/aiimages');
+        Navigate("/aiimages");
       } else {
         console.error("No image URLs found in response.");
       }
@@ -232,7 +270,7 @@ const AIGenerated: React.FC = () => {
       setIsLoading(false);
     }
   };
-  
+
   const handleBack = () => {
     if (currentQuestionIndex > 0) {
       const previousQuestionIndex = currentQuestionIndex - 1;
@@ -285,6 +323,19 @@ const AIGenerated: React.FC = () => {
     } else {
       fetchInitialQuestion(formData);
     }
+  }, []);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      return "Refreshing will take you to the new 1st question";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, []);
 
   return (
@@ -385,46 +436,87 @@ const AIGenerated: React.FC = () => {
                       />
                     )}
                   </div>
-                  {/* <div className="flex flex-wrap w-full justify-around font-serif font-semibold border border-[#F5E8D7] xs:py-[2rem] md:py-[3.5vw] xl:py-[2vw] xs:rounded-lg md:rounded-3xl ">
-                    {options.map((option, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleChoiceChange(option)}
-                        className={`flex justify-center gap-[2vw] items-center xs:text-[0.8rem] md:text-[1.4rem] xl:text-[1.1rem] xs:px-[1.7vw] xs:py-[1.2vw] md:px-[1.8vw] md:py-[1vw] xl:px-[1.2vw] xl:py-[0.8vw]  mx-[0.5vw] xs:mt-[3vw] md:mt-[1vw] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
-                          selectedChoice === option
-                            ? "bg-[#F5E8D7] text-customBlack"
-                            : "text-customGreen border border-[#F5E8D7]"
-                        }`}
-                      >
-                        <p>{option}</p>
-                        <img src={info} alt="" className="xs:w-[1rem] md:w-[1.4rem] xl:w-[1.1rem]" />
-                      </button>
-                    ))}
-                  </div> */}
                 </div>
               </div>
 
-              <div className="flex justify-between xs:w-[90vw] md:w-[90vw] xl:w-[70vw] xs:text-[3vw] md:text-[2.3vw] xl:text-[1.1vw] text-customBlack p-5">
-                <button type="button" onClick={handleBack}>
+              <div className="flex justify-between xs:w-[90vw] md:w-[90vw] xl:w-[70vw] xs:text-[0.8rem] md:text-[1.4rem] xl:text-[1rem] text-customBlack p-5">
+                <button
+                  type="button"
+                  onClick={handleBack}
+                  className={`flex flex-col items-center ${
+                    currentQuestionIndex === 0
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  }`}
+                  disabled={currentQuestionIndex === 0}
+                >
                   <img
                     src={back}
                     alt=""
-                    className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw]"
+                    className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw] "
                   />
-                  Back
+                  <p>Back</p>
                 </button>
-                <button
-                  type="button"
-                  onClick={handleChoiceSubmit}
-                  disabled={!selectedChoiceFlag}
-                >
-                  <img
-                    src={next}
-                    alt=""
-                    className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw]"
-                  />
-                  Next
-                </button>
+
+                <div className="flex gap-[2vw]">
+                  <button
+                    type="button"
+                    onClick={handleRegenerate}
+                    className="flex flex-col items-center"
+                  >
+                    <img
+                      src={regen}
+                      alt=""
+                      className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw] "
+                    />
+                    <p>
+                      Regenerate <br />
+                      Question
+                    </p>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleChoiceSubmit}
+                    disabled={!selectedChoiceFlag}
+                    className="flex flex-col items-center"
+                  >
+                    {questionsAnswered + 1 === maxQuestions ? (
+                      <>
+                        <img
+                          src={Images}
+                          alt=""
+                          className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw]"
+                        />
+                        <p>
+                          Generate <br />
+                          Images
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <img
+                          src={next}
+                          alt="Next"
+                          className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw]"
+                        />
+                        <p>Next</p>
+                      </>
+                    )}
+                  </button>
+                  {/* <button
+                    type="button"
+                    onClick={handleChoiceSubmit}
+                    disabled={!selectedChoiceFlag}
+                    className="flex flex-col items-center"
+                  >
+                    <img
+                      src={next}
+                      alt=""
+                      className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw]"
+                    />
+                    <p>Next</p>
+                  </button> */}
+                </div>
               </div>
             </div>
           </>
