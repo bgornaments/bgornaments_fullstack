@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import icon from "/src/assets/image.png";
 import download from "/src/assets/download.png";
 import refresh from "/src/assets/refresh.png";
@@ -9,6 +10,8 @@ import { setImageData } from "../redux/formSlice";
 import { IMAGE_GENERATOR } from "../constantsAWS";
 import Lottie from "react-lottie";
 import genData from "/src/assets/genData.json";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+import Swal from "sweetalert2";
 
 const AIimages: React.FC = () => {
   const images = useSelector((state: RootState) => state.form.imageData);
@@ -18,6 +21,10 @@ const AIimages: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const dispatch = useDispatch();
+  const { user } = useAuthenticator();
+  const navigate = useNavigate();
+  const location = useLocation(); // Get the current location
+
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -44,6 +51,29 @@ const AIimages: React.FC = () => {
   };
 
   const handleDownloadImage = async () => {
+    if (!user) {
+      // Show a pop-up if the user is not logged in
+      Swal.fire({
+        title: "Please Log In",
+        text: "You need to log in to download images. Click the button below to log in.",
+        icon: "warning",
+        confirmButtonText: "Log In",
+        confirmButtonColor: "#3085d6",
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+        cancelButtonColor: "#d33",
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Save the current path to the state or local storage
+          localStorage.setItem('redirectPath', location.pathname);
+          // Navigate to login page
+          navigate("/login");
+        }
+      });
+      return;
+    }
+
     if (selectedImage) {
       const image = new Image();
       image.crossOrigin = "anonymous";
@@ -72,7 +102,6 @@ const AIimages: React.FC = () => {
       };
     }
   };
-
   const handleRefineDesign = async () => {
     if (selectedImage) {
       setIsLoading(true);
@@ -111,10 +140,6 @@ const AIimages: React.FC = () => {
     }
   };
 
-  // const handleExtraClose = () => {
-  //   setShowExtra(false);
-  // };
-
   return (
     <div className="bg-[#FFF9F5] w-full min-h-screen flex flex-col items-center relative">
       <div className="flex flex-col gap-[1vh] items-center pt-[1vh] ">
@@ -151,14 +176,13 @@ const AIimages: React.FC = () => {
           <p className="text-center text-lg text-red-500 mt-4">{error}</p>
         )}
         {isLoading && (
-          <p className="text-center text-lg text-gray-500 mt-4">
+          <div className="text-center text-lg text-gray-500 mt-4">
             {/* Generating image variations, please wait... */}
             <Lottie options={defaultOptions} height={100} width={300} />
-
-          </p>
+          </div>
         )}
         <div className="flex flex-col items-center justify-center mt-[1vw] xs:gap-[2vh] xl:gap-[3vh]">
-        <button
+          <button
             onClick={handleRefineDesign}
             className="flex items-center gap-[1vw] xs:text-[3vw] md:text-[2.3vw] xl:text-[1.3vw] xs:px-[2vw] xs:py-[1.2vw] md:px-[1.8vw] md:py-[1vw] xl:px-[1.2vw] xl:py-[0.8vw] rounded-3xl cursor-pointer shadow-md shadow-[#F5E8D7] text-[#B9944C] border border-[#B9944C] transition transform hover:scale-105 duration-300"
           >
@@ -172,7 +196,6 @@ const AIimages: React.FC = () => {
             <img src={download} alt="" className="w-[1.5vw]" />
             Download Selected Design
           </button>
-          
         </div>
       </div>
     </div>

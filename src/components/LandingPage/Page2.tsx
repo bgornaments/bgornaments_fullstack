@@ -93,7 +93,7 @@ const TestimonialSlider: React.FC = () => {
         <div className="mx-auto max-w-[1340px] px-4 py-12 sm:px-6 lg:me-0 lg:py-16 lg:pe-0 lg:ps-8 xl:py-24">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:items-center lg:gap-16">
             <div className="max-w-xl text-center ltr:sm:text-left rtl:sm:text-right">
-              <h2 className="text-customGreen xs:text-[1.5rem] md:text-[2rem] xl:text-[3rem] leading-tight">
+              <h2 className="text-customGreen xs:text-[1.5rem] md:text-[2rem] xl:text-[2.8rem] leading-tight">
               Hear from those who know us best...
               </h2>
 
@@ -173,7 +173,7 @@ const TestimonialSlider: React.FC = () => {
                           <p className="text-2xl text-[#b9944c] sm:text-3xl">
                             {testimonial.title}
                           </p>
-                          <p className="mt-4 leading-relaxed text-customBlack">
+                          <p className="mt-4 leading-relaxed text-customBlack xs:text-xs md:text-sm">
                             {testimonial.content}
                           </p>
                         </div>
@@ -193,7 +193,7 @@ const TestimonialSlider: React.FC = () => {
             <button
               aria-label="Previous slide"
               id="keen-slider-previous"
-              className="rounded-full border border-rose-600 p-3 text-rose-600 transition hover:bg-rose-600 hover:text-white"
+              className="rounded-full border border-customGreen p-3 text-customGreen transition hover:bg-customGreen hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -214,7 +214,7 @@ const TestimonialSlider: React.FC = () => {
             <button
               aria-label="Next slide"
               id="keen-slider-next"
-              className="rounded-full border border-rose-600 p-3 text-rose-600 transition hover:bg-rose-600 hover:text-white"
+              className="rounded-full border border-customGreen p-3 text-customGreen transition hover:bg-customGreen hover:text-white"
             >
               <svg
                 className="size-5 rtl:rotate-180"

@@ -10,7 +10,7 @@ const Page1: React.FC = () => {
     <>
       <div className="bg-[#fff9f5] min-h-screen flex flex-col w-full p-[2rem] justify-center items-center gap-[1.3rem] md:gap-[2rem] xl:gap-[3.5rem]">
         <header>
-          <h2 className="text-customGreen xs:text-[1.5rem] md:text-[2rem] xl:text-[3rem] leading-loose text-center w-full">
+          <h2 className="text-customGreen xs:text-[1.5rem] md:text-[2rem] xl:text-[2.8rem] leading-loose text-center w-full">
             Personalised Design Made Easy
           </h2>
         </header>

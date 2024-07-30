@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import formReducer, { FormState } from './formSlice';
+import formReducer from './formSlice';
+import authReducer from './authSlice';
 
 export const store = configureStore({
   reducer: {
     form: formReducer,
+    auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -15,10 +17,5 @@ export const store = configureStore({
     }),
 });
 
-// Define the root state type
-export type RootState = {
-  form: FormState;
-};
-
-// Define the app dispatch type
+export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

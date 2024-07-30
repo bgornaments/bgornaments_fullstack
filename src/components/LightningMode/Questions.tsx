@@ -6,7 +6,7 @@ import next from "/src/assets/next.png";
 import back from "/src/assets/previous.png";
 import info from "/src/assets/info.png";
 import otherImg from "/src/assets/otherimg.png";
-import regen from "/src/assets/loading-arrow.png"
+import regen from "/src/assets/loading-arrow.png";
 import {
   LIGHTENING_MODE,
   SUMMARIZER,
@@ -19,6 +19,7 @@ import chat from "/src/assets/chat.png";
 import { setImageData, updateFormData } from "../../redux/formSlice";
 import { useNavigate } from "react-router-dom";
 import Meaning from "./Meaning";
+import Images from "/src/assets/generateImages.png";
 
 interface FormData {
   occasion: string;
@@ -108,11 +109,11 @@ const AIGenerated: React.FC = () => {
     try {
       const payload = {
         body: JSON.stringify({
-            user_prompt: userPrompt,
-            donotask: donotask.join(","),
-        })
+          user_prompt: userPrompt,
+          donotask: donotask.join(","),
+        }),
       };
-      console.log(payload)
+      console.log(payload);
       const response = await axios.post(LIGHTENING_MODE, payload);
       const data = JSON.parse(response.data.body);
       setCurrentQuestion(data.question);
@@ -142,11 +143,11 @@ const AIGenerated: React.FC = () => {
     try {
       const payload = {
         body: JSON.stringify({
-            user_prompt: userPrompt,
-            donotask: donotask.join(","),
-        })
+          user_prompt: userPrompt,
+          donotask: donotask.join(","),
+        }),
       };
-      console.log(payload)
+      console.log(payload);
 
       const response = await axios.post(LIGHTENING_MODE, payload);
       const data = JSON.parse(response.data.body);
@@ -179,11 +180,11 @@ const AIGenerated: React.FC = () => {
     try {
       const payload = {
         body: JSON.stringify({
-            user_prompt: userPrompt,
-            donotask: updatedDonotask.join(","),
-        })
+          user_prompt: userPrompt,
+          donotask: updatedDonotask.join(","),
+        }),
       };
-      console.log(payload)
+      console.log(payload);
 
       const response = await axios.post(LIGHTENING_MODE, payload);
       const data = JSON.parse(response.data.body);
@@ -236,27 +237,27 @@ const AIGenerated: React.FC = () => {
     try {
       const payload = {
         body: JSON.stringify({
-          prompt: t2i_prompt, 
-          taskType: "TEXT_IMAGE", 
-          numImages: 3, 
+          prompt: t2i_prompt,
+          taskType: "TEXT_IMAGE",
+          numImages: 3,
         }),
       };
-  
+
       const response = await axios.post(IMAGE_GENERATOR, payload, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       const parsedBody = JSON.parse(response.data.body);
       console.log("Parsed Body:", parsedBody);
- 
+
       const imageData = parsedBody.uploaded_image_urls;
       console.log("Extracted Image Data:", imageData);
-  
+
       if (Array.isArray(imageData)) {
         dispatch(setImageData(imageData));
-        Navigate('/aiimages');
+        Navigate("/aiimages");
       } else {
         console.error("No image URLs found in response.");
       }
@@ -266,7 +267,7 @@ const AIGenerated: React.FC = () => {
       setIsLoading(false);
     }
   };
-  
+
   const handleBack = () => {
     if (currentQuestionIndex > 0) {
       const previousQuestionIndex = currentQuestionIndex - 1;
@@ -319,6 +320,19 @@ const AIGenerated: React.FC = () => {
     } else {
       fetchInitialQuestion(formData);
     }
+  }, []);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      return "Refreshing will take you to the new 1st question";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, []);
 
   return (
@@ -423,7 +437,16 @@ const AIGenerated: React.FC = () => {
               </div>
 
               <div className="flex justify-between xs:w-[90vw] md:w-[90vw] xl:w-[70vw] xs:text-[0.8rem] md:text-[1.4rem] xl:text-[1rem] text-customBlack p-5">
-                <button type="button" onClick={handleBack} className="flex flex-col items-center">
+                <button
+                  type="button"
+                  onClick={handleBack}
+                  className={`flex flex-col items-center ${
+                    currentQuestionIndex === 0
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  }`}
+                  disabled={currentQuestionIndex === 0}
+                >
                   <img
                     src={back}
                     alt=""
@@ -443,9 +466,41 @@ const AIGenerated: React.FC = () => {
                       alt=""
                       className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw] "
                     />
-                    <p>Regenerate <br />Question</p>
+                    <p>
+                      Regenerate <br />
+                      Question
+                    </p>
                   </button>
                   <button
+                    type="button"
+                    onClick={handleChoiceSubmit}
+                    disabled={!selectedChoiceFlag}
+                    className="flex flex-col items-center"
+                  >
+                    {questionsAnswered + 1 === maxQuestions ? (
+                      <>
+                        <img
+                          src={Images}
+                          alt=""
+                          className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw]"
+                        />
+                        <p>
+                          Generate <br />
+                          Images
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <img
+                          src={next}
+                          alt="Next"
+                          className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw]"
+                        />
+                        <p>Next</p>
+                      </>
+                    )}
+                  </button>
+                  {/* <button
                     type="button"
                     onClick={handleChoiceSubmit}
                     disabled={!selectedChoiceFlag}
@@ -457,7 +512,7 @@ const AIGenerated: React.FC = () => {
                       className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw]"
                     />
                     <p>Next</p>
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
