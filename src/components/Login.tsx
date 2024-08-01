@@ -27,12 +27,14 @@ const Login: React.FC = () => {
   }, [route, navigate]);
 
   return (
-    <div className="w-full min-h-screen flex">
-      <div className="w-1/2 min-h-screen bg-[#FFF9F5] flex items-center justify-center shadow-md ">
-        <Lottie options={defaultOptions} height={500} width={500} />
+    <div className="w-full min-h-screen flex flex-col lg:flex-row justify-center">
+      <div className="lg:w-1/2 lg:min-h-screen lg:bg-[#FFF9F5] flex items-center justify-center">
+        <div className=" h-48 md:w-80 md:h-80 xl:w-96 xl:h-96">
+          <Lottie options={defaultOptions} />
+        </div>
       </div>
-      <div className="w-1/2 min-h-screen bg-white rounded-2xl flex items-center justify-center">
-        <div className="bg-customBeige p-1 rounded-xl">
+      <div className="lg:w-1/2 lg:min-h-screen bg-white flex items-center justify-center">
+        <div className="bg-customBeige p-1 xs:m-4 lg:m-5  rounded-xl ">
           <Authenticator />
         </div>
       </div>

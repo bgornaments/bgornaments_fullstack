@@ -17,7 +17,7 @@ const Core: React.FC = () => {
   return (
     <>
     <Navbar/>
-    <div className="bg-[#fff9f5] w-full min-h-screen flex flex-col">
+    <div className="bg-[#fbfaf8] w-full min-h-screen flex flex-col">
         <div className="h-[65vh] w-full flex">
           <div className="w-9/12 h-full flex items-center ">
           <div className="flex flex-col gap-[2vw]">
@@ -41,7 +41,7 @@ const Core: React.FC = () => {
           </div>
           
           </div>
-          <div className="w-3/12 bg-[#f5e8d7] h-full flex items-center "></div>
+          <div className="w-3/12 bg-[#fef4e9] h-full flex items-center "></div>
           <img
             src={img21}
             alt=""
@@ -49,25 +49,25 @@ const Core: React.FC = () => {
           />
         </div>
         <div className="h-[20vh] w-full flex">
-          <div className="w-9/12 bg-[#f5e8d7] h-full flex items-center">
+          <div className="w-9/12 bg-[#fef4e9] h-full flex items-center">
             <div className="border-r border-[#b9944c] bg-customGreen md:h-[25vh] lg:h-[28vh] w-1/4 ">
               <div className="w-[90%] flex justify-center">
                 <img src={img4} alt="" className="md:w-[11vh] lg:w-[13vh]" />
               </div>
             </div>
-            <div className="border-r border-[#b9944c] w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-customGreen">
+            <div className="border-r border-[#e7d1a4] w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-customGreen">
               <img src={img9} alt="" className=" md:w-[3vh] xl:w-[4vh]" />
               <p className="text-center md:text-[1.5vh] xl:text-[2vh] xl:max-w-[60%]">
                 Personalised Bespoke Designs
               </p>
             </div>
-            <div className="border-r border-[#b9944c] w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-customGreen">
+            <div className="border-r border-[#e7d1a4] w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-customGreen">
               <img src={img8} alt="" className=" md:w-[3vh] xl:w-[4vh]" />
               <p className="text-center md:text-[1.5vh] xl:text-[2vh] xl:max-w-[60%]">
                 Data-Driven Insights
               </p>
             </div>
-            <div className="border-r border-[#b9944c] w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-customGreen">
+            <div className="border-r border-[#e7d1a4] w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-customGreen">
               <img src={img7} alt="" className=" md:w-[3vh] xl:w-[4vh]" />
               <p className="text-center md:text-[1.5vh] xl:text-[2vh] xl:max-w-[60%]">
                 Seamless User Experience

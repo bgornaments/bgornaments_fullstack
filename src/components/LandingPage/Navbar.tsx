@@ -7,7 +7,7 @@ const Navbar: React.FC = () => {
   const { user, signOut } = useAuthenticator(context => [context.user]);
 
   return (
-    <div className="w-full h-[10vh] bg-[#f5e8d7] flex xs:justify-center md:justify-between items-center top-0 md:px-[2.5rem] xl:px-[4rem] shadow-xl shadow-[#b9944c]">
+    <div className="w-full h-[10vh] bg-[#fef4e9] flex xs:justify-center md:justify-between items-center top-0 md:px-[2.5rem] xl:px-[4rem] shadow-xl shadow-[#b9944c]">
       <div className="hidden md:block">
         <img src={logo} alt="" className="md:w-[15vh] xl:w-[22vh]" />
       </div>
