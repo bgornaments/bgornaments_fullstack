@@ -13,7 +13,7 @@ export default {
         secondary:['Inknut Antiqua', 'serif'],
       },
       colors: {
-        customGreen: '#166767',
+        customGreen: '#008080',
         customBeige: '#F5E8D7',
         customBlack: '#00000066'
       },
