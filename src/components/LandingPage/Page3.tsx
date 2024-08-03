@@ -45,8 +45,8 @@ const TeamComponent: React.FC = () => {
     const teamMembers = [
         {
             name: 'Sagar G. Sangodkar',
-            role: 'Managing Director and CEO',
-            description: "IIT Bombay Graduate",
+            role: 'Managing Director\nand CEO',
+            description: "IIT Bombay\nGraduate",
             imageUrl: img,
             githubUrl: 'https://github.com',
             linkedinUrl: 'https://www.linkedin.com/in/sagarsangodkar/',
@@ -54,15 +54,15 @@ const TeamComponent: React.FC = () => {
         {
             name: 'Akhil Gakhar',
             role: 'Artificial Intelligence Researcher and Collaborator',
-            description: 'IIT Bombay Graduate',
+            description: 'IIT Bombay\nGraduate',
             imageUrl: 'https://media.licdn.com/dms/image/C5603AQE0aHcpNA0ToQ/profile-displayphoto-shrink_400_400/0/1650630385577?e=1727913600&v=beta&t=lGLNX4p7wVTemZeKbR034CRAZ0o1T-_cJ1Gw-c2jDhU',
             githubUrl: 'https://github.com',
             linkedinUrl: 'https://www.linkedin.com/in/akhil-gakhar-2593237a/',
         },
         {
             name: 'Divyanshu Suman',
-            role: 'Artificial Intelligence Intern',
-            description: 'IIT Bombay Undergraduate Student',
+            role: 'Artificial Intelligence\nIntern',
+            description: 'IIT Bombay\nUndergraduate Student',
             imageUrl: 'https://media.licdn.com/dms/image/D4E35AQFABqmtpH9ONA/profile-framedphoto-shrink_400_400/0/1719441316980?e=1722927600&v=beta&t=nZbJj7GNGT3bbC_8dFBse_dxP2wcWP54DzdEC0bx0VQ',
             githubUrl: 'https://github.com',
             linkedinUrl: 'https://www.linkedin.com/in/divyanshusuman/',
@@ -70,7 +70,7 @@ const TeamComponent: React.FC = () => {
         {
             name: 'Vanshika Sharma',
             role: 'Full Stack Development Intern',
-            description: 'IT Undergraduate Student',
+            description: 'IT Undergraduate\nStudent',
             imageUrl: 'https://media.licdn.com/dms/image/D4D35AQEzXwpMhRyCFQ/profile-framedphoto-shrink_400_400/0/1716278908145?e=1722927600&v=beta&t=ZGNQenYUxjW2Zg6FvY3ClyoBh_OHXAen02u74Cq3fD4',
             githubUrl: 'https://github.com',
             linkedinUrl: 'https://www.linkedin.com/in/vanshikasharma-it/',
@@ -110,13 +110,25 @@ const TeamComponent: React.FC = () => {
                                             />
                                         </div>
                                     </div>
-                                    <div className="px-6 mt-16 min-h-[35vh] flex flex-col justify-center gap-[2.5vh]">
-                                        <h1 className="text-customGreen text-center text-[1.4rem] md:text-[1.5rem] xl:text-[1.5rem] pb-[2vh]">{member.name}</h1>
-                                        <p className="text-customBlack text-[1.4rem] md:text-[1.5rem] xl:text-[1rem] text-center">{member.role}</p>
-                                        <p className="text-customBlack text-[1.4rem] md:text-[1.5rem] xl:text-[1rem] text-center">
-                                            {member.description}
+                                    <div className="px-6 mt-16 min-h-[35vh] flex flex-col justify-center gap-[2vh]">
+                                        <h1 className="text-customGreen text-center text-[1.4rem] md:text-[1.5rem] xl:text-[1.2rem] pb-[2vh]">{member.name}</h1>
+                                        <p className="text-customBlack text-[1.4rem] md:text-[1.5rem] xl:text-[0.9rem] text-center">
+                                            {member.role.split('\n').map((line, i) => (
+                                                <React.Fragment key={i}>
+                                                    {line}
+                                                    {i !== member.role.split('\n').length - 1 && <br />}
+                                                </React.Fragment>
+                                            ))}
                                         </p>
-                                        <div className="w-full flex justify-center gap-[2vw]">
+                                        <p className="text-customBlack text-[1.4rem] md:text-[1.5rem] xl:text-[0.9rem] text-center">
+                                            {member.description.split('\n').map((line, i) => (
+                                                <React.Fragment key={i}>
+                                                    {line}
+                                                    {i !== member.description.split('\n').length - 1 && <br />}
+                                                </React.Fragment>
+                                            ))}
+                                        </p>
+                                        <div className="w-full flex justify-center gap-[2vw] pt-[1vh]">
                                             {member.githubUrl && (
                                                 <a href={member.githubUrl} className="text-green-600 w-[1.5vw]" target="_blank" rel="noopener noreferrer">
                                                     <div aria-label="Github" role="img">
