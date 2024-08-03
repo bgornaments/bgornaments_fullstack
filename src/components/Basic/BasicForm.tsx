@@ -8,7 +8,7 @@ import pendantIcon from "/src/assets/necklace.png";
 import earringIcon from "/src/assets/flower.png";
 import bangleIcon from "/src/assets/bangles.png";
 import ringIcon from "/src/assets/wedding-ring.png";
-import chainIcon from "/src/assets/pendant.png";
+//import chainIcon from "/src/assets/pendant.png";
 import braceletIcon from "/src/assets/bracelet.png";
 import femaleIcon from "/src/assets/female-icon.png";
 import maleIcon from "/src/assets/male-icon.png";
@@ -70,7 +70,7 @@ const JewelryForm: React.FC = () => {
                     { type: "Earrings", icon: earringIcon },
                     { type: "Bangles", icon: bangleIcon },
                     { type: "Rings", icon: ringIcon },
-                    { type: "Chains", icon: chainIcon },
+                    //{ type: "Chains", icon: chainIcon },
                     { type: "Bracelets", icon: braceletIcon },
                   ].map((jewelry) => (
                     <button key={jewelry.type} type="button">
