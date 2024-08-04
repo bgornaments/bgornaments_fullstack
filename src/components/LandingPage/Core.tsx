@@ -1,12 +1,17 @@
 import React from "react";
 
 import { Link } from "react-router-dom";
-import img21 from "/src/assets/Group 28.png";
-import img3 from "/src/assets/img3.svg"
+// import img21 from "/src/assets/Group 28.png";
+// import img3 from "/src/assets/img3.svg"
 import img4 from "/src/assets/img3.png"
-import img7 from "/src/assets/img7.svg"
-import img8 from "/src/assets/img8.svg"
-import img9 from "/src/assets/img9.svg"
+// import img7 from "/src/assets/img7.svg"
+// import img8 from "/src/assets/img8.svg"
+// import img9 from "/src/assets/img9.svg"
+import edit from "/src/assets/Group 18.png"
+import img9_1 from "/src/assets/Frame.png"
+import img8_1 from "/src/assets/Frame (1).png"
+import img7_1 from "/src/assets/Frame (2).png"
+import img3_1 from "/src/assets/Polygon 1.png"
 import Navbar from './Navbar';
 import { useAuthenticator } from "@aws-amplify/ui-react";
 
@@ -33,7 +38,7 @@ const Core: React.FC = () => {
               </Link>
               <button className="flex justify-center items-center gap-3 md:text-[1.5vw] xl:text-[1vw] text-customGreen">
                 <div className="rounded-full border-2 border-customGreen p-[1vw]">
-                  <img src={img3} alt="" className="w-[1vw]" />
+                  <img src={img3_1} alt="" className="w-[1vw]" />
                 </div>
                 <div>Play Video</div>
               </button>
@@ -43,32 +48,32 @@ const Core: React.FC = () => {
           </div>
           <div className="w-3/12 bg-[#FDF5E6] h-full flex items-center "></div>
           <img
-            src={img21}
+            src={edit}
             alt=""
             className="absolute  md:right-[3vw] xl:right-[8vw] md:top-[25vh] xl:top-[18vh] xl:h-[50vh] md:h-[30vh]"
           />
         </div>
         <div className="h-[20vh] w-full flex">
           <div className="w-9/12 bg-[#FDF5E6] h-full flex items-center">
-            <div className="border-r border-[#b9944c] bg-customGreen md:h-[25vh] lg:h-[28vh] w-1/4 ">
+            <div className="border-r border-[#E0AE2A] bg-customGreen md:h-[25vh] lg:h-[28vh] w-1/4 ">
               <div className="w-[90%] flex justify-center">
                 <img src={img4} alt="" className="md:w-[11vh] lg:w-[13vh]" />
               </div>
             </div>
-            <div className="border-r border-[#b9944c] w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-customGreen">
-              <img src={img9} alt="" className=" md:w-[3vh] xl:w-[4vh]" />
+            <div className="border-r border-[#E0AE2A] w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-customGreen">
+              <img src={img9_1} alt="" className=" md:w-[3vh] xl:w-[4vh]" />
               <p className="text-center md:text-[1.5vh] xl:text-[2vh] xl:max-w-[60%]">
                 Personalised Bespoke Designs
               </p>
             </div>
-            <div className="border-r border-[#b9944c] w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-customGreen">
-              <img src={img8} alt="" className=" md:w-[3vh] xl:w-[4vh]" />
+            <div className="border-r border-[#E0AE2A] w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-customGreen">
+              <img src={img8_1} alt="" className=" md:w-[3vh] xl:w-[4vh]" />
               <p className="text-center md:text-[1.5vh] xl:text-[2vh] xl:max-w-[60%]">
                 Data-Driven Insights
               </p>
             </div>
-            <div className="border-r border-[#b9944c] w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-customGreen">
-              <img src={img7} alt="" className=" md:w-[3vh] xl:w-[4vh]" />
+            <div className="border-r border-[#E0AE2A] w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-customGreen">
+              <img src={img7_1} alt="" className=" md:w-[3vh] xl:w-[4vh]" />
               <p className="text-center md:text-[1.5vh] xl:text-[2vh] xl:max-w-[60%]">
                 Seamless User Experience
               </p>
