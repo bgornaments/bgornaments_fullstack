@@ -33,7 +33,7 @@ const JewelryForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    navigate("/modes");
+    navigate("/option");
     console.log("Form Data on Submit:", formData);
     dispatch(setFormSubmitted(true));
     console.log(isFormSubmitted);

@@ -24,7 +24,8 @@ const App: React.FC = () => {
               pSize="1vw"
               imgWidth="9vw"
               gap="2vw"
-              link="/form"
+              link="/catalog"
+
             />
             <Card
               img={assistant}
@@ -54,7 +55,7 @@ const App: React.FC = () => {
               pSize="1rem"
               imgWidth="8rem"
               gap="2.3rem"
-              link="/form"
+              link="/catalog"
             />
             <Card
               img={assistant}
@@ -84,7 +85,7 @@ const App: React.FC = () => {
               pSize="2vw"
               imgWidth="14vw"
               gap="5vw"
-              link="/form"
+              link="/catalog"
             />
             <Card
               img={assistant}

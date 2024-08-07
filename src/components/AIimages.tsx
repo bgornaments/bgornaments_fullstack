@@ -121,8 +121,8 @@ const AIimages: React.FC = () => {
             "Content-Type": "application/json",
           },
         });
-
         const parsedBody = JSON.parse(response.data.body);
+        console.log("Parsed body: ",parsedBody);
         const newImages = parsedBody.uploaded_image_urls;
         console.log("New Image Variations:", newImages);
 
