@@ -12,7 +12,7 @@ import Login from "./components/Login.tsx";
 import { Authenticator } from "@aws-amplify/ui-react";
 import Catalogue from "./components/BrowseCatalogue/Catalogue.tsx"
 import DetailedImageView from "./components/BrowseCatalogue/DetailedImageView.tsx";
-import LikedImages from "./components/BrowseCatalogue/LikedImages.tsx";
+// import LikedImages from "./components/BrowseCatalogue/LikedImages.tsx";
 
 // const RequireAuth: React.FC<{ children: ReactNode }> = ({ children }) => {
 //   const { route } = useAuthenticator();
