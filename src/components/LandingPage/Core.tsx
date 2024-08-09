@@ -7,6 +7,11 @@ import img4 from "/src/assets/img3.png"
 import img7 from "/src/assets/img7.svg"
 import img8 from "/src/assets/img8.svg"
 import img9 from "/src/assets/img9.svg"
+// import edit from "/src/assets/Group 18.png"
+// import img9_1 from "/src/assets/Frame.png"
+// import img8_1 from "/src/assets/Frame (1).png"
+// import img7_1 from "/src/assets/Frame (2).png"
+// import img3_1 from "/src/assets/Polygon 1.png"
 import Navbar from './Navbar';
 
 //bg:fff9f5
@@ -20,7 +25,7 @@ const Core: React.FC = () => {
   return (
     <>
     <Navbar/>
-    <div className="bg-[#FFFFFF] w-full min-h-screen flex flex-col">
+    <div className="bg-[#fff9f5] w-full min-h-screen flex flex-col">
         <div className="h-[65vh] w-full flex">
           <div className="w-9/12 h-full flex items-center ">
           <div className="flex flex-col gap-[2vw]">
@@ -44,7 +49,7 @@ const Core: React.FC = () => {
           </div>
           
           </div>
-          <div className="w-3/12 bg-[#FDF5E6] h-full flex items-center "></div>
+          <div className="w-3/12 bg-[#f5e8d7] h-full flex items-center "></div>
           <img
             src={img21}
             alt=""
@@ -52,7 +57,7 @@ const Core: React.FC = () => {
           />
         </div>
         <div className="h-[20vh] w-full flex">
-          <div className="w-9/12 bg-[#FDF5E6] h-full flex items-center">
+          <div className="w-9/12 bg-[#f5e8d7] h-full flex items-center">
             <div className="border-r border-[#b9944c] bg-customGreen md:h-[25vh] lg:h-[28vh] w-1/4 ">
               <div className="w-[90%] flex justify-center">
                 <img src={img4} alt="" className="md:w-[11vh] lg:w-[13vh]" />

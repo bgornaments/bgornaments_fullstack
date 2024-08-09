@@ -10,6 +10,9 @@ import Navbar from "./components/LandingPage/Navbar.jsx";
 import Footer from "./components/LandingPage/Footer.jsx";
 import Login from "./components/Login.tsx";
 import { Authenticator } from "@aws-amplify/ui-react";
+import Catalogue from "./components/BrowseCatalogue/Catalogue.tsx"
+import DetailedImageView from "./components/BrowseCatalogue/DetailedImageView.tsx";
+// import LikedImages from "./components/BrowseCatalogue/LikedImages.tsx";
 
 // const RequireAuth: React.FC<{ children: ReactNode }> = ({ children }) => {
 //   const { route } = useAuthenticator();
@@ -55,6 +58,14 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/catalog",
+    element: <Catalogue />,
+  },
+  {
+    path: "/catalog/:id", 
+    element: <DetailedImageView />,
   },
 ]);
 
