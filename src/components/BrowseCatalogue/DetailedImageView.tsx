@@ -74,11 +74,11 @@ const DetailedImageView: React.FC = () => {
             <img
               src={imageData.src}
               alt={imageData.description}
-              className="w-[22vw] rounded-xl shadow-[0_0_120px_100px_#F5E8D7] mt-[10vh]"
+              className="h-[22vw] max-w-[35vw] rounded-xl shadow-[0_0_120px_100px_#F5E8D7] mt-[10vh]"
             />
             <div className="flex flex-col gap-[5vh]">
               <h2 className="text-sm tracking-wider font-bold text-customBlack">{imageData.type}</h2>
-              <p className="text-customGreen text-3xl tracking-widest font-bold ">{imageData.description}</p>
+              <p className="text-customGreen text-3xl tracking-widest font-bold max-w-[40vw] leading-relaxed">{imageData.description}</p>
               <div className="w-full">
                 <hr />
                 <div className="flex justify-between items-center">
