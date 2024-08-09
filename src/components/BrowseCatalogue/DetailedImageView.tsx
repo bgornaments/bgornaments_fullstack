@@ -27,22 +27,22 @@ const DetailedImageView: React.FC = () => {
     setImageData(image);
   }, [id]);
 
-  const handleRefineDesign = async () => {
-    if (imageData) {
-      setIsLoading(true);
-      setError(null);
-      try {
-        console.log("clicked");
-        console.log(id);
-        setGeneratedImages([]);
-      } catch (error) {
-        setError("Error refining design. Please try again.");
-        console.error("Error refining design:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  };
+  // const handleRefineDesign = async () => {
+  //   if (imageData) {
+  //     setIsLoading(true);
+  //     setError(null);
+  //     try {
+  //       console.log("clicked");
+  //       console.log(id);
+  //       setGeneratedImages([]);
+  //     } catch (error) {
+  //       setError("Error refining design. Please try again.");
+  //       console.error("Error refining design:", error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
+  // };
 
   return (
     <div className="min-h-screen bg-[#fff9f5] p-[2vw]">
