@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../redux/store';
 import { updateFormData } from '../../redux/formSlice';
 import { addLikedImage, removeLikedImage, setLikedImages } from '../../redux/likedImagesSlice';
+import { FaSpinner } from 'react-icons/fa'; // Import a spinner icon or use any other loading indicator
 
 interface ImageGalleryProps {
   images: Array<{
@@ -45,6 +46,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 50;
 
+  const [imageLoading, setImageLoading] = useState<{ [key: number]: boolean }>({});
+
   useEffect(() => {
     if (!occasion || !jewelryType || !gender || !ageGroup) {
       const savedFormData = localStorage.getItem('formData');
@@ -72,7 +75,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   }, [dispatch]);
 
   const heading = `${occasion || 'Occasion'} ${jewelryType || 'Jewelry Type'} from ${gender === 'Female' ? 'her' : 'him'}`;
-  const resultDescription = `Showing results for ${jewelryType || 'jewelry type'} for the occasion of ${occasion || 'occasion'}, for a ${gender === 'female' ? 'female' : 'male'} aged ${ageGroup || 'age group'}`;
+  const resultDescription = `Showing results for ${jewelryType || 'jewelry type'} for the occasion of ${occasion || 'occasion'}, for a ${gender === 'Female' ? 'female' : 'male'} aged ${ageGroup || 'age group'}`;
 
   const filtersMatchFormData = () => {
     return (
@@ -137,11 +140,21 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
                 className="relative group w-full h-56"
                 onClick={() => navigate(`/catalog/${image.id}`)} 
               >
-                <img
-                  src={image.src}
-                  alt={image.description}
-                  className="w-full h-full object-cover rounded-lg"
-                />
+                <div className="relative w-full h-full">
+                  {imageLoading[image.id] && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <FaSpinner className="text-white text-3xl animate-spin" />
+                    </div>
+                  )}
+                  <img
+                    src={image.src}
+                    alt={image.description}
+                    className={`w-full h-full object-cover rounded-lg ${imageLoading[image.id] ? 'opacity-0' : 'opacity-100'}`}
+                    onLoad={() => setImageLoading(prev => ({ ...prev, [image.id]: false }))}
+                    onError={() => setImageLoading(prev => ({ ...prev, [image.id]: false }))}
+                    onLoadStart={() => setImageLoading(prev => ({ ...prev, [image.id]: true }))}
+                  />
+                </div>
                 <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white p-2 text-center rounded-lg">
                   <p>{image.description}</p>
                 </div>
