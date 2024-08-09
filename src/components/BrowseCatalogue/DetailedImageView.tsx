@@ -70,26 +70,25 @@ const DetailedImageView: React.FC = () => {
       </header>
       {imageData ? (
         <>
-          <div className="flex items-center justify-center mt-[5vh] gap-[10vw] h-full">
+          <div className="flex items-center justify-center align-middle mt-[5vh] gap-[10vw] h-full">
             <img
               src={imageData.src}
               alt={imageData.description}
               className="w-[22vw] rounded-xl shadow-[0_0_120px_100px_#F5E8D7] mt-[10vh]"
             />
-            <div className="flex flex-col gap-[4vh]">
+            <div className="flex flex-col gap-[5vh]">
               <h2 className="text-sm tracking-wider font-bold text-customBlack">{imageData.type}</h2>
               <p className="text-customGreen text-3xl tracking-widest font-bold ">{imageData.description}</p>
-              <div>
               <div className="w-full">
                 <hr />
                 <div className="flex justify-between items-center">
                 <p className="my-2 text-customGreen text-md mx-4 tracking-wide">Product Details</p>
                 <img src={plus} alt="" className="size-[1vw] mx-4" />
-
                 </div>
                 <hr />
               </div>
-              <p className="text-sm tracking-wider mb-1 text-customBlack">Love the design? Try creating something similar with AI!</p>
+              <div>
+              <p className="text-sm tracking-wider mb-4 text-customBlack">Love the design? Try creating something similar with AI!</p>
               <button className="mb-4 flex justify-center items-center gap-[0.4rem] border border-customGreen py-1 px-3 rounded-xl text-sm text-customBlack font-bold">
               <p>Generate Designs</p>
               <img src={ai} alt="" className="w-[1.2rem]" />
