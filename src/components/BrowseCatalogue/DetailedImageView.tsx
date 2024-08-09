@@ -13,9 +13,9 @@ import plus from "/src/assets/plus.png"
 const DetailedImageView: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [imageData, setImageData] = useState<any>(null);
-  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  // const [generatedImages, setGeneratedImages] = useState<string[]>([]);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const likedImages = useSelector(
     (state: RootState) => state.likedImages.likedImages
@@ -102,7 +102,7 @@ const DetailedImageView: React.FC = () => {
           
             </div>
           </div>
-          {isLoading && <p>Loading...</p>}
+          {/* {isLoading && <p>Loading...</p>}
           {error && <p className="text-red-500">{error}</p>}
           <div className="mt-4">
             {generatedImages.map((img, idx) => (
@@ -113,7 +113,7 @@ const DetailedImageView: React.FC = () => {
                 className="w-1/4 h-auto"
               />
             ))}
-          </div>
+          </div> */}
         </>
       ) : (
         <p>Loading image data...</p>
