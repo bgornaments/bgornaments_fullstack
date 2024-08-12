@@ -1,25 +1,7 @@
 import React from 'react';
-// import { AiOutlineHeart } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { RootState, AppDispatch } from '../../redux/store';
-// import { addLikedImage, removeLikedImage } from '../../redux/likedImagesSlice';
 
 const LikedImages: React.FC = () => {
-  // const dispatch = useDispatch<AppDispatch>();
-  // const likedImages = useSelector((state: RootState) => state.likedImages.likedImages);
-
-  // const images = useSelector((state: RootState) => state.imagesData); 
-
-  // const handleLike = (id: number) => {
-  //   if (likedImages.includes(id)) {
-  //     dispatch(removeLikedImage(id));
-  //   } else {
-  //     dispatch(addLikedImage(id));
-  //   }
-  // };
-
-  // const likedImagesData = images.filter(image => likedImages.includes(image.id));
 
   return (
     <div className="m-10 flex flex-col justify-center items-center">

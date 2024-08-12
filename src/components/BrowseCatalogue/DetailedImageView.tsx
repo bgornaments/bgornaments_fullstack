@@ -13,36 +13,15 @@ import plus from "/src/assets/plus.png"
 const DetailedImageView: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [imageData, setImageData] = useState<any>(null);
-  // const [generatedImages, setGeneratedImages] = useState<string[]>([]);
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
-  // const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const likedImages = useSelector(
     (state: RootState) => state.likedImages.likedImages
   );
 
-
   useEffect(() => {
     const image = imagesData.find((img) => img.id === parseInt(id || "0"));
     setImageData(image);
   }, [id]);
-
-  // const handleRefineDesign = async () => {
-  //   if (imageData) {
-  //     setIsLoading(true);
-  //     setError(null);
-  //     try {
-  //       console.log("clicked");
-  //       console.log(id);
-  //       setGeneratedImages([]);
-  //     } catch (error) {
-  //       setError("Error refining design. Please try again.");
-  //       console.error("Error refining design:", error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   }
-  // };
 
   return (
     <div className="min-h-screen bg-[#fff9f5] p-[2vw]">
@@ -70,25 +49,25 @@ const DetailedImageView: React.FC = () => {
       </header>
       {imageData ? (
         <>
-          <div className="flex items-center justify-center align-middle mt-[5vh] gap-[10vw] h-full">
+          <div className="flex flex-col md:flex-row items-center justify-center align-middle mt-[5vh] gap-[10vw] h-full">
             <img
               src={imageData.src}
               alt={imageData.description}
-              className="h-[22vw] max-w-[35vw] rounded-xl shadow-[0_0_120px_100px_#F5E8D7] mt-[10vh]"
+              className="h-[50vw] md:h-[22vw] md:max-w-[35vw] rounded-xl md:shadow-[0_0_120px_100px_#F5E8D7] shadow-[0_0_120px_30px_#F5E8D7] md:mt-[10vh]"
             />
-            <div className="flex flex-col gap-[5vh]">
-              <h2 className="text-sm tracking-wider font-bold text-customBlack">{imageData.type}</h2>
-              <p className="text-customGreen text-3xl tracking-widest font-bold max-w-[40vw] leading-relaxed">{imageData.description}</p>
+            <div className="flex flex-col gap-[3vh] md:gap-[5vh] md:items-start items-center">
+              <h2 className="text-sm tracking-wider md:font-bold text-customBlack">{imageData.type}</h2>
+              <p className="text-customGreen text-xl xs:mx-10 md:mx-0 text-center md:text-start md:text-3xl tracking-widest font-bold md:max-w-[40vw] leading-relaxed">{imageData.description}</p>
               <div className="w-full">
                 <hr />
-                <div className="flex justify-between items-center">
-                <p className="my-2 text-customGreen text-md mx-4 tracking-wide">Product Details</p>
-                <img src={plus} alt="" className="size-[1vw] mx-4" />
+                <div className="flex justify-between items-center mx-10 md:mx-4 ">
+                <p className="my-2 text-customGreen text-sm md:text-md tracking-wide">Product Details</p>
+                <img src={plus} alt="" className=" size-[3vw] md:size-[1vw]" />
                 </div>
                 <hr />
               </div>
-              <div>
-              <p className="text-sm tracking-wider mb-4 text-customBlack">Love the design? Try creating something similar with AI!</p>
+              <div className="flex flex-col items-center xs:mx-10 md:mx-0">
+              <p className="text-sm tracking-wider mb-4 text-customBlack text-center">Love the design? Try creating something similar with AI!</p>
               <button className="mb-4 flex justify-center items-center gap-[0.4rem] border border-customGreen py-1 px-3 rounded-xl text-sm text-customBlack font-bold">
               <p>Generate Designs</p>
               <img src={ai} alt="" className="w-[1.2rem]" />

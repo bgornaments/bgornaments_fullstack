@@ -39,7 +39,7 @@ const FloatingButton: React.FC = () => {
           <img
             src={btn}
             alt="Explore More"
-            className="w-[12rem] transition-transform duration-300 ease-in-out"
+            className="w-[6rem] md:w-[12rem] transition-transform duration-300 ease-in-out"
           />
         </button>
       )}

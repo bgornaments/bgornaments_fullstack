@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../redux/store';
 import { updateFormData } from '../../redux/formSlice';
 import { addLikedImage, removeLikedImage, setLikedImages } from '../../redux/likedImagesSlice';
-import { FaSpinner } from 'react-icons/fa'; // Import a spinner icon or use any other loading indicator
+import { FaSpinner } from 'react-icons/fa';
 
 interface ImageGalleryProps {
   images: Array<{
@@ -30,13 +30,14 @@ interface ImageGalleryProps {
       type: string;
     }>
   >;
+  sidebarVisible: boolean;
 }
-
 const ImageGallery: React.FC<ImageGalleryProps> = ({
   images,
   searchTerm,
   filters,
   setFilters,
+  sidebarVisible,
 }) => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
@@ -101,15 +102,18 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
   const handleLike = (id: number) => {
     if (likedImages.includes(id)) {
       dispatch(removeLikedImage(id));
     } else {
       dispatch(addLikedImage(id));
     }
-    localStorage.setItem('likedImages', JSON.stringify(likedImages));
+    const updatedLikedImages = likedImages.includes(id)
+      ? likedImages.filter((imageId) => imageId !== id)
+      : [...likedImages, id];
+    localStorage.setItem('likedImages', JSON.stringify(updatedLikedImages));
   };
+  
 
   const resetFilters = () => {
     setFilters({ material: "", gemstone: "", design: "", type: "" });
@@ -117,18 +121,21 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
-      <FilterSidebar
-        filters={filters}
-        setFilters={setFilters}
-        resetFilters={resetFilters}
-      />
+      <div className="flex flex-col md:flex-row">
+      <div className={`md:block ${sidebarVisible ? 'block' : 'hidden'} w-full md:w-[23%] `}>
+        <FilterSidebar
+          filters={filters}
+          setFilters={setFilters}
+          resetFilters={resetFilters}
+          sidebarVisible={sidebarVisible} 
+        />
+      </div>
 
       <main className="w-full md:w-3/4 p-8 flex flex-col gap-[1.5vh] text-customBlack">
         {filtersMatchFormData() && (
           <>
-            <h4 className="text-2xl font-serif font-semibold leading-loose">{heading}</h4>
-            <p className="text-sm">{resultDescription}</p>
+            <h4 className="text-md md:text-2xl font-serif font-semibold leading-loose">{heading}</h4>
+            <p className="text-[0.5rem] md:text-sm">{resultDescription}</p>
           </>
         )}
 
@@ -149,7 +156,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
                   <img
                     src={image.src}
                     alt={image.description}
-                    className={`w-full h-full object-cover rounded-lg ${imageLoading[image.id] ? 'opacity-0' : 'opacity-100'}`}
+                    className={`w-full h-[11rem] lg:h-full object-cover rounded-lg ${imageLoading[image.id] ? 'opacity-0' : 'opacity-100'}`}
                     onLoad={() => setImageLoading(prev => ({ ...prev, [image.id]: false }))}
                     onError={() => setImageLoading(prev => ({ ...prev, [image.id]: false }))}
                     onLoadStart={() => setImageLoading(prev => ({ ...prev, [image.id]: true }))}

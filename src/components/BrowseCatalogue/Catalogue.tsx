@@ -7,7 +7,8 @@ import ImageGallery from "./ImageGallery";
 import icon from "/src/assets/image.png";
 import { useSelector } from 'react-redux';
 import { RootState} from '../../redux/store';
-// import { addLikedImage, removeLikedImage } from '../../redux/likedImagesSlice';
+import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
+
 
 const JewelryApp: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,27 +18,19 @@ const JewelryApp: React.FC = () => {
     design: "",
     type: "",
   });
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+  
 
   const navigate = useNavigate();
-  // const dispatch = useDispatch<AppDispatch>();
-
   const likedImages = useSelector((state: RootState) => state.likedImages.likedImages);
-
-  // const handleLike = (id: number) => {
-  //   if (likedImages.includes(id)) {
-  //     dispatch(removeLikedImage(id));
-  //   } else {
-  //     dispatch(addLikedImage(id));
-  //   }
-  // };
 
   return (
     <div className="min-h-screen bg-[#fff9f5] p-[2vw]">
-      <header className="flex justify-between mb-4 mx-4">
+      <header className="flex justify-between mb-4 mx-4 items-center relative">
         <img
           src={icon}
           alt=""
-          className="xs:w-[10rem] md:w-[12rem] xl:w-[14rem]"
+          className="xs:w-[6rem] xs:h-[2rem] md:w-[12rem] md:h-[4.5rem] xl:w-[14rem]"
         />
         <div className="flex gap-[2rem]">
           <div className="relative flex items-center">
@@ -48,7 +41,7 @@ const JewelryApp: React.FC = () => {
                 placeholder="Search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-[#F5E8D7] ml-2 p-2 outline-none w-64 text-sm"
+                className="bg-[#F5E8D7] ml-2 md:p-2 outline-none md:w-64 md:text-sm w-20 text-[0.6rem] p-1"
               />
             </div>
           </div>
@@ -56,7 +49,7 @@ const JewelryApp: React.FC = () => {
             onClick={() => navigate("/catalog/likedimages")}
             className="relative p-2"
           >
-            <div className="rounded-full p-3 bg-[#F5E8D7]">
+            <div className="rounded-full md:p-3 bg-[#F5E8D7] p-1">
               <AiOutlineHeart size={20} color="gray" />
               {likedImages.length > 0 && (
                 <span className="absolute top-0 right-0 bg-red-500 font-serif text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
@@ -66,14 +59,24 @@ const JewelryApp: React.FC = () => {
             </div>
           </button>
         </div>
+
+        <button
+          className=" z-50 md:hidden"
+          onClick={() => setSidebarVisible(!sidebarVisible)}
+        >
+            {sidebarVisible ? (
+        <AiOutlineClose size={24} color="gray" />
+      ) : (
+        <AiOutlineMenu size={24} color="gray" />
+      )}
+        </button>
       </header>
       <ImageGallery
         images={imagesData}
         searchTerm={searchTerm}
         filters={filters}
         setFilters={setFilters}
-        // handleLike={handleLike}
-        // likedImages={likedImages}
+        sidebarVisible={sidebarVisible}
       />
     </div>
   );
