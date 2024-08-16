@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { FiSearch } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import imagesData from "./images.json";
 import ImageGallery from "./ImageGallery";
 import icon from "/src/assets/image.png";
 import { useSelector } from 'react-redux';
 import { RootState} from '../../redux/store';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
-
 
 const JewelryApp: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +17,6 @@ const JewelryApp: React.FC = () => {
     type: "",
   });
   const [sidebarVisible, setSidebarVisible] = useState(false);
-  
 
   const navigate = useNavigate();
   const likedImages = useSelector((state: RootState) => state.likedImages.likedImages);
@@ -64,15 +61,14 @@ const JewelryApp: React.FC = () => {
           className=" z-50 md:hidden"
           onClick={() => setSidebarVisible(!sidebarVisible)}
         >
-            {sidebarVisible ? (
-        <AiOutlineClose size={24} color="gray" />
-      ) : (
-        <AiOutlineMenu size={24} color="gray" />
-      )}
+          {sidebarVisible ? (
+            <AiOutlineClose size={24} color="gray" />
+          ) : (
+            <AiOutlineMenu size={24} color="gray" />
+          )}
         </button>
       </header>
       <ImageGallery
-        images={imagesData}
         searchTerm={searchTerm}
         filters={filters}
         setFilters={setFilters}

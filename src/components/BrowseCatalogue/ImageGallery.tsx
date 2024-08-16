@@ -7,19 +7,20 @@ import FloatingButton from "./FloatingButton";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../redux/store';
 import { updateFormData } from '../../redux/formSlice';
-import { addLikedImage, removeLikedImage, setLikedImages } from '../../redux/likedImagesSlice';
+// import { addLikedImage, removeLikedImage, setLikedImages } from '../../redux/likedImagesSlice';
 import { FaSpinner } from 'react-icons/fa';
 
-interface ImageGalleryProps {
-  images: Array<{
-    id: number;
-    src: string;
-    description: string;
-    material: string;
-    gemstone: string;
-    design: string;
-    type: string;
-  }>;
+interface ImageData {
+  url: string;
+  description: string;
+  material: string;
+  gemstone: string;
+  design: string;
+  type: string;
+  ProcessedFlag?: boolean;
+}
+
+const ImageGallery: React.FC<{
   searchTerm: string;
   filters: { material: string; gemstone: string; design: string; type: string };
   setFilters: React.Dispatch<
@@ -31,9 +32,7 @@ interface ImageGalleryProps {
     }>
   >;
   sidebarVisible: boolean;
-}
-const ImageGallery: React.FC<ImageGalleryProps> = ({
-  images,
+}> = ({
   searchTerm,
   filters,
   setFilters,
@@ -42,12 +41,34 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const formData = useSelector((state: RootState) => state.form.formData);
-  const likedImages = useSelector((state: RootState) => state.likedImages.likedImages);
+  // const likedImages = useSelector((state: RootState) => state.likedImages.likedImages);
   const { occasion, jewelryType, gender, ageGroup } = formData;
+
+  const [images, setImages] = useState<ImageData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 50;
+  const [imageLoading, setImageLoading] = useState<{ [key: string]: boolean }>({});
 
-  const [imageLoading, setImageLoading] = useState<{ [key: number]: boolean }>({});
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await fetch("https://dem48tvmua.execute-api.us-east-1.amazonaws.com/getDB");
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data: ImageData[] = await response.json();
+        setImages(data);
+      } catch (error) {
+        setError(error instanceof Error ? error.message : 'An error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchImages();
+  }, []);
 
   useEffect(() => {
     if (!occasion || !jewelryType || !gender || !ageGroup) {
@@ -68,12 +89,12 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     });
   }, [formData, setFilters]);
 
-  useEffect(() => {
-    const savedLikedImages = localStorage.getItem('likedImages');
-    if (savedLikedImages) {
-      dispatch(setLikedImages(JSON.parse(savedLikedImages)));
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   const savedLikedImages = localStorage.getItem('likedImages');
+  //   if (savedLikedImages) {
+  //     dispatch(setLikedImages(JSON.parse(savedLikedImages)));
+  //   }
+  // }, [dispatch]);
 
   const heading = `${occasion || 'Occasion'} ${jewelryType || 'Jewelry Type'} from ${gender === 'Female' ? 'her' : 'him'}`;
   const resultDescription = `Showing results for ${jewelryType || 'jewelry type'} for the occasion of ${occasion || 'occasion'}, for a ${gender === 'Female' ? 'female' : 'male'} aged ${ageGroup || 'age group'}`;
@@ -89,6 +110,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
 
   const filteredImages = images.filter(
     (image) =>
+      image.ProcessedFlag === true &&
       image.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (filters.material ? image.material === filters.material : true) &&
       (filters.gemstone ? image.gemstone === filters.gemstone : true) &&
@@ -102,26 +124,39 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-  const handleLike = (id: number) => {
-    if (likedImages.includes(id)) {
-      dispatch(removeLikedImage(id));
-    } else {
-      dispatch(addLikedImage(id));
-    }
-    const updatedLikedImages = likedImages.includes(id)
-      ? likedImages.filter((imageId) => imageId !== id)
-      : [...likedImages, id];
-    localStorage.setItem('likedImages', JSON.stringify(updatedLikedImages));
+
+  const handleLike = (url: string) => {
+    console.log(url)
+    // if (likedImages.includes(url)) {
+    //   dispatch(removeLikedImage(url));
+    // } else {
+    //   dispatch(addLikedImage(url));
+    // }
+    // const updatedLikedImages = likedImages.includes(url)
+    //   ? likedImages.filter((imageUrl) => imageUrl !== url)
+    //   : [...likedImages, url];
+    // localStorage.setItem('likedImages', JSON.stringify(updatedLikedImages));
   };
-  
 
   const resetFilters = () => {
     setFilters({ material: "", gemstone: "", design: "", type: "" });
     setCurrentPage(1);
   };
 
+  if (loading) {
+    return <div className="flex justify-center items-center h-screen"><FaSpinner className="text-3xl animate-spin" /></div>;
+  }
+
+  if (error) {
+    return <div className="flex justify-center items-center h-screen">Error: {error}</div>;
+  }
+
+const handleImageClick = (url: string) => {
+  navigate(`/catalog/${encodeURIComponent(url)}`);
+};
+
   return (
-      <div className="flex flex-col md:flex-row">
+    <div className="flex flex-col md:flex-row">
       <div className={`md:block ${sidebarVisible ? 'block' : 'hidden'} w-full md:w-[23%] `}>
         <FilterSidebar
           filters={filters}
@@ -143,23 +178,23 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 mt-8">
             {paginatedImages.map((image) => (
               <div
-                key={image.id}
+                key={image.url}
                 className="relative group w-full h-56"
-                onClick={() => navigate(`/catalog/${image.id}`)} 
+                onClick={() => handleImageClick(image.url)}
               >
                 <div className="relative w-full h-full">
-                  {imageLoading[image.id] && (
+                  {imageLoading[image.url] && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <FaSpinner className="text-white text-3xl animate-spin" />
+                      <FaSpinner className="text-3xl animate-spin" />
                     </div>
                   )}
                   <img
-                    src={image.src}
+                    src={image.url}
                     alt={image.description}
-                    className={`w-full h-[11rem] lg:h-full object-cover rounded-lg ${imageLoading[image.id] ? 'opacity-0' : 'opacity-100'}`}
-                    onLoad={() => setImageLoading(prev => ({ ...prev, [image.id]: false }))}
-                    onError={() => setImageLoading(prev => ({ ...prev, [image.id]: false }))}
-                    onLoadStart={() => setImageLoading(prev => ({ ...prev, [image.id]: true }))}
+                    className={`w-full h-[11rem] lg:h-full object-cover rounded-lg ${imageLoading[image.url] ? 'opacity-0' : 'opacity-100'}`}
+                    onLoad={() => setImageLoading(prev => ({ ...prev, [image.url]: false }))}
+                    onError={() => setImageLoading(prev => ({ ...prev, [image.url]: false }))}
+                    onLoadStart={() => setImageLoading(prev => ({ ...prev, [image.url]: true }))}
                   />
                 </div>
                 <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white p-2 text-center rounded-lg">
@@ -169,12 +204,12 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
                   className="absolute top-2 right-2 rounded-full p-1"
                   onClick={(e) => {
                     e.stopPropagation(); 
-                    handleLike(image.id);
+                    handleLike(image.url);
                   }}
                 >
                   <AiOutlineHeart
                     size={24}
-                    color={likedImages.includes(image.id) ? "red" : "gray"}
+                    // color={likedImages.includes(image.url) ? "red" : "gray"}
                   />
                 </button>
               </div>

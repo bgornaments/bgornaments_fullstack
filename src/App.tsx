@@ -2,7 +2,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HeroPage from "./components/LandingPage/HeroPage.tsx";
 import AIimages from "./components/AIimages.tsx";
-import BasicForm from "./components/Basic/BasicForm.tsx";
+import JewelryForm from "./components/Basic/BasicForm.tsx";
 import Option from "./components/Basic/Option.tsx";
 import Modes from "./components/Basic/Modes.tsx";
 import Questions from "./components/LightningMode/Questions.tsx";
@@ -12,7 +12,7 @@ import Login from "./components/Login.tsx";
 import { Authenticator } from "@aws-amplify/ui-react";
 import Catalogue from "./components/BrowseCatalogue/Catalogue.tsx"
 import DetailedImageView from "./components/BrowseCatalogue/DetailedImageView.tsx";
-// import LikedImages from "./components/BrowseCatalogue/LikedImages.tsx";
+import EditImageData from "./components/BrowseCatalogue/EditImageData.tsx";
 
 // const RequireAuth: React.FC<{ children: ReactNode }> = ({ children }) => {
 //   const { route } = useAuthenticator();
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/form",
-    element: <BasicForm />,
+    element: <JewelryForm />,
   },
   {
     path: "/Navbar",
@@ -64,9 +64,13 @@ const router = createBrowserRouter([
     element: <Catalogue />,
   },
   {
-    path: "/catalog/:id", 
+    path: "/catalog/:url", 
     element: <DetailedImageView />,
   },
+{
+  path:"/edit",
+  element:<EditImageData/>
+}
 ]);
 
 const App: React.FC = () => {

@@ -1,28 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import imagesData from "./images.json";
 import icon from "/src/assets/image.png";
+import { useParams, useNavigate } from "react-router-dom";
 import { AiOutlineHeart } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import img from "/src/assets/add-to-favorites.png"
-import ai from "/src/assets/chatbot.png"
-import plus from "/src/assets/plus.png"
+import img from "/src/assets/add-to-favorites.png";
+import ai from "/src/assets/chatbot.png";
+import plus from "/src/assets/plus.png";
+import { FaSpinner } from 'react-icons/fa';
+
+interface ImageData {
+  url: string;
+  description: string;
+  material: string;
+  gemstone: string;
+  design: string;
+  type: string;
+}
 
 const DetailedImageView: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const [imageData, setImageData] = useState<any>(null);
+  const { url } = useParams<{ url: string }>();
+  const [imageData, setImageData] = useState<ImageData | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const likedImages = useSelector(
-    (state: RootState) => state.likedImages.likedImages
-  );
+  const likedImages = useSelector((state: RootState) => state.likedImages.likedImages);
 
   useEffect(() => {
-    const image = imagesData.find((img) => img.id === parseInt(id || "0"));
-    setImageData(image);
-  }, [id]);
-
+    console.log('URL Parameter:', url); // Check if URL is correct
+    const fetchImage = async () => {
+      try {
+        const response = await fetch(`https://dem48tvmua.execute-api.us-east-1.amazonaws.com/getDB`);
+        const data = await response.json();
+        const image = data.find((img: ImageData) => img.url === url);
+        setImageData(image || null);
+      } catch (error) {
+        setError(error instanceof Error ? error.message : 'An error occurred');
+      }
+    };
+    fetchImage();
+    console.log(error)
+  }, [url]);
   return (
     <div className="min-h-screen bg-[#fff9f5] p-[2vw]">
       <header className="flex justify-between mb-4 mx-4">
@@ -51,7 +68,7 @@ const DetailedImageView: React.FC = () => {
         <>
           <div className="flex flex-col md:flex-row items-center justify-center align-middle mt-[5vh] gap-[10vw] h-full">
             <img
-              src={imageData.src}
+              src={imageData.url}
               alt={imageData.description}
               className="h-[50vw] md:h-[22vw] md:max-w-[35vw] rounded-xl md:shadow-[0_0_120px_100px_#F5E8D7] shadow-[0_0_120px_30px_#F5E8D7] md:mt-[10vh]"
             />
@@ -95,7 +112,9 @@ const DetailedImageView: React.FC = () => {
           </div> */}
         </>
       ) : (
-        <p>Loading image data...</p>
+        <div className="absolute inset-0 flex items-center justify-center">
+        <FaSpinner className="text-customGreen text-3xl animate-spin" />
+      </div>
       )}
     </div>
   );
