@@ -11,6 +11,7 @@ import {
   LIGHTENING_MODE,
   SUMMARIZER,
   IMAGE_GENERATOR,
+  SIMILAR_IMAGES_FETCHER
 } from "../../constantsAWS";
 import Lottie from "react-lottie";
 import LoadingData from "/src/assets/Loading.json";
@@ -255,7 +256,29 @@ const AIGenerated: React.FC = () => {
       const parsedBody = JSON.parse(response.data.body);
       console.log("Parsed Body:", parsedBody);
 
-      const imageData = parsedBody.uploaded_image_urls;
+      let urls_list = parsedBody.uploaded_image_urls
+
+      const payload_similar = {
+        body: JSON.stringify({
+          prompt: t2i_prompt,
+          jtype: formData.jewelryType,
+          numImages: 5, // max 7
+        }),
+      };
+      const response_similar = await axios.post(SIMILAR_IMAGES_FETCHER, payload_similar, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const parsedBody_similar = JSON.parse(response_similar.data.body);
+      console.log("Parsed Body Similar:", parsedBody_similar);
+
+      // Append the URLs from the second response to the existing urls_list
+      urls_list = urls_list.concat(parsedBody_similar.urls);
+
+      const imageData = urls_list;
+
+      // Add to urls based on similarity matching
       console.log("Extracted Image Data:", imageData);
 
       if (Array.isArray(imageData)) {
