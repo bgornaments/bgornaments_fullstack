@@ -1,19 +1,32 @@
-import React, { useState } from 'react';
-import filter_1 from "/src/assets/filter_1.png"
-import filter_2 from "/src/assets/filter_2.png"
-import filter_3 from "/src/assets/filter_3.png"
-import filter_4 from "/src/assets/filter_4.png"
+import React, { useState } from "react";
+import filter_1 from "/src/assets/filter_1.png";
+import filter_2 from "/src/assets/filter_2.png";
+import filter_3 from "/src/assets/filter_3.png";
+import filter_4 from "/src/assets/filter_4.png";
 
-
-type FilterKeys = 'material' | 'gemstone' | 'design' | 'type';
+type FilterKeys = "material" | "gemstone" | "design" | "type";
 
 interface FilterSidebarProps {
   filters: { material: string; gemstone: string; design: string; type: string };
-  setFilters: React.Dispatch<React.SetStateAction<{ material: string; gemstone: string; design: string; type: string }>>;
+  setFilters: React.Dispatch<
+    React.SetStateAction<{
+      material: string;
+      gemstone: string;
+      design: string;
+      type: string;
+    }>
+  >;
   resetFilters: () => void;
+  sidebarVisible: boolean;
+
 }
 
-const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, setFilters, resetFilters }) => {
+const FilterSidebar: React.FC<FilterSidebarProps> = ({
+  filters,
+  setFilters,
+  resetFilters,
+  sidebarVisible,
+}) => {
   const [expanded, setExpanded] = useState<{ [key in FilterKeys]: boolean }>({
     material: false,
     gemstone: false,
@@ -23,64 +36,84 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, setFilters, rese
 
   const filterOptions = [
     {
-      name: 'type' as FilterKeys,
-      label: 'Jewelry Type',
-      image: filter_4, 
-      options: ['Rings', 'Necklaces', 'Bracelets', 'Earrings', 'Bangles', 'Pendants', 'Chains'],
+      name: "type" as FilterKeys,
+      label: "Jewelry Type",
+      image: filter_4,
+      options: [
+        "Rings",
+        "Necklaces",
+        "Bracelets",
+        "Earrings",
+        "Bangles",
+        "Pendants",
+        "Chains",
+      ],
     },
     {
-      name: 'material' as FilterKeys,
-      label: 'Material',
-      image: filter_1, 
-      options: ['Gold', 'Silver', 'Rose gold', 'Platinum'],
+      name: "material" as FilterKeys,
+      label: "Material",
+      image: filter_1,
+      options: ["Gold", "Silver", "Rose gold", "Platinum"],
     },
     {
-      name: 'gemstone' as FilterKeys,
-      label: 'Gemstone Type',
-      image: filter_2, 
-      options: ['Diamond', 'Emerald', 'Ruby'],
+      name: "gemstone" as FilterKeys,
+      label: "Gemstone Type",
+      image: filter_2,
+      options: ["Diamond", "Emerald", "Ruby"],
     },
     {
-      name: 'design' as FilterKeys,
-      label: 'Design Style',
+      name: "design" as FilterKeys,
+      label: "Design Style",
       image: filter_3,
-      options: ['Classic', 'Modern', 'Vintage'],
+      options: ["Classic", "Modern", "Vintage"],
     },
   ];
 
   const toggleExpand = (filterName: FilterKeys) => {
-    setExpanded(prevExpanded => ({
+    setExpanded((prevExpanded) => ({
       ...prevExpanded,
       [filterName]: !prevExpanded[filterName],
     }));
   };
 
   const handleFilterChange = (filterName: FilterKeys, option?: string) => {
-    setFilters(prevFilters => ({
+    setFilters((prevFilters) => ({
       ...prevFilters,
-      [filterName]: option || '', 
+      [filterName]: option || "",
     }));
   };
 
   return (
-    <aside className="w-full md:w-1/4 p-8 fixed top-0 left-0 md:static">
-      {filterOptions.map(filter => (
+    <aside
+      className={`w-full  p-8 fixed top-14 left-0 md:static ${
+        sidebarVisible ? "bg-[#fff9f5]" : ""
+      } z-50`}
+    >
+      {filterOptions.map((filter) => (
         <div className="mb-6" key={filter.name}>
           <h3
-            className={`text-md ${expanded[filter.name] ? '' : ''} text-customBlack font-serif mb-4 cursor-pointer flex items-center`}
+            className={`text-md ${
+              expanded[filter.name] ? "" : ""
+            } text-customBlack font-serif mb-4 cursor-pointer flex items-center`}
             onClick={() => toggleExpand(filter.name)}
           >
-            <img src={filter.image} alt={`${filter.label} icon`} className="w-4 mr-2" />
+            <img
+              src={filter.image}
+              alt={`${filter.label} icon`}
+              className="w-4 mr-2"
+            />
             {filter.label}
           </h3>
           {expanded[filter.name] && (
             <div>
               <div className="flex flex-wrap gap-2 mb-2 mx-2">
-                {filter.options.map(option => (
+                {filter.options.map((option) => (
                   <button
                     key={option}
-                    className={`px-4 py-1 text-[0.8vw] rounded-xl cursor-pointer shadow-md transition-all ${
-                      filters[filter.name] === option ? 'bg-[#f3ddc0] text-customBlack' : 'bg-transparent text-customBlack border border-[#F5E8D7]'
+                    className={`px-4 py-1 xs:text-[2.3vw] md:text-[1.1vw] lg:text-[0.8vw] rounded-xl cursor-pointer shadow-md transition-all ${
+                      filters[filter.name] === option
+                        ? "bg-[#f3ddc0] text-customBlack"
+                        : "bg-transparent text-customBlack border border-[#F5E8D7]"
                     }`}
                     onClick={() => handleFilterChange(filter.name, option)}
                   >
@@ -89,7 +122,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, setFilters, rese
                 ))}
               </div>
               <button
-                className="text-[#E0AE2A] text-[0.8vw] hover:underline mx-3 opacity-80"
+                className="text-[#E0AE2A] xs:text-[2.3vw] md:text-[1.1vw] lg:text-[0.8vw] hover:underline mx-3 opacity-80"
                 onClick={() => handleFilterChange(filter.name)}
               >
                 Clear choice
@@ -98,13 +131,19 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, setFilters, rese
           )}
         </div>
       ))}
-
-      <button
-        className="text-[#E0AE2A] text-sm hover:underline opacity-80"
-        onClick={resetFilters}
-      >
-        Reset
-      </button>
+      <div className="flex gap-[10vw] justify-center md:justify-start">
+        <button
+          className="text-[#E0AE2A] text-sm hover:underline opacity-80"
+          onClick={resetFilters}
+        >
+          Reset
+        </button>
+        <div className={`md:hidden ${sidebarVisible ? "block" : "hidden"} `}>
+          <button className="text-[#E0AE2A] text-sm hover:underline opacity-80">
+            Close
+          </button>
+        </div>
+      </div>
     </aside>
   );
 };
