@@ -16,7 +16,7 @@ interface ImageData {
   material: string;
   gemstone: string;
   design: string;
-  type: string;
+  JewelleryType: string;
   ProcessedFlag?: boolean;
 }
 
@@ -48,7 +48,7 @@ const ImageGallery: React.FC<{
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 50;
+  const itemsPerPage = 100;
   const [imageLoading, setImageLoading] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
@@ -115,7 +115,7 @@ const ImageGallery: React.FC<{
       (filters.material ? image.material === filters.material : true) &&
       (filters.gemstone ? image.gemstone === filters.gemstone : true) &&
       (filters.design ? image.design === filters.design : true) &&
-      (filters.type ? image.type === filters.type : true)
+      (filters.type ? image.JewelleryType === filters.type : true)
   );
 
   const totalPages = Math.ceil(filteredImages.length / itemsPerPage);
