@@ -26,7 +26,7 @@ const DetailedImageView: React.FC = () => {
   const likedImages = useSelector((state: RootState) => state.likedImages.likedImages);
 
   useEffect(() => {
-    console.log('URL Parameter:', url); // Check if URL is correct
+    console.log('URL Parameter:', url);
     const fetchImage = async () => {
       try {
         const response = await fetch(`https://dem48tvmua.execute-api.us-east-1.amazonaws.com/getDB`);

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface LikedImagesState {
-  likedImages: number[];
+  likedImages: string[];
 }
 
 const initialState: LikedImagesState = {
@@ -12,22 +12,17 @@ const likedImagesSlice = createSlice({
   name: 'likedImages',
   initialState,
   reducers: {
-    addLikedImage(state, action: PayloadAction<number>) {
-      if (!state.likedImages.includes(action.payload)) {
-        state.likedImages.push(action.payload);
-      }
+    addLikedImage(state, action: PayloadAction<string>) {
+      state.likedImages.push(action.payload);
     },
-    removeLikedImage(state, action: PayloadAction<number>) {
-      state.likedImages = state.likedImages.filter(id => id !== action.payload);
+    removeLikedImage(state, action: PayloadAction<string>) {
+      state.likedImages = state.likedImages.filter(url => url !== action.payload);
     },
-    setLikedImages(state, action: PayloadAction<number[]>) {
+    setLikedImages(state, action: PayloadAction<string[]>) {
       state.likedImages = action.payload;
     },
   },
 });
 
 export const { addLikedImage, removeLikedImage, setLikedImages } = likedImagesSlice.actions;
-
-export const selectLikedImagesCount = (state: { likedImages: LikedImagesState }) => state.likedImages.likedImages.length;
-
 export default likedImagesSlice.reducer;

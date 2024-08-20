@@ -1,220 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-
-// interface ImageData {
-//   id: number;
-//   src: string;
-//   description: string;
-//   material: string;
-//   gemstone: string;
-//   design: string;
-//   type: string;
-//   flag: number;
-// }
-
-// const ImageEditor: React.FC = () => {
-//   const [images, setImages] = useState<ImageData[]>([]);
-//   const [editingImage, setEditingImage] = useState<ImageData | null>(null);
-
-//   useEffect(() => {
-//     const fetchImages = async () => {
-//       try {
-//         const response = await axios.get(
-//           "https://xv0pa26r4d.execute-api.us-east-1.amazonaws.com/prod"
-//         );
-//         const allImages: ImageData[] = response.data;
-//         const flaggedImages = allImages.filter((image) => image.flag === 0);
-//         setImages(flaggedImages);
-//       } catch (error) {
-//         console.error("Error fetching images:", error);
-//       }
-//     };
-
-//     fetchImages();
-//   }, []);
-
-//   const handleChange = (
-//     e: React.ChangeEvent<HTMLInputElement>,
-//     key: keyof Omit<ImageData, "id" | "flag" | "src">
-//   ) => {
-//     if (editingImage) {
-//       setEditingImage({
-//         ...editingImage,
-//         [key]: e.target.value,
-//       });
-//     }
-//   };
-
-//   const handleSave = async () => {
-//     if (editingImage) {
-//       try {
-//         const requestBody = {
-//           body: JSON.stringify(editingImage),
-//         };
-//         const response = await axios.post(
-//           "https://xv0pa26r4d.execute-api.us-east-1.amazonaws.com/prod",
-//           requestBody,
-//           {
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//           }
-//         );
-//         console.log(response.data);
-//         // setEditingImage(null);
-//         // window.location.reload();
-//       } catch (error: unknown) {
-//         if (axios.isAxiosError(error)) {
-//           if (error.response) {
-//             console.error("Error updating image:", error.response.data);
-//             alert(
-//               `Error: ${error.response.data.error || "Unknown error occurred"}`
-//             );
-//           } else {
-//             console.error("Error updating image:", error.message);
-//             alert("Failed to update image");
-//           }
-//         } else if (error instanceof Error) {
-//           console.error("Unexpected error:", error.message);
-//           alert("An unexpected error occurred");
-//         } else {
-//           console.error("Unknown error:", error);
-//           alert("An unknown error occurred");
-//         }
-//       }
-//     }
-//   };
-
-//   const handleAddToCatalogue = async () => {
-//     if (editingImage) {
-//         try {
-//             await handleSave();
-//             const requestBody = {
-//                 body: JSON.stringify({
-//                     id: editingImage.id,
-//                     flag: 1,
-//                 }),
-//             };
-//             console.log(requestBody);
-//             const response = await axios.post(
-//                 "https://16s5b48qaf.execute-api.us-east-1.amazonaws.com/prod2/",
-//                 requestBody,
-//                 {
-//                     headers: {
-//                         "Content-Type": "application/json",
-//                     },
-//                 }
-//             );
-//             console.log(response.data);
-
-//             alert("Image added to catalogue successfully");
-//             setEditingImage(null);
-//             window.location.reload();
-//         } catch (error) {
-//             console.error("Error adding image to catalogue:", error);
-//             alert("Failed to add image to catalogue");
-//         }
-//     }
-// };
-
-//   return (
-//     <div className="min-h-screen bg-[#fff9f5] p-20">
-//       <h1 className="text-2xl font-bold mb-4">Image Editor</h1>
-//       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-//         {images.map((image) => (
-//           <div key={image.id} className="border p-4 rounded-lg shadow-md">
-//             <img
-//               src={image.src}
-//               alt={image.description}
-//               className="w-full h-80 object-cover mb-2 rounded-lg"
-//             />
-//             <div>
-//               <button
-//                 onClick={() => setEditingImage(image)}
-//                 className="bg-blue-500 text-white px-4 py-2 rounded"
-//               >
-//                 Edit
-//               </button>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-
-//       {editingImage && (
-//         <div className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center ">
-//           <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
-//             <h2 className="text-xl font-bold mb-4">Edit Image</h2>
-//             <label className="block mb-2">
-//               Description:
-//               <input
-//                 type="text"
-//                 value={editingImage.description}
-//                 onChange={(e) => handleChange(e, "description")}
-//                 className="border p-2 w-full"
-//               />
-//             </label>
-//             <label className="block mb-2">
-//               Material:
-//               <input
-//                 type="text"
-//                 value={editingImage.material}
-//                 onChange={(e) => handleChange(e, "material")}
-//                 className="border p-2 w-full"
-//               />
-//             </label>
-//             <label className="block mb-2">
-//               Gemstone:
-//               <input
-//                 type="text"
-//                 value={editingImage.gemstone}
-//                 onChange={(e) => handleChange(e, "gemstone")}
-//                 className="border p-2 w-full"
-//               />
-//             </label>
-//             <label className="block mb-2">
-//               Design:
-//               <input
-//                 type="text"
-//                 value={editingImage.design}
-//                 onChange={(e) => handleChange(e, "design")}
-//                 className="border p-2 w-full"
-//               />
-//             </label>
-//             <label className="block mb-2">
-//               Type:
-//               <input
-//                 type="text"
-//                 value={editingImage.type}
-//                 onChange={(e) => handleChange(e, "type")}
-//                 className="border p-2 w-full"
-//               />
-//             </label>
-//             <button
-//               onClick={handleSave}
-//               className="bg-green-500 text-white px-4 py-2 rounded"
-//             >
-//               Save Changes
-//             </button>
-//             <button
-//               onClick={handleAddToCatalogue}
-//               className="bg-yellow-500 text-white px-4 py-2 rounded ml-2"
-//             >
-//               Add to Catalogue
-//             </button>
-//             <button
-//               onClick={() => setEditingImage(null)}
-//               className="bg-red-500 text-white px-4 py-2 rounded ml-2"
-//             >
-//               Cancel
-//             </button>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default ImageEditor;
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -240,6 +23,9 @@ const ImageUploader: React.FC = () => {
     design: "",
   });
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImages, setSelectedImages] = useState<Set<string>>(new Set());
+  const [metadata, setMetadata] = useState<{ [url: string]: any }>({});
+  const [viewingMetadata, setViewingMetadata] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -247,7 +33,6 @@ const ImageUploader: React.FC = () => {
         const response = await axios.get(
           "https://q6j33yoy61.execute-api.us-east-1.amazonaws.com/fetchdb"
         );
-        // console.log(response)
         setImages(response.data.body.map((url: string) => ({ url })));
       } catch (error) {
         console.error("Error fetching images:", error);
@@ -277,7 +62,7 @@ const ImageUploader: React.FC = () => {
         const sendData = {
           body: JSON.stringify(requestBody),
         };
-        console.log(requestBody);
+        console.log("Adding data:", requestBody);
         const response = await axios.post(
           "https://q6j33yoy61.execute-api.us-east-1.amazonaws.com/fetchdb",
           sendData,
@@ -288,8 +73,7 @@ const ImageUploader: React.FC = () => {
           }
         );
 
-        console.log(response);
-        // alert("Data added to catalogue successfully");
+        console.log("Response:", response);
         setSelectedImage(null);
         setFormData({
           description: "",
@@ -306,6 +90,75 @@ const ImageUploader: React.FC = () => {
     }
   };
 
+  const toggleSelectImage = (url: string) => {
+    setSelectedImages((prevSelected) => {
+      const updatedSelected = new Set(prevSelected);
+      if (updatedSelected.has(url)) {
+        updatedSelected.delete(url);
+      } else {
+        updatedSelected.add(url);
+      }
+      return updatedSelected;
+    });
+  };
+
+  const handleFetchMetadata = async () => {
+    try {
+      const urlsArray = Array.from(selectedImages);
+      const sendData = {
+        body: JSON.stringify({ urls: urlsArray }),
+      };
+      console.log("Fetching metadata for URLs:", urlsArray);
+
+      const response = await axios.post(
+        "https://xy4dltx58c.execute-api.us-east-1.amazonaws.com/getMD/",
+        sendData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("API Response:", response.data);
+      const results = JSON.parse(response.data.body);
+      console.log("Fetched metadata:", results);
+
+      if (Array.isArray(results)) {
+        const metadataMap: { [url: string]: any } = {};
+        results.forEach((result: any) => {
+          metadataMap[result.url] = result;
+        });
+        setMetadata(metadataMap);
+      } else {
+        console.error("Expected an array but got:", results);
+        alert("Unexpected response format. Please try again.");
+      }
+
+      setSelectedImages(new Set());
+    } catch (error) {
+      console.error("Error fetching metadata:", error);
+      alert("Failed to fetch metadata");
+    }
+  };
+
+  const handleViewMetadata = (url: string) => {
+    setViewingMetadata(url);
+
+    const selectedMetadata = metadata[url]?.metadata || {};
+    setFormData({
+      description: metadata[url]?.short_description[0] || "",
+      gemstone: selectedMetadata.Gemstones || "",
+      type: "",
+      material: selectedMetadata.Material || "",
+      design: selectedMetadata["Design style"] || "",
+    });
+  };
+
+  const handleCancelViewMetadata = () => {
+    setViewingMetadata(null);
+  };
+
   return (
     <div className="min-h-screen bg-[#fff9f5] p-20">
       <h1 className="text-2xl font-bold mb-4">Image Uploader</h1>
@@ -317,17 +170,104 @@ const ImageUploader: React.FC = () => {
               alt="Uploaded"
               className="w-full h-80 object-cover mb-2 rounded-lg"
             />
-            <button
-              onClick={() => setSelectedImage(image.url)}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Add Data
-            </button>
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                onChange={() => toggleSelectImage(image.url)}
+                checked={selectedImages.has(image.url)}
+                className="mr-2"
+              />
+              <button
+                onClick={() => setSelectedImage(image.url)}
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                Add Data
+              </button>
+              {metadata[image.url] && !viewingMetadata && (
+                <button
+                  onClick={() => handleViewMetadata(image.url)}
+                  className="bg-yellow-500 text-white px-4 py-2 rounded ml-2"
+                >
+                  View Metadata
+                </button>
+              )}
+            </div>
+            {viewingMetadata === image.url && (
+              <div className="mt-4">
+                <h3 className="font-semibold">Edit Metadata:</h3>
+                <label className="block mb-2">
+                  Description:
+                  <input
+                    type="text"
+                    value={formData.description}
+                    onChange={(e) => handleChange(e, "description")}
+                    className="border p-2 w-full"
+                  />
+                </label>
+                <label className="block mb-2">
+                  Gemstone:
+                  <input
+                    type="text"
+                    value={formData.gemstone}
+                    onChange={(e) => handleChange(e, "gemstone")}
+                    className="border p-2 w-full"
+                  />
+                </label>
+                <label className="block mb-2">
+                  Type:
+                  <input
+                    type="text"
+                    value={formData.type}
+                    onChange={(e) => handleChange(e, "type")}
+                    className="border p-2 w-full"
+                  />
+                </label>
+                <label className="block mb-2">
+                  Material:
+                  <input
+                    type="text"
+                    value={formData.material}
+                    onChange={(e) => handleChange(e, "material")}
+                    className="border p-2 w-full"
+                  />
+                </label>
+                <label className="block mb-2">
+                  Design:
+                  <input
+                    type="text"
+                    value={formData.design}
+                    onChange={(e) => handleChange(e, "design")}
+                    className="border p-2 w-full"
+                  />
+                </label>
+                <button
+                  onClick={handleAddData}
+                  className="bg-green-500 text-white px-4 py-2 rounded mt-2"
+                >
+                  Add Metadata
+                </button>
+                <button
+                  onClick={handleCancelViewMetadata}
+                  className="bg-red-500 text-white px-4 py-2 rounded mt-2 ml-2"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </div>
 
-      {selectedImage && (
+      {selectedImages.size > 0 && (
+        <button
+          onClick={handleFetchMetadata}
+          className="bg-purple-500 text-white px-4 py-2 rounded mt-4"
+        >
+          Get Metadata
+        </button>
+      )}
+
+      {selectedImage && !viewingMetadata && (
         <div className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
             <h2 className="text-xl font-bold mb-4">Add Data for Image</h2>
@@ -378,13 +318,13 @@ const ImageUploader: React.FC = () => {
             </label>
             <button
               onClick={handleAddData}
-              className="bg-green-500 text-white px-4 py-2 rounded"
+              className="bg-green-500 text-white px-4 py-2 rounded mt-4"
             >
-              Add to Catalogue
+              Submit
             </button>
             <button
               onClick={() => setSelectedImage(null)}
-              className="bg-red-500 text-white px-4 py-2 rounded ml-2"
+              className="bg-red-500 text-white px-4 py-2 rounded mt-4 ml-2"
             >
               Cancel
             </button>

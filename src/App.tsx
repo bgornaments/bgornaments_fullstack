@@ -13,6 +13,7 @@ import { Authenticator } from "@aws-amplify/ui-react";
 import Catalogue from "./components/BrowseCatalogue/Catalogue.tsx"
 import DetailedImageView from "./components/BrowseCatalogue/DetailedImageView.tsx";
 import EditImageData from "./components/BrowseCatalogue/EditImageData.tsx";
+import LikedImages from "./components/BrowseCatalogue/LikedImages.tsx";
 
 // const RequireAuth: React.FC<{ children: ReactNode }> = ({ children }) => {
 //   const { route } = useAuthenticator();
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
   {
     path: "/catalog",
     element: <Catalogue />,
+  },
+  {
+    path:"/catalog/likedimages",
+    element:<LikedImages/>
   },
   {
     path: "/catalog/:url", 
