@@ -79,4 +79,33 @@ const LikedImages: React.FC = () => {
       </header>
       <section className='mx-14 flex flex-col gap-8 '>
 
-      <h2 className="text-md md:text-2xl font-serif font-medium leading-l
+      <h2 className="text-md md:text-2xl font-serif font-medium leading-loose text-[#E0AE2A] items-center text-center">Liked Images</h2>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        {likedImages.length > 0 ? (
+          likedImages.map((url) => (
+            <div key={url} className="relative group w-full h-56">
+              <div onClick={() => handleImageClick(url)} className="relative w-full h-full">
+                <img
+                  src={url}
+                  alt="Liked"
+                  className="w-full h-[15rem] object-cover rounded-lg"
+                />
+              </div>
+              <button
+                className="absolute top-2 right-2 rounded-full p-1"
+                onClick={() => handleUnlike(url)}
+              >
+                <AiOutlineHeart size={24} color="red" />
+              </button>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">No liked images found</p>
+        )}
+      </div>
+      </section>
+    </div>
+  );
+};
+
+export default LikedImages;

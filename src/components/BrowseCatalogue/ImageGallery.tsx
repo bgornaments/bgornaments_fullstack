@@ -242,4 +242,29 @@ const ImageGallery: React.FC<{
                     size={24}
                     color={likedImages.includes(image.url) ? "red" : "gray"}
                   />
-     
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex justify-center items-center h-56">
+            <p className="text-gray-500">No results found</p>
+          </div>
+        )}
+        <FloatingButton />
+
+        <div className="bottom-0 left-0 right-0 flex w-full">
+          <div className="flex-1 flex justify-center">
+            <MuiPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default ImageGallery;
