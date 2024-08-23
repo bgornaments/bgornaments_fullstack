@@ -43,7 +43,10 @@ const OrderPage = () => {
                 //   index % 2 === 0 ? "bg-white" : "bg-beige-light"
                 // }`}
               >
-                <td id={index} className="py-3 px-4">{order.id}</td>
+                <td id={String(index)} className="py-3 px-4">
+                  {order.id}
+                </td>
+
                 <td className="py-3 px-4">{order.date}</td>
                 <td className="py-3 px-4">{order.transactionId}</td>
                 <td className="py-3 px-4">{order.status}</td>
