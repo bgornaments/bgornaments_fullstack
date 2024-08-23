@@ -22,4 +22,16 @@ const Sidebar = () => {
           CAD Modelling Status
         </Link>
         <Link to="/admin/manufacturing" className="hover:bg-[#fff9f5] px-4 py-2 rounded-3xl">
- 
+          <FaTools className="inline-block mr-2" />
+          Manufacturing
+        </Link>
+        <Link to="/" className="hover:bg-[#fff9f5] px-4 py-2 rounded-3xl">
+          <FaHome className="inline-block mr-2" />
+          Home
+        </Link>
+      </nav>
+    </div>
+  );
+};
+
+export default Sidebar;

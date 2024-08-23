@@ -36,14 +36,14 @@ const OrderPage = () => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order, index) => (
+            {orders.map((order) => (
               <tr
                 key={order.id}
                 // className={`text-left ${
                 //   index % 2 === 0 ? "bg-white" : "bg-beige-light"
                 // }`}
               >
-                <td id={String(index)} className="py-3 px-4">
+                <td className="py-3 px-4">
                   {order.id}
                 </td>
 
