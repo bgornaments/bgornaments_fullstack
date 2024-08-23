@@ -1,7 +1,8 @@
 import React from 'react';
 import linkedIn from "/src/assets/linkedin.png";
 import github from "/src/assets/logo.png";
-import img from "/src/assets/img.png"
+import sagar from "/src/assets/sagar.png"
+import divyanshu from "/src/assets/divyanshu.png"
 
 const TeamComponent: React.FC = () => {
     const teamMembers = [
@@ -9,7 +10,7 @@ const TeamComponent: React.FC = () => {
             name: 'Sagar G. Sangodkar',
             role: 'Managing Director\nand CEO',
             description: "IIT Bombay\nGraduate",
-            imageUrl: img,
+            imageUrl: sagar,
             githubUrl: 'https://github.com',
             linkedinUrl: 'https://www.linkedin.com/in/sagarsangodkar/',
         },
@@ -25,7 +26,7 @@ const TeamComponent: React.FC = () => {
             name: 'Divyanshu Suman',
             role: 'Artificial Intelligence\nIntern',
             description: 'IIT Bombay\nUndergraduate Student',
-            imageUrl: 'https://media.licdn.com/dms/image/v2/D4E35AQFABqmtpH9ONA/profile-framedphoto-shrink_400_400/profile-framedphoto-shrink_400_400/0/1719441316980?e=1724817600&v=beta&t=0_l3irOplncyjpV3zCYFy91wIAlCV6vZxptzt3Adld8',
+            imageUrl: divyanshu,
             githubUrl: 'https://github.com',
             linkedinUrl: 'https://www.linkedin.com/in/divyanshusuman/',
         },
