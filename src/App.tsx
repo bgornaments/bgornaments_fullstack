@@ -80,21 +80,4 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <DashboardPage />,
-      },
-      {
-        path: "orders",
-        element: <OrderPage />,
-      },
-    ],
-  },
-]);
-
-const App: React.FC = () => {
-  return (
-    <Authenticator.Provider>
-      <RouterProvider router={router} />
-    </Authenticator.Provider>
-  );
-};
-
-export default App;
+   

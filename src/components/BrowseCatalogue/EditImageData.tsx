@@ -330,21 +330,3 @@ const ImageUploader: React.FC = () => {
             </label>
             <button
               onClick={handleAddData}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Save
-            </button>
-            <button
-                  onClick={handleCancelViewMetadata}
-                  className="bg-red-500 text-white px-4 py-2 rounded mt-2 ml-2"
-                >
-                  Cancel
-                </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default ImageUploader;
