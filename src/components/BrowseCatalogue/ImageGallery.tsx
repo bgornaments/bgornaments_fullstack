@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import MuiPagination from "./Pagination";
 import FilterSidebar from "./FilterSidebar";
-import { useNavigate } from "react-router-dom";
 import FloatingButton from "./FloatingButton";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../redux/store';
 import { updateFormData } from '../../redux/formSlice';
 import { addLikedImage, removeLikedImage, setLikedImages } from '../../redux/likedImagesSlice';
 import { FaSpinner } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+import Swal from "sweetalert2";
 
 interface ImageData {
   url: string;
@@ -40,7 +42,6 @@ const ImageGallery: React.FC<{
   sidebarVisible,
 }) => {
   const dispatch: AppDispatch = useDispatch();
-  const navigate = useNavigate();
   const formData = useSelector((state: RootState) => state.form.formData);
   const likedImages = useSelector((state: RootState) => state.likedImages.likedImages);
   const { occasion, jewelryType, gender, ageGroup } = formData;
@@ -51,6 +52,8 @@ const ImageGallery: React.FC<{
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 100;
   const [imageLoading, setImageLoading] = useState<{ [key: string]: boolean }>({});
+  const { user } = useAuthenticator();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -117,7 +120,27 @@ const ImageGallery: React.FC<{
   };
 
   const handleImageClick = (url: string) => {
-    navigate(`/catalog/${encodeURIComponent(url)}`);
+    if (!user) {
+      Swal.fire({
+        title: "Please Log In",
+        text: "You need to log in to View image details. Click the button below to log in.",
+        icon: "warning",
+        confirmButtonText: "Log In",
+        confirmButtonColor: "#3085d6",
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+        cancelButtonColor: "#d33",
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          localStorage.setItem('redirectPath', location.pathname);
+          navigate("/login");
+        }
+      });
+      return;
+    }
+    const detailedViewUrl = `/catalog/${encodeURIComponent(url)}`;
+    window.open(detailedViewUrl, '_blank', 'noopener,noreferrer');
   };
 
   const heading = `${occasion || 'Occasion'} ${jewelryType || 'Jewelry Type'} from ${gender === 'Female' ? 'her' : 'him'}`;
@@ -189,21 +212,22 @@ const ImageGallery: React.FC<{
                 className="relative group w-full h-56"
                 onClick={() => handleImageClick(image.url)}
               >
-                <div className="relative w-full h-full">
-                  {imageLoading[image.url] && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <FaSpinner className="text-3xl animate-spin" />
-                    </div>
-                  )}
-                  <img
-                    src={image.url}
-                    alt={image.description}
-                    className={`w-full h-[11rem] lg:h-full object-cover rounded-lg ${imageLoading[image.url] ? 'opacity-0' : 'opacity-100'}`}
-                    onLoad={() => setImageLoading(prev => ({ ...prev, [image.url]: false }))}
-                    onError={() => setImageLoading(prev => ({ ...prev, [image.url]: false }))}
-                    onLoadStart={() => setImageLoading(prev => ({ ...prev, [image.url]: true }))}
-                  />
-                </div>
+        <div className="relative w-full h-full">
+    {imageLoading[image.url] && (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <FaSpinner className="text-3xl animate-spin" />
+      </div>
+    )}
+    <img
+      src={image.url}
+      alt={image.description}
+      className={`w-full h-[11rem] lg:h-full object-cover rounded-lg ${imageLoading[image.url] ? 'opacity-0' : 'opacity-100'}`}
+      onClick={() => handleImageClick(image.url)}
+      onLoad={() => setImageLoading(prev => ({ ...prev, [image.url]: false }))}
+      onError={() => setImageLoading(prev => ({ ...prev, [image.url]: false }))}
+      onLoadStart={() => setImageLoading(prev => ({ ...prev, [image.url]: true }))}
+    />
+  </div>
                 <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white p-2 text-center rounded-lg">
                   <p>{image.description}</p>
                 </div>

@@ -1,14 +1,19 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AiOutlineHeart } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { RootState } from '../../redux/store';
 import icon from "/src/assets/image.png";
 import { removeLikedImage, setLikedImages } from '../../redux/likedImagesSlice'; 
+import { useNavigate } from "react-router-dom";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+import Swal from "sweetalert2";
 
 const LikedImages: React.FC = () => {
   const likedImages = useSelector((state: RootState) => state.likedImages.likedImages);
   const dispatch = useDispatch();
+  const { user } = useAuthenticator();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedLikedImages = localStorage.getItem('likedImages');
@@ -21,6 +26,30 @@ const LikedImages: React.FC = () => {
     dispatch(removeLikedImage(url));
     const updatedLikedImages = likedImages.filter((imageUrl) => imageUrl !== url);
     localStorage.setItem('likedImages', JSON.stringify(updatedLikedImages));
+  };
+
+  const handleImageClick = (url: string) => {
+    if (!user) {
+      Swal.fire({
+        title: "Please Log In",
+        text: "You need to log in to View image details. Click the button below to log in.",
+        icon: "warning",
+        confirmButtonText: "Log In",
+        confirmButtonColor: "#3085d6",
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+        cancelButtonColor: "#d33",
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          localStorage.setItem('redirectPath', location.pathname);
+          navigate("/login");
+        }
+      });
+      return;
+    }
+    const detailedViewUrl = `/catalog/${encodeURIComponent(url)}`;
+    window.open(detailedViewUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -55,13 +84,13 @@ const LikedImages: React.FC = () => {
         {likedImages.length > 0 ? (
           likedImages.map((url) => (
             <div key={url} className="relative group w-full h-56">
-              <Link to={`/catalog/${encodeURIComponent(url)}`} className="relative w-full h-full">
+              <div onClick={() => handleImageClick(url)} className="relative w-full h-full">
                 <img
                   src={url}
                   alt="Liked"
                   className="w-full h-[15rem] object-cover rounded-lg"
                 />
-              </Link>
+              </div>
               <button
                 className="absolute top-2 right-2 rounded-full p-1"
                 onClick={() => handleUnlike(url)}

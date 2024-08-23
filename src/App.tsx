@@ -10,18 +10,13 @@ import Navbar from "./components/LandingPage/Navbar.jsx";
 import Footer from "./components/LandingPage/Footer.jsx";
 import Login from "./components/Login.tsx";
 import { Authenticator } from "@aws-amplify/ui-react";
-import Catalogue from "./components/BrowseCatalogue/Catalogue.tsx"
+import Catalogue from "./components/BrowseCatalogue/Catalogue.tsx";
 import DetailedImageView from "./components/BrowseCatalogue/DetailedImageView.tsx";
 import EditImageData from "./components/BrowseCatalogue/EditImageData.tsx";
 import LikedImages from "./components/BrowseCatalogue/LikedImages.tsx";
-
-// const RequireAuth: React.FC<{ children: ReactNode }> = ({ children }) => {
-//   const { route } = useAuthenticator();
-//   if (route !== "authenticated") {
-//     return <Navigate to="/login" />;
-//   }
-//   return <>{children}</>;
-// };
+import DashboardPage from "./components/Dashboards/Admin/DashboardPage.tsx";
+import OrderPage from "./components/Dashboards/Admin/OrderPage.tsx";
+import AdminLayout from "./components/Dashboards/Admin/AdminLayout.tsx";
 
 const router = createBrowserRouter([
   {
@@ -41,7 +36,7 @@ const router = createBrowserRouter([
     element: <JewelryForm />,
   },
   {
-    path: "/Navbar",
+    path: "/navbar",
     element: <Navbar />,
   },
   {
@@ -63,19 +58,35 @@ const router = createBrowserRouter([
   {
     path: "/catalog",
     element: <Catalogue />,
+    children: [
+      {
+        path: "likedimages",
+        element: <LikedImages />,
+      },
+      {
+        path: ":url",
+        element: <DetailedImageView />,
+      },
+    ],
   },
   {
-    path:"/catalog/likedimages",
-    element:<LikedImages/>
+    path: "/edit",
+    element: <EditImageData />,
   },
   {
-    path: "/catalog/:url", 
-    element: <DetailedImageView />,
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      {
+        path: "dashboard",
+        element: <DashboardPage />,
+      },
+      {
+        path: "orders",
+        element: <OrderPage />,
+      },
+    ],
   },
-{
-  path:"/edit",
-  element:<EditImageData/>
-}
 ]);
 
 const App: React.FC = () => {

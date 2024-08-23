@@ -53,7 +53,10 @@ const ImageUploader: React.FC = () => {
   };
 
   const handleAddData = async () => {
+    console.log("clicked 23")
+    
     if (selectedImage) {
+      console.log("clicked")
       try {
         const requestBody = {
           url: selectedImage,
@@ -158,10 +161,23 @@ const ImageUploader: React.FC = () => {
   const handleCancelViewMetadata = () => {
     setViewingMetadata(null);
   };
+  const handleViewAndSelectImage = (url: string) => {
+    handleViewMetadata(url);
+    setSelectedImage(url);
+  };
+  
 
   return (
     <div className="min-h-screen bg-[#fff9f5] p-20">
       <h1 className="text-2xl font-bold mb-4">Image Uploader</h1>
+      <button
+        onClick={selectedImages.size > 0 ? handleFetchMetadata : undefined}
+        className="bg-purple-500 text-white px-4 py-2 rounded my-4"
+      >
+        {selectedImages.size > 0
+          ? "Generate Metadata"
+          : "Select Images to get metadata"}
+      </button>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {images.map((image) => (
           <div key={image.url} className="border p-4 rounded-lg shadow-md">
@@ -170,30 +186,34 @@ const ImageUploader: React.FC = () => {
               alt="Uploaded"
               className="w-full h-80 object-cover mb-2 rounded-lg"
             />
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                onChange={() => toggleSelectImage(image.url)}
-                checked={selectedImages.has(image.url)}
-                className="mr-2"
-              />
+            <div className="flex items-center justify-around">
               <button
                 onClick={() => setSelectedImage(image.url)}
                 className="bg-blue-500 text-white px-4 py-2 rounded"
               >
                 Add Data
               </button>
+
               {metadata[image.url] && !viewingMetadata && (
                 <button
-                  onClick={() => handleViewMetadata(image.url)}
+                onClick={() => handleViewAndSelectImage(image.url)}
+
                   className="bg-yellow-500 text-white px-4 py-2 rounded ml-2"
                 >
                   View Metadata
                 </button>
               )}
+
+<input
+  type="checkbox"
+  onChange={() => toggleSelectImage(image.url)}
+  checked={selectedImages.has(image.url)}
+  className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+/>
             </div>
             {viewingMetadata === image.url && (
-              <div className="mt-4">
+        <div className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
                 <h3 className="font-semibold">Edit Metadata:</h3>
                 <label className="block mb-2">
                   Description:
@@ -253,19 +273,11 @@ const ImageUploader: React.FC = () => {
                   Cancel
                 </button>
               </div>
+              </div>
             )}
           </div>
         ))}
       </div>
-
-      {selectedImages.size > 0 && (
-        <button
-          onClick={handleFetchMetadata}
-          className="bg-purple-500 text-white px-4 py-2 rounded mt-4"
-        >
-          Get Metadata
-        </button>
-      )}
 
       {selectedImage && !viewingMetadata && (
         <div className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -318,16 +330,16 @@ const ImageUploader: React.FC = () => {
             </label>
             <button
               onClick={handleAddData}
-              className="bg-green-500 text-white px-4 py-2 rounded mt-4"
+              className="bg-blue-500 text-white px-4 py-2 rounded"
             >
-              Submit
+              Save
             </button>
             <button
-              onClick={() => setSelectedImage(null)}
-              className="bg-red-500 text-white px-4 py-2 rounded mt-4 ml-2"
-            >
-              Cancel
-            </button>
+                  onClick={handleCancelViewMetadata}
+                  className="bg-red-500 text-white px-4 py-2 rounded mt-2 ml-2"
+                >
+                  Cancel
+                </button>
           </div>
         </div>
       )}

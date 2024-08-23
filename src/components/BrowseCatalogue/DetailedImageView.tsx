@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import icon from "/src/assets/image.png";
 import { useParams, useNavigate } from "react-router-dom";
 import { AiOutlineHeart } from "react-icons/ai";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { useSelector, useDispatch } from "react-redux";
 import img from "/src/assets/add-to-favorites.png";
 import ai from "/src/assets/chatbot.png";
 import plus from "/src/assets/plus.png";
 import { FaSpinner } from 'react-icons/fa';
+import { RootState, AppDispatch } from '../../redux/store';
+import { addLikedImage, removeLikedImage, setLikedImages } from '../../redux/likedImagesSlice';
 
 interface ImageData {
   url: string;
@@ -19,6 +20,7 @@ interface ImageData {
 }
 
 const DetailedImageView: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch();
   const { url } = useParams<{ url: string }>();
   const [imageData, setImageData] = useState<ImageData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -26,20 +28,41 @@ const DetailedImageView: React.FC = () => {
   const likedImages = useSelector((state: RootState) => state.likedImages.likedImages);
 
   useEffect(() => {
-    console.log('URL Parameter:', url);
     const fetchImage = async () => {
       try {
         const response = await fetch(`https://dem48tvmua.execute-api.us-east-1.amazonaws.com/getDB`);
         const data = await response.json();
         const image = data.find((img: ImageData) => img.url === url);
         setImageData(image || null);
-      } catch (error) {
-        setError(error instanceof Error ? error.message : 'An error occurred');
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+        console.log(error)
       }
     };
     fetchImage();
-    console.log(error)
   }, [url]);
+
+  const handleLike = (url: string) => {
+    if (likedImages.includes(url)) {
+      dispatch(removeLikedImage(url));
+    } else {
+      dispatch(addLikedImage(url));
+    }
+
+    const updatedLikedImages = likedImages.includes(url)
+      ? likedImages.filter((imageUrl) => imageUrl !== url)
+      : [...likedImages, url];
+
+    localStorage.setItem('likedImages', JSON.stringify(updatedLikedImages));
+  };
+
+  useEffect(() => {
+    const savedLikedImages = localStorage.getItem('likedImages');
+    if (savedLikedImages) {
+      dispatch(setLikedImages(JSON.parse(savedLikedImages)));
+    }
+  }, [dispatch]);
+
   return (
     <div className="min-h-screen bg-[#fff9f5] p-[2vw]">
       <header className="flex justify-between mb-4 mx-4">
@@ -89,32 +112,23 @@ const DetailedImageView: React.FC = () => {
               <p>Generate Designs</p>
               <img src={ai} alt="" className="w-[1.2rem]" />
               </button>
-              <button className="flex justify-center items-center gap-[0.4rem] border border-customGreen py-1 px-3 rounded-xl text-sm text-customBlack font-bold">
-              <p>Add to Favorites</p>
-              <img src={img} alt="" className="w-[1.1rem]" />
+              <button
+                onClick={() => handleLike(imageData.url)}
+                className={`flex justify-center items-center gap-[0.4rem] border border-customGreen py-1 px-3 rounded-xl text-sm text-customBlack font-bold ${
+                  likedImages.includes(imageData.url) ? 'bg-customGreen text-white' : ''
+                }`}
+              >
+                <p>{likedImages.includes(imageData.url) ? 'Added to Favorites' : 'Add to Favorites'}</p>
+                <img src={img} alt="" className="w-[1.1rem]" />
               </button>
-
               </div>
-          
             </div>
           </div>
-          {/* {isLoading && <p>Loading...</p>}
-          {error && <p className="text-red-500">{error}</p>}
-          <div className="mt-4">
-            {generatedImages.map((img, idx) => (
-              <img
-                key={idx}
-                src={img}
-                alt={`Generated ${idx}`}
-                className="w-1/4 h-auto"
-              />
-            ))}
-          </div> */}
         </>
       ) : (
         <div className="absolute inset-0 flex items-center justify-center">
-        <FaSpinner className="text-customGreen text-3xl animate-spin" />
-      </div>
+          <FaSpinner className="text-customGreen text-3xl animate-spin" />
+        </div>
       )}
     </div>
   );
