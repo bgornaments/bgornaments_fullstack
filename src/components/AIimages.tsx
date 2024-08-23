@@ -23,7 +23,7 @@ const AIimages: React.FC = () => {
   const dispatch = useDispatch();
   const { user } = useAuthenticator();
   const navigate = useNavigate();
-  const location = useLocation(); // Get the current location
+  const location = useLocation(); 
 
   const defaultOptions = {
     loop: true,
@@ -52,7 +52,6 @@ const AIimages: React.FC = () => {
 
   const handleDownloadImage = async () => {
     if (!user) {
-      // Show a pop-up if the user is not logged in
       Swal.fire({
         title: "Please Log In",
         text: "You need to log in to download images. Click the button below to log in.",
@@ -65,9 +64,7 @@ const AIimages: React.FC = () => {
         reverseButtons: true,
       }).then((result) => {
         if (result.isConfirmed) {
-          // Save the current path to the state or local storage
           localStorage.setItem('redirectPath', location.pathname);
-          // Navigate to login page
           navigate("/login");
         }
       });
@@ -112,7 +109,7 @@ const AIimages: React.FC = () => {
           body: JSON.stringify({
             imgURL: selectedImage,
             taskType: "IMAGE_VARIATION",
-            numImages: 3,
+            numImages: 3
           }),
         };
 

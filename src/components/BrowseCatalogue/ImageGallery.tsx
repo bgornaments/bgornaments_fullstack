@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import MuiPagination from "./Pagination";
 import FilterSidebar from "./FilterSidebar";
-import { useNavigate } from "react-router-dom";
 import FloatingButton from "./FloatingButton";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../redux/store';
 import { updateFormData } from '../../redux/formSlice';
-// import { addLikedImage, removeLikedImage, setLikedImages } from '../../redux/likedImagesSlice';
+import { addLikedImage, removeLikedImage, setLikedImages } from '../../redux/likedImagesSlice';
 import { FaSpinner } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+import Swal from "sweetalert2";
 
 interface ImageData {
   url: string;
@@ -18,6 +20,7 @@ interface ImageData {
   design: string;
   JewelleryType: string;
   ProcessedFlag?: boolean;
+  Timestamp?: string; 
 }
 
 const ImageGallery: React.FC<{
@@ -39,9 +42,8 @@ const ImageGallery: React.FC<{
   sidebarVisible,
 }) => {
   const dispatch: AppDispatch = useDispatch();
-  const navigate = useNavigate();
   const formData = useSelector((state: RootState) => state.form.formData);
-  // const likedImages = useSelector((state: RootState) => state.likedImages.likedImages);
+  const likedImages = useSelector((state: RootState) => state.likedImages.likedImages);
   const { occasion, jewelryType, gender, ageGroup } = formData;
 
   const [images, setImages] = useState<ImageData[]>([]);
@@ -50,6 +52,8 @@ const ImageGallery: React.FC<{
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 100;
   const [imageLoading, setImageLoading] = useState<{ [key: string]: boolean }>({});
+  const { user } = useAuthenticator();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -59,6 +63,13 @@ const ImageGallery: React.FC<{
           throw new Error('Network response was not ok');
         }
         const data: ImageData[] = await response.json();
+        console.log(data);
+        data.sort((a, b) => {
+          if (a.Timestamp && b.Timestamp) {
+            return new Date(b.Timestamp).getTime() - new Date(a.Timestamp).getTime();
+          }
+          return 0;
+        });
         setImages(data);
       } catch (error) {
         setError(error instanceof Error ? error.message : 'An error occurred');
@@ -89,12 +100,48 @@ const ImageGallery: React.FC<{
     });
   }, [formData, setFilters]);
 
-  // useEffect(() => {
-  //   const savedLikedImages = localStorage.getItem('likedImages');
-  //   if (savedLikedImages) {
-  //     dispatch(setLikedImages(JSON.parse(savedLikedImages)));
-  //   }
-  // }, [dispatch]);
+  useEffect(() => {
+    const savedLikedImages = localStorage.getItem('likedImages');
+    if (savedLikedImages) {
+      dispatch(setLikedImages(JSON.parse(savedLikedImages)));
+    }
+  }, [dispatch]);
+
+  const handleLike = (url: string) => {
+    if (likedImages.includes(url)) {
+      dispatch(removeLikedImage(url));
+    } else {
+      dispatch(addLikedImage(url));
+    }
+    const updatedLikedImages = likedImages.includes(url)
+      ? likedImages.filter((imageUrl) => imageUrl !== url)
+      : [...likedImages, url];
+    localStorage.setItem('likedImages', JSON.stringify(updatedLikedImages));
+  };
+
+  const handleImageClick = (url: string) => {
+    if (!user) {
+      Swal.fire({
+        title: "Please Log In",
+        text: "You need to log in to View image details. Click the button below to log in.",
+        icon: "warning",
+        confirmButtonText: "Log In",
+        confirmButtonColor: "#3085d6",
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+        cancelButtonColor: "#d33",
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          localStorage.setItem('redirectPath', location.pathname);
+          navigate("/login");
+        }
+      });
+      return;
+    }
+    const detailedViewUrl = `/catalog/${encodeURIComponent(url)}`;
+    window.open(detailedViewUrl, '_blank', 'noopener,noreferrer');
+  };
 
   const heading = `${occasion || 'Occasion'} ${jewelryType || 'Jewelry Type'} from ${gender === 'Female' ? 'her' : 'him'}`;
   const resultDescription = `Showing results for ${jewelryType || 'jewelry type'} for the occasion of ${occasion || 'occasion'}, for a ${gender === 'Female' ? 'female' : 'male'} aged ${ageGroup || 'age group'}`;
@@ -125,19 +172,6 @@ const ImageGallery: React.FC<{
     currentPage * itemsPerPage
   );
 
-  const handleLike = (url: string) => {
-    console.log(url)
-    // if (likedImages.includes(url)) {
-    //   dispatch(removeLikedImage(url));
-    // } else {
-    //   dispatch(addLikedImage(url));
-    // }
-    // const updatedLikedImages = likedImages.includes(url)
-    //   ? likedImages.filter((imageUrl) => imageUrl !== url)
-    //   : [...likedImages, url];
-    // localStorage.setItem('likedImages', JSON.stringify(updatedLikedImages));
-  };
-
   const resetFilters = () => {
     setFilters({ material: "", gemstone: "", design: "", type: "" });
     setCurrentPage(1);
@@ -150,10 +184,6 @@ const ImageGallery: React.FC<{
   if (error) {
     return <div className="flex justify-center items-center h-screen">Error: {error}</div>;
   }
-
-const handleImageClick = (url: string) => {
-  navigate(`/catalog/${encodeURIComponent(url)}`);
-};
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -182,21 +212,22 @@ const handleImageClick = (url: string) => {
                 className="relative group w-full h-56"
                 onClick={() => handleImageClick(image.url)}
               >
-                <div className="relative w-full h-full">
-                  {imageLoading[image.url] && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <FaSpinner className="text-3xl animate-spin" />
-                    </div>
-                  )}
-                  <img
-                    src={image.url}
-                    alt={image.description}
-                    className={`w-full h-[11rem] lg:h-full object-cover rounded-lg ${imageLoading[image.url] ? 'opacity-0' : 'opacity-100'}`}
-                    onLoad={() => setImageLoading(prev => ({ ...prev, [image.url]: false }))}
-                    onError={() => setImageLoading(prev => ({ ...prev, [image.url]: false }))}
-                    onLoadStart={() => setImageLoading(prev => ({ ...prev, [image.url]: true }))}
-                  />
-                </div>
+        <div className="relative w-full h-full">
+    {imageLoading[image.url] && (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <FaSpinner className="text-3xl animate-spin" />
+      </div>
+    )}
+    <img
+      src={image.url}
+      alt={image.description}
+      className={`w-full h-[11rem] lg:h-full object-cover rounded-lg ${imageLoading[image.url] ? 'opacity-0' : 'opacity-100'}`}
+      onClick={() => handleImageClick(image.url)}
+      onLoad={() => setImageLoading(prev => ({ ...prev, [image.url]: false }))}
+      onError={() => setImageLoading(prev => ({ ...prev, [image.url]: false }))}
+      onLoadStart={() => setImageLoading(prev => ({ ...prev, [image.url]: true }))}
+    />
+  </div>
                 <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white p-2 text-center rounded-lg">
                   <p>{image.description}</p>
                 </div>
@@ -209,7 +240,7 @@ const handleImageClick = (url: string) => {
                 >
                   <AiOutlineHeart
                     size={24}
-                    // color={likedImages.includes(image.url) ? "red" : "gray"}
+                    color={likedImages.includes(image.url) ? "red" : "gray"}
                   />
                 </button>
               </div>

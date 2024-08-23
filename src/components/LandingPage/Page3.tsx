@@ -1,41 +1,3 @@
-// import React from 'react';
-// import teamMembers from './teamMembers.json'; 
-
-// const Page3: React.FC = () => {
-//     return (
-//         <div className="bg-[#fff9f5] min-h-screen flex flex-col w-full px-[4rem] justify-center items-center gap-[1.3rem] md:gap-[2rem] xl:gap-[5rem]">
-//             <section className="pb-12 sm:pb-16 lg:pb-20">
-//                 <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-//                     <div className="text-center">
-//                         <h2 className="text-customGreen xs:text-[1.5rem] md:text-[2rem] xl:text-[3rem] leading-tight">
-//                             Meet our Team
-//                         </h2>
-//                     </div>
-
-//                     <div className="grid max-w-6xl grid-cols-1 px-20 mx-auto mt-12 text-center sm:px-0 sm:grid-cols-2 md:mt-20 gap-x-8 md:grid-cols-4 gap-y-12 lg:gap-x-16 xl:gap-x-20">
-//                         {teamMembers.map((member, index) => (
-//                             <div key={index} className='p-[2vw] border border-[#f3e4c3] rounded-3xl'>
-//                                 <img
-//                                     className="object-cover  mx-auto rounded-full lg:w-[8rem] "
-//                                     src={member.image}
-//                                     alt={member.name}
-//                                 />
-//                                 <p className="mt-5 text-lg text-customGreen font-medium sm:text-xl sm:mt-8 font-pj">
-//                                     {member.name}
-//                                 </p>
-//                                 <p className="mt-2 text-base font-normal text-customBlack font-pj">
-//                                     {member.role}
-//                                 </p>
-//                             </div>
-//                         ))}
-//                     </div>
-//                 </div>
-//             </section>
-//         </div>
-//     );
-// }
-
-// export default Page3;
 import React from 'react';
 import linkedIn from "/src/assets/linkedin.png";
 import github from "/src/assets/logo.png";
@@ -63,7 +25,7 @@ const TeamComponent: React.FC = () => {
             name: 'Divyanshu Suman',
             role: 'Artificial Intelligence\nIntern',
             description: 'IIT Bombay\nUndergraduate Student',
-            imageUrl: 'https://media.licdn.com/dms/image/D4E35AQFABqmtpH9ONA/profile-framedphoto-shrink_400_400/0/1719441316980?e=1722927600&v=beta&t=nZbJj7GNGT3bbC_8dFBse_dxP2wcWP54DzdEC0bx0VQ',
+            imageUrl: 'https://media.licdn.com/dms/image/v2/D4E35AQFABqmtpH9ONA/profile-framedphoto-shrink_400_400/profile-framedphoto-shrink_400_400/0/1719441316980?e=1724817600&v=beta&t=0_l3irOplncyjpV3zCYFy91wIAlCV6vZxptzt3Adld8',
             githubUrl: 'https://github.com',
             linkedinUrl: 'https://www.linkedin.com/in/divyanshusuman/',
         },
@@ -71,7 +33,7 @@ const TeamComponent: React.FC = () => {
             name: 'Vanshika Sharma',
             role: 'Full Stack Development Intern',
             description: 'IT Undergraduate\nStudent',
-            imageUrl: 'https://media.licdn.com/dms/image/D4D35AQEzXwpMhRyCFQ/profile-framedphoto-shrink_400_400/0/1716278908145?e=1722927600&v=beta&t=ZGNQenYUxjW2Zg6FvY3ClyoBh_OHXAen02u74Cq3fD4',
+            imageUrl: 'https://media.licdn.com/dms/image/v2/D4D35AQEzXwpMhRyCFQ/profile-framedphoto-shrink_400_400/profile-framedphoto-shrink_400_400/0/1716278908145?e=1724817600&v=beta&t=P0HuymJHgPxGmzQRgVpp9rYnjZ5iZL3YhqloVcPvV4M',
             githubUrl: 'https://github.com',
             linkedinUrl: 'https://www.linkedin.com/in/vanshikasharma-it/',
         },
