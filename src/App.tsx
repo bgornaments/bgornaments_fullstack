@@ -50,11 +50,11 @@ const router = createBrowserRouter([
     element: <Catalogue />,
     children: [
       {
-        path: "/likedimages",
+        path: "likedimages",
         element: <LikedImages />,
       },
       {
-        path: "/:url",
+        path: ":url",
         element: <DetailedImageView />,
       },
     ],
