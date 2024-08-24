@@ -5,6 +5,7 @@ import Page1 from "./Page1";
 import Page2 from "./Page2";
 import Page3 from "./Page3";
 import Footer from "./Footer";
+import LogoCarousel from "./LogoCarousel"
 const HeroPage: React.FC = () => {
   return (
     <>
@@ -16,6 +17,7 @@ const HeroPage: React.FC = () => {
       </div>
       <Page1 />
       <Page2 />
+      <LogoCarousel/>
       <Page3 />
       <Footer/>
     </>

@@ -2,6 +2,7 @@ import React from 'react';
 import linkedIn from "/src/assets/linkedin.png";
 import github from "/src/assets/logo.png";
 import img from "/src/assets/img.png"
+import img4 from "/src/assets/vanshika.jpg"
 
 const TeamComponent: React.FC = () => {
     const teamMembers = [
@@ -33,14 +34,14 @@ const TeamComponent: React.FC = () => {
             name: 'Vanshika Sharma',
             role: 'Full Stack Development Intern',
             description: 'IT Undergraduate\nStudent',
-            imageUrl: 'https://media.licdn.com/dms/image/v2/D4D35AQEzXwpMhRyCFQ/profile-framedphoto-shrink_400_400/profile-framedphoto-shrink_400_400/0/1716278908145?e=1724817600&v=beta&t=P0HuymJHgPxGmzQRgVpp9rYnjZ5iZL3YhqloVcPvV4M',
+            imageUrl: img4,
             githubUrl: 'https://github.com',
             linkedinUrl: 'https://www.linkedin.com/in/vanshikasharma-it/',
         },
     ];
 
     return (
-        <div className="bg-[#fff9f5] min-h-screen">
+        <div className="bg-[#fff9f5] min-h-screen pt-40">
             <div className="container flex justify-center mx-auto pt-16">
                 <div>
                     <h1 className="text-customGreen xs:text-[1.5rem] md:text-[2rem] xl:text-[2.8rem] leading-tight text-center pb-6 sm:w-4/6 w-5/6 mx-auto">
@@ -61,7 +62,7 @@ const TeamComponent: React.FC = () => {
                                 className="xl:w-[20vw] sm:w-3/4 md:w-2/5 relative mt-16 mb-32 sm:mb-24 xl:max-w-sm lg:w-2/5"
                                 key={index}
                             >
-                                <div className="rounded-xl overflow-hidden shadow-md bg-[#f9eee6]">
+                                <div className="rounded-xl overflow-hidden shadow-md bg-[#f5e8d7]">
                                     <div className="absolute -mt-20 w-full flex justify-center">
                                         <div className="h-32 w-32">
                                             <img
