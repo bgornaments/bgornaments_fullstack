@@ -6,8 +6,6 @@ import JewelryForm from "./components/Basic/BasicForm.tsx";
 import Option from "./components/Basic/Option.tsx";
 import Modes from "./components/Basic/Modes.tsx";
 import Questions from "./components/LightningMode/Questions.tsx";
-import Navbar from "./components/LandingPage/Navbar.jsx";
-import Footer from "./components/LandingPage/Footer.jsx";
 import Login from "./components/Login.tsx";
 import { Authenticator } from "@aws-amplify/ui-react";
 import Catalogue from "./components/BrowseCatalogue/Catalogue.tsx";
@@ -36,20 +34,12 @@ const router = createBrowserRouter([
     element: <JewelryForm />,
   },
   {
-    path: "/navbar",
-    element: <Navbar />,
-  },
-  {
     path: "/lightningMode",
     element: <Questions />,
   },
   {
     path: "/aiimages",
     element: <AIimages />,
-  },
-  {
-    path: "/footer",
-    element: <Footer />,
   },
   {
     path: "/login",
