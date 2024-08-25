@@ -243,7 +243,6 @@ const AIGenerated: React.FC = () => {
         body: JSON.stringify({
           prompt: t2i_prompt,
           taskType: "TEXT_IMAGE",
-          numImages: 1,
         }),
       };
 
