@@ -45,20 +45,20 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
-  {
-    path: "/catalog",
-    element: <Catalogue />,
-    children: [
+  
+    {path: "/catalog",
+    element: <Catalogue />,}
+    ,
       {
-        path: "likedimages",
+        path: "/catalog/likedimages",
         element: <LikedImages />,
       },
       {
-        path: ":url",
+        path: "/catalog/:url",
         element: <DetailedImageView />,
       },
-    ],
-  },
+    
+  
   {
     path: "/edit",
     element: <EditImageData />,

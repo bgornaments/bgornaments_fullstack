@@ -7,12 +7,12 @@ import img7 from "/src/assets/img7.svg";
 import img8 from "/src/assets/img8.svg";
 import img9 from "/src/assets/img9.svg";
 import Navbar from "./Navbar";
-import { useAuthenticator } from "@aws-amplify/ui-react";
+// import { useAuthenticator } from "@aws-amplify/ui-react";
 
 const Core_2: React.FC = () => {
-  const { user } = useAuthenticator();
+  // const { user } = useAuthenticator();
         // console.log(user.signInDetails?.loginId)
-        console.log(user)
+        // console.log(user)
   return (
     <>
       <Navbar />
