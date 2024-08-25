@@ -139,7 +139,7 @@ const ImageGallery: React.FC<{
         });
         return;
       }
-      const detailedViewUrl = `${encodeURIComponent(url)}`;
+      const detailedViewUrl = `/catalog/${encodeURIComponent(url)}`;
       window.open(detailedViewUrl, '_blank', 'noopener,noreferrer');
     };
 
