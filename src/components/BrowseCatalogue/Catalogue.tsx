@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 import ImageGallery from "./ImageGallery";
 import icon from "/src/assets/image.png";
 import { useSelector } from 'react-redux';
-import { RootState} from '../../redux/store';
+import { RootState } from '../../redux/store';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
+import { Link } from "react-router-dom";
 
 const JewelryApp: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,11 +25,13 @@ const JewelryApp: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#fff9f5] p-[2vw]">
       <header className="flex justify-between mb-4 mx-4 items-center relative">
-        <img
-          src={icon}
-          alt=""
-          className="xs:w-[6rem] xs:h-[2rem] md:w-[12rem] md:h-[4.5rem] xl:w-[14rem]"
-        />
+        <Link to="/" className="block">
+          <img
+            src={icon}
+            alt=""
+            className="xs:w-[6rem] xs:h-[2rem] md:w-[12rem] md:h-[4.5rem] xl:w-[14rem]"
+          />
+        </Link>
         <div className="flex gap-[2rem]">
           <div className="relative flex items-center">
             <div className="flex items-center bg-[#F5E8D7] rounded-xl p-1 shadow-md">

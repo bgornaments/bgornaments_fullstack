@@ -101,26 +101,25 @@ const DetailedImageView: React.FC = () => {
               <div className="w-full">
                 <hr />
                 <div className="flex justify-between items-center mx-10 md:mx-4 ">
-                <p className="my-2 text-customGreen text-sm md:text-md tracking-wide">Product Details</p>
-                <img src={plus} alt="" className=" size-[3vw] md:size-[1vw]" />
+                  <p className="my-2 text-customGreen text-sm md:text-md tracking-wide">Product Details</p>
+                  <img src={plus} alt="" className=" size-[3vw] md:size-[1vw]" />
                 </div>
                 <hr />
               </div>
               <div className="flex flex-col items-center xs:mx-10 md:mx-0">
-              <p className="text-sm tracking-wider mb-4 text-customBlack text-center">Love the design? Try creating something similar with AI!</p>
-              <button className="mb-4 flex justify-center items-center gap-[0.4rem] border border-customGreen py-1 px-3 rounded-xl text-sm text-customBlack font-bold">
-              <p>Generate Designs</p>
-              <img src={ai} alt="" className="w-[1.2rem]" />
-              </button>
-              <button
-                onClick={() => handleLike(imageData.url)}
-                className={`flex justify-center items-center gap-[0.4rem] border border-customGreen py-1 px-3 rounded-xl text-sm text-customBlack font-bold ${
-                  likedImages.includes(imageData.url) ? 'bg-customGreen text-white' : ''
-                }`}
-              >
-                <p>{likedImages.includes(imageData.url) ? 'Added to Favorites' : 'Add to Favorites'}</p>
-                <img src={img} alt="" className="w-[1.1rem]" />
-              </button>
+                <p className="text-sm tracking-wider mb-4 text-customBlack text-center">Love the design? Try creating something similar with AI!</p>
+                <button className="mb-4 flex justify-center items-center gap-[0.4rem] border border-customGreen py-1 px-3 rounded-xl text-sm text-customBlack font-bold">
+                  <p>Generate Designs</p>
+                  <img src={ai} alt="" className="w-[1.2rem]" />
+                </button>
+                <button
+                  onClick={() => handleLike(imageData.url)}
+                  className={`flex justify-center items-center gap-[0.4rem] border border-customGreen py-1 px-3 rounded-xl text-sm text-customBlack font-bold ${likedImages.includes(imageData.url) ? 'bg-customGreen text-white' : ''
+                    }`}
+                >
+                  <p>{likedImages.includes(imageData.url) ? 'Added to Favorites' : 'Add to Favorites'}</p>
+                  <img src={img} alt="" className="w-[1.1rem]" />
+                </button>
               </div>
             </div>
           </div>

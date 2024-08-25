@@ -29,7 +29,7 @@ const Card: React.FC<CardProps> = ({
   return (
     <Link
       to={link}
-      className={`flex flex-col justify-center items-center bg-[#FFF9F5] rounded-[2vw] border border-customGreen shadow-green hover:scale-105 hover:transition-all `}
+      className={`flex flex-col justify-center items-center bg-[#FFF9F5] rounded-[2vw] border border-customGreen hover:scale-105 hover:transition-all `}
       style={{ width, height, gap }}
     >
       <div className="bg-[#F5E8D7] w-full flex text-center justify-center items-center">
