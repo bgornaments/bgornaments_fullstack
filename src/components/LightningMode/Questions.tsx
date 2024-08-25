@@ -107,7 +107,7 @@ const AIGenerated: React.FC = () => {
 
   const fetchInitialQuestion = async (updatedFormData: FormData) => {
     setIsLoading(true);
-    const userPrompt = `I want a ${updatedFormData.jewelryType} for ${updatedFormData.occasion} for a ${updatedFormData.gender} aged ${updatedFormData.ageGroup}`;
+    const userPrompt = `user: I want a ${updatedFormData.jewelryType} for ${updatedFormData.occasion} for a ${updatedFormData.gender} aged ${updatedFormData.ageGroup}`;
     try {
       const payload = {
         body: JSON.stringify({
@@ -117,6 +117,7 @@ const AIGenerated: React.FC = () => {
       };
       console.log(payload);
       const response = await axios.post(LIGHTENING_MODE, payload);
+      console.log(response)
       const data = JSON.parse(response.data.body);
       setCurrentQuestion(data.question);
       setOptions(cleanUpChoicesString(data.choices));
@@ -138,9 +139,8 @@ const AIGenerated: React.FC = () => {
 
     const userPrompt = `user: ${generateBasicInfoString()}\n${updatedQuestions
       .map((q, index) => `bot: ${q}\nuser: ${updatedAnswers[index]}`)
-      .join("\n")}${
-      selectedOption ? `\nbot: ${currentQuestion}\nuser: ${selectedOption}` : ""
-    }`;
+      .join("\n")}${selectedOption ? `\nbot: ${currentQuestion}\nuser: ${selectedOption}` : ""
+      }`;
     console.log(userPrompt);
     try {
       const payload = {
@@ -175,9 +175,8 @@ const AIGenerated: React.FC = () => {
 
     const userPrompt = `user: ${generateBasicInfoString()}\n${questions
       .map((q, index) => `bot: ${q}\nuser: ${answers[index]}`)
-      .join("\n")}${
-      selectedChoice ? `\nbot: ${currentQuestion}\nuser: ${selectedChoice}` : ""
-    }`;
+      .join("\n")}${selectedChoice ? `\nbot: ${currentQuestion}\nuser: ${selectedChoice}` : ""
+      }`;
     console.log(userPrompt);
     try {
       const payload = {
@@ -207,6 +206,7 @@ const AIGenerated: React.FC = () => {
         .map((q, index) => `bot: ${q}\nuser: ${answers[index]}`)
         .join("\n")}` + `\nbot: ${currentQuestion}\nuser: ${selectedChoice}`;
     try {
+      console.log(finalPrompt)
       const response = await axios.post(SUMMARIZER, {
         user_prompt: finalPrompt,
       });
@@ -243,7 +243,7 @@ const AIGenerated: React.FC = () => {
         body: JSON.stringify({
           prompt: t2i_prompt,
           taskType: "TEXT_IMAGE",
-          numImages: 3,
+          numImages: 1,
         }),
       };
 
@@ -262,7 +262,6 @@ const AIGenerated: React.FC = () => {
         body: JSON.stringify({
           prompt: t2i_prompt,
           jtype: formData.jewelryType,
-          numImages: 5, // max 7
         }),
       };
       const response_similar = await axios.post(SIMILAR_IMAGES_FETCHER, payload_similar, {
@@ -273,8 +272,10 @@ const AIGenerated: React.FC = () => {
       const parsedBody_similar = JSON.parse(response_similar.data.body);
       console.log("Parsed Body Similar:", parsedBody_similar);
 
+      let similar_urls_list = parsedBody_similar.urls
+
       // Append the URLs from the second response to the existing urls_list
-      urls_list = urls_list.concat(parsedBody_similar.urls);
+      urls_list = similar_urls_list.concat(urls_list);
 
       const imageData = urls_list;
 
@@ -424,11 +425,10 @@ const AIGenerated: React.FC = () => {
                       <button
                         key={index}
                         onClick={() => handleChoiceChange(option)}
-                        className={`flex justify-center gap-[2vw] items-center xs:text-[0.8rem] md:text-[1.4rem] xl:text-[1rem] xs:px-[1.7vw] xs:py-[1.2vw] md:px-[1.8vw] md:py-[1vw] xl:px-[1.2vw] xl:py-[0.8vw] mx-[0.5vw] xs:mt-[3vw] md:mt-[1vw] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${
-                          selectedChoice === option
-                            ? "bg-[#F5E8D7] text-customBlack"
-                            : "text-customGreen border border-[#F5E8D7]"
-                        }`}
+                        className={`flex justify-center gap-[2vw] items-center xs:text-[0.8rem] md:text-[1.4rem] xl:text-[1rem] xs:px-[1.7vw] xs:py-[1.2vw] md:px-[1.8vw] md:py-[1vw] xl:px-[1.2vw] xl:py-[0.8vw] mx-[0.5vw] xs:mt-[3vw] md:mt-[1vw] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${selectedChoice === option
+                          ? "bg-[#F5E8D7] text-customBlack"
+                          : "text-customGreen border border-[#F5E8D7]"
+                          }`}
                       >
                         <p>{option}</p>
                         <div
@@ -466,11 +466,10 @@ const AIGenerated: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleBack}
-                  className={`flex flex-col items-center ${
-                    currentQuestionIndex === 0
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                  }`}
+                  className={`flex flex-col items-center ${currentQuestionIndex === 0
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                    }`}
                   disabled={currentQuestionIndex === 0}
                 >
                   <img
