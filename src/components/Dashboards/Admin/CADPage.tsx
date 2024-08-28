@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { FaSpinner } from 'react-icons/fa';
 
 interface CADItem {
@@ -14,7 +14,7 @@ const CADPage: React.FC = () => {
   const [cadItems, setCadItems] = useState<CADItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const navigate = useNavigate();
+//   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCADItems = async () => {
