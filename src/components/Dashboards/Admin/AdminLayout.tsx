@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Orders from './OrderPage';
 import DashboardPage from './DashboardPage';
 import Sidebar from './Sidebar';
+import CADPage from './CADPage';
 
 
 const AdminLayout = () => {
@@ -14,6 +15,7 @@ const AdminLayout = () => {
           <Routes>
             <Route path="orders" element={<Orders />} />
             <Route path="dashboard" element={<DashboardPage />} />
+            <Route path="cad" element={<CADPage />} />
           </Routes>
         </main>
       </div>

@@ -15,12 +15,20 @@ import LikedImages from "./components/BrowseCatalogue/LikedImages.tsx";
 import DashboardPage from "./components/Dashboards/Admin/DashboardPage.tsx";
 import OrderPage from "./components/Dashboards/Admin/OrderPage.tsx";
 import AdminLayout from "./components/Dashboards/Admin/AdminLayout.tsx";
+import Orders from "./components/BrowseCatalogue/Orders.tsx"
+import OrderDetailsPage from "./components/Dashboards/Admin/OrderDetailsPage.tsx";
+import CADPage from "./components/Dashboards/Admin/CADPage.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HeroPage />,
   },
+  {
+    path: "/orders",
+    element: <Orders />,
+  },
+
   {
     path: "/option",
     element: <Option />,
@@ -45,26 +53,26 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
-  
-    {path: "/catalog",
-    element: <Catalogue />,}
-    ,
-      {
-        path: "/catalog/likedimages",
-        element: <LikedImages />,
-      },
-      {
-        path: "/catalog/:url",
-        element: <DetailedImageView />,
-      },
-    
-  
+
+  { 
+    path: "/catalog", 
+    element: <Catalogue /> 
+  },
+  {
+    path: "/catalog/likedimages",
+    element: <LikedImages />,
+  },
+  {
+    path: "/catalog/:url",
+    element: <DetailedImageView />,
+  },
+
   {
     path: "/edit",
     element: <EditImageData />,
   },
   {
-    path: "/admin",
+    path: "/admin/*",
     element: <AdminLayout />,
     children: [
       {
@@ -75,7 +83,15 @@ const router = createBrowserRouter([
         path: "orders",
         element: <OrderPage />,
       },
+      {
+        path: "cad",
+        element: <CADPage />,
+      },
     ],
+  },
+  {
+    path: "/order/:orderID",
+    element: <OrderDetailsPage />,
   },
 ]);
 

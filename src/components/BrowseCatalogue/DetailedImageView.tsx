@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import icon from "/src/assets/image.png";
 import { useParams, useNavigate } from "react-router-dom";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import img from "/src/assets/add-to-favorites.png";
 import ai from "/src/assets/chatbot.png";
 import plus from "/src/assets/plus.png";
 import { FaSpinner } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 import { RootState, AppDispatch } from '../../redux/store';
 import { addLikedImage, removeLikedImage, setLikedImages } from '../../redux/likedImagesSlice';
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
 interface ImageData {
   url: string;
@@ -24,8 +26,10 @@ const DetailedImageView: React.FC = () => {
   const { url } = useParams<{ url: string }>();
   const [imageData, setImageData] = useState<ImageData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isPlacingOrder, setIsPlacingOrder] = useState<boolean>(false);
   const navigate = useNavigate();
   const likedImages = useSelector((state: RootState) => state.likedImages.likedImages);
+  const { user } = useAuthenticator();
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -36,7 +40,7 @@ const DetailedImageView: React.FC = () => {
         setImageData(image || null);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
-        console.log(error)
+        console.log(error);
       }
     };
     fetchImage();
@@ -63,13 +67,75 @@ const DetailedImageView: React.FC = () => {
     }
   }, [dispatch]);
 
+  const handlePlaceOrder = async () => {
+    if (!imageData) return;
+
+    const confirmOrder = await Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you want to place this order?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, place order!'
+    });
+
+    if (confirmOrder.isConfirmed) {
+      setIsPlacingOrder(true);
+
+      const orderDetails = {
+        tableName: "Orders_Table",
+        attributes: {
+          userId: user?.userId, 
+          item: imageData.description,
+          url: imageData.url,
+        },
+      };
+
+      try {
+        const response = await fetch(' https://stp1a8pmee.execute-api.us-east-1.amazonaws.com/placeOrder/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(orderDetails),
+        });
+
+        if (response.ok) {
+          // const result = await response.json();
+          Swal.fire(
+            'Order Placed!',
+            `Your order has been placed successfully.`,
+            'success'
+          );
+          navigate('/orders'); 
+        } else {
+          Swal.fire(
+            'Failed!',
+            'Failed to place the order.',
+            'error'
+          );
+        }
+      } catch (error) {
+        console.error('Error placing order:', error);
+        Swal.fire(
+          'Error!',
+          'An error occurred while placing the order.',
+          'error'
+        );
+      } finally {
+        setIsPlacingOrder(false);
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#fff9f5] p-[2vw]">
       <header className="flex justify-between mb-4 mx-4">
         <img
           src={icon}
           alt=""
-          className="xs:w-[10rem] md:w-[12rem] xl:w-[14rem] "
+          className="xs:w-[10rem] md:w-[12rem] xl:w-[14rem]"
         />
         <div className="flex gap-[2rem]">
           <button
@@ -119,6 +185,13 @@ const DetailedImageView: React.FC = () => {
                 >
                   <p>{likedImages.includes(imageData.url) ? 'Added to Favorites' : 'Add to Favorites'}</p>
                   <img src={img} alt="" className="w-[1.1rem]" />
+                </button>
+                <button
+                  onClick={handlePlaceOrder}
+                  className="mt-4 flex justify-center items-center gap-[0.4rem] border border-customGreen py-1 px-3 rounded-xl text-sm text-customBlack font-bold bg-customGreen text-white"
+                  disabled={isPlacingOrder}
+                >
+                  {isPlacingOrder ? <FaSpinner className="animate-spin" /> : <><AiOutlineShoppingCart /> Place Order</>}
                 </button>
               </div>
             </div>
