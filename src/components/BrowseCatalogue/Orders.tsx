@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSpinner } from 'react-icons/fa';
 import Swal from 'sweetalert2';
@@ -7,7 +7,7 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 const OrdersPage = () => {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string>('');
+  // const [error, setError] = useState<string>('');
   const { user } = useAuthenticator();
   const navigate = useNavigate();
 
@@ -62,13 +62,13 @@ const OrdersPage = () => {
     );
   }
 
-  if (error) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p className="text-red-500 text-lg">{error}</p>
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="flex justify-center items-center min-h-screen">
+  //       <p className="text-red-500 text-lg">{error}</p>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="text-[#00000080] p-4">
