@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaSpinner } from 'react-icons/fa';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuthenticator } from "@aws-amplify/ui-react";
 
@@ -20,7 +20,7 @@ const OrderDetailsPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const { user } = useAuthenticator();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
