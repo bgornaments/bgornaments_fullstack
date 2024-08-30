@@ -15,17 +15,18 @@ export default {
           to: { transform: 'translateX(-100%)' },
         },
       },
-      screens:{
-        'xs':'300px'
+      screens: {
+        'xs': '300px'
       },
       fontFamily: {
-        secondary:['Inknut Antiqua', 'serif'],
+        secondary: ['Inknut Antiqua', 'serif'],
       },
       colors: {
         customGreen: '#166767',
-        customBeige: '#F5E8D7',
-        customBlack: '#00000066'
-        
+        customBeige: '#B2801D25',
+        customBlack: '#00000066',
+        white: '#ffffff'
+
       },
       boxShadow: {
         'green': '-3px 3px 15px 0px rgba(22, 103, 103, 0.5)',

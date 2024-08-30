@@ -11,13 +11,13 @@ import Navbar from "./Navbar";
 
 const Core_2: React.FC = () => {
   // const { user } = useAuthenticator();
-        // console.log(user.signInDetails?.loginId)
-        // console.log(user)
+  // console.log(user.signInDetails?.loginId)
+  // console.log(user)
   return (
     <>
       <Navbar />
       <div className="flex flex-col ">
-        <div className="bg-[#fff9f5] min-h-screen w-full flex flex-col  items-center gap-[10vh]">
+        <div className="bg-[#ffffff] min-h-screen w-full flex flex-col  items-center gap-[10vh]">
           <div className="flex gap-[3vh] flex-col items-center mt-[3vh]">
             <div>
               <img src={logo} alt="" className="w-[12rem]" />
@@ -36,7 +36,7 @@ const Core_2: React.FC = () => {
           <div className="flex gap-[3vw] text-[1rem] justify-center items-center ">
             <Link
               to="/form"
-              className="bg-customGreen px-[2rem] py-[1rem] rounded-full text-customBeige"
+              className="bg-customGreen px-[2rem] py-[1rem] rounded-full text-white"
             >
               <div>Design Now -&gt;</div>
             </Link>

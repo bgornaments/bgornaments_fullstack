@@ -24,32 +24,32 @@ const Core: React.FC = () => {
 
   return (
     <>
-    <Navbar/>
-    <div className="bg-[#fff9f5] w-full min-h-screen flex flex-col">
+      <Navbar />
+      <div className="bg-[#ffffff] w-full min-h-screen flex flex-col">
         <div className="h-[65vh] w-full flex">
           <div className="w-9/12 h-full flex items-center ">
-          <div className="flex flex-col gap-[2vw]">
-            <h1 className="font-secondary text-customGreen xl:text-[3.5vw] md:text-[4.5vw]  ml-[2.5vw] px-[3vw] tracking-wide leading-relaxed">
-              From Imagination <br /> to Adornment
-            </h1>
-            <h2 className="ml-[2.5vw] px-[3vw] text-[1.5vw] text-customBlack">
-             Welcome to KinMitra {user && `, ${user.signInDetails?.loginId}`}
-            </h2>
-            <div className="ml-[2.5vw] px-[3vw] flex gap-10">
-              <Link to="/form" className="rounded-full bg-customGreen px-[2vw] py-[1vw] text-white/80 md:text-[1.5vw] xl:text-[1vw]">
-                Design Now -&gt;
-              </Link>
-              <button className="flex justify-center items-center gap-3 md:text-[1.5vw] xl:text-[1vw] text-customGreen">
-                <div className="rounded-full border-2 border-customGreen p-[1vw]">
-                  <img src={img3} alt="" className="w-[1vw]" />
-                </div>
-                <div>Play Video</div>
-              </button>
+            <div className="flex flex-col gap-[2vw]">
+              <h1 className="font-secondary text-customGreen xl:text-[3.5vw] md:text-[4.5vw]  ml-[2.5vw] px-[3vw] tracking-wide leading-relaxed">
+                From Imagination <br /> to Adornment
+              </h1>
+              <h2 className="ml-[2.5vw] px-[3vw] text-[1.5vw] text-customBlack">
+                Welcome to KinMitra {user && `, ${user.signInDetails?.loginId}`}
+              </h2>
+              <div className="ml-[2.5vw] px-[3vw] flex gap-10">
+                <Link to="/form" className="rounded-full bg-customGreen px-[2vw] py-[1vw] text-white/80 md:text-[1.5vw] xl:text-[1vw]">
+                  Design Now -&gt;
+                </Link>
+                <button className="flex justify-center items-center gap-3 md:text-[1.5vw] xl:text-[1vw] text-customGreen">
+                  <div className="rounded-full border-2 border-customGreen p-[1vw]">
+                    <img src={img3} alt="" className="w-[1vw]" />
+                  </div>
+                  <div>Play Video</div>
+                </button>
+              </div>
             </div>
+
           </div>
-          
-          </div>
-          <div className="w-3/12 bg-[#f5e8d7] h-full flex items-center "></div>
+          <div className="w-3/12 bg-[#B2801D25] h-full flex items-center "></div>
           <img
             src={img21}
             alt=""
@@ -57,7 +57,7 @@ const Core: React.FC = () => {
           />
         </div>
         <div className="h-[20vh] w-full flex">
-          <div className="w-9/12 bg-[#f5e8d7] h-full flex items-center">
+          <div className="w-9/12 bg-[#B2801D25] h-full flex items-center">
             <div className="border-r border-[#b9944c] bg-customGreen md:h-[25vh] lg:h-[28vh] w-1/4 ">
               <div className="w-[90%] flex justify-center">
                 <img src={img4} alt="" className="md:w-[11vh] lg:w-[13vh]" />
