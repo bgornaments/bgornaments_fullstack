@@ -14,7 +14,7 @@ const AdminLayout = () => {
             <div className="p-16 "> </div>
           <Routes>
             <Route path="orders" element={<Orders />} />
-            <Route path="dashboard" element={<DashboardPage />} />
+            <Route path="" element={<DashboardPage />} />
             <Route path="cad" element={<CADPage />} />
           </Routes>
         </main>

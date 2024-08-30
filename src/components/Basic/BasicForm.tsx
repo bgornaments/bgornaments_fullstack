@@ -70,7 +70,7 @@ const JewelryForm: React.FC = () => {
                     { type: "Earrings", icon: earringIcon },
                     { type: "Bangles", icon: bangleIcon },
                     { type: "Rings", icon: ringIcon },
-                    //{ type: "Chains", icon: chainIcon },
+                    //{ type: "Chains", icon: chainIcon },N
                     { type: "Bracelets", icon: braceletIcon },
                   ].map((jewelry) => (
                     <button key={jewelry.type} type="button">

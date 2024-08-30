@@ -8,6 +8,8 @@ interface Order {
   orderStatus: string;
   item: string;
   userId: string;
+  url:string
+  userMail:string
 }
 
 const OrdersPage: React.FC = () => {
@@ -70,21 +72,21 @@ const OrdersPage: React.FC = () => {
 
   return (
     <div className="text-[#00000080] p-4">
-      <h1 className="text-xl font-bold mb-4">Track All Orders!</h1>
+      <h1 className="text-xl font-bold mb-8 text-customGreen">Track All Orders!</h1>
       <div>
-        <div className="flex justify-between mb-4">
+        {/* <div className="flex justify-between mb-4">
           <div className="text-xl font-bold">All</div>
           <div className="flex gap-4">
             <button className="hover:text-yellow-500">Open</button>
             <button className="hover:text-yellow-500">Closed</button>
           </div>
-        </div>
+        </div> */}
         <table className="min-w-full border border-transparent">
           <thead>
-            <tr className="bg-beige text-left">
+            <tr className="text-customGreen text-left">
               <th className="py-3 px-4">#</th>
               <th className="py-3 px-4">Order Date</th>
-              <th className="py-3 px-4">Transaction Id</th>
+              <th className="py-3 px-4">Order Id</th>
               <th className="py-3 px-4">User Id</th>
               <th className="py-3 px-4">Status</th>
               <th className="py-3 px-4">More Details</th>
@@ -95,8 +97,10 @@ const OrdersPage: React.FC = () => {
               <tr key={order.orderID}>
                 <td className="py-3 px-4">{index + 1}</td>
                 <td className="py-3 px-4">{order.orderDate}</td>
-                <td className="py-3 px-4">{order.orderID}</td>
-                <td className="py-3 px-4">{order.userId}</td>
+                <td className="py-3 px-4">
+                  <img src={order.url} alt="" className='w-[8vw] rounded-lg' />
+                </td>
+                <td className="py-3 px-4">{order.userMail}</td>
                 <td className="py-3 px-4">{order.orderStatus}</td>
                 <td className="py-3 px-4">
                   <button

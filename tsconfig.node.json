@@ -5,7 +5,8 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
-    "strict": true
+    "strict": true,
+    "types": ["node", "semver"]
   },
-  "include": ["vite.config.ts","declarations.d.ts"]
+  "include": ["vite.config.ts", "declarations.d.ts"]
 }
