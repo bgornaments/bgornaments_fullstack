@@ -34,6 +34,7 @@ const Carousel: React.FC = () => {
     if (savedLikedImages) {
       setLikedImages(JSON.parse(savedLikedImages));
     }
+    console.log(images)
   }, []);
 
   const handleLike = (url: string) => {

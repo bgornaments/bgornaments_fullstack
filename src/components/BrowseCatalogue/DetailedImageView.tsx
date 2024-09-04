@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import icon from "/src/assets/image.png";
 import { useParams, useNavigate } from "react-router-dom";
-import { AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
+import { AiOutlineHeart} from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 // import img from "/src/assets/add-to-favorites.png";
 import ai from "/src/assets/chatbot.png";
@@ -15,9 +15,9 @@ import {
   setLikedImages,
 } from "../../redux/likedImagesSlice";
 import { useAuthenticator } from "@aws-amplify/ui-react";
-import Carousel from "../Carousel";
 import line from "/src/assets/Line 10.png";
 import order from "/src/assets/image 3.png";
+import Carousel from "./Carousel";
 
 interface ImageData {
   url: string;
