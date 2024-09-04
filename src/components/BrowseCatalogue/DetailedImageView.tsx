@@ -15,6 +15,9 @@ import {
   setLikedImages,
 } from "../../redux/likedImagesSlice";
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import Carousel from "../Carousel";
+import line from "/src/assets/Line 10.png";
+import order from "/src/assets/image 3.png";
 
 interface ImageData {
   url: string;
@@ -22,7 +25,7 @@ interface ImageData {
   material: string;
   gemstone: string;
   design: string;
-  type: string;
+  JewelleryType: string;
 }
 
 const DetailedImageView: React.FC = () => {
@@ -37,7 +40,13 @@ const DetailedImageView: React.FC = () => {
   );
   const { user } = useAuthenticator();
 
+  const icons = {
+    filledHeart: "/src/assets/add-to-favorites (1).png",
+    emptyHeart: "/src/assets/add-to-favorites (1).png",
+  };
+
   useEffect(() => {
+    // console.log(imageData?.JewelleryType)
     const fetchImage = async () => {
       try {
         const response = await fetch(
@@ -113,7 +122,8 @@ const DetailedImageView: React.FC = () => {
           userId: user?.userId,
           item: imageData.description,
           url: imageData.url,
-          userMail :user.signInDetails?.loginId,
+          userMail: user.signInDetails?.loginId,
+          type: imageData?.JewelleryType,
         },
       };
 
@@ -152,81 +162,10 @@ const DetailedImageView: React.FC = () => {
     }
   };
 
-  // const handlePlaceOrder = async () => {
-  //   if (!imageData) return;
-  //   const instructions = `
-  //     1. Go to your nearest Kinmitra jewelry store.<br />
-  //     2. Approach retailer staff for measurements and alteration requests.<br />
-  //     3. Place order for your unique design.
-  //   `;
-
-  //   const result = await Swal.fire({
-  //     title: 'Next Steps',
-  //     html: instructions,
-  //     icon: 'info',
-  //     showCancelButton: true,
-  //     confirmButtonText: 'Got it',
-  //     cancelButtonText: 'Place Order',
-  //     customClass: {
-  //       confirmButton: 'swal-confirm-button',
-  //       cancelButton: 'swal-cancel-button'
-  //     }
-  //   });
-
-  //   if (result.isConfirmed) {
-  //     return;
-  //   }
-
-  //   setIsPlacingOrder(true);
-
-  //   const orderDetails = {
-  //     tableName: "Orders_Table",
-  //     attributes: {
-  //       userId: user?.userId,
-  //       item: imageData.description,
-  //       url: imageData.url,
-  //     },
-  //   };
-
-  //   try {
-  //     const response = await fetch('https://stp1a8pmee.execute-api.us-east-1.amazonaws.com/placeOrder/', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(orderDetails),
-  //     });
-
-  //     if (response.ok) {
-  //       Swal.fire(
-  //         'Order Placed!',
-  //         'Your order has been placed successfully. Finalize your measurements with the help of retailer staff.',
-  //         'success'
-  //       );
-  //       navigate('/orders');
-  //     } else {
-  //       Swal.fire(
-  //         'Failed!',
-  //         'Failed to place the order.',
-  //         'error'
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error('Error placing order:', error);
-  //     Swal.fire(
-  //       'Error!',
-  //       'An error occurred while placing the order.',
-  //       'error'
-  //     );
-  //   } finally {
-  //     setIsPlacingOrder(false);
-  //   }
-  // };
-
   return (
     <>
-      <div className="min-h-screen bg-[#fff9f5] p-[2vw]">
-        <header className="flex justify-between mb-4 mx-4">
+      <div className="min-h-screen ">
+        <header className="flex justify-between my-4 mx-4">
           <img
             src={icon}
             alt=""
@@ -248,70 +187,85 @@ const DetailedImageView: React.FC = () => {
             </button>
           </div>
         </header>
+        <img src={line} alt="" />
+
         {imageData ? (
           <>
-            <div className="flex flex-col md:flex-row items-center justify-center align-middle mt-[5vh] gap-[10vw] h-full">
+            <div className="flex flex-col md:flex-row items-center justify-center align-middle mt-[2vh] gap-[10vw] h-full px-5">
               <img
                 src={imageData.url}
                 alt={imageData.description}
-                className="h-[50vw] md:h-[22vw] md:max-w-[35vw] rounded-xl md:shadow-[0_0_120px_100px_#F5E8D7] shadow-[0_0_120px_30px_#F5E8D7] md:mt-[10vh]"
+                className="h-[40vw] rounded-xl mt-10 max-w-[40%]"
               />
-              <div className="flex flex-col gap-[3vh] md:gap-[5vh] md:items-start items-center">
-                <h2 className="text-sm tracking-wider md:font-bold text-customBlack">
-                  {imageData.type}
-                </h2>
-                <p className="text-customGreen text-xl xs:mx-10 md:mx-0 text-center md:text-start md:text-3xl tracking-widest font-bold md:max-w-[40vw] leading-relaxed">
-                  {imageData.description}
+              <div className="flex flex-col md:items-start max-w-[33%]">
+                <p className="text-customGreen text-lg xs:mx-10 md:mx-0 text-center md:text-start md:text-2xl tracking-widest font-bold md:max-w-[40vw] leading-relaxed">
+                  {imageData.description.split(" ").slice(0, 4).join(" ")}
                 </p>
-                <div className="w-full">
-                  <hr />
-                  <div className="flex justify-between items-center mx-10 md:mx-4 ">
-                    <p className="my-2 text-customGreen text-sm md:text-md tracking-wide">
-                      Product Details
-                    </p>
-                    <img
-                      src={plus}
-                      alt=""
-                      className=" size-[3vw] md:size-[1vw]"
-                    />
+
+                <div className="flex justify-between items-center mt-4 w-full ">
+                  <div className="text-base tracking-wider md:font-bold text-customBlack">
+                    {imageData.JewelleryType}
                   </div>
-                  <hr />
-                </div>
-                <div className="flex flex-col items-center xs:mx-10 md:mx-0">
-                  <p className="text-sm tracking-wider mb-4 text-customBlack text-center">
-                    Love the design? Try creating something similar with AI!
-                  </p>
-                  <button className="mb-4 flex justify-center items-center gap-[0.4rem] border border-customGreen py-1 px-3 rounded-xl text-sm text-customBlack font-bold">
-                    <p>Generate Designs</p>
-                    <img src={ai} alt="" className="w-[1.2rem]" />
-                  </button>
                   <button
                     onClick={() => handleLike(imageData.url)}
-                    className={`flex justify-center items-center gap-[0.4rem] border border-customGreen py-1 px-3 rounded-xl text-sm text-customBlack font-bold ${
+                    className={`flex justify-center items-center gap-[0.4rem] px-10 ${
                       likedImages.includes(imageData.url)
-                        ? "bg-customGreen text-white"
-                        : ""
+                        ? " text-black"
+                        : "text-customBlack"
                     }`}
                   >
-                    <p>
-                      {likedImages.includes(imageData.url)
-                        ? "Added to Favorites"
-                        : "Add to Favorites"}
-                    </p>
-                    <img src={img} alt="" className="w-[1.1rem]" />
+                    <div className="flex flex-col justify-center items-center">
+                      <img
+                        src={
+                          likedImages.includes(imageData.url)
+                            ? icons.filledHeart
+                            : icons.emptyHeart
+                        }
+                        alt="favorite icon"
+                        className="w-[1.4rem] "
+                      />
+
+                      <span className="text-[.7rem]">
+                        {likedImages.includes(imageData.url)
+                          ? "Added to Favorites"
+                          : "Add to Favorites"}
+                      </span>
+                    </div>
                   </button>
+                </div>
+                <div className="mt-12">
+                  <div className="text-customGreen font-bold text-base tracking-widest">
+                    Description
+                  </div>
+                  <p className="font-serif text-base leading-6 tracking-wider text-customBlack mt-2">
+                    {imageData.description}
+                  </p>
+                  <p className="font-serif text-base leading-6 tracking-wider text-[#E0AE2A] mt-2">
+                    Show More Details -
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-start mt-10 justify-center">
+                  <p className="text-base text-customBlack text-center font-serif tracking-wider">
+                    Loved the design? Create a similar ones with AI!
+                  </p>
+                  <button className="flex gap-4 justify-center items-center mt-2 font-serif text-base  text-[#E0AE2A]">
+                    <p className="font-serif tracking-wider">
+                      Generate Similar Designs
+                    </p>
+                    <img src={ai} alt="" className="w-6" />
+                  </button>
+                </div>
+
+                <div className="mt-20">
                   <button
+                    className="flex gap-4 bg-[#E0AE2A] py-3 px-4 font-bold text-white rounded-xl
+                  shadow-lg transition-transform transform hover:scale-105 hover:bg-customGreen-dark active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-customGreen-dark"
                     onClick={handlePlaceOrder}
-                    className="mt-4 flex justify-center items-center gap-[0.4rem] border border-customGreen py-1 px-3 rounded-xl text-sm text-customBlack font-bold bg-customGreen text-white"
                     disabled={isPlacingOrder}
                   >
-                    {isPlacingOrder ? (
-                      <FaSpinner className="animate-spin" />
-                    ) : (
-                      <>
-                        <AiOutlineShoppingCart /> Place Order
-                      </>
-                    )}
+                    <p>Place Order</p>
+                    <img src={order} alt="" className="w-6" />
                   </button>
                 </div>
               </div>
@@ -319,11 +273,11 @@ const DetailedImageView: React.FC = () => {
           </>
         ) : (
           <></>
-          //   <div className="absolute inset-0 flex items-center justify-center">
-          //   <FaSpinner className="text-customGreen text-3xl animate-spin"/>
-          // </div>
         )}
       </div>
+      <img src={line} alt="" />
+      <Carousel />
+      <p className="my-20"></p>
     </>
   );
 };

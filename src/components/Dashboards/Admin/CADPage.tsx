@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
 import { FaSpinner } from 'react-icons/fa';
 
 interface CADItem {
+  url:string
   orderId: string;
   userId: string;
+  userMail: string;
   CAD_id: string;
   cadOrderDate: string;
   cadStatus: string;
@@ -14,7 +15,7 @@ const CADPage: React.FC = () => {
   const [cadItems, setCadItems] = useState<CADItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-//   const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchCADItems = async () => {
@@ -45,6 +46,10 @@ const CADPage: React.FC = () => {
 
     fetchCADItems();
   }, []);
+  const handleDetailsClick = (url: string) => {
+    const detailedViewUrl = `/cad/${encodeURIComponent(url)}`;
+    window.open(detailedViewUrl, '_blank', 'noopener,noreferrer');
+  };
 
   if (loading) {
     return (
@@ -64,14 +69,12 @@ const CADPage: React.FC = () => {
 
   return (
     <div className="text-[#00000080] p-4">
-      <h1 className="text-xl font-bold mb-4">CAD Modeling Data</h1>
+      <h1 className="text-xl font-bold mb-8 text-customGreen">CAD Modeling Data</h1>
       <table className="min-w-full border border-transparent">
         <thead>
-          <tr className="bg-beige text-left">
+          <tr className="text-customGreen text-left">
             <th className="py-3 px-4">#</th>
-            <th className="py-3 px-4">Order ID</th>
-            <th className="py-3 px-4">User ID</th>
-            <th className="py-3 px-4">CAD ID</th>
+            <th className="py-3 px-4">Order Image</th>
             <th className="py-3 px-4">CAD Order Date</th>
             <th className="py-3 px-4">CAD Status</th>
             <th className="py-3 px-4">More Details</th>
@@ -81,16 +84,17 @@ const CADPage: React.FC = () => {
           {cadItems.map((item, index) => (
             <tr key={item.CAD_id} >
               <td className="py-3 px-4">{index + 1}</td>
-              <td className="py-3 px-4">{item.orderId}</td>
-              <td className="py-3 px-4">{item.userId}</td>
-              <td className="py-3 px-4">{item.CAD_id}</td>
-              <td className="py-3 px-4">{item.cadOrderDate}</td>
+
+              <td className="py-3 px-4">
+                  <img src={item.url} alt="" className='w-[8vw] rounded-lg' />
+                </td>
+              <td className="py-3 px-4">{item.cadOrderDate.split(' ')[0]}</td>
               <td className="py-3 px-4">{item.cadStatus}</td>
 
               <td className="py-3 px-4">
                 <button
                   className="bg-beige p-2 rounded-full shadow-md"
-                //   onClick={() => navigate(`/cad/${item.CAD_id}`)}
+                  onClick={() => handleDetailsClick(item.CAD_id)}
                 >
                   ✏️
                 </button>

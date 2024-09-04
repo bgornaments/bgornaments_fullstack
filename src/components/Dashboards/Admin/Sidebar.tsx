@@ -9,7 +9,7 @@ const Sidebar = () => {
         <img src={logo} alt="" className="md:w-[15vh] xl:w-[30vh]" />
       </div>
       <nav className="flex flex-col gap-5 text-[#00000080] text-[0.8rem] justify-center ">
-        <Link to="/admin/dashboard" className="hover:bg-[#fff9f5] px-4 py-2 rounded-3xl">
+        <Link to="/admin/" className="hover:bg-[#fff9f5] px-4 py-2 rounded-3xl">
           <FaHome className="inline-block mr-2" />
           Dashboard
         </Link>

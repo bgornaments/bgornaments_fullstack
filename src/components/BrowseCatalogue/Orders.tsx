@@ -4,9 +4,17 @@ import { FaSpinner } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import icon from "/src/assets/image.png";
+import { Link } from "react-router-dom";
+
+interface Order {
+  orderID: string;
+  orderDate: string;
+  url: string;
+  orderStatus: string;
+}
 
 const OrdersPage = () => {
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuthenticator();
   const navigate = useNavigate();
@@ -49,8 +57,13 @@ const OrdersPage = () => {
 
         const result = await response.json();
         const parsedBody = JSON.parse(result.body);
+        console.log(parsedBody)
 
-        setOrders(parsedBody.data || []);
+        const sortedOrders = (parsedBody.data || []).sort((a: Order, b: Order) => {
+          return new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime();
+        });
+
+        setOrders(sortedOrders);
       } catch (err) {
         console.error(err);
       } finally {
@@ -63,7 +76,7 @@ const OrdersPage = () => {
 
   if (loading && user) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen bg-[#fff9f5] p-[2vw]">
         <FaSpinner className="text-customGreen text-3xl animate-spin" />
       </div>
     );
@@ -75,51 +88,50 @@ const OrdersPage = () => {
 
   return (
     <div className="min-h-screen bg-[#fff9f5] p-[2vw]">
-      <header className="flex justify-between mb-4 mx-4 items-center relative">
+      <Link to="/" className="flex justify-between mb-4 mx-4 items-center relative">
         <img
           src={icon}
           alt=""
           className="xs:w-[6rem] xs:h-[2rem] md:w-[12rem] md:h-[4.5rem] xl:w-[14rem]"
         />
-      </header>
-<section className="p-[3vw]">
-
-      <h1 className="text-xl font-bold mb-8 text-customGreen">Track All Orders!</h1>
-      <div>
-        {orders.length > 0 ? (
-          <table className="min-w-full border border-transparent">
-            <thead>
-              <tr className="text-left text-customGreen font-bold">
-                <th className="py-3 ">#</th>
-                <th className="py-3">Order Date</th>
-                <th className="py-3 ">Image</th>
-                <th className="py-3">Status</th>
-                <th className="py-3 ">More Details</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order, index) => (
-                <tr key={order.orderID} className="">
-                  <td className="py-3 font-serif">{index + 1}</td>
-                  <td className="py-3 font-serif">{order.orderDate}</td>
-                  <td className="py-3">
-                    <img src={order.url} alt="" className="w-[10vw] rounded-lg" />
-                  </td>
-                  <td className="py-3 font-serif">{order.orderStatus}</td>
-                  <td className="py-3">
-                    <button className="bg-beige p-2 rounded-full shadow-md">
-                      ✏️
-                    </button>
-                  </td>
+      </Link>
+      <section className="p-[3vw]">
+        <h1 className="text-xl font-bold mb-8 text-customGreen">Track All Orders!</h1>
+        <div>
+          {orders.length > 0 ? (
+            <table className="min-w-full border border-transparent">
+              <thead>
+                <tr className="text-center text-customGreen font-bold">
+                  <th className="py-3 ">#</th>
+                  <th className="py-3 ">Image</th>
+                  <th className="py-3">Order Date</th>
+                  <th className="py-3">Status</th>
+                  {/* <th className="py-3 ">More Details</th> */}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No orders found.</p>
-        )}
-      </div>
-</section>
+              </thead>
+              <tbody>
+                {orders.map((order, index) => (
+                  <tr key={order.orderID} className="text-center">
+                    <td className="py-3 font-serif">{index + 1}</td>
+                    <td className="py-3 flex justify-center">
+                      <img src={order.url} alt="" className="w-[10vw] rounded-lg" />
+                    </td>
+                    <td className="py-3 font-serif">{order.orderDate.split(' ')[0]}</td>
+                    <td className="py-3 font-serif">{order.orderStatus}</td>
+                    {/* <td className="py-3">
+                      <button className="bg-beige p-2 rounded-full shadow-md">
+                        ✏️
+                      </button>
+                    </td> */}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>No orders found.</p>
+          )}
+        </div>
+      </section>
     </div>
   );
 };
