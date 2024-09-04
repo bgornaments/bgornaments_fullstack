@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import icon from "/src/assets/image.png";
 import { useParams, useNavigate } from "react-router-dom";
-import { AiOutlineHeart} from "react-icons/ai";
+import { AiOutlineHeart } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 // import img from "/src/assets/add-to-favorites.png";
 import ai from "/src/assets/chatbot.png";
@@ -18,6 +18,7 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import line from "/src/assets/Line 10.png";
 import order from "/src/assets/image 3.png";
 import Carousel from "./Carousel";
+import heart from "/src/assets/add-to-favorites (1).png";
 
 interface ImageData {
   url: string;
@@ -40,10 +41,10 @@ const DetailedImageView: React.FC = () => {
   );
   const { user } = useAuthenticator();
 
-  const icons = {
-    filledHeart: "/src/assets/add-to-favorites (1).png",
-    emptyHeart: "/src/assets/add-to-favorites (1).png",
-  };
+  // const icons = {
+  //   filledHeart: "/src/assets/add-to-favorites (1).png",
+  //   emptyHeart: "/src/assets/add-to-favorites (1).png",
+  // };
 
   useEffect(() => {
     // console.log(imageData?.JewelleryType)
@@ -216,11 +217,7 @@ const DetailedImageView: React.FC = () => {
                   >
                     <div className="flex flex-col justify-center items-center">
                       <img
-                        src={
-                          likedImages.includes(imageData.url)
-                            ? icons.filledHeart
-                            : icons.emptyHeart
-                        }
+                        src={heart}
                         alt="favorite icon"
                         className="w-[1.4rem] "
                       />
