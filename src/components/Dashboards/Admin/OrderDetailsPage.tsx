@@ -101,7 +101,7 @@ const OrderDetailsPage: React.FC = () => {
             tableName: "Orders_Table",
             orderID: orderID,
             attribute: "orderStatus",
-            newValue: "Processed",
+            newValue: "Completed",
           }),
         }
       );

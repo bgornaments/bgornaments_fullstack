@@ -9,6 +9,8 @@ interface Order {
   userId: string;
   url: string;
   userMail: string;
+  url: string;
+  userMail: string;
 }
 
 const OrdersPage: React.FC = () => {
@@ -34,6 +36,12 @@ const OrdersPage: React.FC = () => {
 
         const result = await response.json();
         const parsedBody = JSON.parse(result.body);
+        
+        const sortedOrders = parsedBody.data.sort((a: Order, b: Order) => {
+          return new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime();
+        });
+
+        setOrders(sortedOrders);
         
         const sortedOrders = parsedBody.data.sort((a: Order, b: Order) => {
           return new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime();
@@ -114,6 +122,7 @@ const OrdersPage: React.FC = () => {
               <th className="py-3 px-4">#</th>
               <th className="py-3 px-4">Order Date</th>
               <th className="py-3 px-4">Order Image</th>
+              <th className="py-3 px-4">Order Image</th>
               <th className="py-3 px-4">User Id</th>
               <th className="py-3 px-4">Status</th>
               <th className="py-3 px-4">More Details</th>
@@ -124,6 +133,7 @@ const OrdersPage: React.FC = () => {
             {orders.map((order, index) => (
               <tr key={order.orderID}>
                 <td className="py-3 px-4">{index + 1}</td>
+                <td className="py-3 px-4">{order.orderDate.split(' ')[0]}</td>
                 <td className="py-3 px-4">{order.orderDate.split(' ')[0]}</td>
                 <td className="py-3 px-4">
                   <img src={order.url} alt="" className='w-[8vw] rounded-lg' />
