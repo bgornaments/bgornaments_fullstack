@@ -3,10 +3,10 @@ import icon from "/src/assets/image.png";
 import { useParams, useNavigate } from "react-router-dom";
 import { AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
-import img from "/src/assets/add-to-favorites.png";
+// import img from "/src/assets/add-to-favorites.png";
 import ai from "/src/assets/chatbot.png";
-import plus from "/src/assets/plus.png";
-import { FaSpinner } from "react-icons/fa";
+// import plus from "/src/assets/plus.png";
+// import { FaSpinner } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { RootState, AppDispatch } from "../../redux/store";
 import {

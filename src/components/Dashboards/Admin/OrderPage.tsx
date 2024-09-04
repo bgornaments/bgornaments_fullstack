@@ -9,8 +9,6 @@ interface Order {
   userId: string;
   url: string;
   userMail: string;
-  url: string;
-  userMail: string;
 }
 
 const OrdersPage: React.FC = () => {
@@ -43,11 +41,6 @@ const OrdersPage: React.FC = () => {
 
         setOrders(sortedOrders);
         
-        const sortedOrders = parsedBody.data.sort((a: Order, b: Order) => {
-          return new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime();
-        });
-
-        setOrders(sortedOrders);
       } catch (err: any) {
         console.error(err.message);
         setError(err.message);
