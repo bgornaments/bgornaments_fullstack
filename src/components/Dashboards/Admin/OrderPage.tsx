@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
-import { FaSpinner } from 'react-icons/fa';
+import { FaSpinner, FaTrash } from 'react-icons/fa';
 
 interface Order {
   orderID: string;
@@ -8,13 +7,14 @@ interface Order {
   orderStatus: string;
   item: string;
   userId: string;
+  url: string;
+  userMail: string;
 }
 
 const OrdersPage: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  // const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -34,7 +34,13 @@ const OrdersPage: React.FC = () => {
 
         const result = await response.json();
         const parsedBody = JSON.parse(result.body);
-        setOrders(parsedBody.data);
+        
+        const sortedOrders = parsedBody.data.sort((a: Order, b: Order) => {
+          return new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime();
+        });
+
+        setOrders(sortedOrders);
+        
       } catch (err: any) {
         console.error(err.message);
         setError(err.message);
@@ -47,10 +53,41 @@ const OrdersPage: React.FC = () => {
   }, []);
 
   const handleDetailsClick = (url: string) => {
-    
     const detailedViewUrl = `/order/${encodeURIComponent(url)}`;
     window.open(detailedViewUrl, '_blank', 'noopener,noreferrer');
   };
+
+  // const handleDeleteClick = async (orderID: string) => {
+  //     const confirmDelete = window.confirm('Are you sure you want to delete this order?');
+  //     if (!confirmDelete) return;
+
+  //     const data=JSON.stringify({
+  //       tableName: 'Orders_Table',
+  //       primaryKey: 'orderID',
+  //       primaryKeyValue: { orderID }
+  //     });
+  //     console.log(data)
+  //     try {
+  //       const response = await fetch('https://j6d5qam295.execute-api.us-east-1.amazonaws.com/getData', {
+  //         method: 'DELETE',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: data,
+  //       });
+    
+  //       if (!response.ok) {
+  //         const errorResponse = await response.json();
+  //         throw new Error(errorResponse.message || 'Failed to delete item');
+  //       }
+    
+  //       const data = await response.json();
+  //       console.log(data.message);
+  //     } catch (error) {
+  //       console.error(error.message);  
+  //     }
+  //   };
+    
 
   if (loading) {
     return (
@@ -70,33 +107,31 @@ const OrdersPage: React.FC = () => {
 
   return (
     <div className="text-[#00000080] p-4">
-      <h1 className="text-xl font-bold mb-4">Track All Orders!</h1>
+      <h1 className="text-xl font-bold mb-8 text-customGreen">Track All Orders!</h1>
       <div>
-        <div className="flex justify-between mb-4">
-          <div className="text-xl font-bold">All</div>
-          <div className="flex gap-4">
-            <button className="hover:text-yellow-500">Open</button>
-            <button className="hover:text-yellow-500">Closed</button>
-          </div>
-        </div>
         <table className="min-w-full border border-transparent">
           <thead>
-            <tr className="bg-beige text-left">
+            <tr className="text-customGreen text-left">
               <th className="py-3 px-4">#</th>
               <th className="py-3 px-4">Order Date</th>
-              <th className="py-3 px-4">Transaction Id</th>
+              <th className="py-3 px-4">Order Image</th>
+              <th className="py-3 px-4">Order Image</th>
               <th className="py-3 px-4">User Id</th>
               <th className="py-3 px-4">Status</th>
               <th className="py-3 px-4">More Details</th>
+              <th className="py-3 px-4">Delete</th>
             </tr>
           </thead>
           <tbody>
             {orders.map((order, index) => (
               <tr key={order.orderID}>
                 <td className="py-3 px-4">{index + 1}</td>
-                <td className="py-3 px-4">{order.orderDate}</td>
-                <td className="py-3 px-4">{order.orderID}</td>
-                <td className="py-3 px-4">{order.userId}</td>
+                <td className="py-3 px-4">{order.orderDate.split(' ')[0]}</td>
+                <td className="py-3 px-4">{order.orderDate.split(' ')[0]}</td>
+                <td className="py-3 px-4">
+                  <img src={order.url} alt="" className='w-[8vw] rounded-lg' />
+                </td>
+                <td className="py-3 px-4">{order.userMail}</td>
                 <td className="py-3 px-4">{order.orderStatus}</td>
                 <td className="py-3 px-4">
                   <button
@@ -104,6 +139,14 @@ const OrdersPage: React.FC = () => {
                     onClick={() => handleDetailsClick(order.orderID)}
                   >
                     ✏️
+                  </button>
+                </td>
+                <td className="py-3 px-4">
+                  <button
+                    className="bg-red-500 p-2 rounded-full shadow-md text-white"
+                    // onClick={() => handleDeleteClick(order.orderID)}
+                  >
+                    <FaTrash />
                   </button>
                 </td>
               </tr>

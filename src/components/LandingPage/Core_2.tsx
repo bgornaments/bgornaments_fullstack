@@ -6,7 +6,8 @@ import img3 from "/src/assets/img3.svg";
 import img7 from "/src/assets/img7.svg";
 import img8 from "/src/assets/img8.svg";
 import img9 from "/src/assets/img9.svg";
-import Navbar from "./Navbar";
+import Navbar from './Navbar';
+
 // import { useAuthenticator } from "@aws-amplify/ui-react";
 
 const Core_2: React.FC = () => {

@@ -3,6 +3,7 @@ import Orders from './OrderPage';
 import DashboardPage from './DashboardPage';
 import Sidebar from './Sidebar';
 import CADPage from './CADPage';
+import CADDetailsPage from './CADDetailsPage';
 
 
 const AdminLayout = () => {
@@ -14,8 +15,9 @@ const AdminLayout = () => {
             <div className="p-16 "> </div>
           <Routes>
             <Route path="orders" element={<Orders />} />
-            <Route path="dashboard" element={<DashboardPage />} />
+            <Route path="" element={<DashboardPage />} />
             <Route path="cad" element={<CADPage />} />
+            <Route path="/cad/:cadId" element={<CADDetailsPage/>} />
           </Routes>
         </main>
       </div>

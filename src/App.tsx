@@ -18,6 +18,7 @@ import AdminLayout from "./components/Dashboards/Admin/AdminLayout.tsx";
 import Orders from "./components/BrowseCatalogue/Orders.tsx"
 import OrderDetailsPage from "./components/Dashboards/Admin/OrderDetailsPage.tsx";
 import CADPage from "./components/Dashboards/Admin/CADPage.tsx";
+import CADDetailsPage from "./components/Dashboards/Admin/CADDetailsPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -76,7 +77,7 @@ const router = createBrowserRouter([
     element: <AdminLayout />,
     children: [
       {
-        path: "dashboard",
+        path: "",
         element: <DashboardPage />,
       },
       {
@@ -92,6 +93,10 @@ const router = createBrowserRouter([
   {
     path: "/order/:orderID",
     element: <OrderDetailsPage />,
+  },
+  {
+    path: "/cad/:cadId",
+    element: <CADDetailsPage />,
   },
 ]);
 
