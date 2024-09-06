@@ -245,17 +245,39 @@ const AIGenerated: React.FC = () => {
           taskType: "TEXT_IMAGE",
         }),
       };
+    let response;
+    let retries = 0;
+    const maxRetries = 3;
 
-      const response = await axios.post(IMAGE_GENERATOR, payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+ while (retries < maxRetries) {
+      try {
+        response = await axios.post(IMAGE_GENERATOR, payload, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-      const parsedBody = JSON.parse(response.data.body);
-      console.log("Parsed Body:", parsedBody);
+        if (response.status === 200) {
+          break; 
+        }
+      } catch (error: any) {
+        if (error.response?.status === 504) {
+          console.warn("Request timed out. Retrying...");
+          retries++;
+          await new Promise(resolve => setTimeout(resolve, 1000)); 
+        } else {
+          throw error; 
+        }
+      }
+    }
+    if (!response || response.status !== 200) {
+      throw new Error("Failed to generate images after multiple retries.");
+    }
 
-      let urls_list = parsedBody.uploaded_image_urls
+    const parsedBody = JSON.parse(response.data.body);
+    console.log("Parsed Body:", parsedBody);
+
+    let urls_list = parsedBody.uploaded_image_urls;
 
       const payload_similar = {
         body: JSON.stringify({
@@ -272,13 +294,9 @@ const AIGenerated: React.FC = () => {
       console.log("Parsed Body Similar:", parsedBody_similar);
 
       let similar_urls_list = parsedBody_similar.urls
-
-      // Append the URLs from the second response to the existing urls_list
       urls_list = similar_urls_list.concat(urls_list);
 
       const imageData = urls_list;
-
-      // Add to urls based on similarity matching
       console.log("Extracted Image Data:", imageData);
 
       if (Array.isArray(imageData)) {
