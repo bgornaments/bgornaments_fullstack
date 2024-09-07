@@ -23,7 +23,7 @@ const Core: React.FC = () => {
             <h1 className="font-custom font-bold text-customGreen xl:text-[4.5vw] md:text-[3.5vw] tracking-widest leading-tight">
               From Imagination <br /> To Adornment
             </h1>
-            <h2 className="text-[1.5vw] italic text-lightGolden">
+            <h2 className="text-[1.5vw] text-lightGolden">
              Welcome to KinMitra <span className="text-[0.8vw] italic">{user && `${user.signInDetails?.loginId}`}</span>
             </h2>
             <div className="flex gap-14">
