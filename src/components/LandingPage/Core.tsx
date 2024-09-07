@@ -49,7 +49,7 @@ const Core: React.FC = () => {
         </div>
         <div className="h-[20vh] w-full flex">
           <div className="w-9/12 bg-navbar h-full flex items-center">
-            <div className="border-r border-darkGolden bg-custom-gradient md:h-[25vh] lg:h-[28vh] w-1/4 ">
+            <div className="border-r border-darkGolden bg-custom-gradient rounded-r-3xl md:h-[25vh] lg:h-[28vh] w-1/4 ">
               <div className="w-[90%] flex justify-center">
                 <img src={img4} alt="" className="md:w-[11vh] lg:w-[13vh]" />
               </div>
