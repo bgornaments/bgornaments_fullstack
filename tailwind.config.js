@@ -32,7 +32,7 @@ export default {
 
       },
       backgroundImage: {
-        'custom-gradient': 'linear-gradient(0deg, rgba(178,128,29,1) 0%, rgba(178,128,29,0.8) 100%)', // Add the gradient
+        'custom-gradient': 'linear-gradient(0deg, rgba(178,128,29,1) 0%, rgba(178,128,29,0.7) 100%)', // Add the gradient
       },
       boxShadow: {
         'green': '-3px 3px 15px 0px rgba(22, 103, 103, 0.5)',

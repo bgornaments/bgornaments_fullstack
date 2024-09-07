@@ -48,25 +48,25 @@ const Core: React.FC = () => {
           />
         </div>
         <div className="h-[20vh] w-full flex">
-          <div className="w-9/12 bg-navbar h-full flex items-center">
-            <div className="border-r border-darkGolden bg-custom-gradient rounded-r-3xl md:h-[25vh] lg:h-[28vh] w-1/4 ">
+          <div className="w-9/12 h-full flex items-center">
+            <div className="border-r border-darkGolden bg-transparent rounded-r-3xl md:h-[25vh] lg:h-[28vh] w-1/4 bg-custom-gradient">
               <div className="w-[90%] flex justify-center">
                 <img src={img4} alt="" className="md:w-[11vh] lg:w-[13vh]" />
               </div>
             </div>
-            <div className="border-r border-lightGolden w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-darkGolden ">
+            <div className="border-r border-lightGolden w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-darkGolden bg-navbar">
               <img src={img9} alt="" className=" md:w-[3vh]" />
               <p className="text-center md:text-[1.5vh] xl:text-[2.8vh] xl:max-w-[60%] font-custom leading-tight">
                 Personalised <br /> Bespoke <br /> Designs
               </p>
             </div>
-            <div className="border-r border-lightGolden w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-darkGolden">
+            <div className="border-r border-lightGolden w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-darkGolden bg-navbar">
               <img src={img8} alt="" className=" md:w-[3vh]" />
               <p className="text-center md:text-[1.5vh] xl:text-[2.8vh] xl:max-w-[60%] font-custom leading-tight">
                 Data- <br />Driven <br />Insights
               </p>
             </div>
-            <div className="border-r border-lightGolden w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-darkGolden">
+            <div className="border-r border-lightGolden w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-darkGolden bg-navbar">
               <img src={img7} alt="" className=" md:w-[3vh]" />
               <p className="text-center md:text-[1.5vh] xl:text-[2.8vh] xl:max-w-[60%] font-custom leading-tight">
                 Seamless <br />User <br /> Experience
