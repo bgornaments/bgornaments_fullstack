@@ -8,13 +8,13 @@ const Navbar: React.FC = () => {
   const { user, signOut } = useAuthenticator(context => [context.user]);
 
   return (
-    <div className="w-full h-[10vh] bg-[#f5e8d7] flex xs:justify-center md:justify-between items-center top-0 md:px-[2.5rem] xl:px-[4rem] shadow-xl shadow-[#b9944c]">
+    <div className="w-full h-[10vh] bg-navbar flex xs:justify-center md:justify-between items-center top-0 md:px-[2.5rem] xl:px-[5vw]">
       <div className="hidden md:block">
         <Link to="/" className="block">
-          <img src={logo} alt="Logo" className="md:w-[15vh] xl:w-[22vh]" />
+          <img src={logo} alt="Logo" className="md:w-[15vh] xl:w-[20vh]" />
         </Link>
       </div>
-      <div className="flex xl:gap-[3rem] md:gap-[1.5rem] xs:gap-[1.6rem] xs:text-[2vh] md:text-[1.5vh] xl:text-[2.3vh] justify-around text-customGreen text-bold md:px-[4rem]">
+      <div className="flex xl:gap-[3.5rem] md:gap-[1.5rem] xs:gap-[1.6rem] xs:text-[2vh] md:text-[1.5vh] xl:text-[2.6vh] justify-around text-darkGolden font-bold md:px-[4rem]">
         <Link to="/">Home</Link>
         <Link to="/catalog">AI Designs</Link>
         <Link to="/orders">Orders</Link>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,8 +12,19 @@
       scrollbar-width: none;  /* Firefox */
 }
 }
-*{
-  font-family: "Inknut Antiqua", serif;
-  font-weight: 300;
+@font-face{
+  font-family: 'gabriola';
+  src: url('/src/assets/fonts/gabriola.woff2') format('woff2'),
+  url('/src/assets/fonts/gabriola.woff') format('woff');
+
+  font-weight: normal;
   font-style: normal;
+}
+
+*{
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  letter-spacing: 0.035em;
+  font-weight: 500;
 }
