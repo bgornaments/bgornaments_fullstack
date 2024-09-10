@@ -19,7 +19,7 @@ const Core: React.FC = () => {
     <div className="bg-white w-full min-h-screen flex flex-col">
         <div className="h-[65vh] w-full flex">
           <div className="w-9/12 h-full flex items-center ">
-          <div className="flex flex-col gap-[1.7vw] px-[5vw]">
+          <div className="flex flex-col md:gap-[5vh] xl:gap-[3vh] px-[5vw]">
             <h1 className="font-custom font-bold text-customGreen xl:text-[4.5vw] md:text-[3.5vw] tracking-widest leading-tight">
               From Imagination <br /> To Adornment
             </h1>

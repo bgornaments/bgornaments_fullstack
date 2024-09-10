@@ -46,11 +46,11 @@ const JewelryForm: React.FC = () => {
   };
   return (
     <>
-      <div className="bg-[#FFFFFF] w-full min-h-screen flex flex-col  items-center justify-center">
+      <div className="w-full min-h-screen flex flex-col  items-center justify-center">
         <div className="xs:w-full xl:w-[75vw] flex flex-col justify-center items-center xs:gap-[2.5vh]">
-          <div className="flex flex-col gap-[1vh] items-center pt-[1vh] ">
-            <img src={icon} alt="" className="xs:w-[10rem] md:w-[12rem] xl:w-[14rem]" />
-            <h2 className="xs:text-[1.2rem] md:text-[1.5rem] font-secondary text-customBlack flex justify-center">
+          <div className="flex flex-col gap-[3vh] items-center pt-[1rem] ">
+            <img src={icon} alt="" className="xs:w-[12vh] md:w-[15vh] xl:w-[20vh]" />
+            <h2 className="xs:text-[1.5rem] md:text-[2rem] font-custom text-lightGolden flex justify-center">
               Tell us about the recipient
             </h2>
           </div>
@@ -60,7 +60,7 @@ const JewelryForm: React.FC = () => {
               className="py-[5vw] flex xs:gap-[2.5rem] md:gap-[4.5rem] xl:gap-[3rem]  xs:w-[90vw] md:w-[90vw] xl:w-[70vw] h-full flex-col "
             >
               <div className="flex xs:flex-col md:flex-row justify-center items-center xs:gap-[2vh] md:gap-[0.5vh]">
-                <label className="text-customGreen font-secondary font-bold xs:text-[3.2vw] md:text-[2.7vw] xl:text-[1.2vw] xs:w-full md:w-3/12 xs:text-center md:text-start">
+                <label className="text-customGreen font-custom font-bold xs:text-[4.5vw] md:text-[3.5vw] xl:text-[1.8vw] xs:w-full md:w-3/12 xs:text-center md:text-start">
                   Type of Jewellery
                 </label>
                 <div className="flex flex-wrap xs:justify-center md:justify-start xs:gap-[3vw] xl:gap-[1.7vw] xs:w-full md:w-9/12">
@@ -80,9 +80,9 @@ const JewelryForm: React.FC = () => {
                             updateFormData({ jewelryType: jewelry.type })
                           )
                         }
-                        className={`flex flex-col items-center text-customBlack xs:p-[0.7rem] xl:p-[1vw] rounded-full cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${formData.jewelryType === jewelry.type
-                            ? "bg-[#f3ddc0] text-white"
-                            : "text-black border border-[#F5E8D7]"
+                        className={`flex flex-col items-center text-customBlack xs:p-[0.7rem] xl:p-[1vw] rounded-full cursor-pointer shadow-md shadow-lightGolden/35 transition-all ${formData.jewelryType === jewelry.type
+                            ? "bg-lightGolden/35 text-white"
+                            : "text-customblack border border-lightGolden/35"
                           }`}
                       >
                         <img
@@ -100,7 +100,7 @@ const JewelryForm: React.FC = () => {
               </div>
 
               <div className="flex xs:flex-col md:flex-row items-center justify-center xs:gap-[2vh] md:gap-[0.5vh]">
-                <label className="text-customGreen font-secondary font-bold xs:text-[3.2vw] md:text-[2.7vw] xl:text-[1.2vw] xs:w-full md:w-3/12 xs:text-center md:text-start">
+                <label className="text-customGreen font-custom font-bold xs:text-[4.5vw] md:text-[3.5vw] xl:text-[1.8vw] xs:w-full md:w-3/12 xs:text-center md:text-start">
                   Occasion
                 </label>
                 <div className="flex flex-wrap xs:justify-center md:justify-start xs:gap-[3vw] xl:gap-[1.7vw] xs:w-full md:w-9/12">
@@ -114,9 +114,9 @@ const JewelryForm: React.FC = () => {
                     <button
                       key={occasion}
                       type="button"
-                      className={`xs:text-[2.5vw] md:text-[2.4vw] xl:text-[1vw] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${formData.occasion === occasion
-                          ? "bg-[#f3ddc0]"
-                          : "bg-transparent text-customBlack border border-[#F5E8D7]"
+                      className={`xs:text-[2.5vw] md:text-[2.4vw] xl:text-[1vw] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer shadow-md shadow-lightGolden/35 transition-all ${formData.occasion === occasion
+                          ? "bg-lightGolden/35"
+                          : "bg-transparent text-customBlack border border-lightGolden/35"
                         }`}
                       onClick={() => dispatch(updateFormData({ occasion }))}
                     >
@@ -127,7 +127,7 @@ const JewelryForm: React.FC = () => {
               </div>
 
               <div className="flex xs:flex-col md:flex-row items-center justify-center xs:gap-[2vh] md:gap-[0.5vh]">
-                <label className="text-customGreen font-secondary font-bold xs:text-[3.2vw] md:text-[2.7vw] xl:text-[1.2vw] xs:w-full md:w-3/12 xs:text-center md:text-start">
+                <label className="text-customGreen font-custom font-bold xs:text-[4.5vw] md:text-[3.5vw] xl:text-[1.8vw] xs:w-full md:w-3/12 xs:text-center md:text-start">
                   Gender
                 </label>
                 <div className="flex flex-wrap xs:justify-center md:justify-start xs:gap-[3vw]  md:gap-[1.7vw] xs:w-full md:w-9/12">
@@ -141,8 +141,8 @@ const JewelryForm: React.FC = () => {
                       className="flex flex-col items-center"
                     >
                       <div
-                        className={`cursor-pointer flex items-center gap-[1vw] shadow-md shadow-[#F5E8D7] transition-all rounded-xl p-[0.2vw] ${formData.gender === option.gender
-                            ? "bg-[#f3d9b7] text-white"
+                        className={`cursor-pointer flex items-center gap-[1vw] shadow-md shadow-lightGolden/35 transition-all rounded-xl p-[0.2vw] ${formData.gender === option.gender
+                            ? "bg-lightGolden/35 text-white"
                             : "bg-transparent"
                           }`}
                         onClick={() =>
@@ -161,7 +161,7 @@ const JewelryForm: React.FC = () => {
               </div>
 
               <div className="flex xs:flex-col md:flex-row items-center justify-center xs:gap-[2vh] md:gap-[0.5vh]">
-                <label className="text-customGreen font-secondary font-bold xs:text-[3.2vw] md:text-[2.7vw] xl:text-[1.2vw] xs:w-full md:w-3/12 xs:text-center md:text-start">
+              <label className="text-customGreen font-custom font-bold xs:text-[4.5vw] md:text-[3.5vw] xl:text-[1.8vw] xs:w-full md:w-3/12 xs:text-center md:text-start">
                   Age group
                 </label>
                 <div className="flex flex-wrap xs:justify-center md:justify-start xs:gap-[3vw]  md:gap-[1.7vw] xs:w-full md:w-9/12">
@@ -170,9 +170,9 @@ const JewelryForm: React.FC = () => {
                       <button
                         key={ageGroup}
                         type="button"
-                        className={`xs:text-[2.5vw] md:text-[2.4vw] xl:text-[1vw] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${formData.ageGroup === ageGroup
-                            ? "bg-[#f3ddc0] text-black"
-                            : "bg-transparent border border-[#F5E8D7] text-customBlack"
+                        className={`xs:text-[2.5vw] md:text-[2.4vw] xl:text-[1vw] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer shadow-md shadow-lightGolden/35 transition-all ${formData.ageGroup === ageGroup
+                            ? "bg-lightGolden/35 text-black"
+                            : "bg-transparent border border-lightGolden/35 text-customBlack"
                           }`}
                         onClick={() => dispatch(updateFormData({ ageGroup }))}
                       >
@@ -186,9 +186,9 @@ const JewelryForm: React.FC = () => {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className={`xs:text-[2.5vw] md:text-[2.4vw] xl:text-[1vw] px-[2.5vh] py-[2vh] rounded-xl cursor-pointer ${isFormValid()
-                      ? "bg-customGreen text-white"
-                      : "bg-[#F5E8D7] text-customBlack cursor-not-allowed"
+                  className={`xs:text-[4vw] md:text-[3vw] xl:text-[1.5vw] px-[2.8vh] py-[1.3vh] rounded-xl cursor-pointer font-custom ${isFormValid()
+                      ? "border border-customGreen/30 bg-customGreen/40 text-darkGolden"
+                      : "bg-lightGolden/35 text-customBlack cursor-not-allowed"
                     }`}
                   disabled={!isFormValid()}
                 >

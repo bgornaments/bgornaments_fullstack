@@ -28,7 +28,8 @@ export default {
         customRed: '#EB2D2E90',
         lightGolden: '#E0AE2A',
         darkGolden:'#B2801D',
-        navbar:'#B2801D30'
+        navbar:'#B2801D30',
+        customBlack:'#0d0d0d'
 
       },
       backgroundImage: {

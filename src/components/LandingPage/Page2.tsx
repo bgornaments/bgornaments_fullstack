@@ -88,26 +88,19 @@ const TestimonialSlider: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-[#fff9f5] min-h-screen flex flex-col w-full p-[4rem] justify-center items-center gap-[1.3rem] md:gap-[2rem] xl:gap-[5rem]">
-      <section className="bg-[#f5e8d7] rounded-xl">
+    <div className="my-10 flex flex-col w-full  justify-center items-center gap-[1.3rem] md:gap-[2rem] xl:gap-[5rem]">
+      <section className="bg-navbar rounded-xl w-[80%]">
         <div className="mx-auto max-w-[1340px] px-4 py-12 sm:px-6 lg:me-0 lg:py-16 lg:pe-0 lg:ps-8 xl:py-24">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:items-center lg:gap-16">
             <div className="max-w-xl text-center ltr:sm:text-left rtl:sm:text-right">
-              <h2 className="text-customGreen xs:text-[1.5rem] md:text-[2rem] xl:text-[2.8rem] leading-tight">
+              <h2 className="text-customGreen font-custom text-[1.5rem] md:text-[1.4rem] xl:text-[2.4rem] leading-tight">
               Hear from those who know us best...
               </h2>
-
-              {/* <p className="mt-4 text-gray-700">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Voluptas veritatis illo placeat harum porro optio fugit a culpa
-                sunt id!
-              </p> */}
-
               <div className="hidden lg:mt-8 lg:flex lg:gap-4 justify-center">
                 <button
                   aria-label="Previous slide"
                   id="keen-slider-previous-desktop"
-                  className="rounded-full border border-customGreen p-3 text-customGreen transition hover:bg-customGreen hover:text-white"
+                  className="rounded-full border border-customRed p-3 text-customRed transition hover:bg-customRed hover:text-white"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -128,7 +121,7 @@ const TestimonialSlider: React.FC = () => {
                 <button
                   aria-label="Next slide"
                   id="keen-slider-next-desktop"
-                  className="rounded-full border border-customGreen p-3 text-customGreen transition hover:bg-customGreen hover:text-white"
+                  className="rounded-full border border-customRed p-3 text-customRed transition hover:bg-customRed hover:text-white"
                 >
                   <svg
                     className="size-5 rtl:rotate-180"
@@ -170,16 +163,16 @@ const TestimonialSlider: React.FC = () => {
                         </div>
 
                         <div className="mt-4">
-                          <p className="text-2xl text-[#b9944c] sm:text-3xl">
+                          <p className="text-lightGolden font-custom text-[1.5rem] md:text-[1.4rem] xl:text-[2.4rem]">
                             {testimonial.title}
                           </p>
-                          <p className="mt-4 leading-relaxed text-customBlack xs:text-xs md:text-sm">
+                          <p className="text-[#0d0d0d] text-[0.6rem] xl:text-[0.9rem] mt-4">
                             {testimonial.content}
                           </p>
                         </div>
                       </div>
 
-                      <footer className="mt-4 text-sm font-medium text-customBlack sm:mt-6">
+                      <footer className="text-lightGolden font-custom text-[1.1rem] md:text-[1rem] xl:text-[1.8rem] xs:mt-6 mt-4">
                         &mdash; {testimonial.author}
                       </footer>
                     </blockquote>
@@ -193,7 +186,7 @@ const TestimonialSlider: React.FC = () => {
             <button
               aria-label="Previous slide"
               id="keen-slider-previous"
-              className="rounded-full border border-customGreen p-3 text-customGreen transition hover:bg-customGreen hover:text-white"
+              className="rounded-full border border-customRed p-3 text-customRed transition hover:bg-customRed hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -214,7 +207,7 @@ const TestimonialSlider: React.FC = () => {
             <button
               aria-label="Next slide"
               id="keen-slider-next"
-              className="rounded-full border border-customGreen p-3 text-customGreen transition hover:bg-customGreen hover:text-white"
+              className="rounded-full border border-customRed p-3 text-customRed transition hover:bg-customRed hover:text-white"
             >
               <svg
                 className="size-5 rtl:rotate-180"
