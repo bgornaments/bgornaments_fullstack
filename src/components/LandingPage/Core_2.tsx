@@ -18,67 +18,62 @@ const Core_2: React.FC = () => {
     <>
       <Navbar />
       <div className="flex flex-col ">
-<<<<<<< HEAD
-  <div className="bg-[#ffffff] min-h-screen w-full flex flex-col  items-center gap-[10vh]">
-    <div className="flex gap-[3vh] flex-col items-center mt-[3vh]">
-=======
         <div className="min-h-screen w-full flex flex-col  items-center gap-[10vh]">
-        <div className="flex gap-[3vh] flex-col items-center mt-[5vh]">
->>>>>>> frontend_vanshika
-          <div>
-            <img src={logo} alt="" className="w-[6rem]" />
-          </div>
-          <div className="text-customGreen xs:text-[2.4rem] text-center ">
-            <h1 className="font-custom tracking-widest leading-tight font-bold">
-              From Imagination <br /> To Adornment
-            </h1>
-          </div>
-        </div>
-
-        <div className="bg-navbar h-[30vh] w-full flex items-center justify-center ">
-          <img className="w-[45vh]" alt="Pexels arif" src={img21} />
-        </div>
-
-        <div className="flex gap-[6vw] text-[0.9rem] justify-center items-center ">
-          <Link
-            to="/form"
-            className="px-[1.4rem] py-[0.7rem] border border-customGreen  rounded-full text-customGreen"
-          >
-            <div>Design Now -&gt;</div>
-          </Link>
-
-          <button className="flex items-center gap-[1vw] text-customGreen justify-center">
-            <div className="rounded-full border border-customGreen p-[0.9rem] flex justify-center items-center" >
-              <img src={img3} alt="" className="w-[0.7rem]" />
+          <div className="flex gap-[3vh] flex-col items-center mt-[5vh]">
+            <div>
+              <img src={logo} alt="" className="w-[6rem]" />
             </div>
-            <p>Play Video</p>
-          </button>
+            <div className="text-customGreen xs:text-[2.4rem] text-center ">
+              <h1 className="font-custom tracking-widest leading-tight font-bold">
+                From Imagination <br /> To Adornment
+              </h1>
+            </div>
+          </div>
+
+          <div className="bg-navbar h-[30vh] w-full flex items-center justify-center ">
+            <img className="w-[45vh]" alt="Pexels arif" src={img21} />
+          </div>
+
+          <div className="flex gap-[6vw] text-[0.9rem] justify-center items-center ">
+            <Link
+              to="/form"
+              className="px-[1.4rem] py-[0.7rem] border border-customGreen  rounded-full text-customGreen"
+            >
+              <div>Design Now -&gt;</div>
+            </Link>
+
+            <button className="flex items-center gap-[1vw] text-customGreen justify-center">
+              <div className="rounded-full border border-customGreen p-[0.9rem] flex justify-center items-center" >
+                <img src={img3} alt="" className="w-[0.7rem]" />
+              </div>
+              <p>Play Video</p>
+            </button>
+          </div>
+        </div>
+        <div className=" flex justify-center items-center sm:pt-[2rem] pb-[3rem]">
+          <div className="flex flex-col h-[80%] w-[60%] gap-[5vh] ">
+            <div className="bg-navbar gap-[0.8rem] min-h-[10rem] rounded-lg border border-darkGolden flex flex-col justify-center items-center text-darkGolden">
+              <img src={img9} alt="" className="size-[1.5rem]" />
+              <p className="max-w-[60%] text-center text-[1.3rem] font-custom">
+                Personalised Bespoke Designs
+              </p>
+            </div>
+            <div className="bg-navbar gap-[0.8rem] min-h-[10rem] rounded-lg border border-darkGolden flex flex-col justify-center items-center text-darkGolden">
+              <img src={img8} alt="" className="size-[1.5rem]" />
+              <p className="max-w-[60%] text-center text-[1.3rem] font-custom">
+                Data-Driven Insights
+              </p>
+            </div>
+            <div className="bg-navbar gap-[0.8rem] min-h-[10rem] rounded-lg border border-darkGolden flex flex-col justify-center items-center text-darkGolden">
+              <img src={img7} alt="" className="size-[1.5rem]" />
+              <p className="max-w-[60%] text-center text-[1.3rem] font-custom">
+                Seamless User Experience
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-      <div className=" flex justify-center items-center sm:pt-[2rem] pb-[3rem]">
-        <div className="flex flex-col h-[80%] w-[60%] gap-[5vh] ">
-          <div className="bg-navbar gap-[0.8rem] min-h-[10rem] rounded-lg border border-darkGolden flex flex-col justify-center items-center text-darkGolden">
-            <img src={img9} alt="" className="size-[1.5rem]" />
-            <p className="max-w-[60%] text-center text-[1.3rem] font-custom">
-              Personalised Bespoke Designs
-            </p>
-          </div>
-          <div className="bg-navbar gap-[0.8rem] min-h-[10rem] rounded-lg border border-darkGolden flex flex-col justify-center items-center text-darkGolden">
-            <img src={img8} alt="" className="size-[1.5rem]" />
-            <p className="max-w-[60%] text-center text-[1.3rem] font-custom">
-              Data-Driven Insights
-            </p>
-          </div>
-          <div className="bg-navbar gap-[0.8rem] min-h-[10rem] rounded-lg border border-darkGolden flex flex-col justify-center items-center text-darkGolden">
-            <img src={img7} alt="" className="size-[1.5rem]" />
-            <p className="max-w-[60%] text-center text-[1.3rem] font-custom">
-              Seamless User Experience
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </>
+    </>
   );
 };
 
