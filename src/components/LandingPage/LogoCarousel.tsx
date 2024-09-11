@@ -6,6 +6,7 @@ import colLogo3 from "/src/assets/colLogo3.png";
 import colLogo4 from "/src/assets/colLogo4.png";
 import colLogo5 from "/src/assets/colLogo5.png";
 import certi from "/src/assets/Group 27.png";
+import vision from "/src/assets/vision.png";
 
 const LogoCarousel: React.FC = () => {
   const logosRef = useRef<HTMLUListElement>(null);
@@ -20,44 +21,78 @@ const LogoCarousel: React.FC = () => {
   }, []);
 
   return (
-    <div className='bg-[#fff9f5] min-h-screen flex flex-col justify-center items-center'>
-    <div
-      className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-200px),transparent_100%)] bg-[#fff9f5] my-20"
-    >
-      <ul
-        ref={logosRef}
-        className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
-      >
-        <li>
-          <img src={colLogo1} alt="Facebook" className="md:w-[15vh] xl:w-[20vh]" />
-        </li>
-        <li>
-          <img src={colLogo2} alt="Disney" className="md:w-[15vh] xl:w-[20vh]" />
-        </li>
-        <li>
-          <img src={colLogo3} alt="Airbnb" className="md:w-[15vh] xl:w-[20vh]" />
-        </li>
-        <li>
-          <img src={colLogo4} alt="Apple" className="md:w-[15vh] xl:w-[20vh]" />
-        </li>
-        <li>
-          <img src={colLogo5} alt="Spark" className="md:w-[15vh] xl:w-[20vh]" />
-        </li>
-      </ul>
-    </div>
-
-    <div className='bg-[#fff9f5] w-full h-80 flex flex-col mt-28'>
-      <div className='my-20 bg-[#f5e8d7] h-1/2 flex justify-around items-center'>
-        <div className='max-w-[40vw] text-customGreen xs:text-[1.5rem] md:text-[2rem] xl:text-[1.6rem] leading-tight text-center'>
-          <h4>Proudly Recognized by the Government of India</h4>
-          {/* <p>We are honored to have received official recognition from the Government of India as an innovative startup. This certificate highlights our commitment to pioneering new solutions and driving progress in our industry. It’s a testament to our dedication, innovation, and impact.</p>
-             */}
-        </div>
-        <img src={certi} alt="" className='h-[50vh]' />
+    <div className="min-h-screen flex flex-col justify-center items-center mt-20">
+      <h3 className="w-full text-customGreen xs:text-[2rem] xl:text-[3.5vw] md:text-[3.4vw] tracking-widest leading-tight font-bold font-custom text-center">
+        Associations and Certifications
+      </h3>
+      <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-200px),transparent_100%)] my-10 md:my-20 ">
+        <ul
+          ref={logosRef}
+          className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
+        >
+          <li>
+            <img
+              src={colLogo1}
+              alt="Facebook"
+              className="w-[20vh] md:w-[15vh] xl:w-[24vh]"
+            />
+          </li>
+          <li>
+            <img
+              src={colLogo2}
+              alt="Disney"
+              className="w-[20vh] md:w-[15vh] xl:w-[24vh]"
+            />
+          </li>
+          <li>
+            <img
+              src={colLogo3}
+              alt="Airbnb"
+              className="w-[20vh] md:w-[15vh] xl:w-[24vh]"
+            />
+          </li>
+          <li>
+            <img
+              src={colLogo4}
+              alt="Apple"
+              className="w-[20vh] md:w-[15vh] xl:w-[24vh]"
+            />
+          </li>
+          <li>
+            <img
+              src={colLogo5}
+              alt="Spark"
+              className="w-[20vh] md:w-[15vh] xl:w-[24vh]"
+            />
+          </li>
+        </ul>
       </div>
 
+      <div className="w-full flex flex-col my-10">
+        <div className="py-[10vh] my-[6vh] border-navbar border  flex justify-around items-center">
+          <div className="md:max-w-[40vw] flex flex-col justify-center items-center gap-[4vh] ">
+            <h4 className="max-w-[90%] text-customGreen xs:text-[1.8rem] md:text-[3vw] tracking-widest leading-tight font-bold font-custom text-center ">
+              Proudly Recognized by the Government of India
+            </h4>
+            <p className="xs:max-w-[80%] md:w-full text-[0.6rem] xl:text-[0.8rem] text-center text-darkGolden">
+              We are proud to be officially recognized by the Government of
+              India as an innovative startup, reflecting our commitment to
+              pioneering solutions and driving industry progress. This
+              recognition underscores our dedication to innovation and impact.
+            </p>
+            <button className="flex items-center justify-center px-[2rem] py-[1rem] md:px-[1.5rem] md:py-[0.4rem] text-[1rem]  rounded-full text-customRed border border-customGreen gap-2">
+              <p>View Certificate</p>
+              <img src={vision} alt="" className="h-[4vh] " />
+            </button>
+          </div>
+          <img
+            src={certi}
+            alt=""
+            className="hidden md:block md:h-[30vw] xl:h-[20vw]"
+          />
+        </div>
+      </div>
     </div>
-  </div>
   );
 };
 
