@@ -20,7 +20,7 @@ const Core: React.FC = () => {
         <div className="h-[65vh] w-full flex">
           <div className="w-9/12 h-full flex items-center ">
             <div className="flex flex-col md:gap-[5vh] xl:gap-[3vh] px-[5vw]">
-              <h1 className="font-custom font-bold text-customGreen xl:text-[4.5vw] md:text-[3.5vw] tracking-widest leading-tight">
+              <h1 className="font-custom font-bold text-customGreen text-[4.5vw] tracking-widest leading-tight">
                 From Imagination <br /> To Adornment
               </h1>
               <h2 className="text-[1.5vw] text-lightGolden">
@@ -31,21 +31,19 @@ const Core: React.FC = () => {
                   Design Now -&gt;
                 </Link>
                 <button className="flex justify-center items-center gap-3 md:text-[1.5vw] xl:text-[1vw] text-customGreen">
-                  <div className="rounded-full border-2 border-customRed p-[1vw] flex justify-center items-center">
+                  <div className="rounded-full border border-customGreen p-[1vw] flex justify-center items-center">
                     <img src={img3} alt="" className="w-[0.8vw]" />
                   </div>
                   <div>Play Video</div>
                 </button>
               </div>
-
             </div>
-
           </div>
           <div className="w-3/12 bg-navbar h-full flex items-center "></div>
           <img
             src={img21}
             alt=""
-            className="absolute  md:right-[3vw] xl:right-[8vw] md:top-[25vh] xl:top-[16vh] xl:h-[55vh] md:h-[30vh]"
+            className="absolute  md:right-[3vw] lg:right-[8vw] md:top-[25vh] xl:top-[16vh] xl:h-[53vh] md:h-[30vh]"
           />
         </div>
         <div className="h-[20vh] w-full flex">

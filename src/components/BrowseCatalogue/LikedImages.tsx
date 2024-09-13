@@ -53,12 +53,12 @@ const LikedImages: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#fff9f5] p-[2vw]">
-      <header className="flex justify-between mb-4 mx-4 items-center relative">
+    <div className="min-h-screen  p-[2vw]">
+      <header className="flex justify-between mb-4 mx-14 items-center relative">
         <img
           src={icon}
           alt=""
-          className="xs:w-[6rem] xs:h-[2rem] md:w-[12rem] md:h-[4.5rem] xl:w-[14rem]"
+         className="xs:w-[4.2rem] md:w-[5.4rem] xl:w-[8.5rem]"
         />
         <div className="flex gap-[2rem]">
           <div className="relative flex items-center">
@@ -66,7 +66,7 @@ const LikedImages: React.FC = () => {
           <button
             className="relative p-2"
           >
-            <div className="rounded-full md:p-3 bg-[#F5E8D7] p-1">
+            <div className="rounded-full md:p-3  p-1 border  bg-navbar">
               <AiOutlineHeart size={20} color="gray" />
               {likedImages.length > 0 && (
                 <span className="absolute top-0 right-0 bg-red-500 font-serif text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
@@ -79,7 +79,7 @@ const LikedImages: React.FC = () => {
       </header>
       <section className='mx-14 flex flex-col gap-8 '>
 
-      <h2 className="text-md md:text-2xl font-serif font-medium leading-loose text-[#E0AE2A] items-center text-center">Liked Images</h2>
+      <h2 className="text-md md:text-3xl font-medium leading-loose text-lightGolden items-center text-center font-custom">Liked Images</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
         {likedImages.length > 0 ? (
           likedImages.map((url) => (

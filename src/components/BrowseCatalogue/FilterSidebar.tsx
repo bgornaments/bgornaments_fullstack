@@ -86,15 +86,15 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   return (
     <aside
       className={`w-full  p-8 fixed top-14 left-0 md:static ${
-        sidebarVisible ? "bg-[#fff9f5]" : ""
+        sidebarVisible ? "bg-[#ffffff]" : ""
       } z-50`}
     >
       {filterOptions.map((filter) => (
         <div className="mb-6" key={filter.name}>
           <h3
-            className={`text-md ${
+            className={`text-lg ${
               expanded[filter.name] ? "" : ""
-            } text-customBlack font-serif mb-4 cursor-pointer flex items-center`}
+            } text-customBlack/70 mb-4 cursor-pointer flex items-center font-custom tracking-widest font-black`}
             onClick={() => toggleExpand(filter.name)}
           >
             <img
@@ -112,8 +112,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                     key={option}
                     className={`px-4 py-1 xs:text-[2.3vw] md:text-[1.1vw] lg:text-[0.8vw] rounded-xl cursor-pointer shadow-md transition-all ${
                       filters[filter.name] === option
-                        ? "bg-[#f3ddc0] text-customBlack"
-                        : "bg-transparent text-customBlack border border-[#F5E8D7]"
+                        ? "bg-navbar text-customBlack/70"
+                        : "bg-transparent text-customBlack/70 border border-navbar"
                     }`}
                     onClick={() => handleFilterChange(filter.name, option)}
                   >
@@ -122,7 +122,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 ))}
               </div>
               <button
-                className="text-[#E0AE2A] xs:text-[2.3vw] md:text-[1.1vw] lg:text-[0.8vw] hover:underline mx-3 opacity-80"
+                className="text-lightGolden xs:text-[2.3vw] md:text-[1.1vw] lg:text-[0.8vw] hover:underline mx-3 opacity-80"
                 onClick={() => handleFilterChange(filter.name)}
               >
                 Clear choice
@@ -133,13 +133,13 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       ))}
       <div className="flex gap-[10vw] justify-center md:justify-start">
         <button
-          className="text-[#E0AE2A] text-sm hover:underline opacity-80"
+          className="text-lightGolden text-sm hover:underline opacity-80"
           onClick={resetFilters}
         >
           Reset
         </button>
         <div className={`md:hidden ${sidebarVisible ? "block" : "hidden"} `}>
-          <button className="text-[#E0AE2A] text-sm hover:underline opacity-80">
+          <button className="text-lightGolden text-sm hover:underline opacity-80">
             Close
           </button>
         </div>

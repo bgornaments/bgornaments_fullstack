@@ -138,15 +138,15 @@ const AIimages: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#FFF9F5] w-full min-h-screen flex flex-col items-center relative">
-      <div className="flex flex-col gap-[1vh] items-center pt-[1vh] ">
+    <div className="w-full min-h-screen flex flex-col items-center relative">
+      <div className="flex flex-col gap-[3vh] items-center pt-[2vh] ">
         <img
           src={icon}
           alt=""
-          className="xs:w-[24vw] md:w-[19vh] xl:w-[12vw]"
+          className="xs:w-[3.8rem] md:w-[4.8rem] xl:w-[6.5rem]"
         />
-        <h2 className="xs:text-[4vw] md:text-[3vw]  xl:text-[1.5vw] font-secondary text-customBlack flex justify-center">
-          Let&#39;s design your perfect piece
+        <h2 className="text-lightGolden flex justify-center xs:text-[1.3rem] md:text-[2.7vw] xl:text-[2.3vw] tracking-widest leading-tight font-custom text-center">
+          Select your Personalised Design
         </h2>
       </div>
       <div className="py-[2.5vw] flex gap-[5vh] w-[70vw] h-full flex-col ">
@@ -154,10 +154,10 @@ const AIimages: React.FC = () => {
           {storedImages.map((image: string, index: number) => (
             <div
               key={index}
-              className={`flex transition transform hover:scale-110 duration-300 justify-center items-center border rounded-xl cursor-pointer bg-customGreen ${
+              className={`flex transition transform hover:scale-110 duration-300 justify-center items-center border rounded-xl cursor-pointer bg-navbar ${
                 selectedImage === image
                   ? "border-[0.4vw] border-customGreen"
-                  : "border-gray-300"
+                  : "border-customGreen"
               }`}
               onClick={() => handleSelectImage(image)}
             >
@@ -181,14 +181,14 @@ const AIimages: React.FC = () => {
         <div className="flex flex-col items-center justify-center mt-[1vw] xs:gap-[2vh] xl:gap-[3vh]">
           <button
             onClick={handleRefineDesign}
-            className="flex items-center gap-[1vw] xs:text-[3vw] md:text-[2.3vw] xl:text-[1.3vw] xs:px-[2vw] xs:py-[1.2vw] md:px-[1.8vw] md:py-[1vw] xl:px-[1.2vw] xl:py-[0.8vw] rounded-3xl cursor-pointer shadow-md shadow-[#F5E8D7] text-[#B9944C] border border-[#B9944C] transition transform hover:scale-105 duration-300"
+            className="flex items-center gap-[1vw]  xs:text-[1rem] md:text-[2.4vw] xl:text-[2vw] tracking-widest leading-tight font-custom text-center xs:px-[2vw] xs:py-[1.2vw] md:px-[1.8vw] md:py-[1vw] xl:px-[1.2vw] xl:py-[0.8vw] rounded-3xl cursor-pointer shadow-md shadow-[#F5E8D7] text-[#B9944C] border border-[#B9944C] transition transform hover:scale-105 duration-300"
           >
             <img src={refresh} alt="" className="w-[1.5vw]" />
             Refine Selected Design
           </button>
           <button
             onClick={handleDownloadImage}
-            className="flex items-center gap-[1vw] xs:text-[3vw] md:text-[2.3vw] xl:text-[1.3vw] xs:px-[2vw] xs:py-[1.2vw] md:px-[1.8vw] md:py-[1vw] xl:px-[1.2vw] xl:py-[0.8vw] rounded-3xl cursor-pointer shadow-md shadow-[#F5E8D7] text-[#B9944C] border border-[#B9944C] transition transform hover:scale-105 duration-300"
+            className="flex items-center gap-[1vw]  xs:text-[1rem] md:text-[2.4vw] xl:text-[2vw] tracking-widest leading-tight font-custom text-center xs:px-[2vw] xs:py-[1.2vw] md:px-[1.8vw] md:py-[1vw] xl:px-[1.2vw] xl:py-[0.8vw] rounded-3xl cursor-pointer shadow-md shadow-[#F5E8D7] text-[#B9944C] border border-[#B9944C] transition transform hover:scale-105 duration-300"
           >
             <img src={download} alt="" className="w-[1.5vw]" />
             Download Selected Design

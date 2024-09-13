@@ -14,13 +14,13 @@ import {
   SIMILAR_IMAGES_FETCHER
 } from "../../constantsAWS";
 import Lottie from "react-lottie";
-import LoadingData from "/src/assets/Loading.json";
+import LoadingData from "/src/assets/Loading2.json";
 import chat from "/src/assets/chat.png";
 // import Feedback from "./Feedback";
 import { setImageData, updateFormData } from "../../redux/formSlice";
 import { useNavigate } from "react-router-dom";
 import Meaning from "./Meaning";
-import Images from "/src/assets/generateImages.png";
+import Images from "/src/assets/innovation.png";
 
 interface FormData {
   occasion: string;
@@ -381,13 +381,13 @@ const AIGenerated: React.FC = () => {
 
   return (
     <>
-      <div className="bg-[#FFF9F5] w-full min-h-screen flex flex-col  items-center justify-center">
+      <div className="w-full min-h-screen flex flex-col  items-center justify-center">
         {isLoading ? (
           questionsAnswered + 1 === maxQuestions ? (
             <>
               {/* <Feedback /> */}
-              <div className="text-xl min-h-screen flex flex-col justify-center items-center text-customGreen text-[3vw] xl:text-[1vw] text-center">
-                <p>
+              <div className="text-xl min-h-screen flex flex-col justify-center items-center text-customGreen  text-center">
+                <p className="font-custom text-lg md:text-2xl">
                   Crafting your Personalized Design <br />
                   Please Wait!
                 </p>
@@ -402,49 +402,49 @@ const AIGenerated: React.FC = () => {
         ) : (
           <>
             <div className="xs:w-full xl:w-[75vw] flex flex-col  items-center xs:gap-[2.5vh] h-[100vh] overflow-scroll no-scrollbar">
-              <div className="flex flex-col gap-[1vh] items-center pt-[1vh] ">
+              <div className="flex flex-col gap-[2vh] md:gap-[3vh] items-center pt-[2vh] ">
                 <img
                   src={logo}
                   alt=""
-                  className="xs:w-[10rem] md:w-[12rem] xl:w-[14rem]"
+                  className="xs:w-[3.8rem] md:w-[4.8rem] xl:w-[6.5rem]"
                 />
 
-                <h2 className="xs:text-[1.2rem] md:text-[1.4rem] font-secondary text-customBlack flex justify-center">
+                <h2 className="text-lightGolden flex justify-center xs:text-[1.1rem] md:text-[2.7vw] xl:text-[2.3vw] tracking-widest leading-tight font-custom text-center">
                   Let&#39;s design your perfect piece
                 </h2>
               </div>
 
-              <div className="flex-1 xs:w-[90vw] md:w-[90vw] xl:w-[70vw] flex-col justify-center items-center no-scrollbar">
+              <div className="flex-1 xs:w-[80vw] md:w-[75vw] xl:w-[70vw] flex-col justify-center items-center no-scrollbar">
                 <div className="xs:py-[1rem] md:py-0 flex xs:gap-[2rem] xl:gap-[1rem] flex-col items-center ">
-                  <div className="w-[98%] flex flex-col gap-[0.3rem] text-customBlack xs:text-[0.6rem] md:text-[1rem]">
-                    <p>
+                  <div className="w-[98%] flex flex-col gap-[0.3rem] text-lightGolden text-[0.8rem] md:text-[1.2rem] tracking-widest">
+                    <p className="font-custom">
                       {questionsAnswered + 1} out of {maxQuestions} Questions
                     </p>
-                    <div className="w-full h-[1vh] bg-customBeige rounded-2xl overflow-hidden no-scrollbar">
+                    <div className="w-full h-[1vh] bg-navbar rounded-2xl overflow-hidden no-scrollbar">
                       <div
                         className="h-full bg-customGreen"
                         style={{ width: `${progressPercentage}%` }}
                       ></div>
                     </div>
                   </div>
-                  <div className="bg-customBeige xs:min-h-[15vh] xl:min-h-[15vh] p-[2rem] text-customGreen font-bold leading-loose rounded-3xl w-full flex justify-center items-center gap-[1rem]">
+                  <div className="bg-navbar xs:min-h-[10vh] xl:min-h-[12vh] p-[1.5rem] text-customGreen font-bold leading-loose rounded-3xl w-full flex justify-center items-center gap-[1rem]">
                     <img
                       src={chat}
                       alt=""
-                      className="xs:w-[3rem] md:w-[4rem] xl:w-[4.3rem]"
+                      className="xs:w-[2rem] md:w-[3rem]"
                     />
-                    <div className="xs:text-[1rem] md:text-[1.7rem] xl:text-[1.3rem] font-serif font-bold text-center">
+                    <div className="xs:text-[0.6rem] md:text-[0.8rem] xl:text-[1.2rem] font-bold text-center">
                       {currentQuestion}
                     </div>
                   </div>
-                  <div className="flex flex-wrap w-full justify-around font-serif font-semibold border border-[#F5E8D7] xs:py-[2rem] md:py-[3.5vw] xl:py-[2vw] xs:rounded-lg md:rounded-3xl">
+                  <div className="flex flex-wrap w-full justify-around font-serif font-semibold border border-navbar xs:py-[1.2rem] md:py-[3vw] p-[2vw] rounded-3xl">
                     {options.map((option, index) => (
                       <button
                         key={index}
                         onClick={() => handleChoiceChange(option)}
-                        className={`flex justify-center gap-[2vw] items-center xs:text-[0.8rem] md:text-[1.4rem] xl:text-[1rem] xs:px-[1.7vw] xs:py-[1.2vw] md:px-[1.8vw] md:py-[1vw] xl:px-[1.2vw] xl:py-[0.8vw] mx-[0.5vw] xs:mt-[3vw] md:mt-[1vw] rounded-xl cursor-pointer shadow-md shadow-[#F5E8D7] transition-all ${selectedChoice === option
-                          ? "bg-[#F5E8D7] text-customBlack"
-                          : "text-customGreen border border-[#F5E8D7]"
+                        className={`flex justify-center gap-[2vw] items-center xs:text-[0.5rem] md:text-[0.6rem] xl:text-[0.9rem] xs:p-[0.4rem] md:px-[1vw] md:py-[0.6vw] mx-[0.5vw] my-[0.8vh] rounded-xl cursor-pointer shadow-md shadow-navbar transition-all ${selectedChoice === option
+                          ? "bg-navbar text-lightGolden"
+                          : "text-customGreen border border-navbar"
                           }`}
                       >
                         <p>{option}</p>
@@ -463,7 +463,7 @@ const AIGenerated: React.FC = () => {
                             <img
                               src={info}
                               alt=""
-                              className="xs:w-[1rem] md:w-[1.4rem] xl:w-[1.1rem]"
+                              className="xs:w-[0.5rem] md:w-[0.9rem] xl:w-[1.2rem] "
                             />
                           )}
                         </div>
@@ -479,7 +479,7 @@ const AIGenerated: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex justify-between xs:w-[90vw] md:w-[90vw] xl:w-[70vw] xs:text-[0.8rem] md:text-[1.4rem] xl:text-[1rem] text-customBlack p-5">
+              <div className="flex justify-between xs:w-[80vw] md:w-[80vw] xl:w-[70vw] xs:text-[0.8rem] md:text-[1rem] xl:text-[1.2rem] text-customGreen p-5">
                 <button
                   type="button"
                   onClick={handleBack}
@@ -492,9 +492,9 @@ const AIGenerated: React.FC = () => {
                   <img
                     src={back}
                     alt=""
-                    className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw] "
+                    className="xs:w-[2.2rem] md:w-[3rem] xl:w-[3.7rem] mb-[1vh] border border-customGreen/80 rounded-full"
                   />
-                  <p>Back</p>
+                  <p className="font-custom">Back</p>
                 </button>
 
                 <div className="flex gap-[2vw]">
@@ -506,9 +506,9 @@ const AIGenerated: React.FC = () => {
                     <img
                       src={regen}
                       alt=""
-                      className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw] "
+                      className="xs:w-[2.2rem] md:w-[3rem] xl:w-[3.7rem] mb-[1vh] border border-customGreen/80 rounded-full"
                     />
-                    <p>
+                    <p className="font-custom">
                       Regenerate <br />
                       Question
                     </p>
@@ -524,9 +524,9 @@ const AIGenerated: React.FC = () => {
                         <img
                           src={Images}
                           alt=""
-                          className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw]"
+                          className="xs:w-[2.2rem] md:w-[3rem] xl:w-[3.7rem] mb-[1vh] border border-customGreen/80 rounded-full"
                         />
-                        <p>
+                        <p className="font-custom">
                           Generate <br />
                           Images
                         </p>
@@ -536,9 +536,9 @@ const AIGenerated: React.FC = () => {
                         <img
                           src={next}
                           alt="Next"
-                          className="xs:w-[2.7rem] md:w-[4.5rem] xl:w-[4.4rem] mb-[0.3vw]"
+                          className="xs:w-[2.2rem] md:w-[3rem] xl:w-[3.7rem] mb-[1vh] border border-customGreen/80 rounded-full"
                         />
-                        <p>Next</p>
+                        <p className="font-custom">Next</p>
                       </>
                     )}
                   </button>
