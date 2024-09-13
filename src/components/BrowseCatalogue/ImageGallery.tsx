@@ -118,7 +118,9 @@ const ImageGallery: React.FC<{
         : [...likedImages, url];
       localStorage.setItem('likedImages', JSON.stringify(updatedLikedImages));
     };
-
+    const encodeUrl = (url: string) => {
+      return btoa(url);  // Decode URI component before encoding
+    };
     const handleImageClick = (url: string) => {
       if (!user) {
         Swal.fire({
@@ -139,7 +141,7 @@ const ImageGallery: React.FC<{
         });
         return;
       }
-      const detailedViewUrl = `/catalog/${encodeURIComponent(url)}`;
+      const detailedViewUrl = `/catalog/${encodeUrl(url)}`;
       window.open(detailedViewUrl, '_blank', 'noopener,noreferrer');
     };
 
@@ -195,7 +197,7 @@ const ImageGallery: React.FC<{
         </div>
 
         <main className="w-full md:w-3/4 p-8 flex flex-col gap-[1.5vh] text-customBlack">
-      
+
           {paginatedImages.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 mt-8">
               {paginatedImages.map((image) => (

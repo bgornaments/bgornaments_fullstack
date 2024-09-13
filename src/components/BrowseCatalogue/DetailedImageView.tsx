@@ -45,7 +45,9 @@ const DetailedImageView: React.FC = () => {
   //   filledHeart: "/src/assets/add-to-favorites (1).png",
   //   emptyHeart: "/src/assets/add-to-favorites (1).png",
   // };
-
+  const decodeUrl = (encodedUrl: string) => {
+    return atob(encodedUrl);  // Decode Base64 and re-encode as URI
+  };
   useEffect(() => {
     // console.log(imageData?.JewelleryType)
     const fetchImage = async () => {
@@ -54,7 +56,8 @@ const DetailedImageView: React.FC = () => {
           `https://dem48tvmua.execute-api.us-east-1.amazonaws.com/getDB`
         );
         const data = await response.json();
-        const image = data.find((img: ImageData) => img.url === url);
+        const image = data.find((img: ImageData) => url && img.url === decodeUrl(url));
+        //Make sure that url is not undefined before passing it to decodeUrl.
         setImageData(image || null);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
@@ -209,11 +212,10 @@ const DetailedImageView: React.FC = () => {
                   </div>
                   <button
                     onClick={() => handleLike(imageData.url)}
-                    className={`flex justify-center items-center gap-[0.4rem] px-10 ${
-                      likedImages.includes(imageData.url)
-                        ? " text-black"
-                        : "text-customBlack"
-                    }`}
+                    className={`flex justify-center items-center gap-[0.4rem] px-10 ${likedImages.includes(imageData.url)
+                      ? " text-black"
+                      : "text-customBlack"
+                      }`}
                   >
                     <div className="flex flex-col justify-center items-center">
                       <img
