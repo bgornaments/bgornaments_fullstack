@@ -34,7 +34,7 @@ const TeamComponent: React.FC = () => {
     },
     {
       name: "Vanshika Sharma",
-      role: "Full Stack Development Intern",
+      role: "Full Stack Development\nIntern",
       description: "IT Undergraduate\nStudent",
       imageUrl: vanshika,
       githubUrl: "https://github.com",

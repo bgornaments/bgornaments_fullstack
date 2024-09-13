@@ -56,7 +56,7 @@ const Meaning: React.FC<MeaningProps> = ({ option, onCancel }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-[#FFF9F5] rounded-3xl shadow-lg w-[30vw] h-[60vh] flex justify-center items-center">
+      <div className="bg-white rounded-3xl shadow-lg xs:w-[70vw] lg:w-[30vw] h-[60vh] flex justify-center items-center">
         <div className="w-[90%] h-[90%] border border-[#B9944C] rounded-2xl flex flex-col items-center justify-center">
           <div className="flex flex-col items-center h-screen no-scrollbar text-center gap-[2vh] w-full overflow-scroll no-scrollbar">
             <div className="flex justify-end w-[95%] mt-[1.5vh]">
@@ -73,11 +73,11 @@ const Meaning: React.FC<MeaningProps> = ({ option, onCancel }) => {
                 alt=""
                 className="xs:w-[1rem] md:w-[1.4rem] xl:w-[2rem]"
               />
-              <h2 className="xs:text-[1rem] md:text-[1.7rem] xl:text-[1.3rem] text-customGreen font-serif font-extrabold leading-relaxed">
+              <h2 className="xs:text-[1.2rem] md:text-[1.9rem] xl:text-[1.6rem] text-customGreen font-custom leading-relaxed">
                 {option}
               </h2>
             </div>
-            <div className="max-w-[85%] text-customBlack xs:text-[0.8rem] md:text-[1.4rem] xl:text-[1rem] text-center">
+            <div className="max-w-[85%] text-customBlack xs:text-[0.6rem] md:text-[1.4rem] xl:text-[1rem] text-center">
               {loading && <p>Loading...</p>}
               {error && <p className="text-red-500">{error}</p>}
               {!firstResult && !loading && !error && <p>No results found.</p>}
@@ -91,7 +91,7 @@ const Meaning: React.FC<MeaningProps> = ({ option, onCancel }) => {
                     : {firstResult.description}
                     {firstResult.url && (
                       <div className="my-[2vh] flex flex-col justify-center items-center">
-                        <p className="xs:text-[0.4rem] md:text-[1rem] xl:text-[0.8rem] text-[#B9944C]">Image for Reference</p>
+                        <p className="xs:text-[0.4rem] md:text-[1rem] xl:text-[0.8rem] text-darkGolden">Image for Reference</p>
                         <div >
 
                         <img
@@ -110,7 +110,7 @@ const Meaning: React.FC<MeaningProps> = ({ option, onCancel }) => {
 
           <button
             onClick={onCancel}
-            className="my-[2vh] px-4 py-2  text-[#B9944C] border border-[#B9944C] rounded-xl flex items-end justify-end align-bottom"
+            className="my-[2vh] px-[2.5vw] py-[1vh]  text-darkGolden border border-darkGolden rounded-xl flex items-end justify-end align-bottom text-[3vw] md:text-[1vw]  "
           >
             Cancel
           </button>

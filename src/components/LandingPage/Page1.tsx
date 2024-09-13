@@ -8,7 +8,7 @@ import frame2 from "/src/assets/Frame (1).svg";
 const Page1: React.FC = () => {
   return (
     <>
-      <div className=" flex flex-col w-full p-[2rem] justify-center items-center gap-[1.3rem] md:gap-[2rem] xl:gap-[2rem]">
+      <div className=" flex flex-col w-full p-[2rem] justify-center items-center gap-[1.3rem] md:gap-[2rem] xl:gap-[3rem]">
         <header>
           <h2 className="w-full text-customGreen xs:text-[2rem] xl:text-[3.5vw] md:text-[3.4vw] tracking-widest leading-tight font-bold font-custom text-center">
             Personalised Design Made Easy
@@ -18,10 +18,10 @@ const Page1: React.FC = () => {
           <img
             src={img10}
             alt="Jewelry Design Example"
-            className="w-[10rem] md:w-[20rem] xl:w-[25rem]"
+            className="w-[10rem] md:w-[16rem] xl:w-[25rem]"
           />
           <section className="flex flex-col  w-full items-center justify-center">
-            <div className="flex flex-col md:p-[2rem] gap-[1rem] xl:max-w-[40rem]">
+            <div className="flex flex-col md:p-[2rem] gap-[1rem] lg:max-w-[40rem]">
               <header>
                 <h3 className="text-lightGolden xs:text-center md:text-start text-[1.5rem] md:text-[1.4rem] xl:text-[2.4rem] font-custom">
                   Custom Designs Just for You

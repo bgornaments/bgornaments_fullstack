@@ -25,7 +25,7 @@ export default {
       colors: {
         lightGreen:'#00AA4F',
         customGreen:'#007F3A',
-        customRed: '#EB2D2E90',
+        customRed: '#EB2D2E',
         lightGolden: '#E0AE2A',
         darkGolden:'#B2801D',
         navbar:'#B2801D30',

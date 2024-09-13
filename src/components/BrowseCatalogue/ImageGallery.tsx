@@ -143,17 +143,15 @@ const ImageGallery: React.FC<{
       window.open(detailedViewUrl, '_blank', 'noopener,noreferrer');
     };
 
-    const heading = `${occasion || 'Occasion'} ${jewelryType || 'Jewelry Type'} from ${gender === 'Female' ? 'her' : 'him'}`;
-    const resultDescription = `Showing results for ${jewelryType || 'jewelry type'} for the occasion of ${occasion || 'occasion'}, for a ${gender === 'Female' ? 'female' : 'male'} aged ${ageGroup || 'age group'}`;
 
-    const filtersMatchFormData = () => {
-      return (
-        filters.material === "" &&
-        filters.gemstone === "" &&
-        filters.design === "" &&
-        filters.type === (formData.jewelryType || "")
-      );
-    };
+    // const filtersMatchFormData = () => {
+    //   return (
+    //     filters.material === "" &&
+    //     filters.gemstone === "" &&
+    //     filters.design === "" &&
+    //     filters.type === (formData.jewelryType || "")
+    //   );
+    // };
 
     const filteredImages = images.filter(
       (image) =>
@@ -178,7 +176,7 @@ const ImageGallery: React.FC<{
     };
 
     if (loading) {
-      return <div className="flex justify-center items-center h-screen"><FaSpinner className="text-3xl animate-spin" /></div>;
+      return <div className="flex justify-center items-center h-screen"><FaSpinner className="text-3xl animate-spin text-customGreen" /></div>;
     }
 
     if (error) {
@@ -197,13 +195,7 @@ const ImageGallery: React.FC<{
         </div>
 
         <main className="w-full md:w-3/4 p-8 flex flex-col gap-[1.5vh] text-customBlack">
-          {filtersMatchFormData() && (
-            <>
-              <h4 className="text-md md:text-2xl font-serif font-semibold leading-loose">{heading}</h4>
-              <p className="text-[0.5rem] md:text-sm">{resultDescription}</p>
-            </>
-          )}
-
+      
           {paginatedImages.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 mt-8">
               {paginatedImages.map((image) => (
@@ -229,7 +221,7 @@ const ImageGallery: React.FC<{
                     />
                   </div>
                   <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white p-2 text-center rounded-lg">
-                    <p>{image.description}</p>
+                    <p className="font-custom text-lg tracking-widest max-w-[80%]">{image.description}</p>
                   </div>
                   <button
                     className="absolute top-2 right-2 rounded-full p-1"
