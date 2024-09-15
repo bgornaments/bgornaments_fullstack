@@ -24,7 +24,7 @@ export default {
       },
       colors: {
         lightGreen: '#00AA4F',
-        customGreen: '#007F3A',
+        customGreen: '#007F3ACC',
         customRed: '#EB2D2E',
         lightGolden: '#E0AE2A',
         darkGolden: '#B2801D',
