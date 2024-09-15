@@ -17,7 +17,7 @@ const HeroPage: React.FC = () => {
       </div>
       <Page1 />
       <LogoCarousel />
-      <Page2 />
+      {/*<Page2 />*/}
       <Page3 />
       <Footer />
     </>

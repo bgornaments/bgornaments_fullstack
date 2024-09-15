@@ -30,12 +30,14 @@ const Core: React.FC = () => {
                 <Link to="/form" className="rounded-full border border-customGreen text-customGreen px-[2vw] py-[0.8vw] md:text-[1.5vw] xl:text-[1vw]">
                   Design Now -&gt;
                 </Link>
-                <button className="flex justify-center items-center gap-3 md:text-[1.5vw] xl:text-[1vw] text-customGreen">
-                  <div className="rounded-full border border-customGreen p-[1vw] flex justify-center items-center">
-                    <img src={img3} alt="" className="w-[0.8vw]" />
-                  </div>
-                  <div>Play Video</div>
-                </button>
+                <a href="https://qflpgffwo9.execute-api.us-east-1.amazonaws.com/prod/redirect" target="_blank" rel="noopener noreferrer">
+                  <button className="flex justify-center items-center gap-3 md:text-[1.5vw] xl:text-[1vw] text-customGreen">
+                    <div className="rounded-full border border-customGreen p-[1vw] flex justify-center items-center">
+                      <img src={img3} alt="" className="w-[0.8vw]" />
+                    </div>
+                    <div>Play Video</div>
+                  </button>
+                </a>
               </div>
             </div>
           </div>

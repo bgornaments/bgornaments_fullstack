@@ -41,13 +41,14 @@ const Core_2: React.FC = () => {
             >
               <div>Design Now -&gt;</div>
             </Link>
-
-            <button className="flex items-center gap-[1vw] text-customGreen justify-center">
-              <div className="rounded-full border border-customGreen p-[0.9rem] flex justify-center items-center" >
-                <img src={img3} alt="" className="w-[0.7rem]" />
-              </div>
-              <p>Play Video</p>
-            </button>
+            <a href="https://qflpgffwo9.execute-api.us-east-1.amazonaws.com/prod/redirect" target="_blank" rel="noopener noreferrer">
+              <button className="flex items-center gap-[1vw] text-customGreen justify-center">
+                <div className="rounded-full border border-customGreen p-[0.9rem] flex justify-center items-center" >
+                  <img src={img3} alt="" className="w-[0.7rem]" />
+                </div>
+                <p>Play Video</p>
+              </button>
+            </a>
           </div>
         </div>
         <div className=" flex justify-center items-center sm:pt-[2rem] pb-[3rem]">

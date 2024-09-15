@@ -80,10 +80,12 @@ const LogoCarousel: React.FC = () => {
               pioneering solutions and driving industry progress. This
               recognition underscores our dedication to innovation and impact.
             </p>
-            <button className="flex items-center justify-center px-[2rem] py-[1rem] md:px-[1.5rem] md:py-[0.4rem] text-[1rem]  rounded-full text-customRed border border-customGreen gap-2">
-              <p>View Certificate</p>
-              <img src={vision} alt="" className="h-[4vh] " />
-            </button>
+            <a href="https://recognition-be.startupindia.gov.in/s3/download/document/RECOGNITION_CERTIFICATE/c9c3cdf7-e66a-431e-8444-f8335f384985.pdf" target="_blank" rel="noopener noreferrer">
+              <button className="flex items-center justify-center px-[2rem] py-[1rem] md:px-[1.5rem] md:py-[0.4rem] text-[1rem]  rounded-full text-customRed border border-customGreen gap-2">
+                <p>View Certificate</p>
+                <img src={vision} alt="" className="h-[4vh] " />
+              </button>
+            </a>
           </div>
           <img
             src={certi}
