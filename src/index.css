@@ -16,8 +16,7 @@
 
 @font-face{
   font-family: 'Gabriola';
-  src: url('/src/assets/fonts/gabriola.woff2') format('woff2'),
-       url('/src/assets/fonts/gabriola.woff') format('woff');
+  src: url('/src/assets/fonts/gabriola.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: block; 

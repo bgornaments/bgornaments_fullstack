@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { FaSpinner } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 
 interface CADItem {
@@ -26,7 +27,11 @@ const CADDetailsPage: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ tableName: 'CAD_Table' }),
+        body: JSON.stringify({
+          tableName: 'CAD_Table',
+          filterAttribute: 'CAD_id',  
+          filterValue: cadId || ""
+        }),
       });
   
       if (!response.ok) {
@@ -36,30 +41,35 @@ const CADDetailsPage: React.FC = () => {
   
       const result = await response.json();
       const parsedBody = JSON.parse(result.body);
-      console.log(parsedBody); 
+      console.log(parsedBody);
   
-      const orderData = parsedBody.data.find((item: CADItem) => {
-        console.log(`Comparing item.CAD_id: ${item.CAD_id} with cadId: ${cadId}`);
-        return item.CAD_id === cadId;
-      });
+      const cadItemData = parsedBody.data[0] || null; 
   
-      console.log("Found order data:", orderData); 
+      console.log("Found CAD item data:", cadItemData);
   
-      setCadItem(orderData || null);
+      setCadItem(cadItemData);  
     } catch (err: any) {
       console.error(err.message);
       setError(err.message);
     } finally {
-      setLoading(false);
+      setLoading(false);  
     }
   };
   
-
   useEffect(() => {
-    fetchCADItemDetails();
+    if (cadId) {
+      fetchCADItemDetails();  
+    }
   }, [cadId]);
+  
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-[#fff9f5]">
+        <FaSpinner className="text-customGreen text-3xl animate-spin" />
+      </div>
+    );
+  }
   if (error) return <div>Error: {error}</div>;
   return (
     <div className="p-4 min-h-screen bg-[#fff9f5] rounded-lg shadow-lg">

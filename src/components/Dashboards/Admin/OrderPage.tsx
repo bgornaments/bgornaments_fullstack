@@ -57,38 +57,6 @@ const OrdersPage: React.FC = () => {
     window.open(detailedViewUrl, '_blank', 'noopener,noreferrer');
   };
 
-  // const handleDeleteClick = async (orderID: string) => {
-  //     const confirmDelete = window.confirm('Are you sure you want to delete this order?');
-  //     if (!confirmDelete) return;
-
-  //     const data=JSON.stringify({
-  //       tableName: 'Orders_Table',
-  //       primaryKey: 'orderID',
-  //       primaryKeyValue: { orderID }
-  //     });
-  //     console.log(data)
-  //     try {
-  //       const response = await fetch('https://j6d5qam295.execute-api.us-east-1.amazonaws.com/getData', {
-  //         method: 'DELETE',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: data,
-  //       });
-    
-  //       if (!response.ok) {
-  //         const errorResponse = await response.json();
-  //         throw new Error(errorResponse.message || 'Failed to delete item');
-  //       }
-    
-  //       const data = await response.json();
-  //       console.log(data.message);
-  //     } catch (error) {
-  //       console.error(error.message);  
-  //     }
-  //   };
-    
-
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -115,7 +83,6 @@ const OrdersPage: React.FC = () => {
               <th className="py-3 px-4">#</th>
               <th className="py-3 px-4">Order Date</th>
               <th className="py-3 px-4">Order Image</th>
-              <th className="py-3 px-4">Order Image</th>
               <th className="py-3 px-4">User Id</th>
               <th className="py-3 px-4">Status</th>
               <th className="py-3 px-4">More Details</th>
@@ -126,7 +93,6 @@ const OrdersPage: React.FC = () => {
             {orders.map((order, index) => (
               <tr key={order.orderID}>
                 <td className="py-3 px-4">{index + 1}</td>
-                <td className="py-3 px-4">{order.orderDate.split(' ')[0]}</td>
                 <td className="py-3 px-4">{order.orderDate.split(' ')[0]}</td>
                 <td className="py-3 px-4">
                   <img src={order.url} alt="" className='w-[8vw] rounded-lg' />
@@ -144,7 +110,6 @@ const OrdersPage: React.FC = () => {
                 <td className="py-3 px-4">
                   <button
                     className="bg-red-500 p-2 rounded-full shadow-md text-white"
-                    // onClick={() => handleDeleteClick(order.orderID)}
                   >
                     <FaTrash />
                   </button>

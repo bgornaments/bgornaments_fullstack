@@ -3,10 +3,7 @@ import icon from "/src/assets/image.png";
 import { useParams, useNavigate } from "react-router-dom";
 import { AiOutlineHeart } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
-// import img from "/src/assets/add-to-favorites.png";
 import ai from "/src/assets/chatbot.png";
-// import plus from "/src/assets/plus.png";
-// import { FaSpinner } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { RootState, AppDispatch } from "../../redux/store";
 import {
@@ -19,6 +16,8 @@ import line from "/src/assets/Line 10.png";
 import order from "/src/assets/image 3.png";
 import Carousel from "./Carousel";
 import heart from "/src/assets/add-to-favorites (1).png";
+import { FaSpinner } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 interface ImageData {
   url: string;
@@ -34,6 +33,7 @@ const DetailedImageView: React.FC = () => {
   const { url } = useParams<{ url: string }>();
   const [imageData, setImageData] = useState<ImageData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const [isPlacingOrder, setIsPlacingOrder] = useState<boolean>(false);
   const navigate = useNavigate();
   const likedImages = useSelector(
@@ -41,29 +41,56 @@ const DetailedImageView: React.FC = () => {
   );
   const { user } = useAuthenticator();
 
-  // const icons = {
-  //   filledHeart: "/src/assets/add-to-favorites (1).png",
-  //   emptyHeart: "/src/assets/add-to-favorites (1).png",
-  // };
   const decodeUrl = (encodedUrl: string) => {
-    return atob(encodedUrl);  // Decode Base64 and re-encode as URI
+    return atob(encodedUrl);
   };
   useEffect(() => {
-    // console.log(imageData?.JewelleryType)
     const fetchImage = async () => {
+      if (!url) {
+        setError("No URL provided to fetch the image.");
+        console.log(error);
+        return;
+      }
+      setLoading(true);
       try {
         const response = await fetch(
-          `https://dem48tvmua.execute-api.us-east-1.amazonaws.com/getDB`
+          `https://j6d5qam295.execute-api.us-east-1.amazonaws.com/getData`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              tableName: "KinMitra",
+              filterAttribute: "url",
+              filterValue: decodeUrl(url),
+            }),
+          }
         );
-        const data = await response.json();
-        const image = data.find((img: ImageData) => url && img.url === decodeUrl(url));
-        //Make sure that url is not undefined before passing it to decodeUrl.
+
+        if (!response.ok) {
+          const errorResponse = await response.json();
+          throw new Error(
+            errorResponse.message || "Failed to fetch image data"
+          );
+        }
+
+        const result = await response.json();
+        const parsedBody = JSON.parse(result.body);
+        console.log(parsedBody);
+        const image = parsedBody.data.find(
+          (img: ImageData) => img.url === decodeUrl(url)
+        );
+
         setImageData(image || null);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
-        console.log(error);
+        console.log(err);
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchImage();
   }, [url]);
 
@@ -168,22 +195,24 @@ const DetailedImageView: React.FC = () => {
 
   return (
     <>
-      <div className="min-h-screen ">
-        <header className="flex justify-between my-4 mx-4">
-          <img
-            src={icon}
-            alt=""
-            className="xs:w-[10rem] md:w-[12rem] xl:w-[14rem]"
-          />
-          <div className="flex gap-[2rem]">
+      <div className="">
+        <header className="w-full h-[10vh] bg-navbar flex  items-center top-0 px-[8vw] md:px-[2.5rem] xl:px-[4.8rem]">
+          <div className="flex items-center justify-between w-full">
+            <Link to="/">
+              <img
+                src={icon}
+                alt="Logo"
+                className="w-[12vh] md:w-[10vh] xl:w-[20vh]"
+              />
+            </Link>
             <button
               onClick={() => navigate("/catalog/likedimages")}
               className="relative p-2"
             >
-              <div className="rounded-full p-3 bg-[#F5E8D7]">
-                <AiOutlineHeart size={20} color="gray" />
+              <div className="rounded-full md:p-[0.7vh] xl:p-[1.2vh] md:border md:shadow-sm md:shadow-black/30 md:bg-white">
+                <AiOutlineHeart size={20} color="black" />
                 {likedImages.length > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 font-serif text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                  <span className="absolute top-0 right-0 bg-customRed text-white rounded-full xs:size-4 xs:text-[1.1vh] md:size-5 flex items-center justify-center md:text-xs">
                     {likedImages.length}
                   </span>
                 )}
@@ -191,40 +220,48 @@ const DetailedImageView: React.FC = () => {
             </button>
           </div>
         </header>
-        <img src={line} alt="" />
 
-        {imageData ? (
+        {loading ? (
+          <div className="flex justify-center items-center min-h-screen">
+            <FaSpinner className="animate-spin text-4xl text-customGreen" />
+          </div>
+        ) : imageData ? (
           <>
-            <div className="flex flex-col md:flex-row items-center justify-center align-middle mt-[2vh] gap-[10vw] h-full px-5">
-              <img
-                src={imageData.url}
-                alt={imageData.description}
-                className="h-[40vw] rounded-xl mt-10 max-w-[40%]"
-              />
-              <div className="flex flex-col md:items-start max-w-[33%]">
-                <p className="text-customGreen text-lg xs:mx-10 md:mx-0 text-center md:text-start md:text-2xl tracking-widest font-bold md:max-w-[40vw] leading-relaxed">
-                  {imageData.description.split(" ").slice(0, 4).join(" ")}
+            <div className="flex flex-col md:flex-row items-center justify-around align-middle mt-[5vh] xs:gap-[3vh] md:gap-0  h-full  px-5 mb-[4vh] md:mb-[7vh]">
+              <div className="max-w-[70%] md:max-w-[40%]">
+                <img
+                  src={imageData.url}
+                  alt={imageData.description}
+                  className="h-[40vw] rounded-xl"
+                />
+              </div>
+              <div className="flex flex-col md:items-start max-w-[85%] md:max-w-[40%] md:pt-[1vh]">
+                <p className="text-customGreen  xs:mx-10 md:mx-0 text-center md:text-start text-2xl md:text-3xl xl:text-4xl tracking-wide md:tracking-widest font-black md:max-w-[40vw] leading-normal font-custom transition-transform transform hover:scale-105 active:scale-95 ">
+                  {imageData.description
+                    ? imageData.description.split(" ").slice(0, 4).join(" ")
+                    : `Simple ${imageData.JewelleryType || "Jewellery"} Design`}
                 </p>
 
-                <div className="flex justify-between items-center mt-4 w-full ">
-                  <div className="text-base tracking-wider md:font-bold text-customBlack">
-                    {imageData.JewelleryType}
+                <div className="flex justify-between items-center mt-1 md:mt-4 w-full ">
+                  <div className="text-sm md:text-base xl:text-xl tracking-widest font-black text-customBlack/40 font-custom">
+                    {imageData.JewelleryType || "Jewellery"}
                   </div>
                   <button
                     onClick={() => handleLike(imageData.url)}
-                    className={`flex justify-center items-center gap-[0.4rem] px-10 ${likedImages.includes(imageData.url)
-                      ? " text-black"
-                      : "text-customBlack"
-                      }`}
+                    className={`flex justify-center items-center gap-[0.4rem] md:px-10 ${
+                      likedImages.includes(imageData.url)
+                        ? " text-lightGolden"
+                        : "text-customBlack/40"
+                    }`}
                   >
-                    <div className="flex flex-col justify-center items-center">
+                    <div className="flex flex-col justify-center items-center transition-transform transform hover:scale-110 active:scale-95 ">
                       <img
                         src={heart}
                         alt="favorite icon"
-                        className="w-[1.4rem] "
+                        className="w-[0.9rem] md:w-[1.4rem] "
                       />
 
-                      <span className="text-[.7rem]">
+                      <span className="text-[0.5rem] md:text-[0.7rem] xl:text-sm font-custom tracking-widest">
                         {likedImages.includes(imageData.url)
                           ? "Added to Favorites"
                           : "Add to Favorites"}
@@ -232,51 +269,59 @@ const DetailedImageView: React.FC = () => {
                     </div>
                   </button>
                 </div>
-                <div className="mt-12">
-                  <div className="text-customGreen font-bold text-base tracking-widest">
+                <div className="mt-6 md:mt-12 flex flex-col items-start justify-start text-start">
+                  <div className="text-customGreen font-medium text-[0.7rem] md:text-base tracking-widest">
                     Description
                   </div>
-                  <p className="font-serif text-base leading-6 tracking-wider text-customBlack mt-2">
-                    {imageData.description}
+                  <p className="xl:text-sm  md:leading-6 font-medium text-[0.6rem] md:text-[0.8rem] text-customBlack/40 mt-2">
+                    {imageData.description
+                      ? imageData.description.split(" ").slice(0, 4).join(" ")
+                      : `Simple ${
+                          imageData.JewelleryType || "Jewellery"
+                        } Design`}
                   </p>
-                  <p className="font-serif text-base leading-6 tracking-wider text-[#E0AE2A] mt-2">
-                    Show More Details -
-                  </p>
-                </div>
-
-                <div className="flex flex-col items-start mt-10 justify-center">
-                  <p className="text-base text-customBlack text-center font-serif tracking-wider">
-                    Loved the design? Create a similar ones with AI!
-                  </p>
-                  <button className="flex gap-4 justify-center items-center mt-2 font-serif text-base  text-[#E0AE2A]">
-                    <p className="font-serif tracking-wider">
-                      Generate Similar Designs
-                    </p>
-                    <img src={ai} alt="" className="w-6" />
+                  <button className="text-sm md:text-lg xl:text-xl leading-6 tracking-widest text-lightGolden mt-1 md:mt-2 font-custom font-black transition-transform transform hover:scale-105 hover:text-customGreen active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                    Show More Details
                   </button>
                 </div>
 
-                <div className="mt-20">
+                <div className="flex flex-col items-start mt-4 md:mt-10 justify-center">
+                  <p className="md:text-sm  md:leading-6 font-medium text-[0.6rem] md:text-[0.8rem]  text-customBlack/40 mt-2">
+                    Loved the design? Create a similar ones with AI!
+                  </p>
+                  <button className="flex gap-2 justify-center items-center">
+                    <p className="text-sm md:text-lg xl:text-xl leading-6 tracking-widest text-lightGolden mt-1 md:mt-2 font-custom font-black transition-transform transform hover:scale-105 hover:text-customGreen active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 ">
+                      Generate Similar Designs
+                    </p>
+                    <img src={ai} alt="" className="w-4 md:w-6" />
+                  </button>
+                </div>
+
+                <div className="mt-8 md:mt-16 w-full flex justify-center md:justify-start">
                   <button
-                    className="flex gap-4 bg-[#E0AE2A] py-3 px-4 font-bold text-white rounded-xl
-                  shadow-lg transition-transform transform hover:scale-105 hover:bg-customGreen-dark active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-customGreen-dark"
+                    className="flex justify-center items-center gap-2 md:gap-4 bg-lightGolden py-1 md:py-3 px-4 font-bold text-white rounded-xl
+                  shadow-lg transition-transform transform hover:scale-105 hover:bg-customGreen active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-customGreen"
                     onClick={handlePlaceOrder}
                     disabled={isPlacingOrder}
                   >
-                    <p>Place Order</p>
-                    <img src={order} alt="" className="w-6" />
+                    <p className="text-base md:text-xl xl:text-2xl font-custom ">
+                      Place Order
+                    </p>
+                    <img src={order} alt="" className="w-4 md:w-6" />
                   </button>
                 </div>
               </div>
             </div>
           </>
         ) : (
-          <></>
+          <div className="flex justify-center items-center h-full">
+            <p>No image data found.</p>
+          </div>
         )}
       </div>
+      <hr />
       <img src={line} alt="" />
       <Carousel />
-      <p className="my-20"></p>
     </>
   );
 };

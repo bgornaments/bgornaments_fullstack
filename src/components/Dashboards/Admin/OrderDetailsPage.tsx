@@ -13,8 +13,8 @@ interface Order {
   userId: string;
   url: string;
   JewelleryType: string;
-  userMail:string
-  measurements:any
+  userMail: string;
+  measurements: any;
 }
 
 const OrderDetailsPage: React.FC = () => {
@@ -39,7 +39,6 @@ const OrderDetailsPage: React.FC = () => {
   });
   const [fetchedMeasurements, setFetchedMeasurements] =
     useState<boolean>(false);
-
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
@@ -50,10 +49,14 @@ const OrderDetailsPage: React.FC = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ tableName: "Orders_Table" }),
+            body: JSON.stringify({
+              tableName: "Orders_Table",
+              filterAttribute: "orderID", 
+              filterValue: orderID || "", 
+            }),
           }
         );
-        console.log(response)
+
         if (!response.ok) {
           const errorResponse = await response.json();
           throw new Error(errorResponse.message || "Failed to fetch data");
@@ -61,11 +64,11 @@ const OrderDetailsPage: React.FC = () => {
 
         const result = await response.json();
         const parsedBody = JSON.parse(result.body);
-        console.log(parsedBody)
-        const orderData = parsedBody.data.find(
-          (item: Order) => item.orderID === orderID
-        );
-        setOrder(orderData || null);
+
+        console.log(parsedBody);
+        const orderData = parsedBody.data[0] || null; 
+
+        setOrder(orderData); 
 
         if (orderData) {
           if (orderData.measurements) {
@@ -79,14 +82,63 @@ const OrderDetailsPage: React.FC = () => {
         }
       } catch (err: any) {
         console.error(err.message);
-        setError(err.message);
+        setError(err.message); 
       } finally {
-        setLoading(false);
+        setLoading(false); 
       }
     };
-
-    fetchOrderDetails();
+    if (orderID) {
+      fetchOrderDetails();
+    }
   }, [orderID]);
+
+  // useEffect(() => {
+  //   const fetchOrderDetails = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         "https://j6d5qam295.execute-api.us-east-1.amazonaws.com/getData",
+  //         {
+  //           method: "POST",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //           body: JSON.stringify({ tableName: "Orders_Table" , filterAttribute : "orderID" , filterValue : orderID}),
+  //         }
+  //       );
+  //       console.log(response)
+  //       if (!response.ok) {
+  //         const errorResponse = await response.json();
+  //         throw new Error(errorResponse.message || "Failed to fetch data");
+  //       }
+
+  //       const result = await response.json();
+  //       const parsedBody = JSON.parse(result.body);
+  //       console.log(parsedBody)
+  //       const orderData = parsedBody.data.find(
+  //         (item: Order) => item.orderID === orderID
+  //       );
+  //       setOrder(orderData || null);
+
+  //       if (orderData) {
+  //         if (orderData.measurements) {
+  //           setMeasurements(orderData.measurements);
+  //           setFetchedMeasurements(true);
+  //         }
+
+  //         if (orderData.JewelleryType) {
+  //           setJewelryType(orderData.JewelleryType);
+  //         }
+  //       }
+  //     } catch (err: any) {
+  //       console.error(err.message);
+  //       setError(err.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchOrderDetails();
+  // }, [orderID]);
 
   const updateOrderStatus = async (orderID: string) => {
     try {
@@ -215,18 +267,18 @@ const OrderDetailsPage: React.FC = () => {
       });
       return;
     }
-  
+
     const orderDetails = {
       tableName: "CAD_Table",
       attributes: {
         userId: user?.userId,
         orderID: order?.orderID,
-        url:order?.url,
-        userMail:order?.userMail,
-        measurements:order?.measurements,
+        url: order?.url,
+        userMail: order?.userMail,
+        measurements: order?.measurements,
       },
     };
-  
+
     try {
       const response = await fetch(
         "https://stp1a8pmee.execute-api.us-east-1.amazonaws.com/placeOrder/",
@@ -238,19 +290,19 @@ const OrderDetailsPage: React.FC = () => {
           body: JSON.stringify(orderDetails),
         }
       );
-  
+
       if (!response.ok) {
         const errorResponse = await response.json();
         throw new Error(errorResponse.message || "Failed to send design");
       }
-  
+
       const updateOrderStatus = {
         tableName: "Orders_Table",
         orderID: order?.orderID,
         attribute: "orderStatus",
         newValue: "Sent For CAD",
       };
-  
+
       const statusResponse = await fetch(
         "https://stp1a8pmee.execute-api.us-east-1.amazonaws.com/placeOrder/",
         {
@@ -261,18 +313,19 @@ const OrderDetailsPage: React.FC = () => {
           body: JSON.stringify(updateOrderStatus),
         }
       );
-  
+
       if (!statusResponse.ok) {
         const errorResponse = await statusResponse.json();
-        throw new Error(errorResponse.message || "Failed to update order status");
+        throw new Error(
+          errorResponse.message || "Failed to update order status"
+        );
       }
-  
+
       Swal.fire({
         title: "Success!",
         text: "Design sent for CAD modeling and order status updated.",
         icon: "success",
       });
-
     } catch (err: any) {
       console.error(err.message);
       Swal.fire({
@@ -282,7 +335,6 @@ const OrderDetailsPage: React.FC = () => {
       });
     }
   };
-  
 
   if (loading) {
     return (
@@ -532,7 +584,7 @@ const OrderDetailsPage: React.FC = () => {
             {jewelryType && (
               <button
                 onClick={() => handleSaveMeasurements()}
-                className="border border-customGreen py-2 px-4 rounded-xl text-customBlack bg-customGreen text-white font-bold"
+                className="border border-customGreen py-2 px-4 rounded-xl text-customBlack bg-customGreen font-bold"
               >
                 Save Measurements
               </button>
@@ -540,7 +592,6 @@ const OrderDetailsPage: React.FC = () => {
           </div>
         )}
       </div>
-
 
       <div className="flex gap-4">
         <button

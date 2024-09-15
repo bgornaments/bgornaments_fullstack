@@ -92,7 +92,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       {filterOptions.map((filter) => (
         <div className="mb-6" key={filter.name}>
           <h3
-            className={`text-lg ${
+            className={`text-sm lg:text-lg ${
               expanded[filter.name] ? "" : ""
             } text-customBlack/70 mb-4 cursor-pointer flex items-center font-custom tracking-widest font-black`}
             onClick={() => toggleExpand(filter.name)}
@@ -138,11 +138,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         >
           Reset
         </button>
-        <div className={`md:hidden ${sidebarVisible ? "block" : "hidden"} `}>
-          <button className="text-lightGolden text-sm hover:underline opacity-80">
+        {/* <div className={`md:hidden ${sidebarVisible ? "block" : "hidden"} `}>
+          <button className="text-lightGolden text-sm hover:underline opacity-80" onClick={resetFilters}>
             Close
           </button>
-        </div>
+        </div> */}
       </div>
     </aside>
   );
