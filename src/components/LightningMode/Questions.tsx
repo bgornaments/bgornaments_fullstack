@@ -492,7 +492,7 @@ const AIGenerated: React.FC = () => {
                   <img
                     src={back}
                     alt=""
-                    className="xs:w-[2.2rem] md:w-[3rem] xl:w-[3.7rem] mb-[1vh] border border-customGreen/80 rounded-full"
+                    className="xs:w-[2.2rem] md:w-[3rem] xl:w-[3.7rem] mb-[1vh] border border-customRed/80 rounded-full"
                   />
                   <p className="font-custom">Back</p>
                 </button>
@@ -506,7 +506,7 @@ const AIGenerated: React.FC = () => {
                     <img
                       src={regen}
                       alt=""
-                      className="xs:w-[2.2rem] md:w-[3rem] xl:w-[3.7rem] mb-[1vh] border border-customGreen/80 rounded-full"
+                      className="xs:w-[2.2rem] md:w-[3rem] xl:w-[3.7rem] mb-[1vh] border border-customRed/80 rounded-full"
                     />
                     <p className="font-custom">
                       Regenerate <br />
@@ -524,7 +524,7 @@ const AIGenerated: React.FC = () => {
                         <img
                           src={Images}
                           alt=""
-                          className="xs:w-[2.2rem] md:w-[3rem] xl:w-[3.7rem] mb-[1vh] border border-customGreen/80 rounded-full"
+                          className="xs:w-[2.2rem] md:w-[3rem] xl:w-[3.7rem] mb-[1vh] border border-customRed/80 rounded-full"
                         />
                         <p className="font-custom">
                           Generate <br />
@@ -536,7 +536,7 @@ const AIGenerated: React.FC = () => {
                         <img
                           src={next}
                           alt="Next"
-                          className="xs:w-[2.2rem] md:w-[3rem] xl:w-[3.7rem] mb-[1vh] border border-customGreen/80 rounded-full"
+                          className="xs:w-[2.2rem] md:w-[3rem] xl:w-[3.7rem] mb-[1vh] border border-customRed/80 rounded-full"
                         />
                         <p className="font-custom">Next</p>
                       </>
