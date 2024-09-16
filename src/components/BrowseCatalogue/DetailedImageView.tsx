@@ -1,4 +1,4 @@
-import React, { useState, useEffect , useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import icon from "/src/assets/image.png";
 import { useParams, useNavigate } from "react-router-dom";
 import { AiOutlineHeart } from "react-icons/ai";
@@ -16,7 +16,7 @@ import line from "/src/assets/Line 10.png";
 import order from "/src/assets/image 3.png";
 import Carousel from "./Carousel";
 import heart from "/src/assets/add-to-favorites (1).png";
-import { FaFileImage, FaSpinner } from "react-icons/fa";
+import { FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 interface ImageData {
@@ -240,19 +240,19 @@ const DetailedImageView: React.FC = () => {
         ) : imageData ? (
           <>
             <div className="flex flex-col md:flex-row items-center justify-around align-middle mt-[5vh] xs:gap-[3vh] md:gap-0  h-full  px-5 mb-[4vh] md:mb-[7vh]">
-            <div className="relative max-w-[70%] md:max-w-[40%]">
-  <img
-    src={imageData.url}
-    alt={imageData.description}
-    className="h-[40vw] rounded-xl"
-  />
-  <button
-    onClick={() => window.open(imageData.url, "_blank")}
-    className="absolute top-2 right-2 md:p-2 border md:border-customRed text-white rounded-full shadow-lg transition-transform transform hover:scale-110 active:scale-95"
-  >
-    <FaFileImage className="text-lightGolden"/>
-  </button>
-</div>
+              <div className="relative max-w-[70%] md:max-w-[57%]">
+                <img
+                  src={imageData.url}
+                  alt={imageData.description}
+                  className="h-[37vw] rounded-xl"
+                />
+                {/* <button
+                  onClick={() => window.open(imageData.url, "_blank")}
+                  className="absolute top-2 right-2 md:p-2 border md:border-customRed text-white rounded-full shadow-lg transition-transform transform hover:scale-110 active:scale-95"
+                >
+                  <FaFileImage className="text-lightGolden" />
+                </button> */}
+              </div>
               <div className="flex flex-col md:items-start max-w-[85%] md:max-w-[40%] md:pt-[1vh]">
                 <p className="text-customGreen  xs:mx-10 md:mx-0 text-center md:text-start text-2xl md:text-3xl xl:text-4xl tracking-wide md:tracking-widest font-black md:max-w-[40vw] leading-normal font-custom transition-transform transform hover:scale-105 active:scale-95 ">
                   {imageData.description
@@ -298,9 +298,10 @@ const DetailedImageView: React.FC = () => {
                           imageData.JewelleryType || "Jewellery"
                         } Design`}
                   </p>
-                  <button 
-                  onClick={handleShowMoreDetailsClick}
-                  className="text-sm md:text-lg xl:text-xl leading-6 tracking-widest text-lightGolden mt-1 md:mt-2 font-custom font-black transition-transform transform hover:scale-105 hover:text-customGreen active:scale-95 focus:outline-none">
+                  <button
+                    onClick={handleShowMoreDetailsClick}
+                    className="text-sm md:text-lg xl:text-xl leading-6 tracking-widest text-lightGolden mt-1 md:mt-2 font-custom font-black transition-transform transform hover:scale-105 hover:text-customGreen active:scale-95 focus:outline-none"
+                  >
                     Show More Details
                   </button>
                 </div>
@@ -334,15 +335,18 @@ const DetailedImageView: React.FC = () => {
             </div>
           </>
         ) : (
-          <div className="flex justify-center items-center h-full">
-            <p>No image data found.</p>
+          <div className="flex justify-center items-center min-h-screen">
+            <FaSpinner className="animate-spin text-4xl text-customGreen" />
           </div>
         )}
       </div>
       <img src={line} alt="" />
 
       <div className="flex justify-between items-center">
-        <div className="my-8 md:my-20 px-8 md:px-14 md:max-w-[50%]" ref={detailsRef}>
+        <div
+          className="my-8 md:my-20 px-8 md:px-14 md:max-w-[50%]"
+          ref={detailsRef}
+        >
           <div className="">
             <button
               className={`mr-10 text-lg md:text-xl xl:text-2xl font-bold font-custom ${
@@ -369,14 +373,24 @@ const DetailedImageView: React.FC = () => {
 
           {activeTab === "details" ? (
             <div className="flex flex-col md:gap-3 xl:gap-4 mt-4 md:mt-8 text-customBlack/50 text-sm md:text-lg xl:text-xl min-h-[5rem] md:min-h-[8rem] xl:min-h-[10rem]">
-              <p className="font-custom tracking-wider">Material: {imageData?.material}</p>
-              <p className="font-custom tracking-wider">Type of Gemstone: {imageData?.gemstone}</p>
-              <p className="font-custom tracking-wider">Design Style: {imageData?.design}</p>
-              <p className="font-custom tracking-wider">Jewellery Type: {imageData?.JewelleryType}</p>
+              <p className="font-custom tracking-wider">
+                Material: {imageData?.material}
+              </p>
+              <p className="font-custom tracking-wider">
+                Type of Gemstone: {imageData?.gemstone}
+              </p>
+              <p className="font-custom tracking-wider">
+                Design Style: {imageData?.design}
+              </p>
+              <p className="font-custom tracking-wider">
+                Jewellery Type: {imageData?.JewelleryType}
+              </p>
             </div>
           ) : (
             <div className="flex flex-col md:gap-3 xl:gap-4 mt-4 md:mt-8 text-customBlack/50 text-sm md:text-lg xl:text-xl min-h-[5rem] md:min-h-[8rem] xl:min-h-[10rem]">
-              <p className="font-custom tracking-wider">{imageData?.description}</p>
+              <p className="font-custom tracking-wider">
+                {imageData?.description}
+              </p>
             </div>
           )}
         </div>
@@ -389,7 +403,6 @@ const DetailedImageView: React.FC = () => {
           />
         </div>
       </div>
-
 
       <Carousel />
     </>
