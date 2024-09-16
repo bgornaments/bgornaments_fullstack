@@ -248,9 +248,9 @@ const DetailedImageView: React.FC = () => {
   />
   <button
     onClick={() => window.open(imageData.url, "_blank")}
-    className="absolute top-2 right-2 p-2 bg-customGreen text-white rounded-full shadow-lg transition-transform transform hover:scale-110 active:scale-95"
+    className="absolute top-2 right-2 md:p-2 border md:border-customRed text-white rounded-full shadow-lg transition-transform transform hover:scale-110 active:scale-95"
   >
-    <FaFileImage/>
+    <FaFileImage className="text-lightGolden"/>
   </button>
 </div>
               <div className="flex flex-col md:items-start max-w-[85%] md:max-w-[40%] md:pt-[1vh]">
