@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import img21 from "/src/assets/Group 28.png";
 import img3 from "/src/assets/img3.svg"
 import img4 from "/src/assets/img3.png"
@@ -7,11 +7,37 @@ import img7 from "/src/assets/img7.svg"
 import img8 from "/src/assets/img8.svg"
 import img9 from "/src/assets/img9.svg"
 import Navbar from './Navbar';
+import Swal from 'sweetalert2';
 import { useAuthenticator } from "@aws-amplify/ui-react";
 
 const Core: React.FC = () => {
   const { user } = useAuthenticator();
-  // console.log(user.signInDetails?.loginId)
+  const navigate = useNavigate();
+
+  const handleDesignNowClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+  
+    if (!user) {
+      Swal.fire({
+        title: "Please Log In",
+        text: "You need to log in to download images. Click the button below to log in.",
+        icon: "warning",
+        confirmButtonText: "Log In",
+        confirmButtonColor: "#3085d6",
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+        cancelButtonColor: "#d33",
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          localStorage.setItem('redirectPath', location.pathname);
+          navigate("/login");
+        }
+      });
+    } else {
+      navigate("/form"); 
+    }
+  };
 
   return (
     <>
@@ -27,9 +53,9 @@ const Core: React.FC = () => {
                 Welcome to KinMitra <span className="text-[0.8vw] italic">{user && `${user.signInDetails?.loginId}`}</span>
               </h2>
               <div className="flex gap-14">
-                <Link to="/form" className="rounded-full border border-customGreen text-customGreen px-[2vw] py-[0.8vw] md:text-[1.5vw] xl:text-[1vw]">
+                <button onClick={handleDesignNowClick} className="rounded-full border border-customGreen text-customGreen px-[2vw] py-[0.8vw] md:text-[1.5vw] xl:text-[1vw]">
                   Design Now -&gt;
-                </Link>
+                </button>
                 <a href="https://qflpgffwo9.execute-api.us-east-1.amazonaws.com/prod/redirect" target="_blank" rel="noopener noreferrer">
                   <button className="flex justify-center items-center gap-3 md:text-[1.5vw] xl:text-[1vw] text-customGreen">
                     <div className="rounded-full border border-customGreen p-[1vw] flex justify-center items-center">

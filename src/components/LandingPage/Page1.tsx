@@ -1,11 +1,40 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import img10 from "/src/assets/img10.png";
 import frame1 from "/src/assets/Frame.svg";
 import frame2 from "/src/assets/Frame (1).svg";
-// import Footer from "./Footer";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+import Swal from "sweetalert2";
+
 
 const Page1: React.FC = () => {
+  const { user } = useAuthenticator();
+  const navigate = useNavigate();
+
+  const handleGetStarted = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+  
+    if (!user) {
+      Swal.fire({
+        title: "Please Log In",
+        text: "You need to log in to download images. Click the button below to log in.",
+        icon: "warning",
+        confirmButtonText: "Log In",
+        confirmButtonColor: "#3085d6",
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+        cancelButtonColor: "#d33",
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          localStorage.setItem('redirectPath', location.pathname);
+          navigate("/login");
+        }
+      });
+    } else {
+      navigate("/form"); 
+    }
+  };
   return (
     <>
       <div className=" flex flex-col w-full p-[2rem] justify-center items-center gap-[1.3rem] md:gap-[2rem] xl:gap-[3rem]">
@@ -67,12 +96,12 @@ const Page1: React.FC = () => {
                 </p>
               </div>
               <div className="mt-[3vw] flex xs:justify-center ">
-                <Link
-                  to="/form"
+                <button
+                  onClick={handleGetStarted}
                   className="px-[2rem] py-[1rem] md:px-[1.5rem] md:py-[0.7rem] text-[1rem]  rounded-full text-customRed border border-customGreen"
                 >
                   Get Started -&gt;
-                </Link>
+                </button>
               </div>
             </div>
           </section>

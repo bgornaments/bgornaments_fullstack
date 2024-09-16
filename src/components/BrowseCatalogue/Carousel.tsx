@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { LazyLoadImage } from 'react-lazy-load-image-component'; 
 import arrow from '/src/assets/swirly-scribbled-arrow 3 (1).png';
 import arrow2 from '/src/assets/swirly-scribbled-arrow 3.png';
@@ -12,23 +11,41 @@ interface ImageData {
 }
 
 const Carousel: React.FC = () => {
-  const [images, setImages] = useState<ImageData[]>([]);
   const [likedImages, setLikedImages] = useState<string[]>([]);
   const [shuffledImages, setShuffledImages] = useState<ImageData[]>([]);
-
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get<ImageData[]>('https://dem48tvmua.execute-api.us-east-1.amazonaws.com/getDB');
-        const shuffled = shuffleArray(response.data);
-        setImages(shuffled);
-        setShuffledImages(shuffled); 
+        const response = await fetch(
+          "https://j6d5qam295.execute-api.us-east-1.amazonaws.com/getData",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              tableName: "KinMitra",
+              limit: '15'
+            }),
+          }
+        );
+        const data = await response.json();
+
+
+        if (data && data.body) {
+          const links=JSON.parse(data.body).data;
+          console.log(links)
+          setShuffledImages(links); 
+        } else {
+          console.error('No data found in response');
+        }
       } catch (error) {
         console.error('Error fetching images:', error);
       }
     };
     fetchImages();
   }, []);
+
 
   useEffect(() => {
     const savedLikedImages = localStorage.getItem('likedImages');
@@ -55,11 +72,6 @@ const Carousel: React.FC = () => {
     const container = document.querySelector('.carousel-container');
     container?.scrollBy({ left: 400, behavior: 'smooth' });
   };
-
-  const shuffleArray = (array: ImageData[]) => {
-    return array.sort(() => Math.random() - 0.5);
-  };
-
   const encodeUrl = (url: string) => {
     return btoa(url); 
   };
@@ -67,13 +79,12 @@ const Carousel: React.FC = () => {
   const handleImageClick = (url: string) => {
     const detailedViewUrl = `/catalog/${encodeUrl(url)}`;
     window.open(detailedViewUrl, '_blank', 'noopener,noreferrer');
-    console.log(images)
   };
 
   return (
     <div className="flex flex-col">
       <div className='flex justify-between items-center px-8 md:px-14'>
-        <p className="text-center text-xl md:text-2xl xl:text-3xl font-bold xs:my-5 md:my-8 text-customGreen font-custom">
+        <p className="text-xl md:text-2xl xl:text-3xl font-bold xs:my-5 md:my-8 text-customGreen font-custom">
           You may also like ~
         </p>
         <div className="flex justify-end md:gap-2 md:p-1">

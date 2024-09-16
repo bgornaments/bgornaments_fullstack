@@ -52,14 +52,14 @@ const JewelryApp: React.FC = () => {
               onClick={() => navigate("/catalog/likedimages")}
               className="relative p-2"
             >
-              <div className="rounded-full md:p-[0.7vh] md:border md:shadow-sm md:shadow-black/30 md:bg-white">
-                <AiOutlineHeart size={20} color="black" />
-                {likedImages.length > 0 && (
-                  <span className="absolute top-0 right-0 bg-customRed text-white rounded-full xs:size-4 xs:text-[1.1vh] md:size-5 flex items-center justify-center md:text-xs">
-                    {likedImages.length}
-                  </span>
-                )}
-              </div>
+              <div className="rounded-full md:p-[0.7vh] xl:p-[1.2vh] md:border md:shadow-sm md:shadow-black/30 md:bg-white">
+              <AiOutlineHeart size={20} color="black" />
+              {likedImages.length > 0 && (
+                <span className="absolute top-0 right-0 bg-customRed text-white rounded-full xs:size-4 xs:text-[1.1vh] md:size-5 flex items-center justify-center md:text-xs">
+                  {likedImages.length}
+                </span>
+              )}
+            </div>
             </button>
             <button
               className=" z-50 md:hidden"
