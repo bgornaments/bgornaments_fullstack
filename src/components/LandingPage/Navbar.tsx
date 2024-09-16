@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
     if (!user) {
       Swal.fire({
         title: "Please Log In",
-        text: "You need to log in to download images. Click the button below to log in.",
+        text: "You need to log in to proceed. Click the button below to log in.",
         icon: "warning",
         confirmButtonText: "Log In",
         confirmButtonColor: "#3085d6",
