@@ -109,11 +109,3 @@ const Core: React.FC = () => {
 };
 
 export default Core;
-// {
-//   "username": "84680408-5021-7095-5833-9fb9b96f8876",
-//   "userId": "84680408-5021-7095-5833-9fb9b96f8876",
-//   "signInDetails": {
-//       "loginId": "vanshikas2022@gmail.com",
-//       "authFlowType": "USER_SRP_AUTH"
-//   }
-// }

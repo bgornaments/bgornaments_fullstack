@@ -20,6 +20,7 @@ import OrderDetailsPage from "./components/Dashboards/Admin/OrderDetailsPage.tsx
 import CADPage from "./components/Dashboards/Admin/CADPage.tsx";
 import CADDetailsPage from "./components/Dashboards/Admin/CADDetailsPage.tsx";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -102,9 +103,10 @@ const router = createBrowserRouter([
 
 const App: React.FC = () => {
   return (
-    <Authenticator.Provider>
+
+ <Authenticator.Provider> 
       <RouterProvider router={router} />
-    </Authenticator.Provider>
+</Authenticator.Provider> 
   );
 };
 

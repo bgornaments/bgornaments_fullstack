@@ -56,7 +56,7 @@ const Page1: React.FC = () => {
                   Custom Designs Just for You
                 </h3>
               </header>
-              <p className="text-[#0d0d0d] text-[0.8rem] xl:text-[1.4rem] font-custom">
+              <p className="text-customBlack/50 text-[0.8rem] xl:text-[1.4rem] font-custom">
                 Leverage AI to create personalized jewellery designs tailored to
                 your unique style. Answer a few questions and let AI do the
                 rest.
@@ -72,7 +72,7 @@ const Page1: React.FC = () => {
                     Interactive Design Process.
                   </p>
                 </div>
-                <p className="text-[##0d0d0d] text-[0.6rem] xl:text-[0.9rem]">
+                <p className="text-customBlack/50 text-[0.6rem] xl:text-[0.9rem]">
                   Share your preferences by answering a few simple questions,
                   and our AI will generate initial jewellery design concepts for
                   you.
@@ -89,7 +89,7 @@ const Page1: React.FC = () => {
                     Tailored to Your Taste.
                   </p>
                 </div>
-                <p className="text-[#0d0d0d] text-[0.6rem] xl:text-[0.9rem]">
+                <p className="text-customBlack/50 text-[0.6rem] xl:text-[0.9rem]">
                   Our AI will ask additional questions to refine the designs,
                   ensuring the final pieces match your unique style and
                   preferences.
