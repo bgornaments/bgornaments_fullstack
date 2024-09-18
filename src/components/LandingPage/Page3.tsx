@@ -4,6 +4,7 @@ import github from "/src/assets/github-sign.png";
 import sagar from "/src/assets/sagar.png";
 import divyanshu from "/src/assets/divyanshu.png";
 import vanshika from "/src/assets/vanshika.jpg";
+import akhil from "/src/assets/akhil.jpeg"
 
 const TeamComponent: React.FC = () => {
   const teamMembers = [
@@ -19,8 +20,7 @@ const TeamComponent: React.FC = () => {
       name: "Akhil Gakhar",
       role: "Artificial Intelligence Researcher and Collaborator",
       description: "IIT Bombay\nGraduate",
-      imageUrl:
-        "https://media.licdn.com/dms/image/C5603AQE0aHcpNA0ToQ/profile-displayphoto-shrink_400_400/0/1650630385577?e=1727913600&v=beta&t=lGLNX4p7wVTemZeKbR034CRAZ0o1T-_cJ1Gw-c2jDhU",
+      imageUrl: akhil,
       githubUrl: "https://github.com",
       linkedinUrl: "https://www.linkedin.com/in/akhil-gakhar-2593237a/",
     },
