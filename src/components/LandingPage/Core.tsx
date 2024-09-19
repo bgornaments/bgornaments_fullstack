@@ -10,13 +10,14 @@ import Navbar from './Navbar';
 import Swal from 'sweetalert2';
 import { useAuthenticator } from "@aws-amplify/ui-react";
 
+
 const Core: React.FC = () => {
   const { user } = useAuthenticator();
   const navigate = useNavigate();
 
   const handleDesignNowClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-  
+
     if (!user) {
       Swal.fire({
         title: "Please Log In",
@@ -35,7 +36,7 @@ const Core: React.FC = () => {
         }
       });
     } else {
-      navigate("/form"); 
+      navigate("/form");
     }
   };
 
