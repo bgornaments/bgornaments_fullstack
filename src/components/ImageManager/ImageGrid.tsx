@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import '/src/components/ImageManager/ImageGrid.css';
+import "./ImageGrid.css";
 
 interface Image {
     imageId: string;

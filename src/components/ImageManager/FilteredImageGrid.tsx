@@ -1,6 +1,6 @@
 // src/FilteredImageGrid.js
 import { useLocation } from 'react-router-dom';
-import '/src/components/ImageManager/ImageGrid.css';
+import "./ImageGrid.css";
 
 interface Image {
     imageId: string;
