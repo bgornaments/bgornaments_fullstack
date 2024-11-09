@@ -19,6 +19,8 @@ import Orders from "./components/BrowseCatalogue/Orders.tsx"
 import OrderDetailsPage from "./components/Dashboards/Admin/OrderDetailsPage.tsx";
 import CADPage from "./components/Dashboards/Admin/CADPage.tsx";
 import CADDetailsPage from "./components/Dashboards/Admin/CADDetailsPage.tsx";
+import ImageGrid from './components/ImageManager/ImageGrid.tsx';
+import FilteredImageGrid from './components/ImageManager/FilteredImageGrid.tsx';
 
 
 const router = createBrowserRouter([
@@ -56,9 +58,9 @@ const router = createBrowserRouter([
     element: <Login />,
   },
 
-  { 
-    path: "/catalog", 
-    element: <Catalogue /> 
+  {
+    path: "/catalog",
+    element: <Catalogue />
   },
   {
     path: "/catalog/likedimages",
@@ -99,14 +101,24 @@ const router = createBrowserRouter([
     path: "/cad/:cadId",
     element: <CADDetailsPage />,
   },
+
+  // New routes for ImageGrid and FilteredImageGrid
+  {
+    path: "/imageManager",
+    element: <ImageGrid />,
+  },
+  {
+    path: "/filteredImages",
+    element: <FilteredImageGrid />,
+  },
 ]);
 
 const App: React.FC = () => {
   return (
 
- <Authenticator.Provider> 
+    <Authenticator.Provider>
       <RouterProvider router={router} />
-</Authenticator.Provider> 
+    </Authenticator.Provider>
   );
 };
 
