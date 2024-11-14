@@ -11,7 +11,7 @@
     min-height: 100vh;
     padding-bottom: 15vh;
     position: relative;
-    overflow: hidden;
+    overflow: hidden; 
 }
 
 .main::before {
@@ -26,8 +26,8 @@
     /* background-image: url('https://img.freepik.com/free-photo/flat-lay-dry-leaves_23-2148866552.jpg?t=st=1731040826~exp=1731044426~hmac=82e724a5c623a991c45779575abab350e9f69d1bc54bb1ba832910ed4c7b09ca&w=996');  */
     background-size: cover;
     background-position: bottom 100px;
-    opacity: 20%;
-    z-index: -100;
+    opacity: 20%; 
+    z-index: -100; 
 }
 
 .main .nav {
@@ -39,27 +39,25 @@
     color: #585858;
 }
 
-.main .nav h2 {
+.main .nav h2{
     font-size: 22px;
 }
 
-.main .nav h2 img {
+.main .nav h2 img{
     border-radius: 0;
     height: 25px;
     width: auto;
 }
 
-.main .nav p {
+.main .nav p{
     font-size: 22px;
     font-weight: 500;
     display: inline-block;
     background: -webkit-linear-gradient(45deg, #00AA4F, #E0AE2A, #EB2D2E, #B2801D);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-size: 300% 100%;
-    /* Stretch the gradient even further */
-    animation: moveText 4s linear infinite;
-    /* Smoother transition with ease-in-out */
+    background-size: 300% 100%; /* Stretch the gradient even further */
+    animation: moveText 4s linear infinite; /* Smoother transition with ease-in-out */
 }
 
 .main .nav img {
@@ -72,7 +70,7 @@
     margin: auto;
 }
 
-* {
+*{
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -101,37 +99,30 @@ div {
     background: -webkit-linear-gradient(16deg, #E0AE2A, #EB2D2E, #B2801D, #00AA4F);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-size: 300% 100%;
-    /* Stretch the gradient even further */
-    animation: moveText 4s linear infinite;
-    /* Smoother transition with ease-in-out */
+    background-size: 300% 100%; /* Stretch the gradient even further */
+    animation: moveText 4s linear infinite; /* Smoother transition with ease-in-out */
 }
 
 @keyframes moveText {
     0% {
         background-position: 0% 0%;
     }
-
     50% {
-        background-position: 100% 0%;
-        /* Midway point for smoother effect */
+        background-position: 100% 0%; /* Midway point for smoother effect */
     }
-
     100% {
-        background-position: 0% 0%;
-        /* Return to original position */
+        background-position: 0% 0%; /* Return to original position */
     }
 }
 
-.main-bottom {
+.main-bottom{
     position: absolute;
     bottom: 0;
     width: 100%;
     max-width: 900px;
     padding: 0px 20px;
     margin: auto;
-    margin-top: 20px;
-    /* Added margin between the search box and the chat content */
+    margin-top: 20px; /* Added margin between the search box and the chat content */
 }
 
 .search-box {
@@ -139,18 +130,17 @@ div {
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    background-color: rgba(178, 128, 29, 0.4);
-    /* Adjust opacity here (0 is fully transparent, 1 is fully opaque) */
+    background-color: rgba(178, 128, 29, 0.4); /* Adjust opacity here (0 is fully transparent, 1 is fully opaque) */
     padding: 10px 20px;
     border-radius: 50px;
 }
 
-.search-box img {
+.search-box img{
     width: 24px;
     cursor: pointer;
 }
 
-.search-box input {
+.search-box input{
     flex: 1;
     background-color: transparent;
     border: none;
@@ -159,28 +149,27 @@ div {
     font-size: 18px;
 }
 
-.search-box div {
+.search-box div{
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
-.main .bottom-info {
+.main .bottom-info{
     font-size: 13px;
     margin: 15px auto;
     text-align: center;
     font-weight: 300;
 }
 
-body,
-html {
-    height: 100%;
-    margin: 0;
+body, html {
+    height: 100%; 
+    margin: 0; 
 }
 
 #root {
-    display: flex;
-    height: 100vh;
+    display: flex; 
+    height: 100vh; 
 }
 
 .result {
@@ -210,25 +199,20 @@ html {
 
 .result-data {
     display: flex;
-    align-items: flex-start;
-    /* Align AI response to the start */
-    gap: 15px;
-    /* Space between image and response */
-    margin-top: 15px;
-    /* Gap between user and AI response */
+    align-items: flex-start; /* Align AI response to the start */
+    gap: 15px; /* Space between image and response */
+    margin-top: 15px; /* Gap between user and AI response */
 }
 
 .user-text {
     display: flex;
-    justify-content: flex-end;
-    /* Align to the right */
+    justify-content: flex-end; /* Align to the right */
     align-items: center;
     gap: 10px;
 }
 
 .user-text img {
-    width: 40px;
-    /* User icon size */
+    width: 40px; /* User icon size */
     border-radius: 50%;
 }
 
@@ -237,8 +221,7 @@ html {
     color: black;
     padding: 10px;
     border-radius: 10px;
-    max-width: 70%;
-    /* Optional: Limit width of user message */
+    max-width: 70%; /* Optional: Limit width of user message */
 }
 
 .loader {
@@ -252,7 +235,7 @@ html {
     border-radius: 4px;
     border: none;
     background-color: #f6f7f8;
-    background: linear-gradient(to right, #9ed7ff, #ffffff, #9ed7ff);
+    background: linear-gradient(to right, #9ed7ff, #ffffff,#9ed7ff);
     background-size: 800px 50px;
     height: 20px;
     animation: loader 4s infinite linear;
@@ -263,7 +246,7 @@ html {
     border-radius: 4px;
     border: none;
     background-color: #f6f7f8;
-    background: linear-gradient(to right, #9ed7ff, #ffffff, #9ed7ff);
+    background: linear-gradient(to right, #9ed7ff, #ffffff,#9ed7ff);
     background-size: 800px 50px;
     height: 20px;
     animation: loader 4s infinite linear;
@@ -274,7 +257,7 @@ html {
     border-radius: 4px;
     border: none;
     background-color: #f6f7f8;
-    background: linear-gradient(to right, #9ed7ff, #ffffff, #9ed7ff);
+    background: linear-gradient(to right, #9ed7ff, #ffffff,#9ed7ff);
     background-size: 800px 50px;
     height: 20px;
     animation: loader 4s infinite linear;
@@ -284,20 +267,15 @@ html {
 /* Button row container */
 .button-row {
     display: flex;
-    flex-wrap: wrap;
-    /* Allows buttons to wrap to the next line if necessary */
-    justify-content: center;
-    /* Center the buttons horizontally */
-    gap: 5px;
-    /* Space between the buttons */
-    margin: 15px 0;
-    /* Adds space above and below the button group */
+    flex-wrap: wrap; /* Allows buttons to wrap to the next line if necessary */
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 5px; /* Space between the buttons */
+    margin: 15px 0; /* Adds space above and below the button group */
 }
 
 /* Button styling */
 .button-row button {
-    background-color: #f59696;
-    /* Gold color */
+    background-color: #f59696; /* Gold color */
     color: white;
     border: none;
     border-radius: 25px;
@@ -305,26 +283,22 @@ html {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Soft shadow for elevation */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for elevation */
 }
 
 /* Hover effect */
 .button-row button:hover {
-    background-color: #B2801D;
-    /* Darker gold on hover */
+    background-color: #B2801D; /* Darker gold on hover */
 }
 
 .button-row button:active {
-    transform: translateY(2px);
-    /* Creates a pressed effect */
+    transform: translateY(2px); /* Creates a pressed effect */
 }
 
 @keyframes loader {
     0% {
         background-position: -800px 0px;
     }
-
     100% {
         background-position: 800px 0px;
     }

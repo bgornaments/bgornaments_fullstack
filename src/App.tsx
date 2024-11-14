@@ -21,7 +21,8 @@ import CADPage from "./components/Dashboards/Admin/CADPage.tsx";
 import CADDetailsPage from "./components/Dashboards/Admin/CADDetailsPage.tsx";
 import ImageGrid from './components/ImageManager/ImageGrid.tsx';
 import FilteredImageGrid from './components/ImageManager/FilteredImageGrid.tsx';
-
+import ProModeChatUI from './components/ProMode/chat.tsx'
+import ContextProvider from './context/context.tsx';
 
 const router = createBrowserRouter([
   {
@@ -110,6 +111,15 @@ const router = createBrowserRouter([
   {
     path: "/filteredImages",
     element: <FilteredImageGrid />,
+  },
+  // New routes for pro mode
+  {
+    path: "/promode",
+    element: (
+      <ContextProvider>
+        <ProModeChatUI />
+      </ContextProvider>
+    ),
   },
 ]);
 
