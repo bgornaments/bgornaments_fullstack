@@ -48,7 +48,7 @@
 //     setPrevConversations((prev) => [...prev, { prompt, response: '', loading: true }]);
 
 //     const response = await fetchAIResponse({ user_prompt: prompt, state: botState, conversation_history: prevConversations });
-    
+
 //     const newResponse = response.chatbot_response.split('*').join('<br>');
 
 //     setPrevConversations((prev) => {
@@ -98,19 +98,21 @@ export const Context = createContext<ContextProps | undefined>(undefined);
 
 const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [input, setInput] = useState<string>('');
-  const [recentPrompt, setRecentPrompt] = useState<string>('');
+  // const [recentPrompt, setRecentPrompt] = useState<string>('');
+  const [recentPrompt] = useState<string>('');
   const [prevConversations, setPrevConversations] = useState<any[]>(() => {
     sessionStorage.removeItem('prevConversations');
     return [];
   });
   const [showResult, setShowResult] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [resultData, setResultData] = useState<string>('');
+  // const [resultData, setResultData] = useState<string>('');
+  const [resultData] = useState<string>('');
   const [messages, setMessages] = useState<any[]>([]);
   const [userInput, setUserInput] = useState<string>('');
   const [buttons, setButtons] = useState<{ text: string, value: string }[]>([]);
   const [botState, setBotState] = useState<string>('recommendation');
-  const [partialResponse, setPartialResponse] = useState<string>('');
+  // const [partialResponse, setPartialResponse] = useState<string>('');
 
   useEffect(() => {
     sessionStorage.setItem('prevConversations', JSON.stringify(prevConversations));

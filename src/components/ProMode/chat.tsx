@@ -137,7 +137,7 @@ const ProModeChatUI: React.FC = () => {
     input,
     showResult,
     loading,
-    resultData,
+    // resultData,
     buttons,
     setBotState,
   } = context;
