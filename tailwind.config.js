@@ -53,7 +53,7 @@ export default {
     extend: {
       animation: {
         'infinite-scroll': 'infinite-scroll 25s linear infinite',
-        loader: 'loader 4s infinite linear delay 5s', // New animation
+        loader: 'loader 4s infinite linear', // New animation
       },
       keyframes: {
         'infinite-scroll': {
@@ -91,3 +91,4 @@ export default {
   },
   plugins: [],
 }
+
