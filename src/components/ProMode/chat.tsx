@@ -166,7 +166,9 @@ const ProModeChatUI: React.FC = () => {
           <h2 className="text-xl">
             <img src="https://www.kinmitra.com/assets/image-BEwmDLXF.png" alt="Kinmitra Logo" className=" h-5" />
           </h2>
-          <p className="inline-block text-xl font-medium bg-gradient-to-r from-[#00AA4F] via-[#E0AE2A] to-[#EB2D2E] bg-clip-text text-transparent animate-[moveText_4s_linear_infinite]">Pro Mode</p>
+          <p className="inline-block text-xl font-medium bg-gradient-to-r from-[#00AA4F] via-[#E0AE2A] to-[#EB2D2E] bg-clip-text text-transparent animate-[moveText_4s_linear_infinite]">
+            Pro Mode
+          </p>
         </div>
         <img className="w-[50px] rounded-full" src="https://img.freepik.com/premium-vector/vector-set-women-with-jewelry-flat-design-style_995281-17686.jpg" alt="User Icon" />
       </div>
@@ -180,6 +182,7 @@ const ProModeChatUI: React.FC = () => {
               <p className="inline-block bg-gradient-to-r from-[#00AA4F] via-[#E0AE2A] to-[#EB2D2E] bg-clip-text text-transparent animate-[moveText_4s_linear_infinite]">
   Hello There!
 </p>
+
               </p>
               <p>The app is currently in beta mode</p>
             </div>
@@ -198,9 +201,9 @@ const ProModeChatUI: React.FC = () => {
                       <img className="w-10 rounded-full" src="https://img.freepik.com/free-vector/cartoon-style-robot-vectorart_78370-4103.jpg" alt="AI Icon" />
                       {conversation.loading ? (
                         <div className="loader w-full flex flex-col gap-2.5">
-                        <hr className="hr1" />
-                        <hr className="hr2" />
-                        <hr className="hr3" />
+                        <hr className="rounded border-none bg-gradient-to-r from-[#9ed7ff] via-white to-[#9ed7ff] bg-[length:800px_50px] h-5 animate-loader animation-delay: 1000s;"/>
+                        <hr className="rounded border-none bg-gradient-to-r from-[#9ed7ff] via-white to-[#9ed7ff] bg-[length:800px_50px] h-5 animate-loader animation-delay: 500ms;" />
+                        <hr className="rounded border-none bg-gradient-to-r from-[#9ed7ff] via-white to-[#9ed7ff] bg-[length:800px_50px] h-5 animate-loader animation-delay: 0ms;" />
                       </div>
                       ) : (
                         <p dangerouslySetInnerHTML={{ __html: conversation.response }}></p>
