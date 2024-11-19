@@ -157,7 +157,7 @@ const ProModeChatUI: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 min-h-screen pb-[15vh] relative overflow-hidden">
+    <div className="flex-1 min-h-screen pb-[15vh] relative">
       <div className="absolute top-0 left-0 right-0 bottom-0 bg-cover bg-bottom opacity-20 z-[-100]" 
            style={{ backgroundImage: "url('https://img.freepik.com/free-vector/gradient-golden-linear-background_23-2148957745.jpg?t=st=1730912970~exp=1730916570~hmac=2214eb1073666d65e11ff89c47d76300904bf1001e6128bf610138ef42d5e872&w=900')" }}>
       </div>
@@ -175,9 +175,9 @@ const ProModeChatUI: React.FC = () => {
         <img className="w-[50px] rounded-full" src="https://img.freepik.com/premium-vector/vector-set-women-with-jewelry-flat-design-style_995281-17686.jpg" alt="User Icon" />
       </div>
   
-      <div className="main-container max-w-[900px] mx-auto overflow-hidden">
+      <div className="main-container max-w-[900px] mx-auto">
         {/* Chat Container */}
-        <div className="chat-container overflow-hidden">
+        <div className="chat-container scrollbar-hidden overflow-y-auto">
           {!showResult ? (
             <div className="my-12 text-5xl text-[#c4c7c5] font-medium p-5 flex flex-col justify-center items-center">
               <p>
@@ -188,17 +188,17 @@ const ProModeChatUI: React.FC = () => {
               <p>The app is currently in beta mode</p>
             </div>
           ) : (
-            <div className="result px-5 max-h-[70vh] overflow-hidden flex flex-col gap-5">
+            <div className="result px-5 max-h-[70vh] overflow-y-auto scrollbar-hidden flex flex-col gap-5">
               <div className="conversation">
                 {prevConversations.map((conversation, index) => (
-                  <div key={index} className="conversation-item mb-5">
-                    <div className="user-text flex justify-end items-center gap-2.5">
-                      <p className="bg-[#e6e7e8] text-black p-2.5 rounded-xl max-w-[70%]">
+                  <div key={index} className="conversation-item mb-5 scrollbar-hidden">
+                    <div className="user-text flex justify-end items-center gap-2.5 scrollbar-hidden">
+                      <p className="bg-[#e6e7e8] text-black p-2.5 rounded-xl max-w-[70%] scrollbar-hidden">
                         {conversation.prompt}
                       </p>
                       <img className="w-10 rounded-full" src="https://img.freepik.com/premium-vector/vector-set-women-with-jewelry-flat-design-style_995281-17686.jpg" alt="User Icon" />
                     </div>
-                    <div className="result-data flex items-start gap-4 mt-4">
+                    <div className="result-data flex items-start gap-4 mt-4 scrollbar-hidden">
                       <img className="w-10 rounded-full" src="https://img.freepik.com/free-vector/cartoon-style-robot-vectorart_78370-4103.jpg" alt="AI Icon" />
                       {conversation.loading ? (
                         <div className="loader w-full flex flex-col gap-2.5">
