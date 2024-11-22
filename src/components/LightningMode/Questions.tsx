@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
@@ -16,7 +17,6 @@ import {
 import Lottie from "react-lottie";
 import LoadingData from "/src/assets/Loading2.json";
 import chat from "/src/assets/chat.png";
-// import Feedback from "./Feedback";
 import { setImageData, updateFormData } from "../../redux/formSlice";
 import { useNavigate } from "react-router-dom";
 import Meaning from "./Meaning";
@@ -234,7 +234,6 @@ const AIGenerated: React.FC = () => {
       }
     }
   };
-
 
   const generateImages = async (t2i_prompt: string) => {
     setIsLoading(true);

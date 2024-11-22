@@ -46,7 +46,7 @@ const Modes: React.FC = () => {
               pSize="1vw"
               imgWidth="9vw"
               gap="2.5vw"
-              link="/modes"
+              link="/promode"
             />
             <Card
               img={expert}
@@ -86,7 +86,7 @@ const Modes: React.FC = () => {
               pSize="1.7vw"
               imgWidth="9vw"
               gap="2.4vh"
-              link="/modes"
+              link="/promode"
             />
             <Card
               img={expert}
