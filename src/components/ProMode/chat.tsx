@@ -66,7 +66,7 @@
 //       <div className="absolute top-0 left-0 right-0 bottom-0 bg-cover bg-bottom opacity-20 z-[-100]" 
 //            style={{ backgroundImage: "url('https://img.freepik.com/free-vector/gradient-golden-linear-background_23-2148957745.jpg?t=st=1730912970~exp=1730916570~hmac=2214eb1073666d65e11ff89c47d76300904bf1001e6128bf610138ef42d5e872&w=900')" }}>
 //       </div>
-  
+
 //       {/* Navigation Bar */}
 //       <div className="flex items-center justify-between text-xl p-5 text-[#585858]">
 //         <div className="name flex-col items-center gap-3">
@@ -79,7 +79,7 @@
 //         </div>
 //         <img className="w-[50px] rounded-full" src="https://img.freepik.com/premium-vector/vector-set-women-with-jewelry-flat-design-style_995281-17686.jpg" alt="User Icon" />
 //       </div>
-  
+
 //       <div className="main-container max-w-[900px] mx-auto">
 //         {/* Chat Container */}
 //         <div className="chat-container scrollbar-hidden overflow-y-auto">
@@ -113,7 +113,7 @@
 //               )}
 //             </div>
 //         </div>
-  
+
 //         <div className="absolute bottom-0 w-full max-w-[900px] px-5 mx-auto mt-5">
 //           <div className="flex items-center justify-between gap-5 bg-[rgba(178,128,29,0.4)] p-2.5 rounded-full">
 //             <input
@@ -211,10 +211,10 @@ const ProModeChatUI: React.FC = () => {
 
   return (
     <div className="flex-1 min-h-screen pb-[15vh] relative">
-      <div className="absolute top-0 left-0 right-0 bottom-0 bg-cover bg-bottom opacity-20 z-[-100]" 
-           style={{ backgroundImage: "url('https://img.freepik.com/free-vector/gradient-golden-linear-background_23-2148957745.jpg?t=st=1730912970~exp=1730916570~hmac=2214eb1073666d65e11ff89c47d76300904bf1001e6128bf610138ef42d5e872&w=900')" }}>
+      <div className="absolute top-0 left-0 right-0 bottom-0 bg-cover bg-bottom opacity-20 z-[-100]"
+        style={{ backgroundImage: "url('https://img.freepik.com/free-vector/gradient-golden-linear-background_23-2148957745.jpg?t=st=1730912970~exp=1730916570~hmac=2214eb1073666d65e11ff89c47d76300904bf1001e6128bf610138ef42d5e872&w=900')" }}>
       </div>
-  
+
       {/* Navigation Bar */}
       <div className="flex items-center justify-between text-xl p-5 text-[#585858]">
         <div className="name flex-col items-center gap-3">
@@ -227,7 +227,7 @@ const ProModeChatUI: React.FC = () => {
         </div>
         <img className="w-[50px] rounded-full" src="https://img.freepik.com/premium-vector/vector-set-women-with-jewelry-flat-design-style_995281-17686.jpg" alt="User Icon" />
       </div>
-  
+
       <div className="main-container max-w-[900px] mx-auto">
         {/* Chat Container */}
         <div className="chat-container scrollbar-hidden overflow-y-auto">
@@ -261,12 +261,17 @@ const ProModeChatUI: React.FC = () => {
             )}
           </div>
         </div>
-  
+
         <div className="absolute bottom-0 w-full max-w-[900px] px-5 mx-auto mt-5">
           <div className="flex items-center justify-between gap-5 bg-[rgba(178,128,29,0.4)] p-2.5 rounded-full">
             <input
               className="flex-1 bg-transparent border-none outline-none p-2 text-lg"
               onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSend(); 
+                }
+              }}
               value={input}
               type="text"
               placeholder="Enter a prompt"
