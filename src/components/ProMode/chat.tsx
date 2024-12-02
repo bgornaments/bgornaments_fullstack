@@ -932,7 +932,7 @@ const ProModeChatUI: React.FC = () => {
                     {conversation.prompt.includes('<img') ? (
                       <div
                         className="max-w-[70%]"
-                        // dangerouslySetInnerHTML={{ __html: conversation.prompt }}
+                        dangerouslySetInnerHTML={{ __html: conversation.prompt }}
                       />
                     ) : (
                       <p className="bg-[#e6e7e8] text-black p-2.5 rounded-xl max-w-[70%] scrollbar-hidden">
