@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Context } from '../../context/context';
 import { assets } from '../../assets/assets';

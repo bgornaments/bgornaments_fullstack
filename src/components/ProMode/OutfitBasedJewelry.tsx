@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface OutfitBasedJewelryProps {
   onClose: () => void;
@@ -7,23 +7,36 @@ interface OutfitBasedJewelryProps {
 const OutfitBasedJewelry: React.FC<OutfitBasedJewelryProps> = ({ onClose }) => {
   const [activeTab, setActiveTab] = useState<'upload' | 'yourImages'>('upload');
   const [qrCode, setQrCode] = useState<string | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [images, setImages] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const generateRandomSessionId = (): number => {
-    return Math.floor(Math.random() * 1000000); // Generate a random session ID
-  };
+  const userId = 'unknown'; // Fixed userId for now
 
+  // Set Initial Session ID on Component Mount
+  useEffect(() => {
+    if (!sessionId) {
+      const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+      setSessionId(newSessionId);
+      console.log('Initialized Session ID:', newSessionId);
+    }
+  }, [sessionId]);
+
+  // Generate QR Code based on sessionId
   const handleGenerateQRCode = () => {
+    if (!sessionId) {
+      alert('Session ID not set. Please try again.');
+      return;
+    }
+
     try {
-      const userId = 'unknown';
-      const sessionId = generateRandomSessionId();
+      console.log('Generating QR Code for Session ID:', sessionId);
 
-      // Construct the redirect URL with the desired domain
       const redirectUrl = `https://bgo-mobile-upload-website-j9cf.vercel.app/?userId=${userId}&sessionId=${sessionId}`;
+      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(
+        redirectUrl
+      )}&size=150x150`;
 
-      // Construct the QR code URL using the redirect URL
-      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(redirectUrl)}&size=150x150`;
-
-      // Set the generated QR code URL in state
       setQrCode(qrCodeUrl);
     } catch (error) {
       console.error('Error generating QR code:', error);
@@ -31,6 +44,65 @@ const OutfitBasedJewelry: React.FC<OutfitBasedJewelryProps> = ({ onClose }) => {
     }
   };
 
+  // Fetch Images from Backend
+  const fetchImageUrls = async () => {
+    if (!sessionId) {
+      console.warn('Session ID not set. Cannot fetch images.');
+      return;
+    }
+
+    console.log('Fetching images for userId:', userId, 'and sessionId:', sessionId);
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(
+        'https://yhzyxry6rj.execute-api.ap-south-1.amazonaws.com/dev/fetch_km_session_images_urls_from_db',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            session_id: sessionId,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch images');
+      }
+
+      const data = await response.json();
+      console.log('Full API Response:', data);
+
+      // Flatten the array of URLs if it's nested
+      const urls = data.urls.flat() || []; // Using .flat() to flatten the array of arrays
+      console.log('Fetched Image URLs:', urls);
+
+      if (urls.length > 0) {
+        setImages(urls);
+        console.log('Images set to state successfully.');
+      } else {
+        console.warn('No images found for the provided sessionId.');
+      }
+    } catch (error) {
+      console.error('Error fetching image URLs:', error);
+      alert('Failed to load images. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Fetch images when "Your Images" tab is selected
+  useEffect(() => {
+    if (activeTab === 'yourImages') {
+      fetchImageUrls();
+    }
+  }, [activeTab]);
+
+  // Render Tab Content
   const renderTabContent = () => {
     if (activeTab === 'upload') {
       return (
@@ -40,22 +112,36 @@ const OutfitBasedJewelry: React.FC<OutfitBasedJewelryProps> = ({ onClose }) => {
             {qrCode ? (
               <img src={qrCode} alt="QR Code" className="max-h-full" />
             ) : (
-              <p className="text-gray-500">QR code will appear here</p>
+              <p className="text-gray-500">QR code will appear here after clicking "Generate QR"</p>
             )}
           </div>
-          {/* Generate QR Code Button */}
           <button
             onClick={handleGenerateQRCode}
-            className="bg-gradient-to-r from-[#00AA4F] via-[#E0AE2A] to-[#EB2D2E] text-white py-2 px-6 rounded-md"
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
           >
-            Generate QR Code
+            Generate QR
           </button>
         </div>
       );
-    } else {
+    } else if (activeTab === 'yourImages') {
       return (
         <div className="flex flex-col items-center gap-4">
-          <p className="text-gray-500">Please upload an image to view here.</p>
+          {isLoading ? (
+            <p>Loading images...</p>
+          ) : images.length > 0 ? (
+            <div className="grid grid-cols-4 gap-4">
+              {images.map((url, index) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt={`Image ${index + 1}`}
+                  className="w-full h-32 object-cover rounded-md border"
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500">No images found for this session.</p>
+          )}
         </div>
       );
     }
@@ -82,10 +168,7 @@ const OutfitBasedJewelry: React.FC<OutfitBasedJewelryProps> = ({ onClose }) => {
             </button>
           </div>
           {/* Close Button */}
-          <button
-            onClick={onClose}
-            className="text-gray-700 text-lg font-bold"
-          >
+          <button onClick={onClose} className="text-gray-700 text-lg font-bold">
             ✕
           </button>
         </div>
