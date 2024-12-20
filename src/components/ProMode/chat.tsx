@@ -48,30 +48,20 @@ const ProModeChatUI: React.FC = () => {
 
   useEffect(() => {
     const isProMode = location.pathname === "/promode";
-    
-    if (isProMode) {
-      const existingSessionId = sessionStorage.getItem("sessionId");
   
-      if (existingSessionId) {
-        // Alert about deletion of the current session ID
-        alert(`Session ID ${existingSessionId} is being deleted.`);
-        
-        // Delete the existing session ID
-        sessionStorage.removeItem("sessionId");
-        localStorage.removeItem("sessionId");
+    if (isProMode && !sessionId) {
+      const storedSessionId = sessionStorage.getItem("sessionId");
+      if (storedSessionId) {
+        setSessionId(storedSessionId);
+      } else {
+        const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+        sessionStorage.setItem("sessionId", newSessionId);
+        localStorage.setItem("sessionId", newSessionId);
+        setSessionId(newSessionId);
       }
-  
-      // Generate and save a new session ID
-      const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
-      sessionStorage.setItem("sessionId", newSessionId);
-      localStorage.setItem("sessionId", newSessionId);
-      setSessionId(newSessionId);
-  
-      // Alert about creation of the new session ID
-      alert(`For user ID, a new Session ID ${newSessionId} is created. (This alert is for temporary basis. Will be removed later)`);
-      console.log("New Session ID created:"+"(This alert is for temporary basis. Will be removed later)", newSessionId);
     }
-  }, [location.pathname]);
+  }, [location.pathname, sessionId]);
+  
   
 
   useEffect(() => {
