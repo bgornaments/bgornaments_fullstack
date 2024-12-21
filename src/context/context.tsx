@@ -319,7 +319,7 @@
 // export default ContextProvider;
 
 import { createContext, useEffect, useState, ReactNode } from 'react';
-import fetchAIResponse from '../config/awsAPI'; // Import AWS API interaction logic
+import { fetchAIResponse, fetchAIResponse2 } from '../config/awsAPI'; // Import AWS API interaction logic
 
 interface ContextProps {
   prevConversations: any[];
@@ -374,12 +374,14 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       ...prevConversations,
       { prompt, response: '', loading: true },
     ]);
-
-    const payload = { user_prompt: prompt, state: botState, conversation_history: prevConversations };
-    const response = await fetchAIResponse(payload);
-
-    const newResponse = response.chatbot_response.split('*').join('<br>');
-
+    const session_id = localStorage.getItem("sessionId");
+    // const payload = { user_prompt: prompt, state: botState, conversation_history: prevConversations };
+    const payload = { session_id: session_id, user_question: prompt }
+    const response = await fetchAIResponse2(payload);
+    console.log(JSON.parse(response.body).assistant_response)
+    console.log(session_id)
+    // const newResponse = response.chatbot_response.split('*').join('<br>');
+    const newResponse = JSON.parse(response.body).assistant_response
     setPrevConversations((prevConversations) => {
       const updatedConversations = [...prevConversations];
       updatedConversations[updatedConversations.length - 1] = {
@@ -391,8 +393,11 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     });
 
     try {
-      const cleanedString = response.button_values.replace(/^'|'$/g, '"').replace(/'/g, '"');
-      const buttonValues = JSON.parse(cleanedString);
+      console.log(JSON.parse(response.body).button_values)
+      // const cleanedString = response.button_values.replace(/^'|'$/g, '"').replace(/'/g, '"');
+      // const buttonValues = JSON.parse(cleanedString);
+      // const buttonValues = JSON.parse(response.body).button_values
+      const buttonValues = ''
 
       if (Array.isArray(buttonValues)) {
         setButtons(buttonValues.map((value: string) => ({

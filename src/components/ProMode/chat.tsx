@@ -47,31 +47,46 @@ const ProModeChatUI: React.FC = () => {
   // const [sessionId, setSessionId] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log(location.pathname);
     const isProMode = location.pathname === "/promode";
+
+    // if (isProMode) {
+    // const existingSessionId = localStorage.getItem("sessionId");
+
+    // if (existingSessionId) {
+    //   // Alert about deletion of the current session ID
+    //   // alert(`Session ID ${existingSessionId} is being deleted.`);
+    //   console.log(`Session ID ${existingSessionId} is being deleted.`)
+
+    //   // Delete the existing session ID
+    //   sessionStorage.removeItem("sessionId");
+    //   localStorage.removeItem("sessionId");
+    // }
+
+    // Generate and save a new session ID
+    // const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+    // sessionStorage.setItem("sessionId", newSessionId);
+    // localStorage.setItem("sessionId", newSessionId);
 
     if (isProMode) {
       const existingSessionId = sessionStorage.getItem("sessionId");
 
-      if (existingSessionId) {
-        // Alert about deletion of the current session ID
-        // alert(`Session ID ${existingSessionId} is being deleted.`);
-        console.log(`Session ID ${existingSessionId} is being deleted.`)
-
-        // Delete the existing session ID
-        sessionStorage.removeItem("sessionId");
-        localStorage.removeItem("sessionId");
+      if (!existingSessionId) {
+        // Generate and save a new session ID only if it doesn't exist already
+        const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+        sessionStorage.setItem("sessionId", newSessionId);
+        localStorage.setItem("sessionId", newSessionId);
+        console.log("New Session ID created:", newSessionId);
+        console.log("here");
       }
-
-      // Generate and save a new session ID
-      const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
-      sessionStorage.setItem("sessionId", newSessionId);
-      localStorage.setItem("sessionId", newSessionId);
-      // setSessionId(newSessionId);
-
-      // Alert about creation of the new session ID
-      // alert(`For user ID, a new Session ID ${newSessionId} is created. (This alert is for temporary basis. Will be removed later)`);
-      console.log("New Session ID created:" + "(This alert is for temporary basis. Will be removed later)", newSessionId);
     }
+    // setSessionId(newSessionId);
+
+    // Alert about creation of the new session ID
+    // alert(`For user ID, a new Session ID ${newSessionId} is created. (This alert is for temporary basis. Will be removed later)`);
+    // console.log("New Session ID created:" + "(This alert is for temporary basis. Will be removed later)", newSessionId);
+    // console.log("here")
+
   }, [location.pathname]);
 
 
