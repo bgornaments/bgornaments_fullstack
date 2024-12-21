@@ -54,7 +54,8 @@ const ProModeChatUI: React.FC = () => {
 
       if (existingSessionId) {
         // Alert about deletion of the current session ID
-        alert(`Session ID ${existingSessionId} is being deleted.`);
+        // alert(`Session ID ${existingSessionId} is being deleted.`);
+        console.log(`Session ID ${existingSessionId} is being deleted.`)
 
         // Delete the existing session ID
         sessionStorage.removeItem("sessionId");
@@ -68,7 +69,7 @@ const ProModeChatUI: React.FC = () => {
       // setSessionId(newSessionId);
 
       // Alert about creation of the new session ID
-      alert(`For user ID, a new Session ID ${newSessionId} is created. (This alert is for temporary basis. Will be removed later)`);
+      // alert(`For user ID, a new Session ID ${newSessionId} is created. (This alert is for temporary basis. Will be removed later)`);
       console.log("New Session ID created:" + "(This alert is for temporary basis. Will be removed later)", newSessionId);
     }
   }, [location.pathname]);
