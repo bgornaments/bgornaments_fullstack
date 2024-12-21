@@ -22,7 +22,7 @@ function ImageGrid() {
             try {
                 const response = await fetch('https://2isixn6on3.execute-api.ap-south-1.amazonaws.com/dev/fetch_img_urls_from_dynamodb');
                 const data = await response.json();
-
+                console.log(data)
                 // Filter out images that are marked as selected or deleted
                 const filteredImages = data.filter((img: Image) => !img.selected && !img.discarded);
 
