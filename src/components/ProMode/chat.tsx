@@ -71,6 +71,21 @@ const ProModeChatUI: React.FC = () => {
     if (isProMode) {
       const existingSessionId = sessionStorage.getItem("sessionId");
 
+      if (existingSessionId) {
+        // Alert about deletion of the current session ID
+        // alert(`Session ID ${existingSessionId} is being deleted.`);
+        console.log(`Session ID ${existingSessionId} is being deleted.`)
+
+        // Delete the existing session ID
+        sessionStorage.removeItem("sessionId");
+        localStorage.removeItem("sessionId");
+        const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+        sessionStorage.setItem("sessionId", newSessionId);
+        localStorage.setItem("sessionId", newSessionId);
+        console.log("New Session ID created:", newSessionId);
+        console.log("here");
+      }
+
       if (!existingSessionId) {
         // Generate and save a new session ID only if it doesn't exist already
         const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
