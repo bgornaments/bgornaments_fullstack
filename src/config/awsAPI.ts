@@ -85,15 +85,16 @@ export const fetchAIResponse2 = async (payload: any) => {
 
 export const invokeImageGenerator = async (payload: any) => {
   try {
+    console.log(payload)
     const response = await fetch(
-      'https://2isixn6on3.execute-api.ap-south-1.amazonaws.com/dev/generate_images',
+      'https://yhzyxry6rj.execute-api.ap-south-1.amazonaws.com/dev/generate_images_leonardo',
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       }
     );
-
+    console.log(response)
     if (!response.ok) {
       throw new Error(`Error fetching chatbot response: ${response.statusText}`);
     }

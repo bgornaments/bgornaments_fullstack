@@ -399,10 +399,13 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     // Step 4: If bot state is "finalize", call image generator
     if (newBotState === "finalization") {
       console.log("here")
+      console.log(newResponse)
       try {
         const imagePayload = { prompt: newResponse }; // Adjust as per your image generator API
         const imageResponse = await invokeImageGenerator(imagePayload);
-        const imageUrls = JSON.parse(imageResponse.body).uploaded_image_urls; // Parse the image URLs from response
+        console.log("here")
+        console.log(imageResponse)
+        const imageUrls = imageResponse.uploaded_image_urls; // Parse the image URLs from response
         console.log(imageUrls)
         // Step 5: Add a new conversation for the images
         setPrevConversations((prevConversations) => [
