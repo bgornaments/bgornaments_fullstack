@@ -34,7 +34,7 @@ const ProModeChatUI: React.FC = () => {
     input,
     loading,
     buttons,
-    setBotState,
+    // setBotState,
     formData,
   } = context;
 
@@ -135,9 +135,9 @@ const ProModeChatUI: React.FC = () => {
 
   const handleButtonClick = (button: Button) => {
     setInput(button.value); // Set the input field with button value
-    if (button.value.toLowerCase().includes('proceed')) {
-      setBotState('customization'); // Change bot state
-    }
+    // if (button.value.toLowerCase().includes('proceed')) {
+    //   setBotState('customization'); // Change bot state
+    // }
     onSent(button.value); // Trigger the bot response with the button value
   };
 

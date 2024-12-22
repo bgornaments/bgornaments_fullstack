@@ -319,7 +319,7 @@
 // export default ContextProvider;
 
 import { createContext, useEffect, useState, ReactNode } from 'react';
-import { fetchAIResponse, fetchAIResponse2 } from '../config/awsAPI'; // Import AWS API interaction logic
+import { fetchAIResponse, fetchAIResponse2, invokeImageGenerator } from '../config/awsAPI'; // Import AWS API interaction logic
 
 interface ContextProps {
   prevConversations: any[];
@@ -378,10 +378,14 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     // const payload = { user_prompt: prompt, state: botState, conversation_history: prevConversations };
     const payload = { session_id: session_id, user_question: prompt }
     const response = await fetchAIResponse2(payload);
+    console.log(JSON.parse(response.body))
     console.log(JSON.parse(response.body).assistant_response)
     console.log(session_id)
     // const newResponse = response.chatbot_response.split('*').join('<br>');
     const newResponse = JSON.parse(response.body).assistant_response
+    const newBotState = JSON.parse(response.body).bot_state;
+    setBotState(newBotState)
+
     setPrevConversations((prevConversations) => {
       const updatedConversations = [...prevConversations];
       updatedConversations[updatedConversations.length - 1] = {
@@ -391,6 +395,28 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       };
       return updatedConversations;
     });
+    console.log(newBotState)
+    // Step 4: If bot state is "finalize", call image generator
+    if (newBotState === "finalization") {
+      console.log("here")
+      try {
+        const imagePayload = { prompt: newResponse }; // Adjust as per your image generator API
+        const imageResponse = await invokeImageGenerator(imagePayload);
+        const imageUrls = JSON.parse(imageResponse.body).uploaded_image_urls; // Parse the image URLs from response
+        console.log(imageUrls)
+        // Step 5: Add a new conversation for the images
+        setPrevConversations((prevConversations) => [
+          ...prevConversations,
+          {
+            prompt: "", // Label for the image section
+            response: imageUrls.map((url: string) => `<img src="${url}" />`).join(" "),
+            loading: false,
+          },
+        ]);
+      } catch (error) {
+        console.error("Failed to fetch images:", error);
+      }
+    }
 
     try {
       console.log(JSON.parse(response.body).button_values)
