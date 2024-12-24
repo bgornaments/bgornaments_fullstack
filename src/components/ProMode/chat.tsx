@@ -34,7 +34,7 @@ const ProModeChatUI: React.FC = () => {
     input,
     loading,
     buttons,
-    setBotState,
+    // setBotState,
     formData,
   } = context;
 
@@ -44,34 +44,66 @@ const ProModeChatUI: React.FC = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
   // Store session ID
-  const [sessionId, setSessionId] = useState<string | null>(null);
+  // const [sessionId, setSessionId] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log(location.pathname);
     const isProMode = location.pathname === "/promode";
-    
+
+    // if (isProMode) {
+    // const existingSessionId = localStorage.getItem("sessionId");
+
+    // if (existingSessionId) {
+    //   // Alert about deletion of the current session ID
+    //   // alert(`Session ID ${existingSessionId} is being deleted.`);
+    //   console.log(`Session ID ${existingSessionId} is being deleted.`)
+
+    //   // Delete the existing session ID
+    //   sessionStorage.removeItem("sessionId");
+    //   localStorage.removeItem("sessionId");
+    // }
+
+    // Generate and save a new session ID
+    // const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+    // sessionStorage.setItem("sessionId", newSessionId);
+    // localStorage.setItem("sessionId", newSessionId);
+
     if (isProMode) {
       const existingSessionId = sessionStorage.getItem("sessionId");
-  
+
       if (existingSessionId) {
         // Alert about deletion of the current session ID
-        alert(`Session ID ${existingSessionId} is being deleted.`);
-        
+        // alert(`Session ID ${existingSessionId} is being deleted.`);
+        console.log(`Session ID ${existingSessionId} is being deleted.`)
+
         // Delete the existing session ID
         sessionStorage.removeItem("sessionId");
-        // localStorage.removeItem("sessionId");
+        localStorage.removeItem("sessionId");
+        const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+        sessionStorage.setItem("sessionId", newSessionId);
+        localStorage.setItem("sessionId", newSessionId);
+        console.log("New Session ID created:", newSessionId);
+        console.log("here");
       }
-  
-      // Generate and save a new session ID
-      const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
-      sessionStorage.setItem("sessionId", newSessionId);
-      // localStorage.setItem("sessionId", newSessionId);
-      setSessionId(newSessionId);
-  
-      // Alert about creation of the new session ID
-      alert(`For user ID, a new Session ID ${newSessionId} is created. (This alert is for temporary basis. Will be removed later)`);
-      console.log("New Session ID created:"+"(This alert is for temporary basis. Will be removed later)", newSessionId);
+
+      if (!existingSessionId) {
+        // Generate and save a new session ID only if it doesn't exist already
+        const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+        sessionStorage.setItem("sessionId", newSessionId);
+        localStorage.setItem("sessionId", newSessionId);
+        console.log("New Session ID created:", newSessionId);
+        console.log("here");
+      }
     }
+    // setSessionId(newSessionId);
+
+    // Alert about creation of the new session ID
+    // alert(`For user ID, a new Session ID ${newSessionId} is created. (This alert is for temporary basis. Will be removed later)`);
+    // console.log("New Session ID created:" + "(This alert is for temporary basis. Will be removed later)", newSessionId);
+    // console.log("here")
+
   }, [location.pathname]);
+
 
   useEffect(() => {
     if (!hasSentFirstPrompt.current) {
@@ -103,9 +135,9 @@ const ProModeChatUI: React.FC = () => {
 
   const handleButtonClick = (button: Button) => {
     setInput(button.value); // Set the input field with button value
-    if (button.value.toLowerCase().includes('proceed')) {
-      setBotState('customization'); // Change bot state
-    }
+    // if (button.value.toLowerCase().includes('proceed')) {
+    //   setBotState('customization'); // Change bot state
+    // }
     onSent(button.value); // Trigger the bot response with the button value
   };
 
@@ -256,18 +288,18 @@ const ProModeChatUI: React.FC = () => {
                   placeholder="Enter a prompt"
                   disabled={loading}
                 />
-               <div className="flex items-center gap-4">
-                 <img
-                  className="w-6 cursor-pointer"
-                  src={assets.send_icon}
-                  alt="Send Icon"
-                  onClick={handleSend}
-                  style={{
-                    cursor: loading ? 'not-allowed' : 'pointer',
-                    opacity: loading ? 0.5 : 1,
-                  }}
-                />
-              </div>
+                <div className="flex items-center gap-4">
+                  <img
+                    className="w-6 cursor-pointer"
+                    src={assets.send_icon}
+                    alt="Send Icon"
+                    onClick={handleSend}
+                    style={{
+                      cursor: loading ? 'not-allowed' : 'pointer',
+                      opacity: loading ? 0.5 : 1,
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>

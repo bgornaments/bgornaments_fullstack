@@ -71,12 +71,12 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
     }
   };
 
-  const handleNextImage = () => {
-    if (images.length > 0) {
-      const nextIndex = (images.indexOf(selectedImage || images[0]) + 1) % images.length;
-      setSelectedImage(images[nextIndex]);
-    }
-  };
+  // const handleNextImage = () => {
+  //   if (images.length > 0) {
+  //     const nextIndex = (images.indexOf(selectedImage || images[0]) + 1) % images.length;
+  //     setSelectedImage(images[nextIndex]);
+  //   }
+  // };
 
   const renderTabContent = () => {
     if (activeTab === 'yourImages') {

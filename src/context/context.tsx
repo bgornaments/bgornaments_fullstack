@@ -319,7 +319,7 @@
 // export default ContextProvider;
 
 import { createContext, useEffect, useState, ReactNode } from 'react';
-import fetchAIResponse from '../config/awsAPI'; // Import AWS API interaction logic
+import { fetchAIResponse, fetchAIResponse2, invokeImageGenerator } from '../config/awsAPI'; // Import AWS API interaction logic
 
 interface ContextProps {
   prevConversations: any[];
@@ -374,11 +374,17 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       ...prevConversations,
       { prompt, response: '', loading: true },
     ]);
-
-    const payload = { user_prompt: prompt, state: botState, conversation_history: prevConversations };
-    const response = await fetchAIResponse(payload);
-
-    const newResponse = response.chatbot_response.split('*').join('<br>');
+    const session_id = localStorage.getItem("sessionId");
+    // const payload = { user_prompt: prompt, state: botState, conversation_history: prevConversations };
+    const payload = { session_id: session_id, user_question: prompt }
+    const response = await fetchAIResponse2(payload);
+    console.log(JSON.parse(response.body))
+    console.log(JSON.parse(response.body).assistant_response)
+    console.log(session_id)
+    // const newResponse = response.chatbot_response.split('*').join('<br>');
+    const newResponse = JSON.parse(response.body).assistant_response
+    const newBotState = JSON.parse(response.body).bot_state;
+    setBotState(newBotState)
 
     setPrevConversations((prevConversations) => {
       const updatedConversations = [...prevConversations];
@@ -389,10 +395,38 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       };
       return updatedConversations;
     });
+    console.log(newBotState)
+    // Step 4: If bot state is "finalize", call image generator
+    if (newBotState === "finalization") {
+      console.log("here")
+      console.log(newResponse)
+      try {
+        const imagePayload = { prompt: newResponse }; // Adjust as per your image generator API
+        const imageResponse = await invokeImageGenerator(imagePayload);
+        console.log("here")
+        console.log(imageResponse)
+        const imageUrls = imageResponse.uploaded_image_urls; // Parse the image URLs from response
+        console.log(imageUrls)
+        // Step 5: Add a new conversation for the images
+        setPrevConversations((prevConversations) => [
+          ...prevConversations,
+          {
+            prompt: "", // Label for the image section
+            response: imageUrls.map((url: string) => `<img src="${url}" />`).join(" "),
+            loading: false,
+          },
+        ]);
+      } catch (error) {
+        console.error("Failed to fetch images:", error);
+      }
+    }
 
     try {
-      const cleanedString = response.button_values.replace(/^'|'$/g, '"').replace(/'/g, '"');
-      const buttonValues = JSON.parse(cleanedString);
+      console.log(JSON.parse(response.body).button_values)
+      // const cleanedString = response.button_values.replace(/^'|'$/g, '"').replace(/'/g, '"');
+      // const buttonValues = JSON.parse(cleanedString);
+      // const buttonValues = JSON.parse(response.body).button_values
+      const buttonValues = ''
 
       if (Array.isArray(buttonValues)) {
         setButtons(buttonValues.map((value: string) => ({

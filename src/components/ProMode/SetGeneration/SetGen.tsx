@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 
-interface Button {
-  text: string;
-  value: string;
-}
+// interface Button {
+//   text: string;
+//   value: string;
+// }
 
 const SetGen: React.FC = () => {
   return (

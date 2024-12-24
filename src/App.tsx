@@ -170,7 +170,7 @@ import ImageGrid from "./components/ImageManager/ImageGrid.tsx";
 import FilteredImageGrid from "./components/ImageManager/FilteredImageGrid.tsx";
 import ProModeChatUI from "./components/ProMode/chat.tsx";
 import ContextProvider from "./context/context.tsx";
-import ImgVar from "./components/ProMode/ImageVariation/ImgVar.tsx";
+import ImgVar from "./components/ProMode/ImageVariation/imgVar.tsx";
 import SetGen from "./components/ProMode/SetGeneration/SetGen.tsx";
 
 const router = createBrowserRouter([
