@@ -58,13 +58,13 @@ const ProModeChatUI: React.FC = () => {
         
         // Delete the existing session ID
         sessionStorage.removeItem("sessionId");
-        localStorage.removeItem("sessionId");
+        // localStorage.removeItem("sessionId");
       }
   
       // Generate and save a new session ID
       const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
       sessionStorage.setItem("sessionId", newSessionId);
-      localStorage.setItem("sessionId", newSessionId);
+      // localStorage.setItem("sessionId", newSessionId);
       setSessionId(newSessionId);
   
       // Alert about creation of the new session ID
@@ -72,7 +72,6 @@ const ProModeChatUI: React.FC = () => {
       console.log("New Session ID created:"+"(This alert is for temporary basis. Will be removed later)", newSessionId);
     }
   }, [location.pathname]);
-  
 
   useEffect(() => {
     if (!hasSentFirstPrompt.current) {
