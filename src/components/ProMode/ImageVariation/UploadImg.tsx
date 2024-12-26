@@ -207,7 +207,7 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
 
   useEffect(() => {
     if (!sessionId) return;
-
+  
     const fetchImageUrls = async () => {
       setIsLoading(true);
       try {
@@ -224,20 +224,25 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
             }),
           }
         );
-
+  
         if (!response.ok) {
           throw new Error('Failed to fetch images');
         }
-
+  
         const data = await response.json();
         const urls = data.urls.flat() || [];
-
+  
         // Convert URLs to Base64
         const base64Images = await Promise.all(
           urls.map((url: string) => fetchImageAsBase64(url))
         );
-
-        setImages(base64Images);
+  
+        // Add only unique images to the state
+        setImages((prevImages) => {
+          const uniqueImages = new Set(prevImages);
+          base64Images.forEach((img) => uniqueImages.add(img));
+          return Array.from(uniqueImages);
+        });
       } catch (error) {
         console.error('Error fetching image URLs:', error);
         alert('Failed to load images. Please try again.');
@@ -245,9 +250,10 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
         setIsLoading(false);
       }
     };
-
+  
     fetchImageUrls();
   }, [sessionId]);
+  
 
   const handleGenerateQRCode = () => {
     if (!sessionId) {
