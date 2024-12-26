@@ -2909,6 +2909,7 @@ const ImgVar: React.FC = () => {
   const [customModification, setCustomModification] = useState<string>('');
   const [finalPrompt, setFinalPrompt] = useState<string>(''); // To store the final prompt
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null); // To store the generated image URL
+  const [s3Link, setS3Link] = useState("");
 
   const sessionId = localStorage.getItem('sessionId');
   const base_url = 'https://yhzyxry6rj.execute-api.ap-south-1.amazonaws.com/dev/'; // Replace with your base URL
@@ -2925,12 +2926,12 @@ const ImgVar: React.FC = () => {
       console.log("Lambda response:", response); // Log the full response
       return response.data;
     } catch (error) {
-      console.error("Lambda call error:", error.response || error);
+      console.error("Lambda call error:", error);
       return null;
     }
   };
 
-  const handleImageSelect = (imageUrl: string) => setSelectedImage(imageUrl);
+  const handleImageSelect = (imageBase64: string) => setSelectedImage(imageBase64);
 
   const handleProcessImage = async () => {
     if (selectedImage) {
@@ -2953,6 +2954,7 @@ const ImgVar: React.FC = () => {
           { url: response.s3_link }
         );
 
+        setS3Link(response.s3_link); // Store the s3_link in state
         console.log("Caption generated:", captionResponse);
         setCaption(captionResponse.caption || '');
 
@@ -3039,27 +3041,27 @@ const ImgVar: React.FC = () => {
       alert('Please select a modification or enter a custom one.');
       return;
     }
-  
+
     const instruction = selectedModification === 'Other' ? customModification : selectedModification;
-  
+
     const payload = {
       description: caption,
       instruction: instruction,
     };
-  
+
     try {
       console.log("Calling endpoint with payload:", payload);
       const response = await callLambda(
         `${base_url}generate_variation_sd_prompt`,
         payload
       );
-  
+
       console.log("API Response:", response);
-  
+
       if (response && response.output_prompt) {
         setFinalPrompt(response.output_prompt);  // Assign output_prompt to the state
         // Call the generate image URL endpoint after getting the final prompt
-        await generateImageUrl(response.output_prompt, selectedImage);  // Pass selectedImage to generate the image
+        await generateImageUrl(response.output_prompt, s3Link);  // Pass selectedImage to generate the image
       } else {
         console.error("Failed to generate final prompt. Response does not contain 'output_prompt'.");
         setFinalPrompt("Error: Could not generate prompt.");
@@ -3069,45 +3071,39 @@ const ImgVar: React.FC = () => {
       setFinalPrompt("Error: Something went wrong.");
     }
   };
-  
 
-  const generateImageUrl = async (finalPrompt: string, imageUrl: string) => {
-    const base64Image = imageUrl.split(',')[1] || '';
+
+  const generateImageUrl = async (finalPrompt: string, references3url: string) => {
+    // const base64Image = imageUrl.split(',')[1] || '';
     const payload = {
-      references3url: base64Image || '',
+      references3url: references3url,
       prompt: finalPrompt,
       init_strength: 0.8,
     };
-  
+
     console.log("Payload for generateImageUrl:", payload);
-  
+
     try {
       const response = await callLambda(
-        `${base_url}generate_images`,
+        `${base_url}generate_images_leonardo`,
         payload
       );
-  
+
       console.log("Response from generate_images:", response);
-  
-      if (response && response.generated_image_url) {
-        setGeneratedImageUrl(response.generated_image_url);
+
+      if (response && response.uploaded_image_urls) {
+        setGeneratedImageUrl(response.uploaded_image_urls);
       } else {
         alert("Error: Unable to generate the image. Please check the API response.");
         console.error('API response does not include "generated_image_url". Response:', response);
       }
     } catch (error) {
       console.error("Error while generating image URL:", error);
-  
-      if (error.response) {
-        // Log the full error response for debugging
-        console.error("Error response data:", error.response.data);
-        console.error("Error response status:", error.response.status);
-      }
-  
+
       alert("An error occurred while generating the image. Please try again later.");
     }
   };
-  
+
 
   return (
     <div className="flex-1 min-h-screen pb-[15vh] relative">
