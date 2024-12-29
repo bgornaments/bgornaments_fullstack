@@ -11,7 +11,7 @@ const ImgVar: React.FC = () => {
   const [modifications, setModifications] = useState<string[]>([]);
   const [selectedModification, setSelectedModification] = useState<string | null>(null);
   const [customModification, setCustomModification] = useState<string>('');
-  const [finalPrompt, setFinalPrompt] = useState<string>(''); // To store the final prompt
+  const [, setFinalPrompt] = useState<string>(''); // To store the final prompt
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null); // To store the generated image URL
   const [s3Link, setS3Link] = useState("");
 
