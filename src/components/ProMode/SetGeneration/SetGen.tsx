@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'; 
-import UploadImg from '../UploadImg'; 
+import React, { useState, useEffect } from 'react';
+import UploadImg from '../UploadImg';
 import axios from 'axios';
 import kinmitraAnimation from '/src/assets/kinmitraAnimation.gif';
 
@@ -26,6 +26,8 @@ const SetGen: React.FC = () => {
   // API call function
   const callLambda = async (endpointUrl: string, payload: object) => {
     setIsLoading(true); // Set loading state to true
+    console.log("here")
+    console.log(payload)
     try {
       const response = await axios.post(endpointUrl, payload, {
         headers: {
@@ -83,9 +85,10 @@ const SetGen: React.FC = () => {
 
       // Log the response from the API
       console.log("API Response:", response);
-
+      const parsedBody = JSON.parse(response.body); // Convert JSON string to object
+      console.log(parsedBody.uploaded_image_urls)
       if (response) {
-        setGeneratedImages(response.uploaded_image_urls || []);
+        setGeneratedImages(parsedBody.uploaded_image_urls || []);
       } else {
         setError("Error: Unable to generate images.");
       }
