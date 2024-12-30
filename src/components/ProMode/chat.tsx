@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Outlet, useLocation } from "react-router-dom";
@@ -34,7 +35,7 @@ const ProModeChatUI: React.FC = () => {
     buttons,
     formData,
     botState, // Access botState
-    setBotState, // Access setBotState
+    // setBotState, // Access setBotState
   } = context;
 
   const hasSentFirstPrompt = useRef(false);
