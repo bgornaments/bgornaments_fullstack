@@ -52,6 +52,9 @@ const ImgVar: React.FC = () => {
         session_id: sessionId || '1234567',
         image_base64: selectedImage.split(',')[1], // Base64 encoding before sending to Lambda
       };
+
+      console.log('payload for caption generation:', payload);
+
       const response = await callLambda(
         `${base_url}handle_promode_session_images`,
         payload
@@ -87,6 +90,9 @@ const ImgVar: React.FC = () => {
   const fetchModifications = async (selectedParam: string) => {
     if (caption && selectedParam) {
       const payload = { parameter: selectedParam, description: caption };
+      
+      console.log('payload for fetching modification:', payload);
+
       const response = await callLambda(
         `${base_url}generate_possible_modifications`,
         payload
@@ -113,6 +119,9 @@ const ImgVar: React.FC = () => {
       description: caption,
       instruction: instruction,
     };
+
+    console.log('payload for after modification prompt generation:', payload);
+
     const response = await callLambda(
       `${base_url}generate_variation_sd_prompt`,
       payload
@@ -127,12 +136,12 @@ const ImgVar: React.FC = () => {
     const payload = {
       references3url: references3url,
       prompt: finalPrompt,
-<<<<<<< HEAD
       init_strength: 0.4,
-=======
-      init_strength: 0.5,
->>>>>>> refs/remotes/origin/phase2
     };
+
+    console.log('payload for image generation:', payload);
+    
+
     const response = await callLambda(
       `${base_url}generate_images_leonardo`,
       payload
@@ -142,7 +151,6 @@ const ImgVar: React.FC = () => {
     }
   };
   const handleUploadNewImage = () => {
-    // Reset relevant states for a fresh start
     setSelectedImage(null);
     setCaption('');
     setModifiableParams([]);
