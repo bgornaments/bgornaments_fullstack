@@ -1,43 +1,8 @@
-// interface Payload {
-//   user_prompt: string;
-//   state: string;
-//   conversation_history: any[];
-// }
-
-// interface AIResponse {
-//   chatbot_response: string;
-//   button_values: string;
-// }
-
-// const fetchAIResponse = async (payload: Payload): Promise<AIResponse> => {
-//   try {
-//     const response = await fetch(
-//       'https://2isixn6on3.execute-api.ap-south-1.amazonaws.com/dev/get_chatbot_response',
-//       {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify(payload),
-//       }
-//     );
-
-//     if (!response.ok) {
-//       throw new Error(`Error fetching chatbot response: ${response.statusText}`);
-//     }
-
-//     const data: AIResponse = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.error("Error in fetchAIResponse:", error);
-//     throw error;
-//   }
-// };
-
-// export default fetchAIResponse;
-
-export const fetchAIResponse = async (payload: any) => {
+// Fetches the chatbot response from the new endpoint
+export const fetchAIResponse = async (payload: { session_id: string, user_question: string }) => {
   try {
     const response = await fetch(
-      'https://2isixn6on3.execute-api.ap-south-1.amazonaws.com/dev/get_chatbot_response',
+      'https://lc2qlggwcb.execute-api.us-east-1.amazonaws.com/default/kq_query_workflow', // Updated endpoint
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -50,19 +15,19 @@ export const fetchAIResponse = async (payload: any) => {
     }
 
     const data = await response.json();
-    console.log(data)
-    return data;
+    console.log(data);
+    return data; // Output structure: { 'user_question': user_question, 'assistant_response': assistant_response, 'button_values': button_values }
   } catch (error) {
-    console.error("Error in fetchAIResponse:", error);
+    console.error('Error in fetchAIResponse:', error);
     throw error;
   }
 };
 
+// Previous API call function, no longer used, but leaving it here for context
 export const fetchAIResponse2 = async (payload: any) => {
   try {
     const response = await fetch(
-      // 'https://2ngxc0t5ma.execute-api.us-east-1.amazonaws.com/default/kq_query_workflow',
-      'https://yhzyxry6rj.execute-api.ap-south-1.amazonaws.com/dev/langgraph_chatbot',
+      'https://yhzyxry6rj.execute-api.ap-south-1.amazonaws.com/dev/langgraph_chatbot', // Deprecated API endpoint
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -75,17 +40,17 @@ export const fetchAIResponse2 = async (payload: any) => {
     }
 
     const data = await response.json();
-    console.log(data)
+    console.log(data);
     return data;
   } catch (error) {
-    console.error("Error in fetchAIResponse:", error);
+    console.error('Error in fetchAIResponse2:', error);
     throw error;
   }
 };
 
+// Image generator API call, remains the same
 export const invokeImageGenerator = async (payload: any) => {
   try {
-    console.log(payload)
     const response = await fetch(
       'https://yhzyxry6rj.execute-api.ap-south-1.amazonaws.com/dev/generate_images_leonardo',
       {
@@ -94,16 +59,16 @@ export const invokeImageGenerator = async (payload: any) => {
         body: JSON.stringify(payload),
       }
     );
-    console.log(response)
+
     if (!response.ok) {
-      throw new Error(`Error fetching chatbot response: ${response.statusText}`);
+      throw new Error(`Error fetching image generator response: ${response.statusText}`);
     }
 
     const data = await response.json();
-    console.log(data)
+    console.log(data);
     return data;
   } catch (error) {
-    console.error("Error in fetchAIResponse:", error);
+    console.error('Error in invokeImageGenerator:', error);
     throw error;
   }
 };
