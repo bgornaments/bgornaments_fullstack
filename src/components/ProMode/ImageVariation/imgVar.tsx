@@ -127,7 +127,11 @@ const ImgVar: React.FC = () => {
     const payload = {
       references3url: references3url,
       prompt: finalPrompt,
+<<<<<<< HEAD
       init_strength: 0.4,
+=======
+      init_strength: 0.5,
+>>>>>>> refs/remotes/origin/phase2
     };
     const response = await callLambda(
       `${base_url}generate_images_leonardo`,
