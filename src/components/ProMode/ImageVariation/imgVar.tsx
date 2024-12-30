@@ -182,7 +182,7 @@ const ImgVar: React.FC = () => {
     const payload = {
       references3url: references3url,
       prompt: finalPrompt,
-      init_strength: 0.8,
+      init_strength: 0.5,
     };
 
     console.log("Payload for generateImageUrl:", payload);
