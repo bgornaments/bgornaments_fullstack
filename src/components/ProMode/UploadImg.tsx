@@ -150,7 +150,10 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
             {qrCode ? (
               <img src={qrCode} alt="QR Code" className="max-h-full" />
             ) : (
-              <p className="text-gray-500 text-center text-lg">QR code will appear here after clicking "Generate QR"</p>
+              <p className="text-gray-500 text-left text-lg">
+                1. Click "Generate QR". <br />
+                2. Scan it with your phone. <br />
+                3. Upload an image to see it in "Your Images".</p>
             )}
           </div>
           <button
@@ -170,21 +173,19 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
         <div className="flex justify-between items-center mb-4">
           <div className="flex gap-4">
             <button
-              className={`py-2 px-6 rounded-md font-semibold transition-all ${
-                activeTab === 'upload'
-                  ? 'text-white bg-blue-600 shadow-md hover:bg-blue-700'
-                  : 'text-blue-600 border border-blue-600 hover:bg-blue-100'
-              }`}
+              className={`py-2 px-6 rounded-md font-semibold transition-all ${activeTab === 'upload'
+                ? 'text-white bg-blue-600 shadow-md hover:bg-blue-700'
+                : 'text-blue-600 border border-blue-600 hover:bg-blue-100'
+                }`}
               onClick={() => setActiveTab('upload')}
             >
-              Generate QR
+              Quick QR Uploader
             </button>
             <button
-              className={`py-2 px-6 rounded-md font-semibold transition-all ${
-                activeTab === 'yourImages'
-                  ? 'text-white bg-blue-600 shadow-md hover:bg-blue-700'
-                  : 'text-blue-600 border border-blue-600 hover:bg-blue-100'
-              }`}
+              className={`py-2 px-6 rounded-md font-semibold transition-all ${activeTab === 'yourImages'
+                ? 'text-white bg-blue-600 shadow-md hover:bg-blue-700'
+                : 'text-blue-600 border border-blue-600 hover:bg-blue-100'
+                }`}
               onClick={() => setActiveTab('yourImages')}
             >
               Your Images
