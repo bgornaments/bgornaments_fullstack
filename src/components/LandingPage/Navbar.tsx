@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "/src/assets/image.png";
-import { Link,  useNavigate  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import Swal from "sweetalert2";
 
@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const handleDesignClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-  
+
     if (!user) {
       Swal.fire({
         title: "Please Log In",
@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
         }
       });
     } else {
-      navigate("/catalog"); 
+      navigate("/catalog");
     }
   };
 
@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
             Logout
           </Link>
         ) : (
-          <Link to="/login" className="font-bold">Retailer Login</Link>
+          <Link to="/login" className="font-bold">Jeweler Login</Link>
         )}
       </div>
     </div>
