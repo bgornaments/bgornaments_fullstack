@@ -18,11 +18,12 @@ const ImgVar: React.FC = () => {
   const [s3Link, setS3Link] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const [isProcessing, setIsProcessing] = useState(false); // To disable buttons after click
-  
+  const [sliderVal, setSliderVal] = useState<number>(50);
+
   const sessionId = localStorage.getItem('sessionId');
-  
+
   const base_url = 'https://yhzyxry6rj.execute-api.ap-south-1.amazonaws.com/dev/';
-  
+
   useEffect(() => {
     if (!sessionId) {
       alert('Session ID not found. Please refresh the page.');
@@ -43,7 +44,7 @@ const ImgVar: React.FC = () => {
   };
 
   const handleImageSelect = (imageBase64: string) => setSelectedImage(imageBase64);
-  
+
   const handleProcessImage = async () => {
     setIsProcessing(true); // Disable the button after click
     if (selectedImage) {
@@ -90,7 +91,7 @@ const ImgVar: React.FC = () => {
   const fetchModifications = async (selectedParam: string) => {
     if (caption && selectedParam) {
       const payload = { parameter: selectedParam, description: caption };
-      
+
       console.log('payload for fetching modification:', payload);
 
       const response = await callLambda(
@@ -136,11 +137,11 @@ const ImgVar: React.FC = () => {
     const payload = {
       references3url: references3url,
       prompt: finalPrompt,
-      init_strength: 0.4,
+      init_strength: sliderVal / 100,
     };
 
     console.log('payload for image generation:', payload);
-    
+
 
     const response = await callLambda(
       `${base_url}generate_images_leonardo`,
@@ -279,7 +280,7 @@ const ImgVar: React.FC = () => {
           </div>
         )}
         {modifications.length > 0 && (
-          <div className="mt-6 flex items-center justify-between space-x-4">
+          <div className="mt-6 flex-col items-center justify-between space-x-4">
             {/* Dropdown */}
             <select
               className="border p-2 rounded w-full max-w-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition"
@@ -306,16 +307,37 @@ const ImgVar: React.FC = () => {
                 />
               </div>
             )}
-            {/* 'Next' Button */}
-            <button
-              onClick={handleNext}
-              className={`px-8 py-3 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-400 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 transition ${!selectedModification || isProcessing ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
-              disabled={!selectedModification || isProcessing}
-            >
-              Next
-            </button>
+            <div className="flex flex-col items-center w-full max-w-md">
+              <label
+                htmlFor="range-slider"
+                className="text-gray-700 font-semibold mb-2 text-center"
+              >
+                Set Similarity Level ({sliderVal})
+              </label>
+              <input
+                id="range-slider"
+                type="range"
+                min="0"
+                max="100"
+                step="10"
+                value={sliderVal}
+                onChange={(e) => setSliderVal(parseFloat(e.target.value))}
+                className="slider w-full max-w-sm h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg appearance-none outline-none cursor-pointer transition-all duration-300 ease-in-out"
+              />
+            </div>
 
+            {/* 'Next' Button */}
+            <div className="mt-6 flex flex-col items-center justify-center w-full">
+              {/* 'Next' Button */}
+              <button
+                onClick={handleNext}
+                className={`px-8 py-3 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-400 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 transition ${!selectedModification || isProcessing ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                disabled={!selectedModification || isProcessing}
+              >
+                Next
+              </button>
+            </div>
           </div>
         )}
         {finalPrompt && (
