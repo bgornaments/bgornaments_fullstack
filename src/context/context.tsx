@@ -350,7 +350,7 @@
 // export default ContextProvider;
 
 import { createContext, useEffect, useState, ReactNode } from 'react';
-import { fetchAIResponse2, invokeImageGenerator } from '../config/awsAPI'; // Import AWS API interaction logic
+import { fetchAIResponse, fetchAIResponse2, invokeImageGenerator } from '../config/awsAPI'; // Import AWS API interaction logic
 
 interface ContextProps {
   prevConversations: any[];
@@ -416,7 +416,7 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const payload = { session_id: session_id, user_question: prompt };
 
     try {
-      const response = await fetchAIResponse2(payload);
+      const response = await fetchAIResponse(payload);
       const responseBody = JSON.parse(response.body);
 
       if (responseBody && responseBody.assistant_response) {
@@ -473,7 +473,7 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         console.error('Invalid response structure:', responseBody);
       }
     } catch (error) {
-      console.error('Error in fetchAIResponse2:', error);
+      console.error('Error in fetchAIResponse:', error);
     } finally {
       setLoading(false);
       setInput('');
