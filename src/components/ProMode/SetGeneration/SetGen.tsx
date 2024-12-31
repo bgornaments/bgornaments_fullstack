@@ -1,11 +1,6 @@
-<<<<<<< HEAD
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react'; 
-import UploadImg from '../UploadImg'; 
-=======
-import React, { useState, useEffect } from 'react';
 import UploadImg from '../UploadImg';
->>>>>>> 503b2e5ecddd4a8498f027d662104a90559b60ef
 import axios from 'axios';
 import kinmitraAnimation from '/src/assets/kinmitraAnimation.gif';
 
