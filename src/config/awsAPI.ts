@@ -2,7 +2,8 @@
 export const fetchAIResponse = async (payload: { session_id: string, user_question: string }) => {
   try {
     const response = await fetch(
-      'https://2ngxc0t5ma.execute-api.us-east-1.amazonaws.com/default/kq_query_workflow', // Updated endpoint
+      // 'https://2ngxc0t5ma.execute-api.us-east-1.amazonaws.com/default/kq_query_workflow', // Updated endpoint
+      'https://yhzyxry6rj.execute-api.ap-south-1.amazonaws.com/dev/langgraph_chatbot',
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

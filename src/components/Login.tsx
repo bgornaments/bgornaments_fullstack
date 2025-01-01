@@ -30,7 +30,7 @@ const formFields = {
       order: 4,
       placeholder: "Enter your GST number",
       label: "GST",
-      isRequired: false,
+      isRequired: true,
     },
     password: {
       order: 5,
@@ -48,7 +48,7 @@ const formFields = {
 };
 
 const Login: React.FC<{ children?: ReactNode }> = ({ children }) => {
-  const { route } = useAuthenticator(); 
+  const { route } = useAuthenticator();
   const navigate = useNavigate();
 
   const defaultOptions = {

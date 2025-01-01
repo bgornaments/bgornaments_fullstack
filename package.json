@@ -25,6 +25,7 @@
     "aws-amplify": "^6.4.3",
     "axios": "^1.7.2",
     "core-js": "^3.38.1",
+    "inflection": "^3.0.0",
     "keen-slider": "^6.8.6",
     "lottie-web": "^5.12.2",
     "prop-types": "^15.8.1",

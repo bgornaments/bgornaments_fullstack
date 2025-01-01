@@ -44,12 +44,13 @@ const Navbar: React.FC = () => {
         <Link to="/" className="font-bold">Home</Link>
         <button onClick={handleDesignClick} className="font-bold">AI Designs</button>
         <Link to="/" className="font-bold">Features</Link>
+        <Link to="/" className="font-bold">Pricing</Link>
         {user ? (
           <Link to="#" onClick={signOut} className="font-bold">
             Logout
           </Link>
         ) : (
-          <Link to="/login" className="font-bold">Jeweler Login</Link>
+          <Link to="/login" className="font-bold">Jeweller Login</Link>
         )}
       </div>
     </div>

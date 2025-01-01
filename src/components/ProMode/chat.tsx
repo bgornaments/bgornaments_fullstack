@@ -8,6 +8,8 @@ import ButtonRow from './ButtonRow';
 import PopUp from './PopUp';
 import './chat.css';
 import Sidebar from './Sidebar';
+// import inflection from 'inflection';
+import * as inflection from 'inflection';
 
 interface Button {
   text: string;
@@ -15,7 +17,12 @@ interface Button {
 }
 
 const generateBasicInfoString = (formData: Record<string, any>): string => {
-  return `I want a ${formData.jewelryType} for ${formData.occasion} for a ${formData.gender} aged ${formData.ageGroup}.`;
+  const jewelryType = inflection.singularize(formData.jewelryType).toLowerCase();
+  const occasion = formData.occasion.toLowerCase();
+  const gender = formData.gender.toLowerCase();
+  const ageGroup = formData.ageGroup.toLowerCase();
+
+  return `I want a ${jewelryType} for ${occasion} for a ${gender} aged ${ageGroup}.`;
 };
 
 const ProModeChatUI: React.FC = () => {
@@ -134,10 +141,11 @@ const ProModeChatUI: React.FC = () => {
   };
 
   const handleButtonClick = (button: Button) => {
-    setInput(button.value); // Set the input field with button value
+    // setInput(button.value); // Set the input field with button value
     // if (button.value.toLowerCase().includes('proceed')) {
     //   setBotState('customization'); // Change bot state
     // }
+    console.log(button.value)
     onSent(button.value); // Trigger the bot response with the button value
   };
 

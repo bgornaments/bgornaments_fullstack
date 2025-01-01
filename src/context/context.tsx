@@ -458,11 +458,19 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         try {
           const buttonValues = responseBody.button_values || '';
           if (Array.isArray(buttonValues)) {
-            setButtons(buttonValues.map((value: string) => ({
-              text: value,
-              value: value,
-            })));
-          } else {
+            setButtons(
+              buttonValues.map((value: string) => {
+                // Use a regular expression to remove everything after (and including) the first '-'
+                const cleanedValue = value.replace(/-.*$/, '');
+                console.log(value)
+                return {
+                  text: cleanedValue,
+                  value: value,
+                };
+              })
+            );
+          }
+          else {
             setButtons([]); // Clear buttons if not an array
           }
         } catch (error) {
