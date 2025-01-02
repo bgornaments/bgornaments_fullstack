@@ -9,10 +9,11 @@ import pendantIcon from "/src/assets/necklace.png";
 import earringIcon from "/src/assets/flower.png";
 import bangleIcon from "/src/assets/bangles.png";
 import ringIcon from "/src/assets/wedding-ring.png";
-//import chainIcon from "/src/assets/pendant.png";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 import braceletIcon from "/src/assets/bracelet.png";
 import femaleIcon from "/src/assets/female-icon.png";
 import maleIcon from "/src/assets/male-icon.png";
+import Swal from 'sweetalert2';
 
 const JewelryForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const JewelryForm: React.FC = () => {
     (state: any) => state.form.isFormSubmitted
   );
   const navigate = useNavigate();
+  const { user } = useAuthenticator();
 
   useEffect(() => {
     localStorage.setItem("formData", JSON.stringify(formData));
@@ -35,10 +37,29 @@ const JewelryForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    navigate("/modes");
-    console.log("Form Data on Submit:", formData);
-    dispatch(setFormSubmitted(true));
-    console.log(isFormSubmitted);
+    if (!user) {
+          Swal.fire({
+            title: "Please Log In",
+            text: "You need to log in to proceed. Click the button below to log in.",
+            icon: "warning",
+            confirmButtonText: "Log In",
+            confirmButtonColor: "#3085d6",
+            showCancelButton: true,
+            cancelButtonText: "Cancel",
+            cancelButtonColor: "#d33",
+            reverseButtons: true,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              localStorage.setItem('redirectPath', location.pathname);
+              navigate("/login");
+            }
+          });
+        } else {
+          navigate("/modes");
+          console.log("Form Data on Submit:", formData);
+          dispatch(setFormSubmitted(true));
+          console.log(isFormSubmitted);
+        }
   };
 
   const isFormValid = () => {

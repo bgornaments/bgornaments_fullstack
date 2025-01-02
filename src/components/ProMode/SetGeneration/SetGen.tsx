@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import UploadImg from '../UploadImg';
 import axios from 'axios';
 import kinmitraAnimation from '/src/assets/kinmitraAnimation.gif';
@@ -156,7 +156,13 @@ const SetGen: React.FC = () => {
           {/* Uploaded Image Preview */}
           <div
             className="h-[250px] w-[250px] border-2 flex items-center justify-center cursor-pointer p-4"
-            onClick={() => setIsUploadVisible(true)}
+            onClick={() => {
+              if (!selectedImage || generatedImages.length > 0) {
+                setIsUploadVisible(true); // Show upload image modal if no image or after image generation
+                setSelectedImage(null); // Reset selected image
+                setGeneratedImages([]); // Reset generated images
+              }
+            }}
           >
             {selectedImage ? (
               <img
@@ -168,25 +174,20 @@ const SetGen: React.FC = () => {
               <span className="text-sm text-gray-600">Click to upload</span>
             )}
           </div>
-
-          {/* Generated Images */}
-          {generatedImages.length > 0 ? (
-            <div className="flex flex-wrap gap-4">
-              {generatedImages.map((image, index) => (
-                <div key={index} className="h-[250px] w-[250px]">
-                  <img
-                    src={image}
-                    alt={`Generated ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="h-[250px] w-[250px] border-2 flex items-center justify-center p-4">
-              <span className="text-sm text-gray-600">Generated Image</span>
-            </div>
-          )}
+          <div className="h-[250px] w-[250px] border-2 flex items-center justify-center p-4">
+            {generatedImages.length > 0 ? (
+              generatedImages.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Generated Variation ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              ))
+            ) : (
+              <span className="text-sm text-gray-600">Generated Images</span>
+            )}
+          </div>
         </div>
 
         {/* Dropdowns for Source and Target Types */}
