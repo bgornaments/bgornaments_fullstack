@@ -161,12 +161,12 @@
 // // // // //           // Try to fetch the session (force refresh if needed)
 // // // // //           const session = await fetchAuthSession({ forceRefresh: true });
 // // // // //           console.log("Full session object:", session);  // Log full session to inspect
-  
+
 // // // // //           // Check if tokens are available in the session
 // // // // //           if (session?.tokens) {
 // // // // //             console.log("ID Token:", session.tokens.idToken);
 // // // // //             console.log("Access Token:", session.tokens.accessToken);
-  
+
 // // // // //             // You can use these tokens for API requests or other logic here
 // // // // //           } else {
 // // // // //             console.warn("Tokens are not available in the session.");
@@ -269,7 +269,7 @@
 // // // //           // Try to fetch the session (force refresh if needed)
 // // // //           const session = await fetchAuthSession({ forceRefresh: true });
 // // // //           console.log("Full session object:", session);  // Log full session to inspect
-  
+
 // // // //           // Check if tokens are available in the session
 // // // //           if (session?.tokens?.idToken?.payload) {
 // // // //             const payload = session.tokens.idToken.payload;
@@ -384,7 +384,7 @@
 // // //           // Try to fetch the session (force refresh if needed)
 // // //           const session = await fetchAuthSession({ forceRefresh: true });
 // // //           console.log("Full session object:", session);  // Log full session to inspect
-  
+
 // // //           // Check if tokens are available in the session
 // // //           if (session?.tokens?.idToken?.payload) {
 // // //             const payload = session.tokens.idToken.payload;
@@ -543,7 +543,7 @@
 // //           // Try to fetch the session (force refresh if needed)
 // //           const session = await fetchAuthSession({ forceRefresh: true });
 // //           console.log("Full session object:", session);  // Log full session to inspect
-  
+
 // //           // Check if tokens are available in the session
 // //           if (session?.tokens?.idToken?.payload) {
 // //             const payload = session.tokens.idToken.payload;
