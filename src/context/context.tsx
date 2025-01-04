@@ -435,7 +435,7 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         });
 
         // If bot state is "finalization", call image generator
-        if (newBotState === 'finalization') {
+        if (newBotState === 'finalizer_agent') {
           try {
             const imagePayload = { prompt: newResponse };
             const imageResponse = await invokeImageGenerator(imagePayload);

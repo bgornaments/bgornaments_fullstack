@@ -204,35 +204,39 @@ const ProModeChatUI: React.FC = () => {
               <div className="result px-5 max-h-[70vh] overflow-y-auto flex flex-col gap-5 custom-scrollbar">
                 <div className="conversation">
                   {prevConversations.map((conversation, index) => (
-                    <div key={index} className="conversation-item mb-5 scrollbar-hidden">
-                      <div className="user-text flex justify-end items-center gap-2.5 scrollbar-hidden">
+                    <div key={index} className="conversation-item mb-6">
+
+                      {/* User Prompt */}
+                      <div className="user-text flex justify-end items-center gap-3">
                         {conversation.prompt.includes('<img') ? (
                           <div
-                            className="max-w-[70%]"
+                            className="max-w-[70%] text-right"
                             dangerouslySetInnerHTML={{ __html: conversation.prompt }}
                           />
                         ) : (
-                          <p className="bg-[#e6e7e8] text-black p-2.5 rounded-xl max-w-[70%] scrollbar-hidden">
+                          <p className="bg-[#e6e7e8] text-black p-3 rounded-xl max-w-[70%] text-right whitespace-pre-wrap">
                             {conversation.prompt}
                           </p>
                         )}
                         <img
-                          className="w-10 rounded-full"
+                          className="w-10 h-10 rounded-full"
                           src="https://img.freepik.com/premium-vector/vector-set-women-with-jewelry-flat-design-style_995281-17686.jpg"
                           alt="User Icon"
                         />
                       </div>
-                      <div className="result-data flex items-start gap-4 mt-4 scrollbar-hidden">
+
+                      {/* AI Response */}
+                      <div className="result-data flex items-start gap-4 mt-4">
                         <img
-                          className="w-10 rounded-full"
+                          className="w-10 h-10 rounded-full"
                           src="https://img.freepik.com/free-vector/cartoon-style-robot-vectorart_78370-4103.jpg"
                           alt="AI Icon"
                         />
                         {conversation.loading ? (
-                          <div className="loader w-3/4 h-20 flex flex-col gap-2.5">
-                            <hr className="rounded border-none bg-gradient-to-r from-[#9ed7ff] via-white to-[#9ed7ff] bg-[length:800px_50px] h-5 animate-loader animation-delay: 1000ms;" />
-                            <hr className="rounded border-none bg-gradient-to-r from-[#9ed7ff] via-white to-[#9ed7ff] bg-[length:800px_50px] h-5 animate-loader animation-delay: 500ms;" />
-                            <hr className="rounded border-none bg-gradient-to-r from-[#9ed7ff] via-white to-[#9ed7ff] bg-[length:800px_50px] h-5 animate-loader animation-delay: 0ms;" />
+                          <div className="loader w-3/4 flex flex-col gap-2">
+                            <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse" />
+                            <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse animation-delay-200" />
+                            <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse animation-delay-400" />
                           </div>
                         ) : conversation.response.includes('<img') ? (
                           <div
@@ -240,7 +244,7 @@ const ProModeChatUI: React.FC = () => {
                             dangerouslySetInnerHTML={{ __html: conversation.response }}
                           />
                         ) : (
-                          <p className="bg-transparent text-black p-2.5 rounded-xl max-w-[70%] scrollbar-hidden">
+                          <p className="bg-[#f1f1f1] text-black p-3 rounded-xl max-w-[70%] whitespace-pre-wrap">
                             {conversation.response}
                           </p>
                         )}
@@ -248,6 +252,7 @@ const ProModeChatUI: React.FC = () => {
                     </div>
                   ))}
                 </div>
+
 
                 {buttons.length > 0 && (
                   <ButtonRow buttons={buttons} onButtonClick={handleButtonClick} />

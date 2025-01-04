@@ -4,12 +4,14 @@ export const fetchAIResponse = async (payload: { session_id: string, user_questi
     const response = await fetch(
       // 'https://2ngxc0t5ma.execute-api.us-east-1.amazonaws.com/default/kq_query_workflow', // Updated endpoint
       'https://yhzyxry6rj.execute-api.ap-south-1.amazonaws.com/dev/langgraph_chatbot',
+      // "https://u7f34stbg0.execute-api.us-east-1.amazonaws.com/default/kq_query_workflow_Sagar",
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       }
     );
+
 
     if (!response.ok) {
       throw new Error(`Error fetching chatbot response: ${response.statusText}`);
