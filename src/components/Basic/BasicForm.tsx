@@ -10,7 +10,7 @@ import earringIcon from "/src/assets/flower.png";
 import bangleIcon from "/src/assets/bangles.png";
 import ringIcon from "/src/assets/wedding-ring.png";
 import { useAuthenticator } from "@aws-amplify/ui-react";
-import braceletIcon from "/src/assets/bracelet.png";
+// import braceletIcon from "/src/assets/bracelet.png";
 import femaleIcon from "/src/assets/female-icon.png";
 import maleIcon from "/src/assets/male-icon.png";
 import Swal from 'sweetalert2';
