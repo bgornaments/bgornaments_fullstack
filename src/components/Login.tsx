@@ -887,40 +887,42 @@ const Login: React.FC<LoginProps> = ({ children }) => {
               setMessageType("success");
             } else {
               setMessage(responseData.message || "Failed to retrieve trial status.");
-              setMessageType("error");
+              // setMessageType("error");
+              // Send POST request to DynamoDB
+              console.log("Creating trial data")
+              const trialStartDate = new Date().toISOString();
+              const trialEndDate = new Date();
+              trialEndDate.setDate(trialEndDate.getDate() + 10);
+              const trialEndDateString = trialEndDate.toISOString();
+
+              const trialData = {
+                cognito_username: cognitoUsername,
+                trial_start_date: trialStartDate,
+                trial_end_date: trialEndDateString,
+                trial_status: "True",
+              };
+
+              const postResponse = await fetch("https://lhn7iin1ia.execute-api.us-east-1.amazonaws.com/default/DynamoEntry", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(trialData),
+              });
+
+              const postResponseData = await postResponse.json();
+              console.log("POST backend response:", postResponseData); // Log backend response
+
+              if (postResponse.ok) {
+                setMessage(postResponseData.message || "Trial period started successfully.");
+                setMessageType("success");
+              } else {
+                setMessage(postResponseData.message || "Failed to start trial period. Please try again.");
+                setMessageType("error");
+              }
             }
 
-            // Send POST request to DynamoDB
-            const trialStartDate = new Date().toISOString();
-            const trialEndDate = new Date();
-            trialEndDate.setDate(trialEndDate.getDate() + 10);
-            const trialEndDateString = trialEndDate.toISOString();
 
-            const trialData = {
-              cognito_username: cognitoUsername,
-              trial_start_date: trialStartDate,
-              trial_end_date: trialEndDateString,
-              trial_status: "True",
-            };
-
-            const postResponse = await fetch("https://lhn7iin1ia.execute-api.us-east-1.amazonaws.com/default/DynamoEntry", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(trialData),
-            });
-
-            const postResponseData = await postResponse.json();
-            console.log("POST backend response:", postResponseData); // Log backend response
-
-            if (postResponse.ok) {
-              setMessage(postResponseData.message || "Trial period started successfully.");
-              setMessageType("success");
-            } else {
-              setMessage(postResponseData.message || "Failed to start trial period. Please try again.");
-              setMessageType("error");
-            }
           } else {
             setMessage("ID Token payload is not available in the session.");
             setMessageType("error");
