@@ -433,7 +433,6 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
         // Optionally, you can clear the buttons here or handle them differently.
         setButtons([]);
-        setBotState(''); // Reset bot state if necessary
         return; // Exit early to skip the usual flow
       }
       const response = await fetchAIResponse(payload);
