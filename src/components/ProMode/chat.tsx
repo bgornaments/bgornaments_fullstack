@@ -8,8 +8,8 @@ import ButtonRow from './ButtonRow';
 import PopUp from './PopUp';
 import './chat.css';
 import Sidebar from './Sidebar';
-// import inflection from 'inflection';
 import * as inflection from 'inflection';
+import GlassComponent from '../GlassComponent';
 
 interface Button {
   text: string;
@@ -28,6 +28,22 @@ const generateBasicInfoString = (formData: Record<string, any>): string => {
 const ProModeChatUI: React.FC = () => {
   const context = useContext(Context);
   const location = useLocation();
+  const [showComponent, setShowComponent] = useState<boolean>(false);
+  
+  useEffect(() => {
+    const trialDaysLeft = parseInt(sessionStorage.getItem('trial_days_left') || '0');
+    const trialStatus = sessionStorage.getItem('trial_status')?.toLowerCase();
+  
+    console.log("trialDaysLeft:", trialDaysLeft); // Log trial days left
+    console.log("trialStatus:", trialStatus); // Log trial status as boolean
+  
+    // Check if trialStatus is true and trialDaysLeft is greater than 0
+    if (trialStatus && trialDaysLeft > 0) {
+      setShowComponent(true); // Show component if trial is active and days left are positive
+    } else {
+      setShowComponent(false); // Hide component if trial is inactive or days are not positive
+    }
+  }, []);
 
   if (!context) {
     return <div>Loading...</div>;
@@ -111,7 +127,6 @@ const ProModeChatUI: React.FC = () => {
 
   }, [location.pathname]);
 
-
   useEffect(() => {
     if (!hasSentFirstPrompt.current) {
       const storedFormData = localStorage.getItem('formData');
@@ -160,7 +175,10 @@ const ProModeChatUI: React.FC = () => {
   const isMainRoute = location.pathname === "/promode";
 
   return (
-    <div>
+    <>
+      {showComponent ? (
+        <div>
+          <div>
       {isMainRoute ? (
         <div className="flex-1 min-h-screen pb-[15vh] relative">
           <div
@@ -318,6 +336,11 @@ const ProModeChatUI: React.FC = () => {
         <Outlet />
       )}
     </div>
+        </div>
+      ) : (
+        <GlassComponent/>
+      )}
+    </>
   );
 };
 

@@ -38,29 +38,37 @@ const JewelryForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!user) {
-          Swal.fire({
-            title: "Please Log In",
-            text: "You need to log in to proceed. Click the button below to log in.",
-            icon: "warning",
-            confirmButtonText: "Log In",
-            confirmButtonColor: "#3085d6",
-            showCancelButton: true,
-            cancelButtonText: "Cancel",
-            cancelButtonColor: "#d33",
-            reverseButtons: true,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              localStorage.setItem('redirectPath', location.pathname);
-              navigate("/login");
-            }
-          });
-        } else {
-          navigate("/modes");
-          console.log("Form Data on Submit:", formData);
-          dispatch(setFormSubmitted(true));
-          console.log(isFormSubmitted);
+      Swal.fire({
+        title: "Please Log In",
+        text: "You need to log in to proceed. Click the button below to log in.",
+        icon: "warning",
+        confirmButtonText: "Log In",
+        confirmButtonColor: "#3085d6",
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+        cancelButtonColor: "#d33",
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          localStorage.setItem('redirectPath', location.pathname);
+          navigate("/login");
         }
+      });
+    } else {
+      // Retrieve the saved path and navigate back
+      const redirectPath = localStorage.getItem("redirectPath");
+      if (redirectPath) {
+        navigate(redirectPath);
+      } else {
+        navigate("/modes"); // Default if no saved path
+      }
+  
+      console.log("Form Data on Submit:", formData);
+      dispatch(setFormSubmitted(true));
+      console.log(isFormSubmitted);
+    }
   };
+  
 
   const isFormValid = () => {
     const { occasion, gender, ageGroup, jewelryType } = formData;

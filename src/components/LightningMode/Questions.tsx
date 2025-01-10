@@ -21,6 +21,7 @@ import { setImageData, updateFormData } from "../../redux/formSlice";
 import { useNavigate } from "react-router-dom";
 import Meaning from "./Meaning";
 import Images from "/src/assets/innovation.png";
+import GlassComponent from "../GlassComponent";
 
 interface FormData {
   occasion: string;
@@ -54,6 +55,22 @@ const AIGenerated: React.FC = () => {
   const [donotask, setDonotask] = useState<string[]>([]);
   const Navigate = useNavigate();
   const maxQuestions: number = 5;
+  const [showComponent, setShowComponent] = useState<boolean>(false);
+
+  useEffect(() => {
+      const trialDaysLeft = parseInt(sessionStorage.getItem('trial_days_left') || '0');
+      const trialStatus = sessionStorage.getItem('trial_status')?.toLowerCase();
+    
+      console.log("trialDaysLeft:", trialDaysLeft); // Log trial days left
+      console.log("trialStatus:", trialStatus); // Log trial status as boolean
+    
+      // Check if trialStatus is true and trialDaysLeft is greater than 0
+      if (trialStatus && trialDaysLeft > 0) {
+        setShowComponent(true); // Show component if trial is active and days left are positive
+      } else {
+        setShowComponent(false); // Hide component if trial is inactive or days are not positive
+      }
+    }, []);
 
   const defaultOptions = {
     loop: true,
@@ -380,7 +397,8 @@ const AIGenerated: React.FC = () => {
 
   return (
     <>
-      <div className="w-full min-h-screen flex flex-col  items-center justify-center">
+      {showComponent ? (
+        <div className="w-full min-h-screen flex flex-col  items-center justify-center">
         {isLoading ? (
           questionsAnswered + 1 === maxQuestions ? (
             <>
@@ -560,6 +578,12 @@ const AIGenerated: React.FC = () => {
           </>
         )}
       </div>
+      ) : (
+        <div>
+          <GlassComponent/>
+          <h2></h2>
+        </div>
+      )}
     </>
   );
 };
