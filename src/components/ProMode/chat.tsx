@@ -71,7 +71,9 @@ const ProModeChatUI: React.FC = () => {
 
   useEffect(() => {
     console.log(location.pathname);
-    const isProMode = location.pathname === "/promode" || location.pathname === "/promode/";
+    // const isProMode = location.pathname === "/promode" || location.pathname === "/promode/";
+    const isProMode = location.pathname.startsWith("/promode");
+
 
     // if (isProMode) {
     // const existingSessionId = localStorage.getItem("sessionId");
@@ -128,7 +130,7 @@ const ProModeChatUI: React.FC = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (!hasSentFirstPrompt.current && showComponent) {
+    if (!hasSentFirstPrompt.current) {
       const storedFormData = localStorage.getItem('formData');
       let generatedPrompt = '';
 
