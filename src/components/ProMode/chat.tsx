@@ -128,7 +128,7 @@ const ProModeChatUI: React.FC = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (!hasSentFirstPrompt.current) {
+    if (!hasSentFirstPrompt.current && showComponent) {
       const storedFormData = localStorage.getItem('formData');
       let generatedPrompt = '';
 
@@ -175,169 +175,178 @@ const ProModeChatUI: React.FC = () => {
   const isMainRoute = location.pathname === "/promode";
 
   return (
-    <div>
-      {isMainRoute ? (
-        <div className="flex-1 min-h-screen pb-[15vh] relative">
-          <div
-            className="absolute top-0 left-0 right-0 bottom-0 bg-cover bg-bottom opacity-20 z-[-100]"
-            style={{
-              backgroundImage:
-                "url('https://img.freepik.com/free-vector/gradient-golden-linear-background_23-2148957745.jpg?t=st=1730912970~exp=1730916570~hmac=2214eb1073666d65e11ff89c47d76300904bf1001e6128bf610138ef42d5e872&w=900')",
-            }}
-          ></div>
-
-          {/* Navigation Bar */}
-          <div className="flex items-center justify-between text-xl p-5 text-[#585858]">
-            <div className="name flex flex-col items-center gap-1">
-              <h2 className="text-xl">
-                <img
-                  src="https://www.kinmitra.com/assets/image-BEwmDLXF.png"
-                  alt="Kinmitra Logo"
-                  className="h-5"
-                />
-              </h2>
-              <p className="inline-block text-xl font-medium bg-gradient-to-r from-[#00AA4F] via-[#E0AE2A] to-[#EB2D2E] bg-clip-text text-transparent animate-[moveText_4s_linear_infinite]">
-                Pro Mode
-              </p>
-              <button
-                onClick={toggleSidebar}
-                className="text-[#585858] text-2xl cursor-pointer focus:outline-none"
-              >
-                ☰
-              </button>
-            </div>
-            <img
-              className="w-[50px] rounded-full"
-              src="https://img.freepik.com/premium-vector/vector-set-women-with-jewelry-flat-design-style_995281-17686.jpg"
-              alt="User Icon"
-            />
-          </div>
-
-          <div className="main-container max-w-[900px] mx-auto scrollbar-hidden">
-            {/* Chat Container */}
-            <div className="chat-container scrollbar-hidden overflow-y-auto">
-              <div className="result px-5 max-h-[70vh] overflow-y-auto flex flex-col gap-5 custom-scrollbar">
-                <div className="conversation">
-                  {prevConversations.map((conversation, index) => (
-                    <div key={index} className="conversation-item mb-6">
-
-                      {/* User Prompt */}
-                      <div className="user-text flex justify-end items-center gap-3">
-                        {conversation.prompt.includes('<img') ? (
-                          <div
-                            className="max-w-[70%] text-right"
-                            dangerouslySetInnerHTML={{ __html: conversation.prompt }}
-                          />
-                        ) : (
-                          <p className="bg-[#e6e7e8] text-black p-3 rounded-xl max-w-[70%] text-right whitespace-pre-wrap">
-                            {conversation.prompt}
-                          </p>
-                        )}
-                        <img
-                          className="w-10 h-10 rounded-full"
-                          src="https://img.freepik.com/premium-vector/vector-set-women-with-jewelry-flat-design-style_995281-17686.jpg"
-                          alt="User Icon"
-                        />
-                      </div>
-
-                      {/* AI Response */}
-                      <div className="result-data flex items-start gap-4 mt-4">
-                        <img
-                          className="w-10 h-10 rounded-full"
-                          src="https://img.freepik.com/free-vector/cartoon-style-robot-vectorart_78370-4103.jpg"
-                          alt="AI Icon"
-                        />
-                        {conversation.loading ? (
-                          <div className="loader w-3/4 flex flex-col gap-2">
-                            <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse" />
-                            <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse animation-delay-200" />
-                            <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse animation-delay-400" />
-                          </div>
-                        ) : conversation.response.includes('<img') ? (
-                          <div
-                            className="max-w-[70%]"
-                            dangerouslySetInnerHTML={{ __html: conversation.response }}
-                          />
-                        ) : (
-                          <p className="bg-[#f1f1f1] text-black p-3 rounded-xl max-w-[70%] whitespace-pre-wrap">
-                            {conversation.response}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-
-                {buttons.length > 0 && (
-                  <ButtonRow buttons={buttons} onButtonClick={handleButtonClick} />
-                )}
-              </div>
-            </div>
-
-            {/* Popup Button */}
-            {botState === 'finalizing' && ( // Show button only if botState is 'finalizing'
-              <button
-                onClick={handleShowJewelry}
-                className="bg-[#f59699] text-white border border-white rounded-[10px] py-1.5 px-4 text-md cursor-pointer transition-colors duration-300 ease-in-out shadow-md hover:bg-[#B2801D] active:transform active:translate-y-0.5 ml-11 mt-2"
-              >
-                Show Jewelry
-              </button>
-            )}
-
-            {/* Render PopUp if the state is true */}
-            {isPopupVisible && (
-              <PopUp
-                onClose={() => setIsPopupVisible(false)}
-                onProceed={(selectedImage: string) => {
-                  onSent(
-                    `<img src="${selectedImage}" alt="Selected Image" class="max-w-full rounded-md" />`
-                  );
-                  setIsPopupVisible(false); // Close the popup
-                }}
-              />
-            )}
-
-            {/* Sidebar */}
-            <Sidebar
-              isSidebarVisible={isSidebarVisible}
-              toggleSidebar={toggleSidebar}
-            />
-
-            {/* Input Field */}
-            <div className="absolute bottom-0 w-full max-w-[900px] px-5 mx-auto mt-5">
-              <div className="flex items-center justify-between gap-5 bg-[rgba(178,128,29,0.4)] p-2.5 rounded-full">
-                <input
-                  className="flex-1 bg-transparent border-none outline-none p-2 text-lg"
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') handleSend(); // Send on Enter
+    <>
+      {showComponent ? (
+        <div>
+          <div>
+            {isMainRoute ? (
+              <div className="flex-1 min-h-screen pb-[15vh] relative">
+                <div
+                  className="absolute top-0 left-0 right-0 bottom-0 bg-cover bg-bottom opacity-20 z-[-100]"
+                  style={{
+                    backgroundImage:
+                      "url('https://img.freepik.com/free-vector/gradient-golden-linear-background_23-2148957745.jpg?t=st=1730912970~exp=1730916570~hmac=2214eb1073666d65e11ff89c47d76300904bf1001e6128bf610138ef42d5e872&w=900')",
                   }}
-                  value={input}
-                  type="text"
-                  placeholder="Enter a prompt"
-                  disabled={loading}
-                />
-                <div className="flex items-center gap-4">
+                ></div>
+
+                {/* Navigation Bar */}
+                <div className="flex items-center justify-between text-xl p-5 text-[#585858]">
+                  <div className="name flex flex-col items-center gap-1">
+                    <h2 className="text-xl">
+                      <img
+                        src="https://www.kinmitra.com/assets/image-BEwmDLXF.png"
+                        alt="Kinmitra Logo"
+                        className="h-5"
+                      />
+                    </h2>
+                    <p className="inline-block text-xl font-medium bg-gradient-to-r from-[#00AA4F] via-[#E0AE2A] to-[#EB2D2E] bg-clip-text text-transparent animate-[moveText_4s_linear_infinite]">
+                      Pro Mode
+                    </p>
+                    <button
+                      onClick={toggleSidebar}
+                      className="text-[#585858] text-2xl cursor-pointer focus:outline-none"
+                    >
+                      ☰
+                    </button>
+                  </div>
                   <img
-                    className="w-6 cursor-pointer"
-                    src={assets.send_icon}
-                    alt="Send Icon"
-                    onClick={handleSend}
-                    style={{
-                      cursor: loading ? 'not-allowed' : 'pointer',
-                      opacity: loading ? 0.5 : 1,
-                    }}
+                    className="w-[50px] rounded-full"
+                    src="https://img.freepik.com/premium-vector/vector-set-women-with-jewelry-flat-design-style_995281-17686.jpg"
+                    alt="User Icon"
                   />
                 </div>
+
+                <div className="main-container max-w-[900px] mx-auto scrollbar-hidden">
+                  {/* Chat Container */}
+                  <div className="chat-container scrollbar-hidden overflow-y-auto">
+                    <div className="result px-5 max-h-[70vh] overflow-y-auto flex flex-col gap-5 custom-scrollbar">
+                      <div className="conversation">
+                        {prevConversations.map((conversation, index) => (
+                          <div key={index} className="conversation-item mb-6">
+
+                            {/* User Prompt */}
+                            <div className="user-text flex justify-end items-center gap-3">
+                              {conversation.prompt.includes('<img') ? (
+                                <div
+                                  className="max-w-[70%] text-right"
+                                  dangerouslySetInnerHTML={{ __html: conversation.prompt }}
+                                />
+                              ) : (
+                                <p className="bg-[#e6e7e8] text-black p-3 rounded-xl max-w-[70%] text-right whitespace-pre-wrap">
+                                  {conversation.prompt}
+                                </p>
+                              )}
+                              <img
+                                className="w-10 h-10 rounded-full"
+                                src="https://img.freepik.com/premium-vector/vector-set-women-with-jewelry-flat-design-style_995281-17686.jpg"
+                                alt="User Icon"
+                              />
+                            </div>
+
+                            {/* AI Response */}
+                            <div className="result-data flex items-start gap-4 mt-4">
+                              <img
+                                className="w-10 h-10 rounded-full"
+                                src="https://img.freepik.com/free-vector/cartoon-style-robot-vectorart_78370-4103.jpg"
+                                alt="AI Icon"
+                              />
+                              {conversation.loading ? (
+                                <div className="loader w-3/4 flex flex-col gap-2">
+                                  <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse" />
+                                  <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse animation-delay-200" />
+                                  <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse animation-delay-400" />
+                                </div>
+                              ) : conversation.response.includes('<img') ? (
+                                <div
+                                  className="max-w-[70%]"
+                                  dangerouslySetInnerHTML={{ __html: conversation.response }}
+                                />
+                              ) : (
+                                <p className="bg-[#f1f1f1] text-black p-3 rounded-xl max-w-[70%] whitespace-pre-wrap">
+                                  {conversation.response}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+
+                      {buttons.length > 0 && (
+                        <ButtonRow buttons={buttons} onButtonClick={handleButtonClick} />
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Popup Button */}
+                  {botState === 'finalizing' && ( // Show button only if botState is 'finalizing'
+                    <button
+                      onClick={handleShowJewelry}
+                      className="bg-[#f59699] text-white border border-white rounded-[10px] py-1.5 px-4 text-md cursor-pointer transition-colors duration-300 ease-in-out shadow-md hover:bg-[#B2801D] active:transform active:translate-y-0.5 ml-11 mt-2"
+                    >
+                      Show Jewelry
+                    </button>
+                  )}
+
+                  {/* Render PopUp if the state is true */}
+                  {isPopupVisible && (
+                    <PopUp
+                      onClose={() => setIsPopupVisible(false)}
+                      onProceed={(selectedImage: string) => {
+                        onSent(
+                          `<img src="${selectedImage}" alt="Selected Image" class="max-w-full rounded-md" />`
+                        );
+                        setIsPopupVisible(false); // Close the popup
+                      }}
+                    />
+                  )}
+
+                  {/* Sidebar */}
+                  <Sidebar
+                    isSidebarVisible={isSidebarVisible}
+                    toggleSidebar={toggleSidebar}
+                  />
+
+                  {/* Input Field */}
+                  <div className="absolute bottom-0 w-full max-w-[900px] px-5 mx-auto mt-5">
+                    <div className="flex items-center justify-between gap-5 bg-[rgba(178,128,29,0.4)] p-2.5 rounded-full">
+                      <input
+                        className="flex-1 bg-transparent border-none outline-none p-2 text-lg"
+                        onChange={(e) => setInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') handleSend(); // Send on Enter
+
+                        }}
+                        value={input}
+                        type="text"
+                        placeholder="Enter a prompt"
+                        disabled={loading}
+                      />
+                      <div className="flex items-center gap-4">
+                        <img
+                          className="w-6 cursor-pointer"
+                          src={assets.send_icon}
+                          alt="Send Icon"
+                          onClick={handleSend}
+                          style={{
+                            cursor: loading ? 'not-allowed' : 'pointer',
+                            opacity: loading ? 0.5 : 1,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+            ) : (
+              <Outlet />
+            )}
           </div>
         </div>
       ) : (
-        <Outlet />
+        <GlassComponent />
       )}
-    </div>
+    </>
   );
 };
 
