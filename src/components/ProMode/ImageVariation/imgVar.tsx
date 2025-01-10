@@ -27,12 +27,12 @@ const ImgVar: React.FC = () => {
   const [showComponent, setShowComponent] = useState<boolean>(false);
 
   useEffect(() => {
-      const trialDaysLeft = parseInt(sessionStorage.getItem('trial_days_left') || '0');
-      const trialStatus = sessionStorage.getItem('trial_status')?.toLowerCase();
-    
+      const trialDaysLeft = parseInt(localStorage.getItem('trial_days_left') || '0');
+      const trialStatus = localStorage.getItem('trial_status')?.toLowerCase();
+  
       console.log("trialDaysLeft:", trialDaysLeft); // Log trial days left
       console.log("trialStatus:", trialStatus); // Log trial status as boolean
-    
+  
       // Check if trialStatus is true and trialDaysLeft is greater than 0
       if (trialStatus && trialDaysLeft > 0) {
         setShowComponent(true); // Show component if trial is active and days left are positive

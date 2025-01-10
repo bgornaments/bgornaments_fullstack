@@ -57,20 +57,20 @@ const AIGenerated: React.FC = () => {
   const maxQuestions: number = 5;
   const [showComponent, setShowComponent] = useState<boolean>(false);
 
-  useEffect(() => {
-      const trialDaysLeft = parseInt(sessionStorage.getItem('trial_days_left') || '0');
-      const trialStatus = sessionStorage.getItem('trial_status')?.toLowerCase();
-    
-      console.log("trialDaysLeft:", trialDaysLeft); // Log trial days left
-      console.log("trialStatus:", trialStatus); // Log trial status as boolean
-    
-      // Check if trialStatus is true and trialDaysLeft is greater than 0
-      if (trialStatus && trialDaysLeft > 0) {
-        setShowComponent(true); // Show component if trial is active and days left are positive
-      } else {
-        setShowComponent(false); // Hide component if trial is inactive or days are not positive
-      }
-    }, []);
+ useEffect(() => {
+     const trialDaysLeft = parseInt(localStorage.getItem('trial_days_left') || '0');
+     const trialStatus = localStorage.getItem('trial_status')?.toLowerCase();
+ 
+     console.log("trialDaysLeft:", trialDaysLeft); // Log trial days left
+     console.log("trialStatus:", trialStatus); // Log trial status as boolean
+ 
+     // Check if trialStatus is true and trialDaysLeft is greater than 0
+     if (trialStatus && trialDaysLeft > 0) {
+       setShowComponent(true); // Show component if trial is active and days left are positive
+     } else {
+       setShowComponent(false); // Hide component if trial is inactive or days are not positive
+     }
+   }, []);
 
   const defaultOptions = {
     loop: true,
@@ -309,7 +309,7 @@ const AIGenerated: React.FC = () => {
       const parsedBody_similar = JSON.parse(response_similar.data.body);
       console.log("Parsed Body Similar:", parsedBody_similar);
 
-      let similar_urls_list = parsedBody_similar.urls
+      const similar_urls_list = parsedBody_similar.urls
       urls_list = similar_urls_list.concat(urls_list);
 
       const imageData = urls_list;
