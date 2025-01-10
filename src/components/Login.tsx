@@ -1178,35 +1178,36 @@ const Login: React.FC<LoginProps> = ({ children }) => {
         try {
           const session = await fetchAuthSession({ forceRefresh: true });
           console.log("Full session object:", session);
-
+    
           if (session?.tokens?.idToken?.payload) {
             const payload = session.tokens.idToken.payload;
             const cognitoUsername = payload["cognito:username"];
             console.log("Cognito Username:", cognitoUsername);
-
+    
             // API call for trial status
             const url = `https://4ouksse92i.execute-api.us-east-1.amazonaws.com/default/checkTrialStatus?cognito_username=${cognitoUsername}`;
             const response = await fetch(url, { method: "GET", headers: { "Content-Type": "application/json" } });
             const responseData = await response.json();
-
+            
+            console.log("API Response Data:", responseData);  // Debugging line to check response
+    
             if (response.ok) {
               const { trial_start_date, trial_end_date, trial_status, cognito_username } = responseData.data;
-
               // Persist session data in sessionStorage
               sessionStorage.setItem("cognito_username", cognito_username);
-              sessionStorage.setItem("trial_status", trial_status);
+              sessionStorage.setItem("trial_status", trial_status.toLowerCase());
               sessionStorage.setItem("trial_start_date", trial_start_date);
               sessionStorage.setItem("trial_end_date", trial_end_date);
-
+    
               const trialDaysLeft = Math.max(
                 0,
                 Math.ceil((new Date(trial_end_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
               );
               sessionStorage.setItem("trial_days_left", trialDaysLeft.toString());
-
+    
               setMessage("Trial status retrieved successfully.");
               setMessageType("success");
-
+    
               if (trialDaysLeft > 0) {
                 alert(`${trialDaysLeft} days left in your trial version.`);
               } else {
@@ -1230,7 +1231,7 @@ const Login: React.FC<LoginProps> = ({ children }) => {
         setMessage("User is not authenticated.");
         setMessageType("error");
       }
-    };
+    };    
 
     fetchSession();
   }, [user]);
