@@ -43,7 +43,6 @@ const Navbar: React.FC = () => {
       <div className="flex xl:gap-[3.5rem] md:gap-[1.5rem] xs:gap-[1.8rem] xs:text-[0.8rem] md:text-[1rem] xl:text-[1.1rem] md:px-[2rem] justify-around text-darkGolden">
         <Link to="/" className="font-bold">Home</Link>
         <button onClick={handleDesignClick} className="font-bold">AI Designs</button>
-        <Link to="/" className="font-bold">Features</Link>
         <Link to="/" className="font-bold">Pricing</Link>
         {user ? (
           <Link to="#" onClick={signOut} className="font-bold">

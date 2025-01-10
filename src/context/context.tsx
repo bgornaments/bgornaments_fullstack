@@ -416,6 +416,25 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const payload = { session_id: session_id, user_question: prompt };
 
     try {
+      // Check if the prompt is "PLACE_ORDER"
+      if (prompt === "Place order") {
+        // Skip AI response logic and set a thank you message directly
+        const thankYouMessage = "Thank you for placing your order! We'll process it shortly.";
+
+        setPrevConversations((prevConversations) => {
+          const updatedConversations = [...prevConversations];
+          updatedConversations[updatedConversations.length - 1] = {
+            ...updatedConversations[updatedConversations.length - 1],
+            response: thankYouMessage,
+            loading: false,
+          };
+          return updatedConversations;
+        });
+
+        // Optionally, you can clear the buttons here or handle them differently.
+        setButtons([]);
+        return; // Exit early to skip the usual flow
+      }
       const response = await fetchAIResponse(payload);
       const responseBody = JSON.parse(response.body);
 
@@ -435,7 +454,7 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         });
 
         // If bot state is "finalization", call image generator
-        if (newBotState === 'finalization') {
+        if (newBotState === 'finalizer_agent' && prompt !== "PLACE_ORDER") {
           try {
             const imagePayload = { prompt: newResponse };
             const imageResponse = await invokeImageGenerator(imagePayload);
