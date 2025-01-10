@@ -130,7 +130,7 @@ const ProModeChatUI: React.FC = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (!hasSentFirstPrompt.current) {
+    if (!hasSentFirstPrompt.current && showComponent) {
       const storedFormData = localStorage.getItem('formData');
       let generatedPrompt = '';
 
@@ -174,7 +174,7 @@ const ProModeChatUI: React.FC = () => {
     setIsSidebarVisible(!isSidebarVisible);
   };
 
-  const isMainRoute = location.pathname === "/promode";
+  const isMainRoute = location.pathname.startsWith("/promode");
 
   return (
     <>
