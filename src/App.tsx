@@ -221,6 +221,7 @@ import ContextProvider from "./context/context.tsx";
 import ImgVar from "./components/ProMode/ImageVariation/imgVar.tsx";
 import SetGen from "./components/ProMode/SetGeneration/SetGen.tsx";
 import ProtectedRoute from "./ProtectedRoute";  // import the ProtectedRoute component
+import ExpertMode from "./components/ExpertMode/ExpertMode.tsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <HeroPage /> },
@@ -377,7 +378,31 @@ const router = createBrowserRouter([
         ),
       },
     ],
-  },  
+  }, 
+  {
+    path: "/expert-mode",
+    element: (
+      <ProtectedRoute>
+        <ExpertMode />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/expert-mode/set-generation",
+    element: (
+      <ProtectedRoute>
+        <SetGen />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/expert-mode/image-variation",
+    element: (
+      <ProtectedRoute>
+        <ImgVar />
+      </ProtectedRoute>
+    ),
+  }, 
 ]);
 
 const App: React.FC = () => {
