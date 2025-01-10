@@ -25,11 +25,10 @@ const generateBasicInfoString = (formData: Record<string, any>): string => {
   return `I want a ${jewelryType} for ${occasion} for a ${gender} aged ${ageGroup}.`;
 };
 
-const [showComponent, setShowComponent] = useState<boolean>(false);
-
 const ProModeChatUI: React.FC = () => {
   const context = useContext(Context);
   const location = useLocation();
+  const [showComponent, setShowComponent] = useState<boolean>(false);
 
   useEffect(() => {
     const trialDaysLeft = parseInt(sessionStorage.getItem('trial_days_left') || '0');
@@ -131,7 +130,7 @@ const ProModeChatUI: React.FC = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (!hasSentFirstPrompt.current && showComponent) {
+    if (!hasSentFirstPrompt.current) {
       const storedFormData = localStorage.getItem('formData');
       let generatedPrompt = '';
 
@@ -149,7 +148,7 @@ const ProModeChatUI: React.FC = () => {
         hasSentFirstPrompt.current = true; // Mark the first prompt as sent
       }
     }
-  }, [formData, onSent]);
+  }, [formData, onSent, showComponent]);
 
   const handleSend = () => {
     if (input.trim()) {
