@@ -10,7 +10,7 @@ import earringIcon from "/src/assets/flower.png";
 import bangleIcon from "/src/assets/bangles.png";
 import ringIcon from "/src/assets/wedding-ring.png";
 import { useAuthenticator } from "@aws-amplify/ui-react";
-import braceletIcon from "/src/assets/bracelet.png";
+// import braceletIcon from "/src/assets/bracelet.png";
 import femaleIcon from "/src/assets/female-icon.png";
 import maleIcon from "/src/assets/male-icon.png";
 import Swal from 'sweetalert2';
@@ -62,13 +62,13 @@ const JewelryForm: React.FC = () => {
       } else {
         navigate("/modes"); // Default if no saved path
       }
-  
+
       console.log("Form Data on Submit:", formData);
       dispatch(setFormSubmitted(true));
       console.log(isFormSubmitted);
     }
   };
-  
+
 
   const isFormValid = () => {
     const { occasion, gender, ageGroup, jewelryType } = formData;
@@ -97,7 +97,7 @@ const JewelryForm: React.FC = () => {
                 <label className="text-customGreen font-custom font-bold xs:text-[4.5vw] md:text-[2vw] xl:text-[1.8vw] xs:w-full md:w-3/12 xs:text-center md:text-start">
                   Type of Jewellery
                 </label>
-                <div className="flex flex-wrap xs:justify-center md:justify-start xs:gap-[3vw] xl:gap-[1.7vw] xs:w-full md:w-9/12">
+                <div className="flex flex-wrap xs:justify-center md:justify-start xs:gap-[3vw] xl:gap-[2.5vw] xs:w-full md:w-9/12">
                   {[
                     { type: "Necklaces", icon: necklaceIcon },
                     { type: "Pendants", icon: pendantIcon },
@@ -105,7 +105,7 @@ const JewelryForm: React.FC = () => {
                     { type: "Bangles", icon: bangleIcon },
                     { type: "Rings", icon: ringIcon },
                     //{ type: "Chains", icon: chainIcon },N
-                    { type: "Bracelets", icon: braceletIcon },
+                    // { type: "Bracelets", icon: braceletIcon },
                   ].map((jewelry) => (
                     <button key={jewelry.type} type="button">
                       <div
@@ -114,11 +114,10 @@ const JewelryForm: React.FC = () => {
                             updateFormData({ jewelryType: jewelry.type })
                           )
                         }
-                        className={`flex flex-col items-center text-customBlack/70 xs:p-[0.7rem] md:p-[1vw] rounded-full cursor-pointer shadow-md shadow-lightGolden/35 transition-all ${
-                          formData.jewelryType === jewelry.type
-                            ? "bg-lightGolden/35 text-white"
-                            : "text-customblack border border-lightGolden/35"
-                        }`}
+                        className={`flex flex-col items-center text-customBlack/70 xs:p-[0.7rem] md:p-[1vw] rounded-full cursor-pointer shadow-md shadow-lightGolden/35 transition-all ${formData.jewelryType === jewelry.type
+                          ? "bg-lightGolden/35 text-white"
+                          : "text-customblack border border-lightGolden/35"
+                          }`}
                       >
                         <img
                           src={jewelry.icon}
@@ -138,7 +137,7 @@ const JewelryForm: React.FC = () => {
                 <label className="text-customGreen font-custom font-bold xs:text-[4.5vw] md:text-[2vw] xl:text-[1.8vw] xs:w-full md:w-3/12 xs:text-center md:text-start">
                   Occasion
                 </label>
-                <div className="flex flex-wrap xs:justify-center md:justify-start xs:gap-[3vw] xl:gap-[1.7vw] xs:w-full md:w-9/12">
+                <div className="flex flex-wrap xs:justify-center md:justify-start xs:gap-[3vw] xl:gap-[0.8vw] xs:w-full md:w-9/12">
                   {[
                     "Wedding",
                     "Engagement",
@@ -149,11 +148,10 @@ const JewelryForm: React.FC = () => {
                     <button
                       key={occasion}
                       type="button"
-                      className={`xs:text-[2.5vw] md:text-[1vw] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer shadow-md shadow-lightGolden/35 transition-all ${
-                        formData.occasion === occasion
-                          ? "bg-lightGolden/35"
-                          : "bg-transparent text-customBlack/70 border border-lightGolden/35"
-                      }`}
+                      className={`xs:text-[2.5vw] md:text-[1vw] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer shadow-md shadow-lightGolden/35 transition-all ${formData.occasion === occasion
+                        ? "bg-lightGolden/35"
+                        : "bg-transparent text-customBlack/70 border border-lightGolden/35"
+                        }`}
                       onClick={() => dispatch(updateFormData({ occasion }))}
                     >
                       {occasion}
@@ -177,11 +175,10 @@ const JewelryForm: React.FC = () => {
                       className="flex flex-col items-center"
                     >
                       <div
-                        className={`cursor-pointer flex items-center gap-[1vw] shadow-md shadow-lightGolden/35 transition-all rounded-xl p-[0.2vw] ${
-                          formData.gender === option.gender
-                            ? "bg-lightGolden/35 text-white"
-                            : "bg-transparent"
-                        }`}
+                        className={`cursor-pointer flex items-center gap-[1vw] shadow-md shadow-lightGolden/35 transition-all rounded-xl p-[0.2vw] ${formData.gender === option.gender
+                          ? "bg-lightGolden/35 text-white"
+                          : "bg-transparent"
+                          }`}
                         onClick={() =>
                           dispatch(updateFormData({ gender: option.gender }))
                         }
@@ -207,11 +204,10 @@ const JewelryForm: React.FC = () => {
                       <button
                         key={ageGroup}
                         type="button"
-                        className={`xs:text-[2.5vw] md:text-[1vw] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer shadow-md shadow-lightGolden/35 transition-all ${
-                          formData.ageGroup === ageGroup
-                            ? "bg-lightGolden/35 text-black"
-                            : "bg-transparent border border-lightGolden/35 text-customBlack/70"
-                        }`}
+                        className={`xs:text-[2.5vw] md:text-[1vw] px-[1.5vh] py-[1vh] rounded-xl cursor-pointer shadow-md shadow-lightGolden/35 transition-all ${formData.ageGroup === ageGroup
+                          ? "bg-lightGolden/35 text-black"
+                          : "bg-transparent border border-lightGolden/35 text-customBlack/70"
+                          }`}
                         onClick={() => dispatch(updateFormData({ ageGroup }))}
                       >
                         {ageGroup}
@@ -224,11 +220,10 @@ const JewelryForm: React.FC = () => {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className={`xs:text-[4vw] md:text-[2vw] xl:text-[1.5vw] px-[2.8vh] py-[1.3vh] rounded-xl cursor-pointer font-custom ${
-                    isFormValid()
-                      ? "border border-customGreen text-customRed"
-                      : "bg-lightGolden/35 text-customBlack cursor-not-allowed"
-                  }`}
+                  className={`xs:text-[4vw] md:text-[2vw] xl:text-[1.5vw] px-[2.8vh] py-[1.3vh] rounded-xl cursor-pointer font-custom ${isFormValid()
+                    ? "border border-customGreen text-customRed"
+                    : "bg-lightGolden/35 text-customBlack cursor-not-allowed"
+                    }`}
                   disabled={!isFormValid()}
                 >
                   Continue
