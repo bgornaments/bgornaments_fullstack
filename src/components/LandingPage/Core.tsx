@@ -31,12 +31,12 @@ const Core: React.FC = () => {
         reverseButtons: true,
       }).then((result) => {
         if (result.isConfirmed) {
-          localStorage.setItem('redirectPath', location.pathname);
+          sessionStorage.setItem('redirectTo', '/modes'); // Store path in sessionStorage
           navigate("/login");
         }
       });
     } else {
-      navigate("/form");
+      navigate("/modes");
     }
   };
 
