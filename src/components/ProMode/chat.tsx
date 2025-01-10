@@ -71,8 +71,8 @@ const ProModeChatUI: React.FC = () => {
 
   useEffect(() => {
     console.log(location.pathname);
-    // const isProMode = location.pathname === "/promode" || location.pathname === "/promode/";
-    const isProMode = location.pathname.startsWith("/promode");
+    const isProMode = location.pathname === "/promode" || location.pathname === "/promode/";
+    // const isProMode = location.pathname === "/promode";
 
 
     // if (isProMode) {
@@ -174,7 +174,9 @@ const ProModeChatUI: React.FC = () => {
     setIsSidebarVisible(!isSidebarVisible);
   };
 
-  const isMainRoute = location.pathname.startsWith("/promode");
+  // const isMainRoute = location.pathname.startsWith("/promode") ;
+  // const isMainRoute = location.pathname === "/promode";
+  const isMainRoute = location.pathname === "/promode" || location.pathname === "/promode/";
 
   return (
     <>
