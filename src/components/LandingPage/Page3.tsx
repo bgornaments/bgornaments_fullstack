@@ -4,7 +4,8 @@ import github from "/src/assets/github-sign.png";
 import sagar from "/src/assets/sagar.png";
 import divyanshu from "/src/assets/divyanshu.png";
 import vanshika from "/src/assets/vanshika.jpg";
-import akhil from "/src/assets/akhil.jpeg"
+import Ayush from "/src/assets/Ayush.jpg";
+import akhil from "/src/assets/akhil.jpeg";
 
 const TeamComponent: React.FC = () => {
   const teamMembers = [
@@ -40,6 +41,14 @@ const TeamComponent: React.FC = () => {
       githubUrl: "https://github.com",
       linkedinUrl: "https://www.linkedin.com/in/vanshikasharma-it/",
     },
+    {
+      name: "Ayush Hurkat",
+      role: "Full Stack Development\nIntern",
+      description: "MITS Gwalior \nIT Undergraduate Student",
+      imageUrl: Ayush,
+      githubUrl: "https://github.com",
+      linkedinUrl: "https://www.linkedin.com/in/ayushhurkat/",
+    },
   ];
 
   return (
@@ -54,70 +63,53 @@ const TeamComponent: React.FC = () => {
           <div
             role="list"
             aria-label="Behind the scenes People"
-            className="lg:flex md:flex xs:flex items-center xl:justify-between flex-wrap md:justify-around xs:justify-around lg:justify-around"
+            className="flex flex-wrap justify-center gap-8"
           >
             {teamMembers.map((member, index) => (
               <div
                 role="listitem"
-                className="xl:w-[20vw] xs:w-3/4 md:w-2/5 relative mt-16 mb-16 sm:mb-24 xl:max-w-sm lg:w-2/5 "
+                className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 relative mt-16"
                 key={index}
               >
-                <div className="rounded-xl overflow-hidden shadow-md bg-navbar py-[2vh]">
-                  <div className="absolute -mt-20 w-full flex justify-center items-center">
-                    <div className="lg:h-32 lg:w-32 w-24 h-24">
+                <div className="rounded-xl overflow-hidden shadow-lg border-2 border-customGreen bg-navbar py-8">
+                  <div className="absolute -top-12 w-full flex justify-center items-center">
+                    <div className="h-28 w-28 lg:h-32 lg:w-32">
                       <img
                         src={member.imageUrl}
                         alt={`Display Picture of ${member.name}`}
-                        role="img"
-                        className="rounded-full object-cover h-full w-full shadow-md"
+                        className="rounded-full object-cover h-full w-full shadow-md border-4 border-white"
                       />
                     </div>
                   </div>
-                  <div className="px-6 mt-12 xl:min-h-[35vh] flex flex-col justify-center gap-[2vh]">
-                    <h1 className="text-customGreen font-custom text-center text-[1.5rem] md:text-[1.5rem] xl:text-[1.7rem] pb-[1vh]">
+                  <div className="px-6 mt-16 flex flex-col items-center gap-4">
+                    <h1 className="text-customGreen font-custom text-center text-xl lg:text-2xl font-bold">
                       {member.name}
                     </h1>
-                    <p className="text-darkGolden text-[0.7rem] md:text-[0.8rem] xl:text-[0.9rem] text-center">
-                      {member.role.split("\n").map((line, i) => (
-                        <React.Fragment key={i}>
-                          {line}
-                          {i !== member.role.split("\n").length - 1 && <br />}
-                        </React.Fragment>
-                      ))}
+                    <p className="text-darkGolden text-center text-sm lg:text-base whitespace-pre-line">
+                      {member.role}
                     </p>
-                    <p className="text-darkGolden text-[0.7rem] md:text-[0.8rem] xl:text-[0.9rem] text-center">
-                      {member.description.split("\n").map((line, i) => (
-                        <React.Fragment key={i}>
-                          {line}
-                          {i !== member.description.split("\n").length - 1 && (
-                            <br />
-                          )}
-                        </React.Fragment>
-                      ))}
+                    <p className="text-darkGolden text-center text-sm lg:text-base whitespace-pre-line">
+                      {member.description}
                     </p>
-                    <div className="w-full flex justify-center gap-[2vw] pt-[1vh]">
+                    <div className="flex justify-center gap-6 mt-4">
                       {member.githubUrl && (
                         <a
                           href={member.githubUrl}
-                          className="w-[6vw] md:w-[2.4vw] xl:w-[1.5vw]"
+                          className="w-8 h-8 lg:w-10 lg:h-10"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <div aria-label="Github" role="img">
-                            <img src={github} alt="GitHub" />
-                          </div>
+                          <img src={github} alt="GitHub" className="w-full h-full" />
                         </a>
                       )}
                       {member.linkedinUrl && (
                         <a
                           href={member.linkedinUrl}
-                          className="w-[6vw] md:w-[2.4vw] xl:w-[1.5vw]"
+                          className="w-8 h-8 lg:w-10 lg:h-10"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <div aria-label="LinkedIn" role="img">
-                            <img src={linkedIn} alt="LinkedIn" />
-                          </div>
+                          <img src={linkedIn} alt="LinkedIn" className="w-full h-full" />
                         </a>
                       )}
                     </div>
