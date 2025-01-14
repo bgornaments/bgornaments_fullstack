@@ -123,5 +123,4 @@ const TeamComponent: React.FC = () => {
     </div>
   );
 };
-
 export default TeamComponent;

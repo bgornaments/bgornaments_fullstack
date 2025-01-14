@@ -222,10 +222,12 @@ import ImgVar from "./components/ProMode/ImageVariation/imgVar.tsx";
 import SetGen from "./components/ProMode/SetGeneration/SetGen.tsx";
 import ProtectedRoute from "./ProtectedRoute";  // import the ProtectedRoute component
 import ExpertMode from "./components/ExpertMode/ExpertMode.tsx";
+import DemoForm from "./components/Contact/contactSAP.tsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <HeroPage /> },
   { path: "/login", element: <Login /> },
+  { path: "/Contact-Us", element: <DemoForm/> },
   {
     path: "/orders",
     element: (
