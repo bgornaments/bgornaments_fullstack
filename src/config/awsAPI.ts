@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Fetches the chatbot response from the new endpoint
 export const fetchAIResponse = async (payload: { session_id: string, user_question: string }) => {
   try {

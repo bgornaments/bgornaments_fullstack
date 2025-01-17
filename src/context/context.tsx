@@ -1,165 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// // import { createContext, useEffect, useState, ReactNode } from 'react';
-// // import fetchAIResponse from '../config/awsAPI'; // Import the AWS API interaction logic
-
-// // interface ContextProps {
-// //   prevConversations: any[];
-// //   setPrevConversations: React.Dispatch<React.SetStateAction<any[]>>;
-// //   onSent: (prompt: string) => void;
-// //   recentPrompt: string;
-// //   showResult: boolean;
-// //   loading: boolean;
-// //   resultData: string;
-// //   input: string;
-// //   setInput: React.Dispatch<React.SetStateAction<string>>;
-// //   messages: any[];
-// //   setMessages: React.Dispatch<React.SetStateAction<any[]>>;
-// //   userInput: string;
-// //   setUserInput: React.Dispatch<React.SetStateAction<string>>;
-// //   buttons: { text: string, value: string }[];
-// //   setButtons: React.Dispatch<React.SetStateAction<{ text: string, value: string }[]>>;
-// //   botState: string;
-// //   setBotState: React.Dispatch<React.SetStateAction<string>>;
-// //   sendMessage: () => void;
-// // }
-
-// // export const Context = createContext<ContextProps | undefined>(undefined);
-
-// // const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-// //   const [input, setInput] = useState<string>('');
-// //   // const [recentPrompt, setRecentPrompt] = useState<string>('');
-// //   const [recentPrompt] = useState<string>('');
-// //   const [prevConversations, setPrevConversations] = useState<any[]>(() => {
-// //     sessionStorage.removeItem('prevConversations');
-// //     return [];
-// //   });
-// //   const [showResult, setShowResult] = useState<boolean>(false);
-// //   const [loading, setLoading] = useState<boolean>(false);
-// //   // const [resultData, setResultData] = useState<string>('');
-// //   const [resultData] = useState<string>('');
-// //   const [messages, setMessages] = useState<any[]>([]);
-// //   const [userInput, setUserInput] = useState<string>('');
-// //   const [buttons, setButtons] = useState<{ text: string, value: string }[]>([]);
-// //   const [botState, setBotState] = useState<string>('recommendation');
-// //   // const [partialResponse, setPartialResponse] = useState<string>('');
-
-// //   useEffect(() => {
-// //     sessionStorage.setItem('prevConversations', JSON.stringify(prevConversations));
-// //   }, [prevConversations]);
-
-// //   const onSent = async (prompt: string) => {
-// //     setLoading(true);
-// //     setShowResult(true);
-
-// //     setPrevConversations((prevConversations) => [
-// //       ...prevConversations,
-// //       { prompt, response: '', loading: true },
-// //     ]);
-
-// //     const payload = { user_prompt: prompt, state: botState, conversation_history: prevConversations };
-// //     const response = await fetchAIResponse(payload);
-
-// //     const newResponse = response.chatbot_response.split('*').join('<br>');
-
-// //     setPrevConversations((prevConversations) => {
-// //       const updatedConversations = [...prevConversations];
-// //       updatedConversations[updatedConversations.length - 1] = {
-// //         ...updatedConversations[updatedConversations.length - 1],
-// //         response: newResponse,
-// //         loading: false,
-// //       };
-// //       return updatedConversations;
-// //     });
-
-// //     try {
-// //       const cleanedString = response.button_values.replace(/^'|'$/g, '"').replace(/'/g, '"');
-// //       const buttonValues = JSON.parse(cleanedString);
-
-// //       if (Array.isArray(buttonValues)) {
-// //         setButtons(buttonValues.map((value: string) => ({
-// //           text: value,
-// //           value: value,
-// //         })));
-// //       } else {
-// //         setButtons([]);
-// //       }
-// //     } catch (error) {
-// //       console.error('Error parsing button values:', error);
-// //       setButtons([]);
-// //     }
-
-// //     setLoading(false);
-// //     setInput('');
-// //   };
-
-// //   const sendMessage = async () => {
-// //     if (!userInput.trim()) return;
-
-// //     const payload = {
-// //       user_prompt: userInput,
-// //       state: botState,
-// //       conversation_history: messages,
-// //     };
-
-// //     const response = await fetchAIResponse(payload);
-
-// //     setMessages((prevMessages) => [
-// //       ...prevMessages,
-// //       { text: userInput, isBot: false },
-// //       { text: response.chatbot_response, isBot: true },
-// //     ]);
-// //     setUserInput('');
-
-// //     try {
-// //       const cleanedString = response.button_values.replace(/^'|'$/g, '"').replace(/'/g, '"');
-// //       const buttonValues = JSON.parse(cleanedString);
-
-// //       if (Array.isArray(buttonValues)) {
-// //         setButtons(buttonValues.map((value: string) => ({
-// //           text: value,
-// //           value: value,
-// //         })));
-// //       } else {
-// //         setButtons([]);
-// //       }
-// //     } catch (error) {
-// //       console.error('Error parsing button values:', error);
-// //       setButtons([]);
-// //     }
-// //   };
-
-// //   const contextValue = {
-// //     prevConversations,
-// //     setPrevConversations,
-// //     onSent,
-// //     recentPrompt,
-// //     showResult,
-// //     loading,
-// //     resultData,
-// //     input,
-// //     setInput,
-// //     messages,
-// //     setMessages,
-// //     userInput,
-// //     setUserInput,
-// //     buttons,
-// //     setButtons,
-// //     botState,
-// //     setBotState,
-// //     sendMessage,
-// //   };
-
-// //   return (
-// //     <Context.Provider value={contextValue}>
-// //       {children}
-// //     </Context.Provider>
-// //   );
-// // };
-
-// // export default ContextProvider;
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// /* eslint-disable @typescript-eslint/no-explicit-any */
+// /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { createContext, useEffect, useState, ReactNode } from 'react';
-// import { fetchAIResponse, fetchAIResponse2, invokeImageGenerator } from '../config/awsAPI'; // Import AWS API interaction logic
+// import { fetchAIResponse, fetchAIResponse2, invokeImageGenerator } from '../config/awsAPI'; 
 
 // interface ContextProps {
 //   prevConversations: any[];
@@ -182,6 +25,8 @@
 //   sendMessage: () => void;
 //   formData: Record<string, any>;
 //   setFormData: React.Dispatch<React.SetStateAction<Record<string, any>>>;
+//   isImageLoading: boolean;
+//   setIsImageLoading: React.Dispatch<React.SetStateAction<boolean>>;
 // }
 
 // export const Context = createContext<ContextProps | undefined>(undefined);
@@ -200,7 +45,8 @@
 //   const [userInput, setUserInput] = useState<string>('');
 //   const [buttons, setButtons] = useState<{ text: string; value: string }[]>([]);
 //   const [botState, setBotState] = useState<string>('recommendation');
-//   const [formData, setFormData] = useState<Record<string, any>>({}); // State to store form data
+//   const [formData, setFormData] = useState<Record<string, any>>({});
+//   const [isImageLoading, setIsImageLoading] = useState<boolean>(false);
 
 //   useEffect(() => {
 //     sessionStorage.setItem('prevConversations', JSON.stringify(prevConversations));
@@ -214,75 +60,111 @@
 //       ...prevConversations,
 //       { prompt, response: '', loading: true },
 //     ]);
-//     const session_id = localStorage.getItem("sessionId");
-//     // const payload = { user_prompt: prompt, state: botState, conversation_history: prevConversations };
-//     const payload = { session_id: session_id, user_question: prompt }
-//     const response = await fetchAIResponse2(payload);
-//     console.log(JSON.parse(response.body))
-//     console.log(JSON.parse(response.body).assistant_response)
-//     console.log(session_id)
-//     // const newResponse = response.chatbot_response.split('*').join('<br>');
-//     const newResponse = JSON.parse(response.body).assistant_response
-//     const newBotState = JSON.parse(response.body).bot_state;
-//     setBotState(newBotState)
 
-//     setPrevConversations((prevConversations) => {
-//       const updatedConversations = [...prevConversations];
-//       updatedConversations[updatedConversations.length - 1] = {
-//         ...updatedConversations[updatedConversations.length - 1],
-//         response: newResponse,
-//         loading: false,
-//       };
-//       return updatedConversations;
-//     });
-//     console.log(newBotState)
-//     // Step 4: If bot state is "finalize", call image generator
-//     if (newBotState === "finalization") {
-//       console.log("here")
-//       console.log(newResponse)
-//       try {
-//         const imagePayload = { prompt: newResponse }; // Adjust as per your image generator API
-//         const imageResponse = await invokeImageGenerator(imagePayload);
-//         console.log("here")
-//         console.log(imageResponse)
-//         const imageUrls = imageResponse.uploaded_image_urls; // Parse the image URLs from response
-//         console.log(imageUrls)
-//         // Step 5: Add a new conversation for the images
-//         setPrevConversations((prevConversations) => [
-//           ...prevConversations,
-//           {
-//             prompt: "", // Label for the image section
-//             response: imageUrls.map((url: string) => `<img src="${url}" />`).join(" "),
-//             loading: false,
-//           },
-//         ]);
-//       } catch (error) {
-//         console.error("Failed to fetch images:", error);
-//       }
+//     const session_id = localStorage.getItem('sessionId');
+//     if (!session_id) {
+//       console.error('Session ID is missing.');
+//       setLoading(false);
+//       return;
 //     }
+
+//     const payload = { session_id: session_id, user_question: prompt };
+
+//     console.log('Calling fetchAIResponse API with prompt:', prompt);
+//     console.log('Payload for fetchAIResponse:', payload);
 
 //     try {
-//       console.log(JSON.parse(response.body).button_values)
-//       // const cleanedString = response.button_values.replace(/^'|'$/g, '"').replace(/'/g, '"');
-//       // const buttonValues = JSON.parse(cleanedString);
-//       // const buttonValues = JSON.parse(response.body).button_values
-//       const buttonValues = ''
+//       if (prompt === "Place order") {
+//         console.log('Detected "Place order" prompt, skipping AI response.');
+//         const thankYouMessage = "Thank you for placing your order! We'll process it shortly.";
+//         setPrevConversations((prevConversations) => {
+//           const updatedConversations = [...prevConversations];
+//           updatedConversations[updatedConversations.length - 1] = {
+//             ...updatedConversations[updatedConversations.length - 1],
+//             response: thankYouMessage,
+//             loading: false,
+//           };
+//           return updatedConversations;
+//         });
 
-//       if (Array.isArray(buttonValues)) {
-//         setButtons(buttonValues.map((value: string) => ({
-//           text: value,
-//           value: value,
-//         })));
-//       } else {
 //         setButtons([]);
+//         return;
+//       }
+
+//       console.log('Calling fetchAIResponse API...');
+//       const response = await fetchAIResponse(payload);
+//       const responseBody = JSON.parse(response.body);
+
+//       console.log('Response from fetchAIResponse:', responseBody);
+
+//       if (responseBody && responseBody.assistant_response) {
+//         const newResponse = responseBody.assistant_response;
+//         const newBotState = responseBody.bot_state;
+//         setBotState(newBotState);
+//         console.log("Bot state:", newBotState);
+
+//         setPrevConversations((prevConversations) => {
+//           const updatedConversations = [...prevConversations];
+//           updatedConversations[updatedConversations.length - 1] = {
+//             ...updatedConversations[updatedConversations.length - 1],
+//             response: newResponse,
+//             loading: false,
+//           };
+//           return updatedConversations;
+//         });
+
+//         if (newBotState === 'finalizer_agent' && prompt !== "PLACE_ORDER") {
+//           console.log('Bot state is finalizer_agent, calling invokeImageGenerator API...');
+//           setIsImageLoading(true);
+//           try {
+//             const imagePayload = { prompt: newResponse };
+//             console.log('Payload for invokeImageGenerator:', imagePayload);
+//             const imageResponse = await invokeImageGenerator(imagePayload);
+//             const imageUrls = imageResponse.uploaded_image_urls || [];
+
+//             console.log('Response from invokeImageGenerator:', imageUrls);
+
+//             setIsImageLoading(false);
+//             if (imageUrls.length > 0) {
+//               setPrevConversations((prevConversations) => [
+//                 ...prevConversations,
+//                 {
+//                   prompt: 'Image generated',
+//                   response: imageUrls.map((url: string) => `<img src="${url}" />`).join(' '),
+//                   loading: false,
+//                 },
+//               ]);
+//             }
+//           } catch (imageError) {
+//             console.error('Failed to generate image:', imageError);
+//           } finally {
+//             setIsImageLoading(false);
+//           }
+//         }
+
+//         try {
+//           const buttonValues = responseBody.button_values || '';
+//           if (Array.isArray(buttonValues)) {
+//             setButtons(buttonValues.map((value: string) => {
+//               const cleanedValue = value.replace(/-.*$/, '');
+//               return { text: cleanedValue, value: value };
+//             }));
+//           } else {
+//             setButtons([]);
+//           }
+//         } catch (error) {
+//           console.error('Error parsing button values:', error);
+//           setButtons([]);
+//         }
+//       } else {
+//         console.error('Invalid response structure:', responseBody);
 //       }
 //     } catch (error) {
-//       console.error('Error parsing button values:', error);
-//       setButtons([]);
+//       console.error('Error in fetchAIResponse:', error);
+//     } finally {
+//       setLoading(false);
+//       setInput('');
 //     }
-
-//     setLoading(false);
-//     setInput('');
 //   };
 
 //   const sendMessage = async () => {
@@ -294,18 +176,24 @@
 //       conversation_history: messages,
 //     };
 
-//     const response = await fetchAIResponse(payload);
-
-//     setMessages((prevMessages) => [
-//       ...prevMessages,
-//       { text: userInput, isBot: false },
-//       { text: response.chatbot_response, isBot: true },
-//     ]);
-//     setUserInput('');
+//     console.log('Calling fetchAIResponse2 API with user input:', userInput);
+//     console.log('Payload for fetchAIResponse2:', payload);
 
 //     try {
+//       const response = await fetchAIResponse2(payload);
+//       console.log('Response from fetchAIResponse2:', response);
+
+//       setMessages((prevMessages) => [
+//         ...prevMessages,
+//         { text: userInput, isBot: false },
+//         { text: response.chatbot_response, isBot: true },
+//       ]);
+//       setUserInput('');
+
 //       const cleanedString = response.button_values.replace(/^'|'$/g, '"').replace(/'/g, '"');
 //       const buttonValues = JSON.parse(cleanedString);
+
+//       console.log('Parsed button values from fetchAIResponse2:', buttonValues);
 
 //       if (Array.isArray(buttonValues)) {
 //         setButtons(buttonValues.map((value: string) => ({
@@ -316,7 +204,7 @@
 //         setButtons([]);
 //       }
 //     } catch (error) {
-//       console.error('Error parsing button values:', error);
+//       console.error('Error in sendMessage:', error);
 //       setButtons([]);
 //     }
 //   };
@@ -342,15 +230,17 @@
 //     sendMessage,
 //     formData,
 //     setFormData,
+//     isImageLoading,
+//     setIsImageLoading,
 //   };
 
 //   return <Context.Provider value={contextValue}>{children}</Context.Provider>;
 // };
 
 // export default ContextProvider;
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createContext, useEffect, useState, ReactNode } from 'react';
-import { fetchAIResponse, fetchAIResponse2, invokeImageGenerator } from '../config/awsAPI'; // Import AWS API interaction logic
+import { fetchAIResponse, fetchAIResponse2, invokeImageGenerator } from '../config/awsAPI'; 
 
 interface ContextProps {
   prevConversations: any[];
@@ -373,25 +263,26 @@ interface ContextProps {
   sendMessage: () => void;
   formData: Record<string, any>;
   setFormData: React.Dispatch<React.SetStateAction<Record<string, any>>>;
+  isImageLoading: boolean;
+  setIsImageLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Context = createContext<ContextProps | undefined>(undefined);
 
 const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [input, setInput] = useState<string>('');
-  const [recentPrompt] = useState<string>('');
   const [prevConversations, setPrevConversations] = useState<any[]>(() => {
     sessionStorage.removeItem('prevConversations');
     return [];
   });
   const [showResult, setShowResult] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [resultData] = useState<string>('');
   const [messages, setMessages] = useState<any[]>([]);
   const [userInput, setUserInput] = useState<string>('');
   const [buttons, setButtons] = useState<{ text: string; value: string }[]>([]);
   const [botState, setBotState] = useState<string>('recommendation');
   const [formData, setFormData] = useState<Record<string, any>>({});
+  const [isImageLoading, setIsImageLoading] = useState<boolean>(false);
 
   useEffect(() => {
     sessionStorage.setItem('prevConversations', JSON.stringify(prevConversations));
@@ -408,7 +299,6 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     const session_id = localStorage.getItem('sessionId');
     if (!session_id) {
-      console.error('Session ID is missing.');
       setLoading(false);
       return;
     }
@@ -416,11 +306,8 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const payload = { session_id: session_id, user_question: prompt };
 
     try {
-      // Check if the prompt is "PLACE_ORDER"
       if (prompt === "Place order") {
-        // Skip AI response logic and set a thank you message directly
         const thankYouMessage = "Thank you for placing your order! We'll process it shortly.";
-
         setPrevConversations((prevConversations) => {
           const updatedConversations = [...prevConversations];
           updatedConversations[updatedConversations.length - 1] = {
@@ -431,10 +318,11 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           return updatedConversations;
         });
 
-        // Optionally, you can clear the buttons here or handle them differently.
         setButtons([]);
-        return; // Exit early to skip the usual flow
+        return;
       }
+
+      console.log('Calling fetchAIResponse API...');
       const response = await fetchAIResponse(payload);
       const responseBody = JSON.parse(response.body);
 
@@ -453,54 +341,46 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           return updatedConversations;
         });
 
-        // If bot state is "finalization", call image generator
         if (newBotState === 'finalizer_agent' && prompt !== "PLACE_ORDER") {
+          console.log('Calling invokeImageGenerator API...');
+          setIsImageLoading(true);
           try {
             const imagePayload = { prompt: newResponse };
             const imageResponse = await invokeImageGenerator(imagePayload);
             const imageUrls = imageResponse.uploaded_image_urls || [];
 
-            setPrevConversations((prevConversations) => [
-              ...prevConversations,
-              {
-                prompt: '',
-                response: imageUrls.map((url: string) => `<img src="${url}" />`).join(' '),
-                loading: false,
-              },
-            ]);
+            setIsImageLoading(true);
+            if (imageUrls.length > 0) {
+              setPrevConversations((prevConversations) => [
+                ...prevConversations,
+                {
+                  prompt: 'Finalize',
+                  response: imageUrls.map((url: string) => `<img src="${url}" />`).join(' '),
+                  loading: false,
+                },
+              ]);
+            }
           } catch (imageError) {
-            console.error('Failed to fetch images:', imageError);
+            setIsImageLoading(false);
           }
         }
 
-        // Handle button values
         try {
           const buttonValues = responseBody.button_values || '';
           if (Array.isArray(buttonValues)) {
-            setButtons(
-              buttonValues.map((value: string) => {
-                // Use a regular expression to remove everything after (and including) the first '-'
-                const cleanedValue = value.replace(/-.*$/, '');
-                console.log(value)
-                return {
-                  text: cleanedValue,
-                  value: value,
-                };
-              })
-            );
-          }
-          else {
-            setButtons([]); // Clear buttons if not an array
+            setButtons(buttonValues.map((value: string) => {
+              const cleanedValue = value.replace(/-.*$/, '');
+              return { text: cleanedValue, value: value };
+            }));
+          } else {
+            setButtons([]);
           }
         } catch (error) {
-          console.error('Error parsing button values:', error);
           setButtons([]);
         }
-      } else {
-        console.error('Invalid response structure:', responseBody);
       }
     } catch (error) {
-      console.error('Error in fetchAIResponse:', error);
+      setLoading(false);
     } finally {
       setLoading(false);
       setInput('');
@@ -516,16 +396,17 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       conversation_history: messages,
     };
 
-    const response = await fetchAIResponse2(payload);
-
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { text: userInput, isBot: false },
-      { text: response.chatbot_response, isBot: true },
-    ]);
-    setUserInput('');
-
+    console.log('Calling fetchAIResponse2 API...');
     try {
+      const response = await fetchAIResponse2(payload);
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: userInput, isBot: false },
+        { text: response.chatbot_response, isBot: true },
+      ]);
+      setUserInput('');
+
       const cleanedString = response.button_values.replace(/^'|'$/g, '"').replace(/'/g, '"');
       const buttonValues = JSON.parse(cleanedString);
 
@@ -538,7 +419,6 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         setButtons([]);
       }
     } catch (error) {
-      console.error('Error parsing button values:', error);
       setButtons([]);
     }
   };
@@ -547,10 +427,10 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     prevConversations,
     setPrevConversations,
     onSent,
-    recentPrompt,
+    recentPrompt: '',
     showResult,
     loading,
-    resultData,
+    resultData: '',
     input,
     setInput,
     messages,
@@ -564,6 +444,8 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     sendMessage,
     formData,
     setFormData,
+    isImageLoading,
+    setIsImageLoading,
   };
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;

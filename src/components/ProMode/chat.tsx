@@ -29,6 +29,8 @@ const ProModeChatUI: React.FC = () => {
   const context = useContext(Context);
   const location = useLocation();
   const [showComponent, setShowComponent] = useState<boolean>(false);
+  // const [isImageLoaded, setIsImageLoaded] = useState(false);
+
 
   useEffect(() => {
     const trialDaysLeft = parseInt(localStorage.getItem('trial_days_left') || '0');
@@ -60,6 +62,7 @@ const ProModeChatUI: React.FC = () => {
     botState, // Access botState
     // setBotState, // Access setBotState
   } = context;
+
 
   const hasSentFirstPrompt = useRef(false);
 
@@ -134,9 +137,9 @@ const ProModeChatUI: React.FC = () => {
     onSent(button.value); // Trigger the bot response with the button value
   };
 
-  const handleShowJewelry = () => {
-    setIsPopupVisible(true); // Show the popup
-  };
+  // const handleShowJewelry = () => {
+  //   setIsPopupVisible(true); // Show the popup
+  // };
 
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
@@ -222,43 +225,64 @@ const ProModeChatUI: React.FC = () => {
                                 src="https://img.freepik.com/free-vector/cartoon-style-robot-vectorart_78370-4103.jpg"
                                 alt="AI Icon"
                               />
-                              {conversation.loading ? (
-                                <div className="loader w-3/4 flex flex-col gap-2">
-                                  <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse" />
-                                  <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse animation-delay-200" />
-                                  <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse animation-delay-400" />
-                                </div>
-                              ) : conversation.response.includes('<img') ? (
-                                <div
-                                  className="max-w-[70%]"
-                                  dangerouslySetInnerHTML={{ __html: conversation.response }}
-                                />
-                              ) : (
-                                <p className="bg-[#f1f1f1] text-black p-3 rounded-xl max-w-[70%] whitespace-pre-wrap">
-                                  {conversation.response}
-                                </p>
-                              )}
+
+                              {(() => {
+                                if (botState !== 'finalizer_agent') {
+                                  // Non-finalizer agent logic
+                                  if (conversation.loading) {
+                                    return (
+                                      <div className="loader w-3/4 flex flex-col gap-2">
+                                        <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse" />
+                                        <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse animation-delay-200" />
+                                        <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse animation-delay-400" />
+                                      </div>
+                                    );
+                                  } else {
+                                    return (
+                                      <p className="bg-[#f1f1f1] text-black p-3 rounded-xl max-w-[70%] whitespace-pre-wrap">
+                                        {conversation.response}
+                                      </p>
+                                    );
+                                  }
+                                } else {
+                                  // Finalizer agent logic
+                                  if (conversation.response.includes('<img')) {
+                                    return (
+                                      <div
+                                        className="max-w-[40%] w-full p-2 rounded-lg border-2 border-gray-300"
+                                        dangerouslySetInnerHTML={{ __html: conversation.response }}
+                                      />
+                                    );
+                                  } else if (conversation.loading) {
+                                    return (
+                                      <div className="max-w-[40%] w-full p-2 rounded-lg border-2 border-gray-300">
+                                        <img
+                                          src="src\assets\kinmitraAnimation.gif" // Replace with your actual GIF path
+                                          alt="Finalizer Agent Loading"
+                                          className="rounded-lg"
+                                          style={{ animation: 'fadeIn 1s ease-out' }}
+                                        />
+                                      </div>
+                                    );
+                                  } else {
+                                    return (
+                                      <p className="bg-[#f1f1f1] text-black p-3 rounded-xl max-w-[70%] whitespace-pre-wrap">
+                                        {conversation.response}
+                                      </p>
+                                    );
+                                  }
+                                }
+                              })()}
                             </div>
+
                           </div>
                         ))}
                       </div>
-
-
                       {buttons.length > 0 && (
                         <ButtonRow buttons={buttons} onButtonClick={handleButtonClick} />
                       )}
                     </div>
                   </div>
-
-                  {/* Popup Button */}
-                  {botState === 'finalizing' && ( // Show button only if botState is 'finalizing'
-                    <button
-                      onClick={handleShowJewelry}
-                      className="bg-[#f59699] text-white border border-white rounded-[10px] py-1.5 px-4 text-md cursor-pointer transition-colors duration-300 ease-in-out shadow-md hover:bg-[#B2801D] active:transform active:translate-y-0.5 ml-11 mt-2"
-                    >
-                      Show Jewelry
-                    </button>
-                  )}
 
                   {/* Render PopUp if the state is true */}
                   {isPopupVisible && (
@@ -323,3 +347,61 @@ const ProModeChatUI: React.FC = () => {
 };
 
 export default ProModeChatUI;
+
+
+// {/* AI Response */}
+// <div className="result-data flex items-start gap-4 mt-4">
+// <img
+//   className="w-10 h-10 rounded-full"
+//   src="https://img.freepik.com/free-vector/cartoon-style-robot-vectorart_78370-4103.jpg"
+//   alt="AI Icon"
+// />
+
+// {(() => {
+//   if (botState !== 'finalizer_agent') {
+//     // Non-finalizer agent logic
+//     if (conversation.loading) {
+//       return (
+//         <div className="loader w-3/4 flex flex-col gap-2">
+//           <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse" />
+//           <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse animation-delay-200" />
+//           <div className="h-5 bg-gradient-to-r from-blue-300 to-white rounded-full animate-pulse animation-delay-400" />
+//         </div>
+//       );
+//     } else {
+//       return (
+//         <p className="bg-[#f1f1f1] text-black p-3 rounded-xl max-w-[70%] whitespace-pre-wrap">
+//           {conversation.response}
+//         </p>
+//       );
+//     }
+//   } else {
+//     // Finalizer agent logic
+//     if (conversation.response.includes('<img')) {
+//       return (
+//         <div
+//           className="max-w-[40%] w-full p-2 rounded-lg border-2 border-gray-300"
+//           dangerouslySetInnerHTML={{ __html: conversation.response }}
+//         />
+//       );
+//     } else if (conversation.loading && isImageLoading) {
+//       return (
+//         <div className="max-w-[40%] w-full p-2 rounded-lg border-2 border-gray-300">
+//           <img
+//             src="src\assets\kinmitraAnimation.gif" // Replace with your actual GIF path
+//             alt="Finalizer Agent Loading"
+//             className="rounded-lg"
+//             style={{ animation: 'fadeIn 1s ease-out' }}
+//           />
+//         </div>
+//       );
+//     } else {
+//       return (
+//         <p className="bg-[#f1f1f1] text-black p-3 rounded-xl max-w-[70%] whitespace-pre-wrap">
+//           {conversation.response}
+//         </p>
+//       );
+//     }
+//   }
+// })()}
+// </div>

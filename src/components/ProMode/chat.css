@@ -13,3 +13,53 @@
     }
   }
   
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .custom-scrollbar::-webkit-scrollbar {
+    display: none; /* Hides the scrollbar */
+  /* } */
+
+  /* .custom-scrollbar {
+    -ms-overflow-style: none; /* Hides scrollbar in IE and Edge */
+    /* scrollbar-width: none; Hides scrollbar in Firefox */
+  /* } */
+
+  /* @keyframes gradient-left-to-right { */
+    /* 0% { */
+      /* background-position: 200% 0; */
+    /* } */
+    /* 100% { */
+      /* background-position: -200% 0; */
+    /* } */
+  /* } */
+
+  /* .animate-gradient {
+    animation: gradient-left-to-right 2.5s linear infinite;
+    background-size: 200% 100%;
+  } */
+
+  /* Staggered animation delays */
+  /* .animation-delay-0 {
+    animation-delay: 0s;
+  } */
+
+  /* .animation-delay-200 {
+    animation-delay: 0.2s;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 0.4s;
+  } */
+/* } */
