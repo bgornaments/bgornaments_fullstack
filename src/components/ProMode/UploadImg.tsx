@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 
@@ -8,11 +9,12 @@ interface UploadImgProps {
 }
 
 const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect }) => {
-  const [activeTab, setActiveTab] = useState<'upload' | 'yourImages'>('yourImages');
+  const [activeTab, setActiveTab] = useState<'upload using qr'| 'upload from device' | 'yourImages'>('yourImages');
   const [qrCode, setQrCode] = useState<string | null>(null);
   const [images, setImages] = useState<string[]>([]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [, setImageFile] = useState<File | null>(null);
 
   const userId = 'unknown'; // Fixed userId for now
 
@@ -55,12 +57,10 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
       const data = await response.json();
       const urls = data.urls.flat() || [];
 
-      // Convert URLs to Base64
       const base64Images = await Promise.all(
         urls.map((url: string) => fetchImageAsBase64(url))
       );
 
-      // Add only unique images to the state
       setImages((prevImages) => {
         const uniqueImages = new Set(prevImages);
         base64Images.forEach((img) => uniqueImages.add(img));
@@ -95,6 +95,35 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
       setQrCode(qrCodeUrl);
     } catch (error) {
       alert('Failed to generate QR code. Please try again.');
+    }
+  };
+
+  const handleFileDrop = (event: React.DragEvent) => {
+    event.preventDefault();
+    const file = event.dataTransfer.files[0];
+    if (file && file.type.startsWith('image')) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setSelectedImage(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && file.type.startsWith('image')) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setSelectedImage(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleGoClick = () => {
+    if (selectedImage) {
+      // Add the image to your images list and switch to the "yourImages" tab
+      setImages((prevImages) => [...prevImages, selectedImage]);
+      setActiveTab('yourImages');
     }
   };
 
@@ -144,7 +173,8 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
           )}
         </div>
       );
-    } else if (activeTab === 'upload') {
+    } 
+    else if (activeTab === 'upload using qr') {
       return (
         <div className="flex flex-col items-center gap-4">
           <div className="w-full h-64 bg-gray-100 flex items-center justify-center border rounded-md shadow-md">
@@ -166,6 +196,49 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
         </div>
       );
     }
+    else if (activeTab === 'upload from device') {
+      return (
+        <div
+          className="flex flex-col items-center justify-center gap-4 border-2 border-dashed border-gray-300 p-6 rounded-md"
+          onDrop={handleFileDrop}
+          onDragOver={(e) => e.preventDefault()}
+        >
+          {selectedImage ? (
+            <img
+              src={selectedImage}
+              alt="Selected"
+              className="w-20 h-auto object-contain mb-4 rounded-md shadow-md"
+            />
+          ) : (
+            <p className="text-gray-500">Drag and drop an image or click below to select an image from your device.</p>
+          )}
+          {!selectedImage ? (
+        <div>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileInputChange}
+            className="hidden"
+            id="fileInput"
+          />
+          <label
+            htmlFor="fileInput"
+            className="px-6 py-3 bg-blue-600 text-white rounded-md cursor-pointer hover:bg-blue-700 transition duration-300"
+          >
+            Upload from Device
+          </label>
+        </div>
+      ) : (
+        <button
+          onClick={handleGoClick}
+          className="px-6 py-3 bg-green-600 text-white rounded-md cursor-pointer hover:bg-green-700 transition duration-300"
+        >
+          Go
+        </button>
+      )}
+        </div>
+      );
+    }
   };
 
   return (
@@ -174,13 +247,22 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
         <div className="flex justify-between items-center mb-4">
           <div className="flex gap-4">
             <button
-              className={`py-2 px-6 rounded-md font-semibold transition-all ${activeTab === 'upload'
+              className={`py-2 px-6 rounded-md font-semibold transition-all ${activeTab === 'upload using qr'
                 ? 'text-white bg-blue-600 shadow-md hover:bg-blue-700'
                 : 'text-blue-600 border border-blue-600 hover:bg-blue-100'
                 }`}
-              onClick={() => setActiveTab('upload')}
+              onClick={() => setActiveTab('upload using qr')}
             >
               Quick QR Uploader
+            </button>
+            <button
+              className={`py-2 px-6 rounded-md font-semibold transition-all ${activeTab === 'upload from device'
+                ? 'text-white bg-blue-600 shadow-md hover:bg-blue-700'
+                : 'text-blue-600 border border-blue-600 hover:bg-blue-100'
+                }`}
+              onClick={() => setActiveTab('upload from device')}
+            >
+              Upload from Device
             </button>
             <button
               className={`py-2 px-6 rounded-md font-semibold transition-all ${activeTab === 'yourImages'

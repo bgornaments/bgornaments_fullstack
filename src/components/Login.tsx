@@ -197,7 +197,6 @@ const Login: React.FC<LoginProps> = ({ children }) => {
     },
   };
 
-  // Fetch session and persist data
   useEffect(() => {
     const fetchSession = async () => {
       if (user) {
@@ -290,7 +289,7 @@ const Login: React.FC<LoginProps> = ({ children }) => {
 
     const incrementTabCount = () => {
       const count = localStorage.getItem("openTabsCount");
-      localStorage.setItem("openTabsCount", (parseInt(count || "0") + 1).toString());
+      localStorage.setItem("openTabsCount", (parseInt(count || "1") + 1).toString());
     };
 
     const decrementTabCount = () => {

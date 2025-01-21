@@ -328,8 +328,11 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
       if (responseBody && responseBody.assistant_response) {
         const newResponse = responseBody.assistant_response;
+        console.log("Previous Bot State: ",botState);
         const newBotState = responseBody.bot_state;
         setBotState(newBotState);
+        console.log("Current Bot State: ", newBotState);
+        
 
         setPrevConversations((prevConversations) => {
           const updatedConversations = [...prevConversations];
@@ -341,29 +344,28 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           return updatedConversations;
         });
 
-        if (newBotState === 'finalizer_agent' && prompt !== "PLACE_ORDER") {
-          console.log('Calling invokeImageGenerator API...');
-          setIsImageLoading(true);
-          try {
-            const imagePayload = { prompt: newResponse };
-            const imageResponse = await invokeImageGenerator(imagePayload);
-            const imageUrls = imageResponse.uploaded_image_urls || [];
-
-            setIsImageLoading(true);
-            if (imageUrls.length > 0) {
-              setPrevConversations((prevConversations) => [
-                ...prevConversations,
-                {
-                  prompt: 'Finalize',
-                  response: imageUrls.map((url: string) => `<img src="${url}" />`).join(' '),
-                  loading: false,
-                },
-              ]);
-            }
-          } catch (imageError) {
-            setIsImageLoading(false);
-          }
-        }
+        // if (newBotState === 'finalizer_agent' && prompt !== "PLACE_ORDER") {
+        //   console.log('Calling invokeImageGenerator API...');
+        //   setIsImageLoading(true);
+        //   try {
+        //     const imagePayload = { prompt: newResponse };
+        //     const imageResponse = await invokeImageGenerator(imagePayload);
+        //     const imageUrls = imageResponse.uploaded_image_urls || [];
+        //     setIsImageLoading(true);
+        //     if (imageUrls.length > 0) {
+        //       setPrevConversations((prevConversations) => [
+        //         ...prevConversations,
+        //         {
+        //           prompt: 'Finalize',
+        //           response: imageUrls.map((url: string) => `<img src="${url}" />`).join(' '),
+        //           loading: false,
+        //         },
+        //       ]);
+        //     }
+        //   } catch (imageError) {
+        //     setIsImageLoading(false);
+        //   }
+        // }
 
         try {
           const buttonValues = responseBody.button_values || '';

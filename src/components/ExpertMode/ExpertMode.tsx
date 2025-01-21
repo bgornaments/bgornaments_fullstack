@@ -7,16 +7,14 @@ const ExpertMode: React.FC = () => {
 
   useEffect(() => {
     const existingSessionId = sessionStorage.getItem("sessionId");
-
     if (!existingSessionId) {
       const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
       sessionStorage.setItem("sessionId", newSessionId);
-      localStorage.setItem("sessionId", newSessionId);  // Optionally store it in localStorage as well
+      localStorage.setItem("sessionId", newSessionId); 
       console.log("New Session ID created:", newSessionId);
     } else {
       console.log(`Session ID already exists: ${existingSessionId}`);
     }
-
   }, []);
 
   return (
