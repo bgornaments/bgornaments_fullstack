@@ -104,28 +104,34 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
     if (file && file.type.startsWith('image')) {
       setImageFile(file);
       const reader = new FileReader();
-      reader.onloadend = () => setSelectedImage(reader.result as string);
+      reader.onloadend = () => {
+        setSelectedImage(reader.result as string); // Preview the uploaded image
+      };
       reader.readAsDataURL(file);
     }
   };
-
+  
   const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith('image')) {
       setImageFile(file);
       const reader = new FileReader();
-      reader.onloadend = () => setSelectedImage(reader.result as string);
+      reader.onloadend = () => {
+        setSelectedImage(reader.result as string); // Preview the uploaded image
+      };
       reader.readAsDataURL(file);
     }
   };
+  
 
   const handleGoClick = () => {
     if (selectedImage) {
-      // Add the image to your images list and switch to the "yourImages" tab
-      setImages((prevImages) => [...prevImages, selectedImage]);
-      setActiveTab('yourImages');
+      setImages((prevImages) => [...prevImages, selectedImage]); // Add the image to the list
+      setSelectedImage(null); // Clear the preview
+      setActiveTab('yourImages'); // Switch to "yourImages" tab
     }
   };
+  
 
   const renderTabContent = () => {
     if (activeTab === 'yourImages') {
