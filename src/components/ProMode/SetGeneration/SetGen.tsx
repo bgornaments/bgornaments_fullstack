@@ -96,15 +96,6 @@ const SetGen: React.FC = () => {
     setIsProcessing(false);
   };
 
-
-  // Reset state to upload a new image
-  const handleUploadNewImage = () => {
-    console.log('Resetting image and generated images');
-    setSelectedImage(null);
-    setGeneratedImages([]);
-    setError(null);
-  };
-
   return (
     <>
       {showComponent ? (
