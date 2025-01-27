@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 interface UploadImgProps {
   onClose: () => void;
   sessionId: string | null;
-  onImageSelect: (imageUrl: string) => void; // Callback to send the selected image
+  onImageSelect: (imageUrl: string) => void; 
 }
 
 const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect }) => {
@@ -104,34 +104,28 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
     if (file && file.type.startsWith('image')) {
       setImageFile(file);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result as string); // Preview the uploaded image
-      };
+      reader.onloadend = () => setSelectedImage(reader.result as string);
       reader.readAsDataURL(file);
     }
   };
-  
+
   const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith('image')) {
       setImageFile(file);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result as string); // Preview the uploaded image
-      };
+      reader.onloadend = () => setSelectedImage(reader.result as string);
       reader.readAsDataURL(file);
     }
   };
-  
 
   const handleGoClick = () => {
     if (selectedImage) {
-      setImages((prevImages) => [...prevImages, selectedImage]); // Add the image to the list
-      setSelectedImage(null); // Clear the preview
-      setActiveTab('yourImages'); // Switch to "yourImages" tab
+      // Add the image to your images list and switch to the "yourImages" tab
+      setImages((prevImages) => [...prevImages, selectedImage]);
+      setActiveTab('yourImages');
     }
   };
-  
 
   const renderTabContent = () => {
     if (activeTab === 'yourImages') {
@@ -164,17 +158,17 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
                   )}
                 </div>
               ))}
-              <button
-                onClick={() => {
-                  if (selectedImage) {
-                    onImageSelect(selectedImage);
-                    onClose();
-                  }
-                }}
-                className="w-full mt-20 ml-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 shadow-lg transition duration-300"
-              >
-                Next
-              </button>
+<button
+  onClick={() => {
+    if (selectedImage) {
+      onImageSelect(selectedImage);
+      onClose();
+    }
+  }}
+  className="w-full mt-20 ml-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-indigo-600 shadow-lg transition duration-300"
+>
+  Next
+</button>
             </div>
           )}
         </div>
@@ -287,7 +281,6 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
             ✕
           </button>
         </div>
-
         {/* Tab Content */}
         <div>{renderTabContent()}</div>
       </div>
@@ -296,3 +289,4 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
 };
 
 export default UploadImg;
+

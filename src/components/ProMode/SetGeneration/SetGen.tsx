@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import UploadImg from '../UploadImg';
 import axios from 'axios';
+import UploadImg from '../UploadImg'; // Ensure correct import path
 import kinmitraAnimation from '/src/assets/kinmitraAnimation.gif';
 import GlassComponent from '../../GlassComponent';
 import DownloadButton from '../../DownloadButton';
@@ -9,121 +9,101 @@ import DownloadButton from '../../DownloadButton';
 const SetGen: React.FC = () => {
   const [isUploadVisible, setIsUploadVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [generatedImages, setGeneratedImages] = useState<string[]>([]); // Store generated image URLs
+  const [isLoading, setIsLoading] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const [sourceType, setSourceType] = useState("Necklace");
   const [targetType, setTargetType] = useState("Necklace");
-  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
-  const [error, setError] = useState<string>("");
-
-  const imageToDownload = generatedImages[0];
 
   const sessionId = localStorage.getItem('sessionId');
+  const trialDaysLeft = parseInt(localStorage.getItem('trial_days_left') || '0');
+  const trialStatus = localStorage.getItem('trial_status')?.toLowerCase();
   const [showComponent, setShowComponent] = useState<boolean>(false);
 
+  const base_url = 'https://62vphpjt4l.execute-api.us-east-1.amazonaws.com/default/SetGenerator';
+
+  // Check trial validity
   useEffect(() => {
-    const trialDaysLeft = parseInt(localStorage.getItem('trial_days_left') || '0');
-    const trialStatus = localStorage.getItem('trial_status')?.toLowerCase();
-
-    console.log("trialDaysLeft:", trialDaysLeft); // Log trial days left
-    console.log("trialStatus:", trialStatus); // Log trial status as boolean
-
-    // Check if trialStatus is true and trialDaysLeft is greater than 0
     if (trialStatus && trialDaysLeft > 0) {
-      setShowComponent(true); // Show component if trial is active and days left are positive
+      setShowComponent(true);
     } else {
-      setShowComponent(false); // Hide component if trial is inactive or days are not positive
+      setShowComponent(false);
     }
-  }, []);
+  }, [trialDaysLeft, trialStatus]);
 
+  // Check session ID on mount
   useEffect(() => {
     if (!sessionId) {
       alert('Session ID not found. Please refresh the page.');
     }
   }, [sessionId]);
 
-  // Function to sanitize Base64 string
-  const sanitizeBase64 = (base64: string) => base64.replace(/\s/g, '');
-
-  // API call function
+  // Function to call the Lambda API
   const callLambda = async (endpointUrl: string, payload: object) => {
-    setIsLoading(true); // Set loading state to true
-    console.log("here")
-    console.log(payload)
-    try {
-      const response = await axios.post(endpointUrl, payload, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return response.data;
-    } catch (error: any) {
-      console.error("Lambda call error:", error);
-
-      if (error.response) {
-        // Server responded with a status other than 2xx
-        setError(
-          `Server Error: ${error.response.status} - ${error.response.statusText}`
-        );
-      } else if (error.request) {
-        // No response received from the server
-        setError("Network Error: No response received from the server.");
-      } else {
-        // Something else happened during request setup
-        setError(`Error: ${error.message}`);
-      }
-
-      return null;
-    } finally {
-      setIsLoading(false); // Reset loading state
-    }
-  };
-
-  // Handle API call for image generation
-  const handleGenerate = async () => {
-    if (!selectedImage) {
-      alert("Please upload an image to proceed.");
-      return;
-    }
-
     setIsLoading(true);
-    setError("");
-
-    const sanitizedImage = sanitizeBase64(selectedImage.split(",")[1]); // Remove the base64 prefix
-
-    const payload = {
-      image: sanitizedImage,
-      source_type: sourceType,
-      target_type: targetType,
-    };
-
-    console.log('payload for image generation:', payload);
-
+    console.log('Sending payload to Lambda:', payload); // Log the payload
     try {
-      const response = await callLambda(
-        "https://62vphpjt4l.execute-api.us-east-1.amazonaws.com/default/SetGenerator",
-        payload
-      );
-
-      // Log the response from the API
-      console.log("API Response:", response);
-      const parsedBody = JSON.parse(response.body); // Convert JSON string to object
-      console.log(parsedBody.uploaded_image_urls)
-      if (response) {
-        setGeneratedImages(parsedBody.uploaded_image_urls || []);
-      } else {
-        setError("Error: Unable to generate images.");
-      }
-    } catch (e) {
-      setError("Failed to make API request.");
-      // Log error
-      console.error("Error during API request:", e);
+      const response = await axios.post(endpointUrl, payload);
+      console.log('Lambda response:', response); // Log the response
+      return response.data;
+    } catch (error) {
+      setError('Error processing the request. Please try again later.');
+      console.error("Lambda call error:", error); // Log the error details
+      return null;
     } finally {
       setIsLoading(false);
     }
   };
 
   // Handle image selection
-  const handleImageSelect = (imageBase64: string) => setSelectedImage(imageBase64);
+  const handleImageSelect = (imageBase64: string) => {
+    console.log('Image selected:', imageBase64); // Log the selected image
+    setSelectedImage(imageBase64);
+  };
+
+  // Handle image processing and generation
+  const handleProcessImage = async () => {
+    setIsProcessing(true);
+    if (selectedImage) {
+      const payload = {
+        image: selectedImage.split(',')[1], // Sending Base64 image string
+        source_type: sourceType,
+        target_type: targetType,
+      };
+      const response = await callLambda(base_url, payload);
+      console.log("Lambda response:", response); // Log the entire response
+
+      // Check if the response has a body and parse it
+      if (response && response.body) {
+        try {
+          const parsedBody = JSON.parse(response.body);
+          if (parsedBody.uploaded_image_urls) {
+            setGeneratedImages(parsedBody.uploaded_image_urls);
+          } else {
+            setError('Failed to generate image variations.');
+          }
+        } catch (error) {
+          setError('Error parsing Lambda response.');
+        }
+      } else {
+        setError('Lambda response is empty or malformed.');
+      }
+    } else {
+      setError('No image uploaded.');
+    }
+    setIsProcessing(false);
+  };
+
+
+  // Reset state to upload a new image
+  const handleUploadNewImage = () => {
+    console.log('Resetting image and generated images');
+    setSelectedImage(null);
+    setGeneratedImages([]);
+    setError(null);
+  };
 
   return (
     <>
@@ -132,20 +112,14 @@ const SetGen: React.FC = () => {
           {/* Loading Overlay */}
           {isLoading && (
             <div className="fixed inset-0 flex items-center justify-center bg-gray-100 bg-opacity-70 z-50">
-              <img
-                src={kinmitraAnimation}
-                alt="Loading Animation"
-                className="w-[200px] h-[200px] object-cover"
-              />
+              <img src={kinmitraAnimation} alt="Loading Animation" className="w-[200px] h-[200px] object-cover" />
             </div>
           )}
-
-          {/* Background and White Overlay */}
+          {/* White overlay on the background image */}
           <div
             className="absolute top-0 left-0 right-0 bottom-0 bg-cover bg-bottom opacity-70 z-[-100]"
             style={{
-              backgroundImage:
-                "url('https://img.freepik.com/free-vector/gradient-golden-linear-background_23-2148957745.jpg?t=st=1730912970~exp=1730916570~hmac=2214eb1073666d65e11ff89c47d76300904bf1001e6128bf610138ef42d5e872&w=900')",
+              backgroundImage: "url('https://img.freepik.com/free-vector/gradient-golden-linear-background_23-2148957745.jpg')",
             }}
           ></div>
           <div className="absolute top-0 left-0 right-0 bottom-0 bg-white opacity-60 z-[-90]"></div>
@@ -154,11 +128,7 @@ const SetGen: React.FC = () => {
           <div className="flex items-center justify-between text-xl p-5 text-[#585858] relative z-10">
             <div className="name flex flex-col items-center gap-1">
               <h2 className="text-xl">
-                <img
-                  src="https://www.kinmitra.com/assets/image-BEwmDLXF.png"
-                  alt="Kinmitra Logo"
-                  className="h-5"
-                />
+                <img src="https://www.kinmitra.com/assets/image-BEwmDLXF.png" alt="Kinmitra Logo" className="h-5" />
               </h2>
               <p className="inline-block text-xl font-medium bg-gradient-to-r from-[#00AA4F] via-[#E0AE2A] to-[#EB2D2E] bg-clip-text text-transparent animate-[moveText_4s_linear_infinite]">
                 Pro Mode
@@ -173,48 +143,39 @@ const SetGen: React.FC = () => {
           </div>
 
           {/* Main Content */}
+          {/* Main Content */}
           <main className="flex flex-col items-center flex-grow p-6 relative z-10">
             <div className="flex flex-wrap gap-6 justify-center items-center w-full">
-              {/* Uploaded Image Preview */}
               <div
                 className="h-[250px] w-[250px] border-2 flex items-center justify-center cursor-pointer p-4"
                 onClick={() => {
-                  if (!selectedImage || generatedImages.length > 0) {
-                    setIsUploadVisible(true); // Show upload image modal if no image or after image generation
-                    setSelectedImage(null); // Reset selected image
-                    setGeneratedImages([]); // Reset generated images
-                  }
+                  setIsUploadVisible(true); // Always show the upload modal
+                  setSelectedImage(null);   // Reset selected image state
+                  setGeneratedImages([]);   // Reset generated images state
+                  setError(null);           // Reset any error state
                 }}
               >
                 {selectedImage ? (
-                  <img
-                    src={selectedImage}
-                    alt="Selected"
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={selectedImage} alt="Selected" className="w-full h-full object-cover" />
                 ) : (
                   <span className="text-sm text-gray-600">Click to upload</span>
                 )}
               </div>
-              <div className="h-[250px] w-[250px] border-2 flex items-center justify-center p-4 relative">
+
+              <div className="relative h-[250px] w-[250px] border-2 flex items-center justify-center p-4">
                 {generatedImages.length > 0 ? (
                   <>
-                    {generatedImages.map((image, index) => (
-                      <img
-                        key={index}
-                        src={image}
-                        alt={`Generated Variation ${index + 1}`}
-                        className="w-[100%] h-[100%] object-cover" // Adjust image size as needed
-                      />
-                    ))}
-                    {imageToDownload && (
-                      <div className="absolute top-2 right-2">
-                        <DownloadButton imageUrl={imageToDownload} />
-                      </div>
-                    )}
+                    <img
+                      src={generatedImages[0]}
+                      alt="Generated Variation"
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                    <div className="absolute top-2 right-2">
+                      <DownloadButton imageUrl={generatedImages[0]} />
+                    </div>
                   </>
                 ) : (
-                  <span className="text-sm text-gray-600">Generated Images</span>
+                  <span className="text-sm text-gray-600">Generated Image</span>
                 )}
               </div>
             </div>
@@ -249,17 +210,17 @@ const SetGen: React.FC = () => {
               </div>
             </div>
 
-            {/* Generate Button */}
-            <button
-              onClick={handleGenerate}
-              disabled={isLoading}
-              className="mt-6 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
-            >
-              {isLoading ? "Generating..." : "Generate"}
-            </button>
+            {selectedImage && !isProcessing && (
+              <button
+                onClick={handleProcessImage}
+                className="mt-6 px-8 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
+                disabled={isProcessing}
+              >
+                Process Image
+              </button>
+            )}
 
-            {/* Error Message */}
-            {error && <p className="mt-4 text-red-500">{error}</p>}
+            {error && <div className="mt-6 text-red-500">{error}</div>}
           </main>
 
           {/* Upload Image Modal */}
@@ -270,6 +231,7 @@ const SetGen: React.FC = () => {
               onImageSelect={handleImageSelect}
             />
           )}
+
         </div>
       ) : (
         <GlassComponent />
