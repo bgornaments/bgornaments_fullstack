@@ -212,6 +212,31 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
         </div>
       );
     }
+    else if (activeTab === 'upload using qr') {
+      return (
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-full h-64 bg-gray-100 flex items-center justify-center border rounded-md shadow-md">
+            {qrCode ? (
+              <img src={qrCode} alt="QR Code" className="max-h-full" />
+            ) : (
+              <p className="text-gray-500 text-left text-lg">
+                1. Click "Generate QR". <br />
+                2. Scan it with your phone. <br />
+                3. Upload an image to see it in "Your Images".</p>
+            )}
+          </div>
+          <button
+            onClick={handleGenerateQRCode}
+            className="w-full mt-20 ml-4 text-[#E0AE2A] border-2 border-[#E0AE2A] font-medium rounded-lg
+            bg-gradient-to-r from-white via-[#FDEEC7] via-[#E0AE2A] to-white
+            hover:bg-gradient-to-r hover:from-white hover:via-[#E0AE2A] hover:to-[#FDEEC7]
+            hover:text-white transition duration-1000"
+          >
+            Generate QR
+          </button>
+        </div>
+      );
+    }
     return (
       <div className="flex flex-col items-center justify-center gap-4 border-2 border-dashed border-gray-300 p-6 rounded-md"
         onDrop={handleFileDrop} onDragOver={(e) => e.preventDefault()}>
