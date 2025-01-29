@@ -73,7 +73,7 @@ const ImgVar: React.FC = () => {
         image_base64: selectedImage.split(',')[1], 
       };
 
-      console.log('payload for caption generation:', payload);
+      console.log('payload for fetching s3 link:', payload);
 
       const response = await callLambda(
         `${base_url}handle_promode_session_images`,
@@ -234,7 +234,7 @@ const ImgVar: React.FC = () => {
               <div
                 className="h-[250px] w-[250px] border-2 flex items-center justify-center cursor-pointer p-4"
                 onClick={() => {
-                  if (!selectedImage || generatedImageUrl) {
+                  if (!selectedImage) {
                     setIsUploadVisible(true); // Show upload image modal if no image or after image generation
                     handleUploadNewImage(); // Reset states to start fresh
                   }

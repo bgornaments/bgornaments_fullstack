@@ -140,10 +140,12 @@ const SetGen: React.FC = () => {
               <div
                 className="h-[250px] w-[250px] border-2 flex items-center justify-center cursor-pointer p-4"
                 onClick={() => {
+                  if (!selectedImage){
                   setIsUploadVisible(true); // Always show the upload modal
                   setSelectedImage(null);   // Reset selected image state
                   setGeneratedImages([]);   // Reset generated images state
-                  setError(null);           // Reset any error state
+                  setError(null);     
+                  }      // Reset any error state
                 }}
               >
                 {selectedImage ? (

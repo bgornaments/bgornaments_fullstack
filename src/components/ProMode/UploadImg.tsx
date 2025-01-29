@@ -123,6 +123,8 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
     if (selectedImages.length > 0) {
       // Add selected images to the "yourImages" list
       setImages((prevImages) => [...prevImages, ...selectedImages]);
+      console.log(selectedImages[0]);
+      
       // Clear the selected images from the "Upload from Device" tab
       setSelectedImages([]);
       setActiveTab('yourImages');
@@ -169,11 +171,10 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
                 onClose();
               }
             }}
-            className="w-full mt-20 ml-4 text-[#E0AE2A] border-2 border-[#E0AE2A] font-medium rounded-lg
-            bg-gradient-to-r from-white via-[#FDEEC7] via-[#E0AE2A] to-white
-            hover:bg-gradient-to-r hover:from-white hover:via-[#E0AE2A] hover:to-[#FDEEC7]
-            hover:text-white transition duration-1000"
-          >
+            className="px-6 py-3 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer
+              bg-gradient-to-r from-white via-[#FDEEC7] via-[#E0AE2A] to-white
+              hover:bg-gradient-to-r hover:from-white hover:via-[#E0AE2A] hover:to-[#FDEEC7] 
+              hover:text-white transition duration-1000">
             Next
           </button>
         </div>
@@ -191,11 +192,10 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
                 onClose();
               }
             }}
-            className="w-full mt-20 ml-4 text-[#E0AE2A] border-2 border-[#E0AE2A] font-medium rounded-lg
-            bg-gradient-to-r from-white via-[#FDEEC7] via-[#E0AE2A] to-white
-            hover:bg-gradient-to-r hover:from-white hover:via-[#E0AE2A] hover:to-[#FDEEC7]
-            hover:text-white transition duration-1000"
-          >
+            className="px-6 py-3 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer
+              bg-gradient-to-r from-white via-[#FDEEC7] via-[#E0AE2A] to-white
+              hover:bg-gradient-to-r hover:from-white hover:via-[#E0AE2A] hover:to-[#FDEEC7] 
+              hover:text-white transition duration-1000">
             Next
           </button>
         </div>
