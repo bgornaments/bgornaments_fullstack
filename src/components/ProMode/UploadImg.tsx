@@ -179,6 +179,28 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
         </div>
       );
     }
+    else if (activeSubTab === 'generated') {
+      return (
+        <div className="flex flex-col items-center gap-4">
+          {/* Placeholder for generated images content */}
+          <p className="text-gray-500 text-center py-6 text-lg">No generated images yet.</p>
+          <button
+            onClick={() => {
+              if (selectedImages.length > 0) {
+                onImageSelect(selectedImages[0]); // Selecting the first image
+                onClose();
+              }
+            }}
+            className="w-full mt-20 ml-4 text-[#E0AE2A] border-2 border-[#E0AE2A] font-medium rounded-lg
+            bg-gradient-to-r from-white via-[#FDEEC7] via-[#E0AE2A] to-white
+            hover:bg-gradient-to-r hover:from-white hover:via-[#E0AE2A] hover:to-[#FDEEC7]
+            hover:text-white transition duration-1000"
+          >
+            Next
+          </button>
+        </div>
+      );
+    }
     return (
       <div className="text-gray-500 text-center py-6 text-lg">No generated images yet.</div>
     );
@@ -227,11 +249,10 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
           </div>
           <button
             onClick={handleGenerateQRCode}
-            className="w-full mt-20 ml-4 text-[#E0AE2A] border-2 border-[#E0AE2A] font-medium rounded-lg
-            bg-gradient-to-r from-white via-[#FDEEC7] via-[#E0AE2A] to-white
-            hover:bg-gradient-to-r hover:from-white hover:via-[#E0AE2A] hover:to-[#FDEEC7]
-            hover:text-white transition duration-1000"
-          >
+            className="px-6 py-3 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer
+              bg-gradient-to-r from-white via-[#FDEEC7] via-[#E0AE2A] to-white
+              hover:bg-gradient-to-r hover:from-white hover:via-[#E0AE2A] hover:to-[#FDEEC7] 
+              hover:text-white transition duration-1000">
             Generate QR
           </button>
         </div>
@@ -258,11 +279,11 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
             </label>
           </div>
         ) : (
-          <button onClick={handleGoClick} className="w-full mt-20 ml-4 text-[#E0AE2A] border-2 border-[#E0AE2A] font-medium rounded-lg
-            bg-gradient-to-r from-white via-[#FDEEC7] via-[#E0AE2A] to-white
-            hover:bg-gradient-to-r hover:from-white hover:via-[#E0AE2A] hover:to-[#FDEEC7]
-            hover:text-white transition duration-1000">
-            Go
+          <button onClick={handleGoClick} className="px-6 py-3 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer
+              bg-gradient-to-r from-white via-[#FDEEC7] via-[#E0AE2A] to-white
+              hover:bg-gradient-to-r hover:from-white hover:via-[#E0AE2A] hover:to-[#FDEEC7] 
+              hover:text-white transition duration-1000">
+              Go
           </button>
         )}
       </div>
