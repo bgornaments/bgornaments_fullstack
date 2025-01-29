@@ -33,14 +33,13 @@ const ImgVar: React.FC = () => {
     const trialDaysLeft = parseInt(localStorage.getItem('trial_days_left') || '0');
     const trialStatus = localStorage.getItem('trial_status')?.toLowerCase();
 
-    console.log("trialDaysLeft:", trialDaysLeft); // Log trial days left
-    console.log("trialStatus:", trialStatus); // Log trial status as boolean
+    console.log("trialDaysLeft:", trialDaysLeft); 
+    console.log("trialStatus:", trialStatus); 
 
-    // Check if trialStatus is true and trialDaysLeft is greater than 0
     if (trialStatus && trialDaysLeft > 0) {
-      setShowComponent(true); // Show component if trial is active and days left are positive
+      setShowComponent(true); 
     } else {
-      setShowComponent(false); // Hide component if trial is inactive or days are not positive
+      setShowComponent(false); 
     }
   }, []);
 
@@ -51,7 +50,7 @@ const ImgVar: React.FC = () => {
   }, [sessionId]);
 
   const callLambda = async (endpointUrl: string, payload: object) => {
-    setIsLoading(true); // Set loading state to true
+    setIsLoading(true); 
     try {
       const response = await axios.post(endpointUrl, payload);
       return response.data;
@@ -59,19 +58,19 @@ const ImgVar: React.FC = () => {
       console.error("Lambda call error:", error);
       return null;
     } finally {
-      setIsLoading(false); // Reset loading state
+      setIsLoading(false); 
     }
   };
 
   const handleImageSelect = (imageBase64: string) => setSelectedImage(imageBase64);
 
   const handleProcessImage = async () => {
-    setIsProcessing(true); // Disable the button after click
+    setIsProcessing(true);
     if (selectedImage) {
       const payload = {
         user_id: 'unknown',
         session_id: sessionId || '1234567',
-        image_base64: selectedImage.split(',')[1], // Base64 encoding before sending to Lambda
+        image_base64: selectedImage.split(',')[1], 
       };
 
       console.log('payload for caption generation:', payload);
@@ -85,12 +84,12 @@ const ImgVar: React.FC = () => {
           `${base_url}generate_image_caption`,
           { url: response.s3_link }
         );
-        setS3Link(response.s3_link); // Store the s3_link in state
+        setS3Link(response.s3_link); 
         setCaption(captionResponse.caption || '');
         await fetchModifiableParams(captionResponse.caption);
       }
     }
-    setIsProcessing(false); // Re-enable the button after processing
+    setIsProcessing(false); 
   };
 
   const fetchModifiableParams = async (caption: string) => {
@@ -131,7 +130,7 @@ const ImgVar: React.FC = () => {
     }
   };
   const handleNext = async () => {
-    setIsProcessing(true); // Disable the button after click
+    setIsProcessing(true);
     if (!selectedModification) {
       alert('Please select a modification or enter a custom one.');
       return;
@@ -152,7 +151,7 @@ const ImgVar: React.FC = () => {
       setFinalPrompt(response.output_prompt);
       await generateImageUrl(response.output_prompt, s3Link);
     }
-    setIsProcessing(false); // Re-enable the button after processing
+    setIsProcessing(false);
   };
 
   const generateImageUrl = async (finalPrompt: string, references3url: string) => {
