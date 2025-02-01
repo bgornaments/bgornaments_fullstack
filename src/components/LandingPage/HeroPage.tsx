@@ -92,7 +92,7 @@ const HeroPage: React.FC = () => {
       <Page1 />
       <LogoCarousel />
       {/*<Page2 />*/}
-      <Page3 />
+      {/* <Page3 /> */}
       <div
         className="demo-form-container"
         style={{
