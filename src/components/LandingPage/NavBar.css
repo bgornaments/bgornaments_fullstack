@@ -1,0 +1,57 @@
+/* styles.css (or your CSS file) */
+:root {
+    --navbar-bg: #ffffff; /* Navbar background color */
+    --text-color: #333333; /* Default text color */
+    --golden-color: #d4af37; /* Golden color for links */
+    --hover-color: #b8860b; /* Hover color for links */
+    --button-bg: #3085d6; /* Button background color */
+    --button-hover-bg: #1c6aa6; /* Button hover background color */
+    --button-text: #ffffff; /* Button text color */
+  }
+  
+  .navbar {
+    width: 100%;
+    height: 10vh;
+    background-color: var(--navbar-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2.5rem;
+  }
+  
+  .navbar-logo {
+    width: 15vh;
+    height: auto;
+  }
+  
+  .navbar-links {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 1rem;
+    color: var(--golden-color);
+  }
+  
+  .navbar-links a, .navbar-links button {
+    color: var(--golden-color);
+    font-weight: bold;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .navbar-links a:hover, .navbar-links button:hover {
+    color: var(--hover-color);
+  }
+  
+  .navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .navbar-user img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
