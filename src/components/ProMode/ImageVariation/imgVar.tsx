@@ -5,6 +5,7 @@ import '/src/assets/kinmitraAnimation.mp4'
 import kinmitraAnimation from '/src/assets/kinmitraAnimation.gif';
 import GlassComponent from '../../GlassComponent';
 import DownloadButton from '../../DownloadButton';
+import { Dialog } from "@headlessui/react";
 
 const ImgVar: React.FC = () => {
   const [isUploadVisible, setIsUploadVisible] = useState(false);
@@ -21,6 +22,44 @@ const ImgVar: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const [isProcessing, setIsProcessing] = useState(false); // To disable buttons after click
   const [sliderVal, setSliderVal] = useState<number>(50);
+  const [customParam, setCustomParam] = useState('');
+  const [isHovered, setIsHovered] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const [origin, setOrigin] = useState({ x: "50%", y: "50%" });
+
+  // Handle Wheel Zooming
+  const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const { offsetX, offsetY, target } = event.nativeEvent;
+
+    if (target instanceof HTMLImageElement) {
+      const { width, height } = target.getBoundingClientRect();
+      const xPercent = ((offsetX / width) * 100).toFixed(2) + "%";
+      const yPercent = ((offsetY / height) * 100).toFixed(2) + "%";
+
+      setOrigin({ x: xPercent, y: yPercent });
+      setZoom((prevZoom) => Math.max(1, prevZoom + event.deltaY * -0.01));
+    }
+  };
+
+  // Handle Keyboard Zooming (Ctrl + '+' or Ctrl + '-')
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.ctrlKey && event.key === '+') {
+      setZoom((prevZoom) => Math.min(3, prevZoom + 0.1)); // Zoom in
+    } else if (event.ctrlKey && event.key === '-') {
+      setZoom((prevZoom) => Math.max(1, prevZoom - 0.1)); // Zoom out
+    }
+  };
+
+  // Add event listener for keyboard events
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   const imageToDownload = generatedImageUrl;
 
@@ -33,13 +72,13 @@ const ImgVar: React.FC = () => {
     const trialDaysLeft = parseInt(localStorage.getItem('trial_days_left') || '0');
     const trialStatus = localStorage.getItem('trial_status')?.toLowerCase();
 
-    console.log("trialDaysLeft:", trialDaysLeft); 
-    console.log("trialStatus:", trialStatus); 
+    console.log("trialDaysLeft:", trialDaysLeft);
+    console.log("trialStatus:", trialStatus);
 
     if (trialStatus && trialDaysLeft > 0) {
-      setShowComponent(true); 
+      setShowComponent(true);
     } else {
-      setShowComponent(false); 
+      setShowComponent(false);
     }
   }, []);
 
@@ -50,7 +89,7 @@ const ImgVar: React.FC = () => {
   }, [sessionId]);
 
   const callLambda = async (endpointUrl: string, payload: object) => {
-    setIsLoading(true); 
+    setIsLoading(true);
     try {
       const response = await axios.post(endpointUrl, payload);
       return response.data;
@@ -58,7 +97,7 @@ const ImgVar: React.FC = () => {
       console.error("Lambda call error:", error);
       return null;
     } finally {
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
@@ -70,7 +109,7 @@ const ImgVar: React.FC = () => {
       const payload = {
         user_id: 'unknown',
         session_id: sessionId || '1234567',
-        image_base64: selectedImage.split(',')[1], 
+        image_base64: selectedImage.split(',')[1],
       };
 
       console.log('payload for fetching s3 link:', payload);
@@ -84,12 +123,12 @@ const ImgVar: React.FC = () => {
           `${base_url}generate_image_caption`,
           { url: response.s3_link }
         );
-        setS3Link(response.s3_link); 
+        setS3Link(response.s3_link);
         setCaption(captionResponse.caption || '');
         await fetchModifiableParams(captionResponse.caption);
       }
     }
-    setIsProcessing(false); 
+    setIsProcessing(false);
   };
 
   const fetchModifiableParams = async (caption: string) => {
@@ -184,7 +223,7 @@ const ImgVar: React.FC = () => {
     setGeneratedImageUrl(null);
     setS3Link('');
   };
-  
+
   return (
     <>
       {showComponent ? (
@@ -232,7 +271,7 @@ const ImgVar: React.FC = () => {
           <main className="flex flex-col items-center flex-grow p-6 relative z-10">
             <div className="flex flex-wrap gap-6 justify-center items-center w-full">
               <div
-                className="h-[250px] w-[250px] border-2 flex items-center justify-center cursor-pointer p-4"
+                className="h-[250px] w-[250px] md:h-[350px] md:w-[350px] border-2 flex items-center justify-center cursor-pointer p-4"
                 onClick={() => {
                   if (!selectedImage) {
                     setIsUploadVisible(true); // Show upload image modal if no image or after image generation
@@ -250,14 +289,24 @@ const ImgVar: React.FC = () => {
                   <span className="text-sm text-gray-600">Click to upload</span>
                 )}
               </div>
-              <div className="h-[250px] w-[250px] border-2 flex items-center justify-center p-4">
+              <div
+                className="relative h-[250px] w-[250px] md:h-[350px] md:w-[350px] border-2 flex items-center justify-center p-4 overflow-hidden cursor-pointer"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                onClick={() => generatedImageUrl && setIsOpen(true)}
+              >
                 {generatedImageUrl ? (
                   <>
                     <img
-                      src={generatedImageUrl[0]}
+                      src={generatedImageUrl[0] ?? ""}
                       alt="Generated Variation"
                       className="w-full h-full object-cover rounded-lg"
                     />
+                    {isHovered && (
+                      <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-[#E0AE2A] text-lg font-semibold">
+                        Click to open
+                      </div>
+                    )}
                     {imageToDownload && (
                       <div className="absolute top-2 right-2">
                         <DownloadButton imageUrl={imageToDownload} />
@@ -267,8 +316,47 @@ const ImgVar: React.FC = () => {
                 ) : (
                   <span className="text-sm text-gray-600">Generated Image</span>
                 )}
-
               </div>
+
+              {/* Popup Modal for Image Preview with Zoom */}
+              {generatedImageUrl && (
+                <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
+                  <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center">
+
+                    <Dialog.Panel className="relative p-4 max-w-3xl bg-white rounded-lg shadow-lg">
+                      <button
+                        onClick={() => setIsOpen(false)}
+                        className="absolute top-0 right-0 text-[#FF0000] bg-white hover:text-[red] bg-red-800 p-2 rounded-full text-xl z-10"
+                      >
+                        ✖
+                      </button>
+                      <div className="flex">
+                        <div className="text-white bg-gray-900 p-4 rounded-lg mr-4">
+                          <h2 className="text-lg font-semibold mb-2">How to Zoom:</h2>
+                          <ul className="text-sm list-disc pl-4">
+                            <li>Scroll up to zoom in</li>
+                            <li>Scroll down to zoom out</li>
+                          </ul>
+                        </div>
+
+                        {/* Image Preview with Zoom */}
+                        <div className="overflow-hidden flex items-center justify-center" onWheel={handleWheel}>
+                          <img
+                            src={generatedImageUrl[0] ?? ""}
+                            alt="Generated Variation"
+                            style={{
+                              transform: `scale(${zoom})`,
+                              transformOrigin: `${origin.x} ${origin.y}`, // Set the transform origin
+                            }}
+                            className="rounded-lg transition-transform duration-200 max-w-[80vw] max-h-[70vh]"
+                          />
+                        </div>
+                      </div>
+                    </Dialog.Panel>
+                  </div>
+                </Dialog>
+              )}
+
             </div>
             {selectedImage && !isProcessing && (
               <button
@@ -293,24 +381,38 @@ const ImgVar: React.FC = () => {
                       {param}
                     </option>
                   ))}
+                  <option value="Other">Other</option> {/* Added 'Other' option */}
                 </select>
+
+                {/* Custom Input for 'Other' */}
+                {selectedParam === 'Other' && (
+                  <input
+                    type="text"
+                    placeholder="Enter custom parameter"
+                    value={customParam}
+                    onChange={(e) => setCustomParam(e.target.value)}
+                    className="border p-2 rounded w-full max-w-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition"
+                  />
+                )}
+
                 {/* 'Go' Button */}
                 <button
                   onClick={() => {
-                    if (selectedParam) {
-                      fetchModifications(selectedParam); // Call the function to fetch modifications
+                    if (selectedParam || customParam) {
+                      fetchModifications(selectedParam || customParam); // Pass customParam if selectedParam is 'Other'
                     } else {
                       alert('Please select a parameter to modify.');
                     }
                   }}
-                  className={`px-6 py-2 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-yellow-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 transition ${!selectedParam || isProcessing ? 'opacity-50 cursor-not-allowed' : ''
+                  className={`px-6 py-2 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-yellow-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 transition ${(!selectedParam && !customParam) || isProcessing ? 'opacity-50 cursor-not-allowed' : ''
                     }`}
-                  disabled={!selectedParam || isProcessing}
+                  disabled={(!selectedParam && !customParam) || isProcessing}
                 >
                   Go
                 </button>
               </div>
             )}
+
             {modifications.length > 0 && (
               <div className="mt-6 flex-col items-center justify-between space-x-4">
                 {/* Dropdown */}
