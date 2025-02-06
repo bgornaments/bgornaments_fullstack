@@ -18,7 +18,7 @@ const ImgVar: React.FC = () => {
   const [customModification, setCustomModification] = useState<string>('');
   const [finalPrompt, setFinalPrompt] = useState<string>(''); // To store the final prompt
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null); // To store the generated image URL
-  // const [s3Link, setS3Link] = useState("");
+  const [s3Link, setS3Link] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const [isProcessing, setIsProcessing] = useState(false); // To disable buttons after click
   const [sliderVal, setSliderVal] = useState<number>(50);
@@ -106,34 +106,27 @@ const ImgVar: React.FC = () => {
   const handleProcessImage = async () => {
     setIsProcessing(true);
     if (selectedImage) {
-      // const payload = {
-      //   user_id: 'unknown',
-      //   session_id: sessionId || '1234567',
-      //   image_base64: selectedImage.split(',')[1],
-      // };
+      const payload = {
+        user_id: 'unknown',
+        session_id: sessionId || '1234567',
+        image_base64: selectedImage.split(',')[1],
+      };
 
-      // console.log('payload for fetching s3 link:', payload);
+      console.log('payload for fetching s3 link:', payload);
 
-      // const response = await callLambda(
-      //   `${base_url}handle_promode_session_images`,
-      //   payload
-      // );
-      // if (response && response.s3_link) {
-      //   const captionResponse = await callLambda(
-      //     `${base_url}generate_image_caption`,
-      //     { url: response.s3_link }
-      //   );
-      //   setS3Link(response.s3_link);
-      //   setCaption(captionResponse.caption || '');
-      //   await fetchModifiableParams(captionResponse.caption);
-      // }
-      const captionResponse = await callLambda(
-        `${base_url}generate_image_caption`,
-        { image_base64: selectedImage.split(',')[1] }
+      const response = await callLambda(
+        `${base_url}handle_promode_session_images`,
+        payload
       );
-      // setS3Link(response.s3_link);
-      setCaption(captionResponse.caption || '');
-      await fetchModifiableParams(captionResponse.caption);
+      if (response && response.s3_link) {
+        const captionResponse = await callLambda(
+          `${base_url}generate_image_caption`,
+          { url: response.s3_link }
+        );
+        setS3Link(response.s3_link);
+        setCaption(captionResponse.caption || '');
+        await fetchModifiableParams(captionResponse.caption);
+      }
     }
     setIsProcessing(false);
   };
@@ -228,7 +221,7 @@ const ImgVar: React.FC = () => {
     setCustomModification('');
     setFinalPrompt('');
     setGeneratedImageUrl(null);
-    // setS3Link('');
+    setS3Link('');
   };
 
   return (
