@@ -30,6 +30,7 @@
     "axios": "^1.7.2",
     "core-js": "^3.38.1",
     "font-awesome": "^4.7.0",
+    "headlessui": "^0.0.0",
     "inflection": "^3.0.0",
     "jwt-decode": "^4.0.0",
     "keen-slider": "^6.8.6",
