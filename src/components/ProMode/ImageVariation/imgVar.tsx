@@ -6,6 +6,7 @@ import kinmitraAnimation from '/src/assets/kinmitraAnimation.gif';
 import GlassComponent from '../../GlassComponent';
 import DownloadButton from '../../DownloadButton';
 import { Dialog } from "@headlessui/react";
+import ImageMaskingPopup from '../../MaskImage';
 
 const ImgVar: React.FC = () => {
   const [isUploadVisible, setIsUploadVisible] = useState(false);
@@ -27,6 +28,15 @@ const ImgVar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [zoom, setZoom] = useState(1);
   const [origin, setOrigin] = useState({ x: "50%", y: "50%" });
+  const [showMaskingPopup, setShowMaskingPopup] = useState(false);
+
+  const handleShowMaskingPopup = () => {
+    setShowMaskingPopup(true);
+  };
+
+  const handleCloseMaskingPopup = () => {
+    setShowMaskingPopup(false);
+  };
 
   // Handle Wheel Zooming
   const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
@@ -358,6 +368,21 @@ const ImgVar: React.FC = () => {
               )}
 
             </div>
+
+            <div>
+              <button onClick={handleShowMaskingPopup} className="mt-4 p-2 bg-blue-500 text-white rounded">
+                Mask Image
+              </button>
+            </div>
+
+            {/* Show Masking Popup if showMaskingPopup is true */}
+            {showMaskingPopup && selectedImage && (
+              <ImageMaskingPopup
+                imgvar={selectedImage}
+                onClose={handleCloseMaskingPopup} // Pass the handler for masked image
+              />
+            )}
+
             {selectedImage && !isProcessing && (
               <button
                 onClick={handleProcessImage}
