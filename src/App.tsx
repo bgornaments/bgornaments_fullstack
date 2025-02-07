@@ -223,6 +223,7 @@ import SetGen from "./components/ProMode/SetGeneration/SetGen.tsx";
 import ProtectedRoute from "./ProtectedRoute";  // import the ProtectedRoute component
 import ExpertMode from "./components/ExpertMode/ExpertMode.tsx";
 import DemoForm from "./components/Contact/contactSAP.tsx";
+import UserProfile from "./components/UserProfile/UserProfile.tsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <HeroPage /> },
@@ -305,6 +306,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <EditImageData />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/profile-page",
+    element: (
+      <ProtectedRoute>
+        <UserProfile />
       </ProtectedRoute>
     ),
   },
