@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Card from "../Basic/Card";
 import setgen from "/src/assets/set_generator_icon.jpg";
 import imgvar from "/src/assets/image_variations_icon.jpg";
+import astr from "/src/assets/vedic-astrology.png";
 
 const ExpertMode: React.FC = () => {
 
@@ -10,7 +11,7 @@ const ExpertMode: React.FC = () => {
     if (!existingSessionId) {
       const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
       sessionStorage.setItem("sessionId", newSessionId);
-      localStorage.setItem("sessionId", newSessionId); 
+      localStorage.setItem("sessionId", newSessionId);
       console.log("New Session ID created:", newSessionId);
     } else {
       console.log(`Session ID already exists: ${existingSessionId}`);
@@ -54,6 +55,18 @@ const ExpertMode: React.FC = () => {
               gap="2vw"
               link="/expert-mode/image-variation"
             />
+            <Card
+              img={astr}
+              height="32vw"
+              width="22vw"
+              h4Text="Astrology Jewelry"
+              h4Size="1.5vw"
+              pText="Find your perfect astrology jewelry with personalized astrology guidance."
+              pSize="1vw"
+              imgWidth="9vw"
+              gap="2vw"
+              link=""
+            />
           </div>
         </div>
         <div className="hidden md:block xl:hidden">
@@ -82,6 +95,18 @@ const ExpertMode: React.FC = () => {
               gap="2.3rem"
               link="/expert-mode/image-variation"
             />
+            <Card
+              img={astr}
+              height="70vh"
+              width="38vw"
+              h4Text="Astrology Jewelry"
+              h4Size="1.5rem"
+              pText="Find your perfect astrology jewelry with personalized astrology guidance."
+              pSize="1rem"
+              imgWidth="8rem"
+              gap="2.3rem"
+              link="/expert-mode/image-variation"
+            />
           </div>
         </div>
         <div className="block md:hidden">
@@ -105,6 +130,18 @@ const ExpertMode: React.FC = () => {
               h4Text="Image Variation"
               h4Size="3vw"
               pText="Generate unique image variations instantly for endless creative possibilities."
+              pSize="2vw"
+              imgWidth="14vw"
+              gap="5vw"
+              link="/expert-mode/image-variation"
+            />
+            <Card
+              img={astr}
+              height="60vw"
+              width="44vw"
+              h4Text="Astrology Jewelry"
+              h4Size="3vw"
+              pText="Find your perfect astrology jewelry with personalized astrology guidance."
               pSize="2vw"
               imgWidth="14vw"
               gap="5vw"
