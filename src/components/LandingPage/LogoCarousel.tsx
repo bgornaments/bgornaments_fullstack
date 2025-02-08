@@ -5,8 +5,8 @@ import colLogo2 from "/src/assets/colLogo2.png";
 import colLogo3 from "/src/assets/colLogo3.png";
 import colLogo4 from "/src/assets/colLogo4.png";
 import colLogo5 from "/src/assets/colLogo5.png";
-import certi from "/src/assets/Group 27.png";
-import vision from "/src/assets/vision.png";
+// import certi from "/src/assets/Group 27.png";
+// import vision from "/src/assets/vision.png";
 
 const LogoCarousel: React.FC = () => {
   const logosRef = useRef<HTMLUListElement>(null);
