@@ -6,6 +6,7 @@ import kinmitraAnimation from '/src/assets/kinmitraAnimation.gif';
 import GlassComponent from '../../GlassComponent';
 import DownloadButton from '../../DownloadButton';
 import { Dialog } from "@headlessui/react";
+import { IMAGE_GENERATOR_LEONARDO_NEW } from '../../../constantsAWS';
 
 const ImgVar: React.FC = () => {
   const [isUploadVisible, setIsUploadVisible] = useState(false);
@@ -198,13 +199,15 @@ const ImgVar: React.FC = () => {
       references3url: references3url,
       prompt: finalPrompt,
       init_strength: sliderVal / 100,
+      requestType: "img_variation"// add request type based on the case img_generation, img_variation, mask_img_variation
     };
-
+    // Need to send masks3url when it is masked image variation
+    // Use handle_promode_session_images to convert base64 of mask to s3 link
     console.log('payload for image generation:', payload);
 
 
     const response = await callLambda(
-      `${base_url}generate_images_leonardo`,
+      IMAGE_GENERATOR_LEONARDO_NEW,
       payload
     );
     if (response && response.uploaded_image_urls) {
