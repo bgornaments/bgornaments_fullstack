@@ -11,3 +11,4 @@ export const IMAGE_GENERATOR_LEONARDO = "https://yhzyxry6rj.execute-api.ap-south
 export const Img_Var_Base = "https://yhzyxry6rj.execute-api.ap-south-1.amazonaws.com/dev/"
 
 export const Set_Gen = "https://62vphpjt4l.execute-api.us-east-1.amazonaws.com/default/SetGenerator"
+export const IMAGE_GENERATOR_LEONARDO_NEW = "https://plbpx719zg.execute-api.ap-south-1.amazonaws.com/dev/generate_images_leonardo"

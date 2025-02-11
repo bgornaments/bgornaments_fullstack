@@ -8,6 +8,7 @@ import DownloadButton from '../../DownloadButton';
 import { Dialog } from "@headlessui/react";
 import ImageMaskingPopup from '../../MaskImage';
 import { Img_Var_Base } from '../../../constantsAWS';
+import { IMAGE_GENERATOR_LEONARDO_NEW } from '../../../constantsAWS';
 
 const ImgVar: React.FC = () => {
   const [isUploadVisible, setIsUploadVisible] = useState(false);
@@ -205,17 +206,24 @@ const ImgVar: React.FC = () => {
   };
 
   const generateImageUrl = async (finalPrompt: string, references3url: string) => {
+
+    /**
+     * If mask is generated, then accordingly the payload will be sent (refer Notion). 
+     * It will include maskURL also and reqType will be mask_img_variation (refer Notion).
+     */
     const payload = {
       references3url: references3url,
       prompt: finalPrompt,
       init_strength: sliderVal / 100,
+      requestType: "img_variation"// add request type based on the case img_generation, img_variation, mask_img_variation
     };
-
+    // Need to send masks3url when it is masked image variation
+    // Use handle_promode_session_images to convert base64 of mask to s3 link
     console.log('payload for image generation:', payload);
 
 
     const response = await callLambda(
-      `${base_url}generate_images_leonardo`,
+      IMAGE_GENERATOR_LEONARDO_NEW,
       payload
     );
     if (response && response.uploaded_image_urls) {

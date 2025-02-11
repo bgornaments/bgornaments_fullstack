@@ -124,8 +124,8 @@ const ImageMaskingPopup: React.FC<ImageMaskingPopupProps> = ({ imgvar, onClose }
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    ctx.fillStyle = "rgba(255,0,0, 0.5)";
-    ctx.strokeStyle = "rgba(255,0,0, 1)";
+    ctx.fillStyle = "rgba(0,0,0, 0.5)";
+    ctx.strokeStyle = "rgba(0,0,0, 1)";
     ctx.lineWidth = brushSize;
 
     switch (selectedTool) {
