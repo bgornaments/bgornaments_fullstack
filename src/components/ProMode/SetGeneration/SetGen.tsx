@@ -5,6 +5,7 @@ import UploadImg from '../UploadImg'; // Ensure correct import path
 import kinmitraAnimation from '/src/assets/kinmitraAnimation.gif';
 import GlassComponent from '../../GlassComponent';
 import DownloadButton from '../../DownloadButton';
+import { Set_Gen } from '../../../constantsAWS';
 
 const SetGen: React.FC = () => {
   const [isUploadVisible, setIsUploadVisible] = useState(false);
@@ -22,7 +23,7 @@ const SetGen: React.FC = () => {
   const trialStatus = localStorage.getItem('trial_status')?.toLowerCase();
   const [showComponent, setShowComponent] = useState<boolean>(false);
 
-  const base_url = 'https://62vphpjt4l.execute-api.us-east-1.amazonaws.com/default/SetGenerator';
+  const base_url = Set_Gen;
 
   // Check trial validity
   useEffect(() => {

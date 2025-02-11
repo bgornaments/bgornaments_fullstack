@@ -7,6 +7,7 @@ import GlassComponent from '../../GlassComponent';
 import DownloadButton from '../../DownloadButton';
 import { Dialog } from "@headlessui/react";
 import ImageMaskingPopup from '../../MaskImage';
+import { Img_Var_Base } from '../../../constantsAWS';
 
 const ImgVar: React.FC = () => {
   const [isUploadVisible, setIsUploadVisible] = useState(false);
@@ -75,7 +76,7 @@ const ImgVar: React.FC = () => {
 
   const sessionId = localStorage.getItem('sessionId');
 
-  const base_url = 'https://yhzyxry6rj.execute-api.ap-south-1.amazonaws.com/dev/';
+  const base_url = Img_Var_Base;
   const [showComponent, setShowComponent] = useState<boolean>(false);
 
   useEffect(() => {
@@ -328,7 +329,6 @@ const ImgVar: React.FC = () => {
                 )}
               </div>
 
-              {/* Popup Modal for Image Preview with Zoom */}
               {generatedImageUrl && (
                 <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
                   <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center">
@@ -423,18 +423,20 @@ const ImgVar: React.FC = () => {
                 {/* 'Go' Button */}
                 <button
                   onClick={() => {
-                    if (selectedParam || customParam) {
-                      fetchModifications(selectedParam || customParam); // Pass customParam if selectedParam is 'Other'
+                    const paramToSend = selectedParam === "Other" ? customParam : selectedParam;
+                    if (paramToSend) {
+                      fetchModifications(paramToSend); // Send the correct value
                     } else {
-                      alert('Please select a parameter to modify.');
+                      alert("Please select or enter a parameter to modify.");
                     }
                   }}
-                  className={`px-6 py-2 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-yellow-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 transition ${(!selectedParam && !customParam) || isProcessing ? 'opacity-50 cursor-not-allowed' : ''
+                  className={`px-6 py-2 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-yellow-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 transition ${(!selectedParam && !customParam) || isProcessing ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                   disabled={(!selectedParam && !customParam) || isProcessing}
                 >
                   Go
                 </button>
+
               </div>
             )}
 

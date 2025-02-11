@@ -32,6 +32,7 @@
     "core-js": "^3.38.1",
     "fabric": "^6.5.4",
     "font-awesome": "^4.7.0",
+    "framer-motion": "^12.4.1",
     "headlessui": "^0.0.0",
     "inflection": "^3.0.0",
     "jwt-decode": "^4.0.0",
