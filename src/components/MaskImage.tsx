@@ -124,8 +124,8 @@ const ImageMaskingPopup: React.FC<ImageMaskingPopupProps> = ({ imgvar, onClose }
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    ctx.fillStyle = "rgba(0,0,0, 0.5)";
-    ctx.strokeStyle = "rgba(0,0,0, 1)";
+    ctx.fillStyle = "rgba(255,0,0, 0.5)";
+    ctx.strokeStyle = "rgba(255,0,0, 0.5)";
     ctx.lineWidth = brushSize;
 
     switch (selectedTool) {
@@ -169,56 +169,63 @@ const ImageMaskingPopup: React.FC<ImageMaskingPopupProps> = ({ imgvar, onClose }
     }
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (event: React.MouseEvent<HTMLCanvasElement>) => {
     setIsDrawing(false);
     if (!selectedTool || !startPos) return;
-
+  
     const overlayCanvas = overlayCanvasRef.current;
     if (!overlayCanvas) return;
     const ctx = overlayCanvas.getContext("2d");
     if (!ctx) return;
-
-    const currentMask = {
+  
+    const currentMask: {
+      tool: string;
+      startPos: { x: number; y: number };
+      brushSize: number;
+      endPos?: { x: number; y: number };
+      radius?: number;
+      drawingPath?: { x: number; y: number }[];
+    } = {
       tool: selectedTool,
       startPos: { ...startPos },
-      brushSize: brushSize, 
+      brushSize: brushSize,
     };
-
+  
     switch (selectedTool) {
       case "rectangle":
-        currentMask.endPos = calculateEndPos(overlayCanvas, event); 
+        currentMask.endPos = calculateEndPos(overlayCanvas, event);
         break;
       case "circle":
-        currentMask.radius = calculateRadius(startPos, calculateEndPos(overlayCanvas, event)); 
+        const endPos = calculateEndPos(overlayCanvas, event);
+        currentMask.radius = calculateRadius(startPos, endPos);
         break;
       case "oval":
-        currentMask.endPos = calculateEndPos(overlayCanvas, event); 
+        currentMask.endPos = calculateEndPos(overlayCanvas, event);
         break;
       case "freehand":
         currentMask.drawingPath = [...drawingPath];
-        setDrawingPath([]); 
+        setDrawingPath([]);
         break;
       default:
         break;
     }
-
+  
     setMasks((prevMasks) => [...prevMasks, currentMask]);
     setStartPos(null);
   };
-
-  const calculateEndPos = (canvas: HTMLCanvasElement | null, event: React.MouseEvent<HTMLCanvasElement>): { x: number, y: number } => {
-    if (!canvas || !event) return { x: 0, y: 0 };
+  
+  const calculateEndPos = (canvas: HTMLCanvasElement, event: React.MouseEvent<HTMLCanvasElement>): { x: number; y: number } => {
     const rect = canvas.getBoundingClientRect();
     return {
       x: event.clientX - rect.left,
-      y: event.clientY - rect.top
+      y: event.clientY - rect.top,
     };
   };
-
-  const calculateRadius = (start: { x: number, y: number } | null, end: { x: number, y: number }): number => {
-    if (!start) return 0;
+  
+  const calculateRadius = (start: { x: number; y: number }, end: { x: number; y: number }): number => {
     return Math.sqrt((end.x - start.x) ** 2 + (end.y - start.y) ** 2);
   };
+  
 
 
   const exportOverlay = () => {
