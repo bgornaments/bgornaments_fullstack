@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState, useEffect, useRef } from 'react';
 import UploadImg from '../UploadImg'; // Ensure correct import path
 import axios from 'axios';
 import '/src/assets/kinmitraAnimation.mp4'
@@ -6,7 +7,7 @@ import kinmitraAnimation from '/src/assets/kinmitraAnimation.gif';
 import GlassComponent from '../../GlassComponent';
 import DownloadButton from '../../DownloadButton';
 import { Dialog } from "@headlessui/react";
-import ImageMaskingPopup from '../../MaskImage';
+import ImageMaskingPopup, { ImageMaskingPopupHandle } from '../../MaskImage';
 import { Img_Var_Base } from '../../../constantsAWS';
 import { IMAGE_GENERATOR_LEONARDO_NEW } from '../../../constantsAWS';
 
@@ -31,13 +32,45 @@ const ImgVar: React.FC = () => {
   const [zoom, setZoom] = useState(1);
   const [origin, setOrigin] = useState({ x: "50%", y: "50%" });
   const [showMaskingPopup, setShowMaskingPopup] = useState(false);
+  const popupRef = useRef<ImageMaskingPopupHandle>(null);
+  const [maskS3url, setMaskS3url] = useState<string | null>(null);
+  const [isMaskExported, setIsMaskExported] = useState<boolean>(false);
 
   const handleShowMaskingPopup = () => {
+    console.log("handleShowMaskingPopup: Running – setting showMaskingPopup to true.");
     setShowMaskingPopup(true);
   };
+  
+  useEffect(() => {
+    console.log("Updated S3 URL:", maskS3url);
+    console.log("Exported Status:", isMaskExported);
+  }, [maskS3url, isMaskExported]);
+
 
   const handleCloseMaskingPopup = () => {
+    console.log("handleCloseMaskingPopup: Running – closing masking popup.");
     setShowMaskingPopup(false);
+
+    if (popupRef.current) {
+      const { s3Link, isExported } = popupRef.current;
+      console.log("handleCloseMaskingPopup: popupRef.current exists.");
+    console.log("handleCloseMaskingPopup: s3Link =", s3Link);
+    console.log("handleCloseMaskingPopup: isExported =", isExported);
+
+      setMaskS3url(s3Link);
+      setIsMaskExported(isExported);
+
+      // Conditional logic based on isExported
+      if (isExported) {
+      console.log("handleCloseMaskingPopup: Exported! Setting payload with S3 URL:", s3Link);
+      const payload = { imageUrl: s3Link };
+      console.log("handleCloseMaskingPopup: Payload =", payload);
+    } else {
+      console.log("handleCloseMaskingPopup: Not exported yet.");
+    }
+  } else {
+    console.log("handleCloseMaskingPopup: popupRef.current is not available.");
+  }
   };
 
   // Handle Wheel Zooming
@@ -101,9 +134,11 @@ const ImgVar: React.FC = () => {
   }, [sessionId]);
 
   const callLambda = async (endpointUrl: string, payload: object) => {
+    console.log("callLambda: Running with endpointUrl:", endpointUrl, "and payload:", payload);
     setIsLoading(true);
     try {
       const response = await axios.post(endpointUrl, payload);
+      console.log("callLambda: Received response:", response.data);
       return response.data;
     } catch (error) {
       console.error("Lambda call error:", error);
@@ -113,10 +148,15 @@ const ImgVar: React.FC = () => {
     }
   };
 
-  const handleImageSelect = (imageBase64: string) => setSelectedImage(imageBase64);
+  const handleImageSelect = (imageBase64: string) => {
+    console.log("handleImageSelect: Running – image selected.");
+    setSelectedImage(imageBase64);
+  }
 
   const handleProcessImage = async () => {
+    console.log("handleProcessImage: Running.");
     setIsProcessing(true);
+
     if (selectedImage) {
       const payload = {
         user_id: 'unknown',
@@ -206,30 +246,48 @@ const ImgVar: React.FC = () => {
   };
 
   const generateImageUrl = async (finalPrompt: string, references3url: string) => {
-
-    /**
-     * If mask is generated, then accordingly the payload will be sent (refer Notion). 
-     * It will include maskURL also and reqType will be mask_img_variation (refer Notion).
-     */
-    const payload = {
-      references3url: references3url,
-      prompt: finalPrompt,
-      init_strength: sliderVal / 100,
-      requestType: "img_variation"// add request type based on the case img_generation, img_variation, mask_img_variation
-    };
-    // Need to send masks3url when it is masked image variation
-    // Use handle_promode_session_images to convert base64 of mask to s3 link
-    console.log('payload for image generation:', payload);
-
-
-    const response = await callLambda(
-      IMAGE_GENERATOR_LEONARDO_NEW,
-      payload
-    );
-    if (response && response.uploaded_image_urls) {
-      setGeneratedImageUrl(response.uploaded_image_urls);
+    console.log("generateImageUrl: Running.");
+    console.log("generateImageUrl: Using stored state values:");
+    console.log(" - maskS3url:", maskS3url);
+    console.log(" - isMaskExported:", isMaskExported);
+    console.log(" - references3url:", references3url);
+    console.log(" - prompt:", finalPrompt);
+    console.log(" - init_strength:", sliderVal / 100);
+  
+    let payload: Record<string, any>;
+    if (isMaskExported && maskS3url) {
+      payload = {
+        masks3url: maskS3url,
+        references3url: references3url,
+        prompt: finalPrompt,
+        init_strength: sliderVal / 100,
+        requestType: "mask_image_variation",
+      };
+      console.log("generateImageUrl: Using mask payload:", payload);
+    } else {
+      payload = {
+        references3url: references3url,
+        prompt: finalPrompt,
+        init_strength: sliderVal / 100,
+        requestType: "img_variation",
+      };
+      console.log("generateImageUrl: Using normal payload:", payload);
+    }
+    console.log("generateImageUrl: Final payload to send:", payload);
+  
+    try {
+      const response = await callLambda(IMAGE_GENERATOR_LEONARDO_NEW, payload);
+      if (response && response.uploaded_image_urls) {
+        console.log("generateImageUrl: Received uploaded_image_urls:", response.uploaded_image_urls);
+        setGeneratedImageUrl(response.uploaded_image_urls);
+      } else {
+        console.log("generateImageUrl: No uploaded_image_urls received.");
+      }
+    } catch (error) {
+      console.error("generateImageUrl: Error generating image URL:", error);
     }
   };
+  
   const handleUploadNewImage = () => {
     setSelectedImage(null);
     setCaption('');
@@ -386,6 +444,7 @@ const ImgVar: React.FC = () => {
             {/* Show Masking Popup if showMaskingPopup is true */}
             {showMaskingPopup && selectedImage && (
               <ImageMaskingPopup
+                ref={popupRef}
                 imgvar={selectedImage}
                 onClose={handleCloseMaskingPopup} // Pass the handler for masked image
               />
