@@ -39,7 +39,7 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
     const [brushSize, setBrushSize] = useState(5);
     const [drawingPath, setDrawingPath] = useState<Array<{ x: number; y: number }>>([]);
     const [masks, setMasks] = useState<any[]>([]);
-    const [eraserSize, setEraserSize] = useState(3);
+    const [eraserSize, setEraserSize] = useState(5);
 
     // <-- NEW EXPORT STATES -->
     // s3Link will store the URL returned from the API
@@ -73,52 +73,58 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
       };
     }, [imgvar]);
 
-    const redrawAllMasks = (ctx: CanvasRenderingContext2D) => {
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Clear the canvas before redrawing
-      masks.forEach((mask) => {
-        ctx.fillStyle = "rgba(255,0,0, 0.5)";
-        ctx.strokeStyle = "rgba(255,0,0, 1)";
+    const redrawAllMasks = (
+      ctx: CanvasRenderingContext2D,
+      masksToDraw: any[] = masks
+    ) => {
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      masksToDraw.forEach((mask) => {
         ctx.lineWidth = mask.brushSize !== undefined ? mask.brushSize : brushSize;
-
-        switch (mask.tool) {
-          case "rectangle":
-            ctx.fillRect(
-              mask.startPos.x,
-              mask.startPos.y,
-              mask.endPos.x - mask.startPos.x,
-              mask.endPos.y - mask.startPos.y
-            );
-            break;
-          case "circle":
-            ctx.beginPath();
-            ctx.arc(mask.startPos.x, mask.startPos.y, mask.radius, 0, Math.PI * 2);
-            ctx.fill();
-            break;
-          case "oval":
-            ctx.beginPath();
-            ctx.ellipse(
-              (mask.startPos.x + mask.endPos.x) / 2,
-              (mask.startPos.y + mask.endPos.y) / 2,
-              Math.abs(mask.endPos.x - mask.startPos.x) / 2,
-              Math.abs(mask.endPos.y - mask.startPos.y) / 2,
-              0,
-              0,
-              2 * Math.PI
-            );
-            ctx.fill();
-            break;
-          case "freehand":
-            ctx.beginPath();
-            if (mask.drawingPath.length > 0) {
-              ctx.moveTo(mask.drawingPath[0].x, mask.drawingPath[0].y);
-              for (let i = 1; i < mask.drawingPath.length; i++) {
-                ctx.lineTo(mask.drawingPath[i].x, mask.drawingPath[i].y);
-              }
-              ctx.stroke();
+        if (mask.tool === "freehand") {
+          // Always draw freehand with 0.5 alpha
+          ctx.strokeStyle = "rgba(255,0,0,0.5)";
+          ctx.beginPath();
+          if (mask.drawingPath && mask.drawingPath.length > 0) {
+            ctx.moveTo(mask.drawingPath[0].x, mask.drawingPath[0].y);
+            for (let i = 1; i < mask.drawingPath.length; i++) {
+              ctx.lineTo(mask.drawingPath[i].x, mask.drawingPath[i].y);
             }
-            break;
-          default:
-            break;
+            ctx.stroke();
+          }
+        } else {
+          // Other shapes use fill for the semi-transparent mask
+          ctx.strokeStyle = "rgba(255,0,0,1)";
+          ctx.fillStyle = "rgba(255,0,0,0.5)";
+          switch (mask.tool) {
+            case "rectangle":
+              ctx.fillRect(
+                mask.startPos.x,
+                mask.startPos.y,
+                mask.endPos.x - mask.startPos.x,
+                mask.endPos.y - mask.startPos.y
+              );
+              break;
+            case "circle":
+              ctx.beginPath();
+              ctx.arc(mask.startPos.x, mask.startPos.y, mask.radius, 0, Math.PI * 2);
+              ctx.fill();
+              break;
+            case "oval":
+              ctx.beginPath();
+              ctx.ellipse(
+                (mask.startPos.x + mask.endPos.x) / 2,
+                (mask.startPos.y + mask.endPos.y) / 2,
+                Math.abs(mask.endPos.x - mask.startPos.x) / 2,
+                Math.abs(mask.endPos.y - mask.startPos.y) / 2,
+                0,
+                0,
+                2 * Math.PI
+              );
+              ctx.fill();
+              break;
+            default:
+              break;
+          }
         }
       });
     };
@@ -151,49 +157,50 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        setMasks((prevMasks) =>
-          prevMasks.filter((mask) => {
+        const newMasks = masks
+          .map((mask) => {
             if (mask.tool === "freehand" && mask.drawingPath) {
-              // Filter out erased points
-              mask.drawingPath = mask.drawingPath.filter((point: { x: number; y: number; }) => {
-                const dx = point.x - x;
-                const dy = point.y - y;
-                return Math.sqrt(dx * dx + dy * dy) > eraserSize;
-              });
-              return mask.drawingPath.length > 0; // Remove mask if no points left
+              return {
+                ...mask,
+                drawingPath: mask.drawingPath.filter((point: { x: number; y: number }) => {
+                  const dx = point.x - x;
+                  const dy = point.y - y;
+                  return Math.sqrt(dx * dx + dy * dy) > eraserSize;
+                }),
+              };
             }
-
-            // Check for overlap for other shapes
-            if (mask.tool === "rectangle") {
-              return !(
-                x >= mask.startPos.x &&
-                x <= mask.endPos.x &&
-                y >= mask.startPos.y &&
-                y <= mask.endPos.y
-              );
+            if (mask.tool === "rectangle" && mask.endPos) {
+              const x1 = Math.min(mask.startPos.x, mask.endPos.x);
+              const x2 = Math.max(mask.startPos.x, mask.endPos.x);
+              const y1 = Math.min(mask.startPos.y, mask.endPos.y);
+              const y2 = Math.max(mask.startPos.y, mask.endPos.y);
+              return x >= x1 && x <= x2 && y >= y1 && y <= y2 ? null : mask;
             }
-
             if (mask.tool === "circle") {
               const dx = mask.startPos.x - x;
               const dy = mask.startPos.y - y;
-              return Math.sqrt(dx * dx + dy * dy) > mask.radius;
+              return Math.sqrt(dx * dx + dy * dy) > mask.radius ? mask : null;
             }
-
-            if (mask.tool === "oval") {
+            if (mask.tool === "oval" && mask.endPos) {
               const cx = (mask.startPos.x + mask.endPos.x) / 2;
               const cy = (mask.startPos.y + mask.endPos.y) / 2;
               const rx = Math.abs(mask.endPos.x - mask.startPos.x) / 2;
               const ry = Math.abs(mask.endPos.y - mask.startPos.y) / 2;
-
-              // Check if point (x, y) is inside the ellipse
-              return (Math.pow(x - cx, 2) / Math.pow(rx, 2) + Math.pow(y - cy, 2) / Math.pow(ry, 2)) > 1;
+              return (Math.pow(x - cx, 2) / Math.pow(rx, 2) +
+                Math.pow(y - cy, 2) / Math.pow(ry, 2)) > 1
+                ? mask
+                : null;
             }
-
-            return true; // Keep masks that are not erased
+            return mask;
           })
-        );
+          .filter(
+            (mask) =>
+              mask !== null &&
+              (mask.tool !== "freehand" || (mask.drawingPath && mask.drawingPath.length > 0))
+          );
 
-        redrawAllMasks(ctx);
+        setMasks(newMasks);
+        redrawAllMasks(ctx, newMasks);
         return;
       }
 
@@ -297,6 +304,172 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
       setStartPos(null);
     };
 
+    const handleTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
+      e.preventDefault();
+      if (!selectedTool) return;
+      setIsDrawing(true);
+      const overlayCanvas = overlayCanvasRef.current;
+      if (!overlayCanvas) return;
+      const rect = overlayCanvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+      setStartPos({ x, y });
+      if (selectedTool === "freehand") {
+        setDrawingPath([]);
+      }
+    };
+
+    const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      if (!isDrawing || !selectedTool || !startPos) return;
+      const overlayCanvas = overlayCanvasRef.current;
+      if (!overlayCanvas) return;
+      const ctx = overlayCanvas.getContext("2d");
+      if (!ctx) return;
+
+      if (selectedTool === "eraser") {
+        const rect = overlayCanvas.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+
+        setMasks((prevMasks) =>
+          prevMasks.filter((mask) => {
+            if (mask.tool === "freehand" && mask.drawingPath) {
+              mask.drawingPath = mask.drawingPath.filter((point: { x: number; y: number }) => {
+                const dx = point.x - x;
+                const dy = point.y - y;
+                return Math.sqrt(dx * dx + dy * dy) > eraserSize;
+              });
+              return mask.drawingPath.length > 0;
+            }
+            if (mask.tool === "rectangle" && mask.endPos) {
+              const x1 = Math.min(mask.startPos.x, mask.endPos.x);
+              const x2 = Math.max(mask.startPos.x, mask.endPos.x);
+              const y1 = Math.min(mask.startPos.y, mask.endPos.y);
+              const y2 = Math.max(mask.startPos.y, mask.endPos.y);
+              return !(x >= x1 && x <= x2 && y >= y1 && y <= y2);
+            }
+            if (mask.tool === "circle") {
+              const dx = mask.startPos.x - x;
+              const dy = mask.startPos.y - y;
+              return Math.sqrt(dx * dx + dy * dy) > mask.radius;
+            }
+            if (mask.tool === "oval" && mask.endPos) {
+              const cx = (mask.startPos.x + mask.endPos.x) / 2;
+              const cy = (mask.startPos.y + mask.endPos.y) / 2;
+              const rx = Math.abs(mask.endPos.x - mask.startPos.x) / 2;
+              const ry = Math.abs(mask.endPos.y - mask.startPos.y) / 2;
+              return (Math.pow(x - cx, 2) / Math.pow(rx, 2) + Math.pow(y - cy, 2) / Math.pow(ry, 2)) > 1;
+            }
+            return true;
+          })
+        );
+        redrawAllMasks(ctx);
+        return;
+      }
+
+      redrawAllMasks(ctx);
+      const rect = overlayCanvas.getBoundingClientRect();
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+
+      ctx.fillStyle = "rgba(255,0,0, 0.5)";
+      ctx.strokeStyle = "rgba(255,0,0, 0.5)";
+      ctx.lineWidth = brushSize;
+
+      switch (selectedTool) {
+        case "rectangle":
+          ctx.fillRect(startPos.x, startPos.y, x - startPos.x, y - startPos.y);
+          break;
+        case "circle":
+          const radius = Math.sqrt((x - startPos.x) ** 2 + (y - startPos.y) ** 2);
+          ctx.beginPath();
+          ctx.arc(startPos.x, startPos.y, radius, 0, Math.PI * 2);
+          ctx.fill();
+          break;
+        case "oval":
+          ctx.beginPath();
+          ctx.ellipse(
+            (startPos.x + x) / 2,
+            (startPos.y + y) / 2,
+            Math.abs(x - startPos.x) / 2,
+            Math.abs(y - startPos.y) / 2,
+            0,
+            0,
+            2 * Math.PI
+          );
+          ctx.fill();
+          break;
+        case "freehand":
+          setDrawingPath((prev) => [...prev, { x, y }]);
+          const currentPath = [...drawingPath, { x, y }];
+          if (currentPath.length > 1) {
+            ctx.beginPath();
+            ctx.moveTo(currentPath[0].x, currentPath[0].y);
+            for (let i = 1; i < currentPath.length; i++) {
+              ctx.lineTo(currentPath[i].x, currentPath[i].y);
+            }
+            ctx.stroke();
+          }
+          break;
+        default:
+          break;
+      }
+    };
+
+    const handleTouchEnd = (e: React.TouchEvent<HTMLCanvasElement>) => {
+      e.preventDefault();
+      if (selectedTool === "eraser") {
+        setIsDrawing(false);
+        return;
+      }
+      setIsDrawing(false);
+      if (!selectedTool || !startPos) return;
+      const overlayCanvas = overlayCanvasRef.current;
+      if (!overlayCanvas) return;
+      const ctx = overlayCanvas.getContext("2d");
+      if (!ctx) return;
+      const currentMask: {
+        tool: string;
+        startPos: { x: number; y: number };
+        brushSize: number;
+        endPos?: { x: number; y: number };
+        radius?: number;
+        drawingPath?: { x: number; y: number }[];
+      } = {
+        tool: selectedTool,
+        startPos: { ...startPos },
+        brushSize: brushSize,
+      };
+
+      const touch = e.changedTouches[0];
+      const rect = overlayCanvas.getBoundingClientRect();
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+
+      switch (selectedTool) {
+        case "rectangle":
+          currentMask.endPos = { x, y };
+          break;
+        case "circle":
+          currentMask.radius = calculateRadius(startPos, { x, y });
+          break;
+        case "oval":
+          currentMask.endPos = { x, y };
+          break;
+        case "freehand":
+          currentMask.drawingPath = [...drawingPath];
+          setDrawingPath([]);
+          break;
+        default:
+          break;
+      }
+      setMasks((prevMasks) => [...prevMasks, currentMask]);
+      setStartPos(null);
+    };
+
     const calculateEndPos = (
       canvas: HTMLCanvasElement,
       event: React.MouseEvent<HTMLCanvasElement>
@@ -385,6 +558,13 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
         setIsExported(exported);
       },
     }));
+    const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+
+    useEffect(() => {
+      const updateCursor = (e: { clientX: any; clientY: any; }) => setCursorPos({ x: e.clientX, y: e.clientY });
+      window.addEventListener("mousemove", updateCursor);
+      return () => window.removeEventListener("mousemove", updateCursor);
+    }, []);
 
     return (
       <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex justify-center items-center">
@@ -447,8 +627,8 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
                 <label className="text-sm">Eraser Size: {eraserSize}</label>
                 <input
                   type="range"
-                  min="0"
-                  max="5"
+                  min="1"
+                  max="10"
                   value={eraserSize}
                   onChange={(e) => setEraserSize(Number(e.target.value))}
                   className="w-full appearance-none h-2 rounded-lg bg-[#e0ae2a]"
@@ -465,21 +645,40 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
           </div>
 
           <div className="flex-1 relative flex justify-center items-center">
-            <div className="border-2 border-[#e0ae2a] rounded-lg shadow-lg relative flex justify-center items-center h-full w-full" style={{
-              cursor: selectedTool === "eraser" ? `url(${eraserIcon}) 10 10, auto` : "default",
-            }}
+            <div
+              className="border-2 border-[#e0ae2a] rounded-lg shadow-lg relative flex justify-center items-center h-full w-full"
             >
               <canvas ref={imageCanvasRef} className="absolute rounded-lg" />
               <canvas
                 ref={overlayCanvasRef}
-                style={{
-                  cursor: selectedTool === "eraser" ? `url(${eraserIcon}), auto` : "default",
-                }}
                 className="absolute rounded-lg"
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                style={{ cursor: selectedTool === "eraser" ? "none" : "default" }}
               />
+
+              {selectedTool === "eraser" && (
+                <img
+                  src={eraserIcon}
+                  alt="eraser cursor"
+                  style={{
+                    position: "fixed",
+                    left: cursorPos.x,
+                    top: cursorPos.y,
+                    pointerEvents: "none",
+                    // Adjust the transform if you need a different hotspot
+                    transform: "translate(-50%, -50%)",
+                    width: `${0.8 + ((eraserSize - 1) / 9)}rem`,
+                    height: `${0.8 + ((eraserSize - 1) / 9)}rem`,
+                    zIndex: 9999,
+                  }}
+                />
+              )}
+
             </div>
           </div>
         </div>
