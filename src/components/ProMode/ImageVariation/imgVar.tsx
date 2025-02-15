@@ -40,7 +40,7 @@ const ImgVar: React.FC = () => {
     console.log("handleShowMaskingPopup: Running – setting showMaskingPopup to true.");
     setShowMaskingPopup(true);
   };
-  
+
   useEffect(() => {
     console.log("Updated S3 URL:", maskS3url);
     console.log("Exported Status:", isMaskExported);
@@ -54,23 +54,23 @@ const ImgVar: React.FC = () => {
     if (popupRef.current) {
       const { s3Link, isExported } = popupRef.current;
       console.log("handleCloseMaskingPopup: popupRef.current exists.");
-    console.log("handleCloseMaskingPopup: s3Link =", s3Link);
-    console.log("handleCloseMaskingPopup: isExported =", isExported);
+      console.log("handleCloseMaskingPopup: s3Link =", s3Link);
+      console.log("handleCloseMaskingPopup: isExported =", isExported);
 
       setMaskS3url(s3Link);
       setIsMaskExported(isExported);
 
       // Conditional logic based on isExported
       if (isExported) {
-      console.log("handleCloseMaskingPopup: Exported! Setting payload with S3 URL:", s3Link);
-      const payload = { imageUrl: s3Link };
-      console.log("handleCloseMaskingPopup: Payload =", payload);
+        console.log("handleCloseMaskingPopup: Exported! Setting payload with S3 URL:", s3Link);
+        const payload = { imageUrl: s3Link };
+        console.log("handleCloseMaskingPopup: Payload =", payload);
+      } else {
+        console.log("handleCloseMaskingPopup: Not exported yet.");
+      }
     } else {
-      console.log("handleCloseMaskingPopup: Not exported yet.");
+      console.log("handleCloseMaskingPopup: popupRef.current is not available.");
     }
-  } else {
-    console.log("handleCloseMaskingPopup: popupRef.current is not available.");
-  }
   };
 
   // Handle Wheel Zooming
@@ -253,7 +253,7 @@ const ImgVar: React.FC = () => {
     console.log(" - references3url:", references3url);
     console.log(" - prompt:", finalPrompt);
     console.log(" - init_strength:", sliderVal / 100);
-  
+
     let payload: Record<string, any>;
     if (isMaskExported && maskS3url) {
       payload = {
@@ -261,7 +261,7 @@ const ImgVar: React.FC = () => {
         references3url: references3url,
         prompt: finalPrompt,
         init_strength: sliderVal / 100,
-        requestType: "mask_image_variation",
+        requestType: "mask_img_variation",
       };
       console.log("generateImageUrl: Using mask payload:", payload);
     } else {
@@ -274,7 +274,7 @@ const ImgVar: React.FC = () => {
       console.log("generateImageUrl: Using normal payload:", payload);
     }
     console.log("generateImageUrl: Final payload to send:", payload);
-  
+
     try {
       const response = await callLambda(IMAGE_GENERATOR_LEONARDO_NEW, payload);
       if (response && response.uploaded_image_urls) {
@@ -287,7 +287,7 @@ const ImgVar: React.FC = () => {
       console.error("generateImageUrl: Error generating image URL:", error);
     }
   };
-  
+
   const handleUploadNewImage = () => {
     setSelectedImage(null);
     setCaption('');
