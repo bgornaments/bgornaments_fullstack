@@ -1,0 +1,29 @@
+@media (max-width: 777px) {
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      position: relative;
+      order: -1; 
+    }
+  
+    .toolbar button {
+      flex: 1 1 calc(33.33% - 10px); 
+      max-width: 100px;
+    }
+  
+    .canvas-container {
+      order: 1;
+      width: 100%;
+      height: auto;
+    }
+  
+    .toolbox {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+      gap: 10px;
+      justify-content: center;
+    }
+  }
+  

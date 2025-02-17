@@ -14,6 +14,7 @@ import ovalIcon from "../assets/shape.png";
 import freehandIcon from "../assets/pen.png";
 import eraserIcon from "../assets/eraser.png";
 import axios from "axios";
+import './MaskStyle.css'
 
 interface ImageMaskingPopupProps {
   imgvar: string;
@@ -82,7 +83,7 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
         ctx.lineWidth = mask.brushSize !== undefined ? mask.brushSize : brushSize;
         if (mask.tool === "freehand") {
           // Always draw freehand with 0.5 alpha
-          ctx.strokeStyle = "rgba(255,0,0,0.5)";
+          ctx.strokeStyle = "rgba(0,0,0,0.5)";
           ctx.beginPath();
           if (mask.drawingPath && mask.drawingPath.length > 0) {
             ctx.moveTo(mask.drawingPath[0].x, mask.drawingPath[0].y);
@@ -93,8 +94,8 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
           }
         } else {
           // Other shapes use fill for the semi-transparent mask
-          ctx.strokeStyle = "rgba(255,0,0,1)";
-          ctx.fillStyle = "rgba(255,0,0,0.5)";
+          ctx.strokeStyle = "rgba(0,0,0,1)";
+          ctx.fillStyle = "rgba(0,0,0,1)";
           switch (mask.tool) {
             case "rectangle":
               ctx.fillRect(
@@ -210,8 +211,8 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
-      ctx.fillStyle = "rgba(255,0,0, 0.5)";
-      ctx.strokeStyle = "rgba(255,0,0, 0.5)";
+      ctx.fillStyle = "rgba(0,0,0, 1)";
+      ctx.strokeStyle = "rgba(0,0,0, 1)";
       ctx.lineWidth = brushSize;
 
       switch (selectedTool) {
@@ -375,8 +376,8 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
       const x = touch.clientX - rect.left;
       const y = touch.clientY - rect.top;
 
-      ctx.fillStyle = "rgba(255,0,0, 0.5)";
-      ctx.strokeStyle = "rgba(255,0,0, 0.5)";
+      ctx.fillStyle = "rgba(0,0,0, 1)";
+      ctx.strokeStyle = "rgba(0,0,0, 1)";
       ctx.lineWidth = brushSize;
 
       switch (selectedTool) {
@@ -568,128 +569,161 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
 
     return (
       <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex justify-center items-center">
-        {isExported && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-            className="absolute top-2 right-2 bg-green-500 text-white border border-green-700 text-sm px-4 py-2 rounded shadow-lg"
-          >
-            Link exported successfully!
-          </motion.div>
-        )}
-        <div className="bg-white border-4 border-[#e0ae2a] shadow-lg rounded-2xl p-7 w-[90%] md:w-[70%] h-[80%] flex flex-row relative">
+      {isExported && (
+        <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.3 }}
+        className="absolute top-2 right-2 bg-green-500 text-white border border-green-700 text-sm px-4 py-2 rounded shadow-lg"
+        >
+        Link exported successfully!
+        </motion.div>
+      )}
+
+      <div className="bg-white border-4 border-[#e0ae2a] shadow-lg rounded-2xl p-7 w-[90%] md:w-[70%] h-[80%] flex flex-col md:flex-row relative">
+        <button
+        onClick={onClose}
+        className="absolute top-1 right-2 text-red-500 text-xl hover:text-red-600"
+        >
+        ✖
+        </button>
+
+        {/* Responsive Toolbar: Above Canvas for Small Screens */}
+        <div className="md:hidden flex flex-wrap gap-2 justify-center pb-4">
+        <h2 className="text-lg font-bold text-[#e0ae2a] w-full text-center">Mask Image</h2>
+        {[
+          { icon: rectangleIcon, name: "rectangle" },
+          { icon: circleIcon, name: "circle" },
+          { icon: ovalIcon, name: "oval" },
+          { icon: freehandIcon, name: "freehand" },
+          { icon: eraserIcon, name: "eraser" },
+        ].map((tool) => (
           <button
-            onClick={onClose}
-            className="absolute top-1 right-2 text-red-500 text-xl hover:text-red-600"
+          key={tool.name}
+          onClick={() => setSelectedTool(tool.name)}
+          className={`w-[30%] sm:w-[28%] px-3 py-2 rounded-lg flex items-center justify-center transition-all ${selectedTool === tool.name
+            ? "bg-white border-4 border-[#e0ae2a] text-white"
+            : "bg-[#f0d9a8] hover:bg-[#e0ae2a]"
+            }`}
           >
-            ✖
+          <img src={tool.icon} alt={tool.name} className="w-6 h-6 sm:w-8 sm:h-8" />
           </button>
-
-          <div className="flex flex-col gap-4 w-[20%] pr-4">
-            <h2 className="text-lg font-bold text-[#e0ae2a]">Mask Image</h2>
-            {[
-              { icon: rectangleIcon, name: "rectangle" },
-              { icon: circleIcon, name: "circle" },
-              { icon: ovalIcon, name: "oval" },
-              { icon: freehandIcon, name: "freehand" },
-              { icon: eraserIcon, name: "eraser" },
-            ].map((tool) => (
-              <button
-                key={tool.name}
-                onClick={() => setSelectedTool(tool.name)}
-                className={`px-3 py-2 rounded-lg flex items-center justify-center transition-all ${selectedTool === tool.name
-                  ? "bg-[white] border-4 border-[#e0ae2a] text-white"
-                  : "bg-[#f0d9a8] hover:bg-[#e0ae2a]"
-                  }`}
-              >
-                <img src={tool.icon} alt={tool.name} className="w-6 h-6" />
-              </button>
-            ))}
-
-            {selectedTool === "freehand" && (
-              <div className="flex flex-col gap-2 mt-4">
-                <label className="text-sm">Brush Size: {brushSize}</label>
-                <input
-                  type="range"
-                  min="1"
-                  max="10"
-                  value={brushSize}
-                  onChange={(e) => setBrushSize(Number(e.target.value))}
-                  className="w-full appearance-none h-2 rounded-lg bg-[#e0ae2a]"
-                />
-              </div>
-            )}
-
-            {selectedTool === "eraser" && (
-              <div className="flex flex-col gap-2 mt-4">
-                <label className="text-sm">Eraser Size: {eraserSize}</label>
-                <input
-                  type="range"
-                  min="1"
-                  max="10"
-                  value={eraserSize}
-                  onChange={(e) => setEraserSize(Number(e.target.value))}
-                  className="w-full appearance-none h-2 rounded-lg bg-[#e0ae2a]"
-                />
-              </div>
-            )}
-
-            <button
-              onClick={exportOverlay}
-              className="px-6 py-3 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer bg-white hover:bg-[#e0ae2a] hover:border-4 hover:rounded-lg hover:border-white hover:text-white"
-            >
-              Export
-            </button>
-          </div>
-
-          <div className="flex-1 relative flex justify-center items-center">
-            <div
-              className="border-2 border-[#e0ae2a] rounded-lg shadow-lg relative flex justify-center items-center h-full w-full"
-            >
-              <canvas ref={imageCanvasRef} className="absolute rounded-lg" />
-              <canvas
-                ref={overlayCanvasRef}
-                className="absolute rounded-lg"
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-                style={{ cursor: selectedTool === "eraser" ? "none" : "default" }}
-              />
-
-              {selectedTool === "eraser" && (
-                <img
-                  src={eraserIcon}
-                  alt="eraser cursor"
-                  style={{
-                    position: "fixed",
-                    left: cursorPos.x,
-                    top: cursorPos.y,
-                    pointerEvents: "none",
-                    // Adjust the transform if you need a different hotspot
-                    transform: "translate(-50%, -50%)",
-                    width: `${0.8 + ((eraserSize - 1) / 9)}rem`,
-                    height: `${0.8 + ((eraserSize - 1) / 9)}rem`,
-                    zIndex: 9999,
-                  }}
-                />
-              )}
-
-            </div>
-          </div>
+        ))}
         </div>
-        {s3Link && (
+
+        {/* Sidebar Toolbar (For Larger Screens) */}
+        <div className="hidden md:flex flex-col gap-4 w-[20%] pr-4">
+        <h2 className="text-lg font-bold text-[#e0ae2a]">Mask Image</h2>
+        {[
+          { icon: rectangleIcon, name: "rectangle" },
+          { icon: circleIcon, name: "circle" },
+          { icon: ovalIcon, name: "oval" },
+          { icon: freehandIcon, name: "freehand" },
+          { icon: eraserIcon, name: "eraser" },
+        ].map((tool) => (
           <button
-            onClick={handleViewImage}
-            className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-6 py-2 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer bg-gradient-to-r from-white via-[#FDEEC7] via-[#E0AE2A] to-white hover:bg-gradient-to-r hover:from-white hover:via-[#E0AE2A] hover:to-[#FDEEC7] hover:text-white transition duration-1000 shadow-lg"
+          key={tool.name}
+          onClick={() => setSelectedTool(tool.name)}
+          className={`px-3 py-2 rounded-lg flex items-center justify-center transition-all ${selectedTool === tool.name
+            ? "bg-white border-4 border-[#e0ae2a] text-white"
+            : "bg-[#f0d9a8] hover:bg-[#e0ae2a]"
+            }`}
           >
-            View Image
+          <img src={tool.icon} alt={tool.name} className="w-6 h-6" />
           </button>
+        ))}
+
+        {selectedTool === "freehand" && (
+          <div className="flex flex-col gap-2 mt-4">
+          <label className="text-sm">Brush Size: {brushSize}</label>
+          <input
+            type="range"
+            min="1"
+            max="10"
+            value={brushSize}
+            onChange={(e) => setBrushSize(Number(e.target.value))}
+            className="w-full appearance-none h-2 rounded-lg bg-[#e0ae2a]"
+          />
+          </div>
         )}
+
+        {selectedTool === "eraser" && (
+          <div className="flex flex-col gap-2 mt-4">
+          <label className="text-sm">Eraser Size: {eraserSize}</label>
+          <input
+            type="range"
+            min="1"
+            max="10"
+            value={eraserSize}
+            onChange={(e) => setEraserSize(Number(e.target.value))}
+            className="w-full appearance-none h-2 rounded-lg bg-[#e0ae2a]"
+          />
+          </div>
+        )}
+
+        {/* Export Button (Inside Sidebar for Large Screens) */}
+        <button
+          onClick={exportOverlay}
+          className="px-6 py-3 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer bg-white hover:bg-[#e0ae2a] hover:border-4 hover:rounded-lg hover:border-white hover:text-white"
+        >
+          Done
+        </button>
+        </div>
+
+        {/* Canvas */}
+        <div className="flex-1 relative flex justify-center items-center">
+        <div className="border-2 border-[#e0ae2a] rounded-lg shadow-lg relative flex justify-center items-center h-full w-full">
+          <canvas ref={imageCanvasRef} className="absolute rounded-lg border-2 border-[#e0ae2a]" />
+          <canvas
+          ref={overlayCanvasRef}
+          className="absolute rounded-lg"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          style={{ cursor: selectedTool === "eraser" ? "none" : "default" }}
+          />
+          {selectedTool === "eraser" && (
+          <img
+            src={eraserIcon}
+            alt="eraser cursor"
+            style={{
+            position: "fixed",
+            left: cursorPos.x,
+            top: cursorPos.y,
+            pointerEvents: "none",
+            transform: "translate(-50%, -50%)",
+            width: `${0.8 + ((eraserSize - 1) / 9)}rem`,
+            height: `${0.8 + ((eraserSize - 1) / 9)}rem`,
+            zIndex: 9999,
+            }}
+          />
+          )}
+        </div>
+        </div>
+
+        {/* Export Button (For Small Screens, Below the Toolbar) */}
+        <div className="md:hidden flex justify-center pt-4">
+        <button
+          onClick={exportOverlay}
+          className="px-6 py-3 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer bg-white hover:bg-[#e0ae2a] hover:border-4 hover:rounded-lg hover:border-white hover:text-white"
+        >
+          Done
+        </button>
+        </div>
+      </div>
+
+      {s3Link && (
+        <button
+        onClick={handleViewImage}
+        className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-6 py-2 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer bg-gradient-to-r from-white via-[#FDEEC7] via-[#E0AE2A] to-white hover:bg-gradient-to-r hover:from-white hover:via-[#E0AE2A] hover:to-[#FDEEC7] hover:text-white transition duration-1000 shadow-lg"
+        >
+        View Image
+        </button>
+      )}
       </div>
     );
   }

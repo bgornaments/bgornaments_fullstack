@@ -357,6 +357,7 @@ const ImgVar: React.FC = () => {
                 }}
               >
                 {selectedImage ? (
+                  
                   <img
                     src={selectedImage}
                     alt="Selected"
