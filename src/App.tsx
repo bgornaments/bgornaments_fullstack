@@ -30,6 +30,7 @@ import ExpertMode from "./components/ExpertMode/ExpertMode.tsx";
 import DemoForm from "./components/Contact/contactSAP.tsx";
 import UserProfile from "./components/UserProfile/UserProfile.tsx";
 import AstrologyForm from "./AstrologyFeature/AstrologyForm.tsx";
+import AstrologySignature from "./AstrologyFeature/AstrologySignature.tsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <HeroPage /> },
@@ -221,10 +222,18 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/astrology-form",
+    path: "/astrology",
     element: (
       <ProtectedRoute>
         <AstrologyForm />
+      </ProtectedRoute>
+    ),
+  }, 
+  {
+    path: "/astrology/astroSign",
+    element: (
+      <ProtectedRoute>
+        <AstrologySignature />
       </ProtectedRoute>
     ),
   }, 

@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import TextField from '@mui/material/TextField';
+import { useNavigate } from 'react-router-dom';
 
 const AstrologyForm: React.FC = () => {
     const [gender, setGender] = useState('');
     const [timeOfBirth, setTimeOfBirth] = useState(new Date().toLocaleString());
     const [dateOfBirth, setDateOfBirth] = useState<Date>(new Date());
     const [monthOfBirth, setMonthOfBirth] = useState<string>(new Date().toISOString().slice(0, 7));
-
+    const [location, setLocation] = useState<string>(''); // For storing location input
+    const [suggestions, setSuggestions] = useState<string[]>([]); // For storing autocomplete suggestions
     const [activeTabIndex, setActiveTabIndex] = useState<number>(0); // Default to 'Basic' tab
     const [transitioning, setTransitioning] = useState(false); // State for transition control
 
@@ -37,6 +39,20 @@ const AstrologyForm: React.FC = () => {
         setTimeOfBirth(formattedTime);
     }, []);
 
+    useEffect(() => {
+        // Trigger API call when the location input changes
+        if (location) {
+            fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${location}&apiKey=acca7dbee7ca4eefb04475a298fe14df`)
+                .then((response) => response.json())
+                .then((data) => {
+                    // Set the suggestions from the API response
+                    const placeNames = data.features.map((feature: any) => feature.properties.formatted);
+                    setSuggestions(placeNames);
+                })
+                .catch((error) => console.error('Error fetching location suggestions:', error));
+        }
+    }, [location]);
+
     const handleGenderSelect = (selectedGender: string) => {
         setGender(selectedGender);
     };
@@ -51,6 +67,10 @@ const AstrologyForm: React.FC = () => {
 
     const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTimeOfBirth(e.target.value);
+    };
+
+    const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLocation(e.target.value); // Update location state
     };
 
     const allTabs = [
@@ -72,14 +92,17 @@ const AstrologyForm: React.FC = () => {
         }, 500); // Make sure this matches the transition time
     };
 
+    const navigate = useNavigate();
+
     const handleSubmit = () => {
         console.log('Form submitted with the following data:');
-        console.log('Gender: ',gender);
-        console.log('Month of Birth: ',monthOfBirth);
-        console.log('Date of birth: ',dateOfBirth);
-        console.log('Time of birth: ',timeOfBirth);
-        console.log('Active Tab Index: ',activeTabIndex);
-    }
+        console.log('Gender: ', gender);
+        console.log('Month of Birth: ', monthOfBirth);
+        console.log('Date of birth: ', dateOfBirth);
+        console.log('Location: ', location); // Print location to check
+        navigate('astroSign');
+        console.log('Active Tab Index: ', activeTabIndex);
+    };
 
     return (
         <div className="min-h-screen p-8 rounded-lg shadow-lg text-center max-w-full flex flex-col justify-center items-center bg-starry">
@@ -178,6 +201,25 @@ const AstrologyForm: React.FC = () => {
                                         Female
                                     </button>
                                 </div>
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 lg:text-lg">Location</label>
+                                <input
+                                    type="text"
+                                    className="w-full mt-1 p-2 border border-gray-300 rounded lg:p-3"
+                                    value={location}
+                                    onChange={handleLocationChange}
+                                    placeholder="Start typing a location"
+                                />
+                                {suggestions.length > 0 && (
+                                    <ul className="mt-2 max-h-40 overflow-y-auto bg-white border border-gray-300 rounded p-2">
+                                        {suggestions.map((suggestion, index) => (
+                                            <li key={index} className="p-1 cursor-pointer hover:bg-gray-200" onClick={() => setLocation(suggestion)}>
+                                                {suggestion}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
                             </div>
                         </>
                     )}
