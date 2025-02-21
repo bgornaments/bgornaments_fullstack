@@ -56,35 +56,32 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
       const img = new Image();
       img.src = imgvar;
       img.onload = () => {
-        const parent = imageCanvas.parentElement;
-        if (!parent) return;
-        const maxWidth = parent.clientWidth * 0.9;
-        const maxHeight = parent.clientHeight * 0.9;
+        // Calculate scaled dimensions for the display canvas
+        const maxWidth = imageCanvas.parentElement!.clientWidth * 0.9;
+        const maxHeight = imageCanvas.parentElement!.clientHeight * 0.9;
         const scale = Math.min(maxWidth / img.width, maxHeight / img.height);
-    
-        // Ensure the dimensions are multiples of 8
+        
         const canvasWidth = Math.floor((img.width * scale) / 8) * 8;
         const canvasHeight = Math.floor((img.height * scale) / 8) * 8;
-    
-        // Set dimensions for image canvas
+        
+        // Set the image canvas to the scaled dimensions
         imageCanvas.width = canvasWidth;
         imageCanvas.height = canvasHeight;
-        imageCanvas.style.width = `${canvasWidth}px`;
-        imageCanvas.style.height = `${canvasHeight}px`;
-    
-        // Set dimensions for the mask (overlay canvas)
+        
+        // Set the overlay canvas (mask) to the original image dimensions
         const overlayCanvas = overlayCanvasRef.current;
         if (overlayCanvas) {
-          overlayCanvas.width = canvasWidth;
-          overlayCanvas.height = canvasHeight;
-          overlayCanvas.style.width = `${canvasWidth}px`;
-          overlayCanvas.style.height = `${canvasHeight}px`;
+          overlayCanvas.width = img.width;
+          overlayCanvas.height = img.height;
         }
-    
-        console.log("imageCanvas:", canvasWidth, canvasHeight);
+        
+        console.log('imageCanvas:', imageCanvas.width, imageCanvas.height);
+        console.log('imgSize:', img.width, img.height);
+        
+        // Draw the scaled image on the image canvas
         ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
       };
-    }, [imgvar]);
+    }, [imgvar]);    
 
     const redrawAllMasks = (
       ctx: CanvasRenderingContext2D,
