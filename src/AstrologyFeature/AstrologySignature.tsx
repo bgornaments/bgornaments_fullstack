@@ -71,12 +71,22 @@ const AstroSignature: React.FC = () => {
           } else {
             console.error('Error from API:', data);
           }
+
+          if (data.astrology_signature) {
+            astroData = data.astrology_signature;
+          } else if (data.statusCode === 200 && data.body) {
+            // Fallback: if the response is wrapped (e.g., from a Lambda proxy)
+            const parsedBody = JSON.parse(data.body);
+            astroData = parsedBody.astrology_signature;
+          } else {
+            console.error('Error from API:', data);
+          }
           
           if (astroData) {
             // Separate the recommended_jewelry from astroData
             const signatureData = { ...astroData };
             const suggestionsData = signatureData.recommended_jewelry;
-            delete signatureData.recommended_jewelry;
+            // delete signatureData.recommended_jewelry;
             setAstroSignatureData(signatureData);
             setAstroSuggestionsData(suggestionsData);
           }
@@ -116,7 +126,7 @@ const AstroSignature: React.FC = () => {
       </div>
       <div className="astro-container flex flex-col gap-4 ml-4 sm:ml-14 mr-4 sm:mr-14 mt-16 sm:mt-16">
         <div className="astro-signature flex sm:flex-row justify-between items-stretch">
-          <div className="astro-signature-left-part contentHeading flex-1 ml-2 sm:ml-4 mr-2 sm:mr-1 screen-lg:ml-8 screen-lg:mr-4 border-2 border-[#e0ae2a] rounded-md p-4 bg-[#F1E7D4] flex items-center justify-center">
+          <div className="astro-signature-left-part contentHeading text-xl flex-1 ml-2 sm:ml-4 mr-2 sm:mr-1 screen-lg:ml-8 screen-lg:mr-4 border-2 border-[#e0ae2a] rounded-md p-4 bg-[#F1E7D4] flex items-center justify-center max-w-40 transition-[background-position_0s_ease] bg-[length:250%_250%,100%_100%] bg-[position:-100%_0,0_0] bg-no-repeat hover:bg-[position:200%_0,0_0] hover:duration-[1500ms] bg-[linear-gradient(45deg,transparent_25%,rgba(224,174,42,0.3)_50%,transparent_75%,transparent_100%)]">
             <strong>
               Your <br />Astrology <br />Signature
             </strong>
@@ -126,8 +136,7 @@ const AstroSignature: React.FC = () => {
               <LoadingAnimation />
             ) : (
               <>
-                {astroSignature.zodiac_summary}
-                <br />
+                {astroSignature.zodiac_summary} {""}
                 {astroSignature.personality_summary}
                 <br />
                 <strong>Key Traits:</strong> {astroSignature.key_personality_traits.join(", ")}
@@ -139,7 +148,7 @@ const AstroSignature: React.FC = () => {
         </div>
 
         <div className="astro-suggestions flex sm:flex-row justify-between items-stretch">
-          <div className="astro-suggestions-left-part contentHeading flex-1 ml-2 sm:ml-4 mr-2 sm:mr-1 screen-lg:ml-8 screen-lg:mr-4 border-2 border-[#e0ae2a] rounded-md p-4 bg-[#F1E7D4] flex items-center justify-center">
+          <div className="astro-suggestions-left-part contentHeading text-xl flex-1 ml-2 sm:ml-4 mr-2 sm:mr-1 screen-lg:ml-8 screen-lg:mr-4 border-2 border-[#e0ae2a] rounded-md p-4 bg-[#F1E7D4] flex items-center justify-center max-w-40 transition-[background-position_0s_ease] bg-[length:250%_250%,100%_100%] bg-[position:-100%_0,0_0] bg-no-repeat hover:bg-[position:200%_0,0_0] hover:duration-[1500ms] bg-[linear-gradient(45deg,transparent_25%,rgba(224,174,42,0.3)_50%,transparent_75%,transparent_100%)]">
             <strong>
               Astrology <br />Based <br />Suggestions
             </strong>
@@ -149,13 +158,13 @@ const AstroSignature: React.FC = () => {
               <LoadingAnimation />
             ) : (
               <>
-                Recommended Gemstone: {astroSuggestions.recommended_gemstone}
+                💎Recommended Gemstone: {astroSuggestions.recommended_gemstone}
                 <br />
-                Metal Choice: {astroSuggestions.metal_choice}
+                🔗Metal Choice: {astroSuggestions.metal_choice}
                 <br />
-                Design Style: {astroSuggestions.design_style}
+                🪄Design Style: {astroSuggestions.design_style}
                 <br />
-                Engraving Suggestions: {astroSuggestions.engraving_suggestions.join(", ")}
+                ✨Engraving Suggestions: {astroSuggestions.engraving_suggestions.join(", ")}
               </>
             )}
           </div>
