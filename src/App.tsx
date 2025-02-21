@@ -222,7 +222,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/astrology",
+    path: "/expert-mode/astrology",
     element: (
       <ProtectedRoute>
         <AstrologyForm />
@@ -230,7 +230,7 @@ const router = createBrowserRouter([
     ),
   }, 
   {
-    path: "/astrology/astroSign",
+    path: "/expert-mode/astrology/astroSign",
     element: (
       <ProtectedRoute>
         <AstrologySignature />

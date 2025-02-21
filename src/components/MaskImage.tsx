@@ -42,8 +42,6 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
     const [masks, setMasks] = useState<any[]>([]);
     const [eraserSize, setEraserSize] = useState(5);
 
-    // <-- NEW EXPORT STATES -->
-    // s3Link will store the URL returned from the API
     const [s3Link, setS3Link] = useState<string | null>(null);
     // isExported becomes true when the export API call succeeds.
     const [isExported, setIsExported] = useState(false);
@@ -58,30 +56,35 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
       const img = new Image();
       img.src = imgvar;
       img.onload = () => {
-        const maxWidth = imageCanvas.parentElement!.clientWidth * 0.9;
-        const maxHeight = imageCanvas.parentElement!.clientHeight * 0.9;
+        const parent = imageCanvas.parentElement;
+        if (!parent) return;
+        const maxWidth = parent.clientWidth * 0.9;
+        const maxHeight = parent.clientHeight * 0.9;
         const scale = Math.min(maxWidth / img.width, maxHeight / img.height);
     
-        // Ensure dimensions are divisible by 8
+        // Ensure the dimensions are multiples of 8
         const canvasWidth = Math.floor((img.width * scale) / 8) * 8;
         const canvasHeight = Math.floor((img.height * scale) / 8) * 8;
     
+        // Set dimensions for image canvas
         imageCanvas.width = canvasWidth;
         imageCanvas.height = canvasHeight;
+        imageCanvas.style.width = `${canvasWidth}px`;
+        imageCanvas.style.height = `${canvasHeight}px`;
     
+        // Set dimensions for the mask (overlay canvas)
         const overlayCanvas = overlayCanvasRef.current;
         if (overlayCanvas) {
           overlayCanvas.width = canvasWidth;
           overlayCanvas.height = canvasHeight;
+          overlayCanvas.style.width = `${canvasWidth}px`;
+          overlayCanvas.style.height = `${canvasHeight}px`;
         }
     
-        console.log('imageCanvas:', imageCanvas.width, imageCanvas.height);
-        console.log('imgSize:', canvasWidth, canvasHeight);
-    
+        console.log("imageCanvas:", canvasWidth, canvasHeight);
         ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
       };
     }, [imgvar]);
-    
 
     const redrawAllMasks = (
       ctx: CanvasRenderingContext2D,

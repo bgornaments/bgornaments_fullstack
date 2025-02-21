@@ -65,7 +65,7 @@ const ExpertMode: React.FC = () => {
               pSize="1vw"
               imgWidth="9vw"
               gap="2vw"
-              link=""
+              link="/expert-mode/astrology"
             />
           </div>
         </div>
@@ -105,7 +105,7 @@ const ExpertMode: React.FC = () => {
               pSize="1rem"
               imgWidth="8rem"
               gap="2.3rem"
-              link="/expert-mode/image-variation"
+              link="/expert-mode/astrology"
             />
           </div>
         </div>
@@ -145,7 +145,7 @@ const ExpertMode: React.FC = () => {
               pSize="2vw"
               imgWidth="14vw"
               gap="5vw"
-              link="/expert-mode/image-variation"
+              link="/expert-mode/astrology"
             />
           </div>
         </div>
