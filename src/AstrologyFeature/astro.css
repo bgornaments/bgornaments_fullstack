@@ -26,3 +26,36 @@
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
+
+@import url('https://fonts.googleapis.com/css?family=Quattrocento+Sans');
+
+.loading {
+  /* Adjusted to be relative to its container instead of full-screen */
+  display: inline-block;
+  width: 100%;
+  height: 100px;
+}
+
+.loading-text {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+}
+
+.loading-text .loading-text-words {
+  /* display: inline-block; */
+  margin: 0 5px;
+  color: #000; /* Adjust color as needed */
+  font-family: 'Quattrocento Sans', sans-serif;
+  font-size: 12px;
+  justify-content: center;
+  align-items: center;
+  animation: blur-text 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes blur-text {
+  0% { filter: blur(0px); }
+  100% { filter: blur(2px); }
+}
