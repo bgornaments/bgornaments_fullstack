@@ -7,12 +7,6 @@ interface AstroSignatureType {
   personality_summary: string;
   key_personality_traits: string[];
   elemental_insight: string;
-  recommended_jewelry?: {
-    recommended_gemstone: string;
-    metal_choice: string;
-    design_style: string;
-    engraving_suggestions: string[];
-  }
 }
 
 interface AstroSuggestionsType {
@@ -57,39 +51,26 @@ const AstroSignature: React.FC = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          // Log the complete API response, regardless of status
           console.log("API Response:", data);
           
-          // Use the returned data if it contains 'astrology_signature'
-          let astroData;
-          if (data.astrology_signature) {
-            astroData = data.astrology_signature;
-          } else if (data.statusCode === 200 && data.body) {
-            // Fallback: if the response is wrapped (e.g., from a Lambda proxy)
+          let astroData: AstroSignatureType | null = null;
+          let suggestionsData: AstroSuggestionsType | null = null;
+
+          // Handle Lambda proxy response format
+          if (data.statusCode === 200 && data.body) {
             const parsedBody = JSON.parse(data.body);
             astroData = parsedBody.astrology_signature;
-          } else {
-            console.error('Error from API:', data);
+            suggestionsData = parsedBody.recommended_jewelry;
+          } 
+          // Handle direct response format
+          else if (data.astrology_signature || data.recommended_jewelry) {
+            astroData = data.astrology_signature;
+            suggestionsData = data.recommended_jewelry;
           }
 
-          if (data.astrology_signature) {
-            astroData = data.astrology_signature;
-          } else if (data.statusCode === 200 && data.body) {
-            // Fallback: if the response is wrapped (e.g., from a Lambda proxy)
-            const parsedBody = JSON.parse(data.body);
-            astroData = parsedBody.astrology_signature;
-          } else {
-            console.error('Error from API:', data);
-          }
+          if (astroData) setAstroSignatureData(astroData);
+          if (suggestionsData) setAstroSuggestionsData(suggestionsData);
           
-          if (astroData) {
-            // Separate the recommended_jewelry from astroData
-            const signatureData = { ...astroData };
-            const suggestionsData = signatureData.recommended_jewelry;
-            // delete signatureData.recommended_jewelry;
-            setAstroSignatureData(signatureData);
-            setAstroSuggestionsData(suggestionsData);
-          }
           setLoading(false);
         })
         .catch((error) => {
