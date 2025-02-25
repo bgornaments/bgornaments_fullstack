@@ -31,6 +31,7 @@ import DemoForm from "./components/Contact/contactSAP.tsx";
 import UserProfile from "./components/UserProfile/UserProfile.tsx";
 import AstrologyForm from "./AstrologyFeature/AstrologyForm.tsx";
 import AstrologySignature from "./AstrologyFeature/AstrologySignature.tsx";
+import AstroJewelryApp from "./AstrologyFeature/images.tsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <HeroPage /> },
@@ -237,6 +238,14 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   }, 
+  {
+    path: "/expert-mode/astrology/astroSign/astro-images",
+    element: (
+      <ProtectedRoute>
+        <AstroJewelryApp />
+      </ProtectedRoute>
+    ),
+  },
 ]);
 
 const App: React.FC = () => {

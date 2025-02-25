@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './astro.css';
 
 interface AstroSignatureType {
@@ -32,6 +32,7 @@ const LoadingAnimation: React.FC = () => (
 
 const AstroSignature: React.FC = () => {
   const locationState = useLocation();
+  const navigate = useNavigate();
   const payload = locationState.state as {
     dob: string;
     tob: string;
@@ -95,6 +96,10 @@ const AstroSignature: React.FC = () => {
     engraving_suggestions: ["Default Engraving"]
   };
 
+  const handleView = () => {
+    navigate('astro-images');
+  };
+
   const astroSignature = astroSignatureData || defaultSignature;
   const astroSuggestions = astroSuggestionsData || defaultSuggestions;
 
@@ -156,20 +161,9 @@ const AstroSignature: React.FC = () => {
           💎💎💎 Let’s get your astrologically aligned jewelry 💎💎💎
         </h2>
       </div>
-
-      <div className="jewellery-type mt-4">
-        <select id="jewelleryType" className="border-2 border-[#e0ae2a] rounded-md p-2">
-          <option value="" disabled selected>
-            Select Jewellery Type
-          </option>
-          <option value="ring">Ring</option>
-          <option value="earrings">Earrings</option>
-          <option value="necklace">Necklace</option>
-          <option value="pendant">Pendant</option>
-        </select>
-      </div>
+      
       <div className="view-design">
-        <button className="border-2 border-[#e0ae2a] rounded-xl m-4 p-2 bg-[#F1E7D4]">View Design</button>
+        <button onClick={handleView} className="border-2 border-[#e0ae2a] rounded-xl m-4 p-2 bg-[#F1E7D4]">View Design</button>
       </div>
     </div>
   );
