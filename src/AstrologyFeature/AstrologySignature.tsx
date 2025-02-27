@@ -45,7 +45,7 @@ const AstroSignature: React.FC = () => {
 
   useEffect(() => {
     if (payload) {
-      fetch('https://3t81apzou3.execute-api.ap-south-1.amazonaws.com/dev/get_astrology_jewelry', {
+      fetch('https://3t81apzou3.execute-api.ap-south-1.amazonaws.com/dev/get_astrology', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -97,9 +97,19 @@ const AstroSignature: React.FC = () => {
   };
 
   const handleView = () => {
-    navigate('astro-images');
+    navigate('astro-images', {
+      state: {
+        jewelryFilters: {
+          jewelryType: ["Pendant", "Necklaces", "Earrings", "Rings"], // fixed values
+          gemstone: [astroSuggestionsData?.recommended_gemstone || "Default Gemstone"],
+          metal: [astroSuggestionsData?.metal_choice || "Default Metal"],
+          designStyle: [astroSuggestionsData?.design_style || "Default Design"],
+          engraving: astroSuggestionsData?.engraving_suggestions || ["Default Engraving"],
+        }
+      }
+    });
   };
-
+   
   const astroSignature = astroSignatureData || defaultSignature;
   const astroSuggestions = astroSuggestionsData || defaultSuggestions;
 

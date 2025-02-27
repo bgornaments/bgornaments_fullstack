@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { AiOutlineHeart, AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,7 +10,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { FaSpinner } from "react-icons/fa";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 // Asset imports for filter icons
 import filter_1 from "/src/assets/filter_1.png";
@@ -16,41 +18,51 @@ import filter_2 from "/src/assets/filter_2.png";
 import filter_3 from "/src/assets/filter_3.png";
 import filter_4 from "/src/assets/filter_4.png";
 
-
-interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
+// -----------------------------------------------------
+// Define an interface for jewelry filter options
+// -----------------------------------------------------
+interface JewelryFilters {
+  jewelryType: string[];
+  gemstone: string[];
+  metal: string[];
+  designStyle: string[];
+  engraving: string[];
 }
 
-const MuiPagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
-  return (
-    <div className="flex items-center space-x-4">
-      <button disabled={currentPage === 1} onClick={() => onPageChange(currentPage - 1)}>
-        Prev
-      </button>
-      <span>
-        {currentPage} / {totalPages}
-      </span>
-      <button disabled={currentPage === totalPages} onClick={() => onPageChange(currentPage + 1)}>
-        Next
-      </button>
-    </div>
-  );
+// -----------------------------------------------------
+// Function to parse the astrology API response and obtain filter values
+// -----------------------------------------------------
+interface AstrologyAPIResponse {
+  gemstoneOptions?: string[];
+  metalOptions?: string[];
+  designStyleOptions?: string[];
+  engravingOptions?: string[];
+}
+
+const parseAstrologyAPIResponse = (data: AstrologyAPIResponse): JewelryFilters => {
+  return {
+    jewelryType: ["Pendant", "Necklaces", "Earrings", "Rings"], // fixed values
+    gemstone: data.gemstoneOptions || ["Diamond", "Emerald", "Ruby"],
+    metal: data.metalOptions || ["Gold", "Silver", "Rose gold", "Platinum"],
+    designStyle: data.designStyleOptions || ["Classic", "Modern", "Vintage"],
+    engraving: data.engravingOptions || ["No Engraving", "Engrave Name", "Custom Engraving"],
+  };
 };
 
 // ----------------------
 // FilterSidebar Component
 // ----------------------
-type FilterKeys = "material" | "gemstone" | "design" | "type";
+type FilterKeys = keyof JewelryFilters; // "jewelryType" | "gemstone" | "metal" | "designStyle" | "engraving"
 
 interface FilterSidebarProps {
-  filters: { material: string; gemstone: string; design: string; type: string };
+  filters: { jewelryType: string; gemstone: string; metal: string; designStyle: string; engraving: string };
   setFilters: React.Dispatch<
-    React.SetStateAction<{ material: string; gemstone: string; design: string; type: string }>
+    React.SetStateAction<{ jewelryType: string; gemstone: string; metal: string; designStyle: string; engraving: string }>
   >;
   resetFilters: () => void;
   sidebarVisible: boolean;
+  jewelryFilters: JewelryFilters;
+  onGenerateMore: () => void;
 }
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
@@ -58,38 +70,47 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   setFilters,
   resetFilters,
   sidebarVisible,
+  jewelryFilters,
+  onGenerateMore,
 }) => {
   const [expanded, setExpanded] = useState<{ [key in FilterKeys]: boolean }>({
-    material: false,
+    jewelryType: false,
     gemstone: false,
-    design: false,
-    type: false,
+    metal: false,
+    designStyle: false,
+    engraving: false,
   });
 
-  const filterOptions = [
+  const filterOptions: { name: FilterKeys; label: string; image: string; options: string[] }[] = [
     {
-      name: "type" as FilterKeys,
+      name: "jewelryType",
       label: "Jewelry Type",
       image: filter_4,
-      options: ["Rings", "Necklaces", "Bracelets", "Earrings", "Bangles", "Pendants", "Chains"],
+      options: jewelryFilters.jewelryType,
     },
     {
-      name: "material" as FilterKeys,
-      label: "Material",
-      image: filter_1,
-      options: ["Gold", "Silver", "Rose gold", "Platinum"],
-    },
-    {
-      name: "gemstone" as FilterKeys,
-      label: "Gemstone Type",
+      name: "gemstone",
+      label: "Gemstone",
       image: filter_2,
-      options: ["Diamond", "Emerald", "Ruby"],
+      options: jewelryFilters.gemstone,
     },
     {
-      name: "design" as FilterKeys,
+      name: "metal",
+      label: "Metal",
+      image: filter_1,
+      options: jewelryFilters.metal,
+    },
+    {
+      name: "designStyle",
       label: "Design Style",
       image: filter_3,
-      options: ["Classic", "Modern", "Vintage"],
+      options: jewelryFilters.designStyle,
+    },
+    {
+      name: "engraving",
+      label: "Engraving Option",
+      image: filter_3, // Reusing icon (replace with a dedicated icon if available)
+      options: jewelryFilters.engraving,
     },
   ];
 
@@ -102,11 +123,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   };
 
   return (
-    <aside
-      className={`w-full p-8 fixed top-14 left-0 md:static ${
-        sidebarVisible ? "bg-[#ffffff]" : ""
-      } z-50`}
-    >
+    <aside className={`w-full p-8 top-14 left-0 md:static ${sidebarVisible ? "bg-[#ffffff]" : ""} z-50`}>
       {filterOptions.map((filter) => (
         <div className="mb-6" key={filter.name}>
           <h3
@@ -122,7 +139,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 {filter.options.map((option) => (
                   <button
                     key={option}
-                    className={`px-4 py-1 xs:text-[2.3vw] md:text-[1.1vw] lg:text-[0.8vw] rounded-xl cursor-pointer shadow-md transition-all ${
+                    className={`px-4 py-1 text-[14px] md:text-[0.9vw] rounded-xl cursor-pointer shadow-md transition-all ${
                       filters[filter.name] === option
                         ? "bg-navbar text-customBlack/70"
                         : "bg-transparent text-customBlack/70 border border-navbar"
@@ -148,6 +165,15 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           Reset
         </button>
       </div>
+      {/* Generate More Designs option */}
+      <div className="flex gap-[10vw] justify-center md:justify-start mt-4">
+        <button
+          className="rounded-xl border-2 border-lightGolden bg-lightGolden/10 px-4 py-2 text-lightGolden text-sm hover:underline opacity-80"
+          onClick={onGenerateMore}
+        >
+          Generate More Designs
+        </button>
+      </div>
     </aside>
   );
 };
@@ -168,11 +194,12 @@ interface ImageData {
 
 interface ImageGalleryProps {
   searchTerm: string;
-  filters: { material: string; gemstone: string; design: string; type: string };
+  filters: { jewelryType: string; gemstone: string; metal: string; designStyle: string; engraving: string };
   setFilters: React.Dispatch<
-    React.SetStateAction<{ material: string; gemstone: string; design: string; type: string }>
+    React.SetStateAction<{ jewelryType: string; gemstone: string; metal: string; designStyle: string; engraving: string }>
   >;
   sidebarVisible: boolean;
+  jewelryFilters: JewelryFilters;
 }
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({
@@ -180,6 +207,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   filters,
   setFilters,
   sidebarVisible,
+  jewelryFilters,
 }) => {
   const dispatch: AppDispatch = useDispatch();
   const formData = useSelector((state: RootState) => state.form.formData);
@@ -188,10 +216,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   const [images, setImages] = useState<ImageData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  // Set itemsPerPage to 6 for a 3x2 grid.
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
   const [imageLoading, setImageLoading] = useState<{ [key: string]: boolean }>({});
+  const [generatePage, setGeneratePage] = useState(1);
   const { user } = useAuthenticator();
   const navigate = useNavigate();
 
@@ -199,17 +225,14 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     const fetchImages = async () => {
       try {
         const response = await fetch("https://dem48tvmua.execute-api.us-east-1.amazonaws.com/getDB");
+        // const response = await fetch("https://3t81apzou3.execute-api.ap-south-1.amazonaws.com/dev/get_astrology_collection");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data: ImageData[] = await response.json();
-        data.sort((a, b) => {
-          if (a.Timestamp && b.Timestamp) {
-            return new Date(b.Timestamp).getTime() - new Date(a.Timestamp).getTime();
-          }
-          return 0;
-        });
-        setImages(data);
+        const shuffledData = data.sort(() => 0.5 - Math.random());
+        // Limit to 20 images
+        setImages(shuffledData.slice(0, 20));
       } catch (error) {
         setError(error instanceof Error ? error.message : "An error occurred");
       } finally {
@@ -230,12 +253,14 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     }
   }, [dispatch, occasion, jewelryType, gender, ageGroup]);
 
+  // Set initial filters based on formData; note that gemstone, metal, designStyle, engraving now start as empty strings.
   useEffect(() => {
     setFilters({
-      material: "",
+      jewelryType: formData.jewelryType || "",
       gemstone: "",
-      design: "",
-      type: formData.jewelryType || "",
+      metal: "",
+      designStyle: "",
+      engraving: "",
     });
   }, [formData, setFilters]);
 
@@ -284,25 +309,52 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     window.open(detailedViewUrl, "_blank", "noopener,noreferrer");
   };
 
+  // Filter images based on search term and filters.
   const filteredImages = images.filter(
     (image) =>
       image.ProcessedFlag === true &&
       image.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (filters.material ? image.material === filters.material : true) &&
+      (filters.metal ? image.material === filters.metal : true) &&
       (filters.gemstone ? image.gemstone === filters.gemstone : true) &&
-      (filters.design ? image.design === filters.design : true) &&
-      (filters.type ? image.JewelleryType === filters.type : true)
-  );
-
-  const totalPages = Math.ceil(filteredImages.length / itemsPerPage);
-  const paginatedImages = filteredImages.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+      (filters.designStyle ? image.design === filters.designStyle : true) &&
+      (filters.jewelryType ? image.JewelleryType === filters.jewelryType : true)
   );
 
   const resetFilters = () => {
-    setFilters({ material: "", gemstone: "", design: "", type: "" });
-    setCurrentPage(1);
+    setFilters({ jewelryType: "", gemstone: "", metal: "", designStyle: "", engraving: "" });
+  };
+
+  // Function to handle "Generate More Designs"
+  const handleGenerateMore = async () => {
+    try {
+      const response = await fetch(`https://picsum.photos/v2/list?page=${generatePage}&limit=6`);
+      if (!response.ok) {
+        alert("No response from API");
+        return;
+      }
+      const data = await response.json();
+      alert("Generate more clicked!");
+      if (!data || !Array.isArray(data)) {
+        alert("No response from API");
+        return;
+      }
+      // Map the Picsum API response to our ImageData structure.
+      const newImages: ImageData[] = data.map((item: any) => ({
+        url: item.download_url,
+        description: `Image by ${item.author}`,
+        material: "",
+        gemstone: "",
+        design: "",
+        JewelleryType: "",
+        ProcessedFlag: true,
+        Timestamp: new Date().toISOString(),
+      }));
+      // Append the new images to the existing list.
+      setImages((prev) => [...prev, ...newImages]);
+      setGeneratePage((prev) => prev + 1);
+    } catch (error) {
+      alert("No response from API");
+    }
   };
 
   if (loading) {
@@ -323,23 +375,25 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
 
   return (
     <div className="flex flex-col md:flex-row">
-      {/* Sidebar: on md screens it takes 15% of width */}
+      {/* Sidebar */}
       <div className={`md:block ${sidebarVisible ? "block" : "hidden"} w-full md:w-[15%] mt-4`}>
         <FilterSidebar
           filters={filters}
           setFilters={setFilters}
           resetFilters={resetFilters}
           sidebarVisible={sidebarVisible}
+          jewelryFilters={jewelryFilters}
+          onGenerateMore={handleGenerateMore}
         />
       </div>
-      {/* Main Gallery: on md screens uses 85% of width */}
+      {/* Main Gallery */}
       <main className="w-full md:w-[85%] p-4 flex flex-col gap-4 text-customBlack">
-        {paginatedImages.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-16 mt-8">
-            {paginatedImages.map((image) => (
+        {filteredImages.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-16 mt-8">
+            {filteredImages.map((image) => (
               <div
                 key={image.url}
-                className="relative group w-full aspect-square" // ensures square aspect ratio
+                className="relative group w-[80%] mx-auto aspect-square ml-8"
                 onClick={() => handleImageClick(image.url)}
               >
                 <div className="relative w-full h-full">
@@ -351,9 +405,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
                   <LazyLoadImage
                     src={image.url}
                     alt={image.description}
-                    className={`w-full h-full object-cover rounded-lg ${
-                      imageLoading[image.url] ? "opacity-0" : "opacity-100"
-                    }`}
+                    className={`w-full h-full object-cover rounded-lg ${imageLoading[image.url] ? "opacity-0" : "opacity-100"}`}
                     placeholder={<FaSpinner />}
                     afterLoad={() => setImageLoading((prev) => ({ ...prev, [image.url]: false }))}
                     onError={() => setImageLoading((prev) => ({ ...prev, [image.url]: false }))}
@@ -361,9 +413,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
                   />
                 </div>
                 <div className="absolute w-full h-full inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white p-2 text-center rounded-lg">
-                  <p className="text-[2vw] md:text-[1vw] tracking-widest max-w-[80%]">
-                    {image.description}
-                  </p>
+                  <p className="text-[2vw] md:text-[1vw] tracking-widest max-w-[80%]">{image.description}</p>
                 </div>
                 <button
                   className="absolute top-2 right-2 rounded-full p-1"
@@ -382,29 +432,46 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
             <p className="text-gray-500">No results found</p>
           </div>
         )}
-        <div className="flex w-full">
-          <div className="flex-1 flex justify-center">
-            <MuiPagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-          </div>
-        </div>
       </main>
     </div>
   );
 };
 
 // ----------------------
-// Main AstroJewelryApp Component (Hamburger added)
+// Main AstroJewelryApp Component
 // ----------------------
 const AstroJewelryApp: React.FC = () => {
-  // The search term is static as header is removed.
+  const locationState = useLocation();
   const [searchTerm] = useState("");
-  const [filters, setFilters] = useState({ material: "", gemstone: "", design: "", type: "" });
-  // Manage sidebar visibility (for small screens).
+
+  // Use a single filters state object for gemstone, metal, designStyle, and engraving.
+  // The jewelryType filter is derived from formData and remains fixed.
+  const [filters, setFilters] = useState({
+    jewelryType: "",
+    gemstone: "",
+    metal: "",
+    designStyle: "",
+    engraving: "",
+  });
+
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const defaultJewelryFilters: JewelryFilters = {
+    jewelryType: ["Pendant", "Necklaces", "Earrings", "Rings"],
+    gemstone: ["Diamond", "Emerald", "Ruby"],
+    metal: ["Gold", "Silver", "Rose gold", "Platinum"],
+    designStyle: ["Classic", "Modern", "Vintage"],
+    engraving: ["No Engraving", "Engrave Name", "Custom Engraving"],
+  };
+
+  // Instead of using sessionStorage, we use state to initialize jewelryFilters.
+  const initialJewelryFilters: JewelryFilters =
+    locationState.state?.jewelryFilters || defaultJewelryFilters;
+
+  const [jewelryFilters, setJewelryFilters] = useState<JewelryFilters>(initialJewelryFilters);
 
   return (
     <div className="min-h-screen">
-      {/* Hamburger menu visible on small screens */}
+      {/* Hamburger menu (visible on small screens) */}
       <div className="md:hidden flex justify-end p-4">
         <button onClick={() => setSidebarVisible(!sidebarVisible)}>
           {sidebarVisible ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
@@ -416,6 +483,7 @@ const AstroJewelryApp: React.FC = () => {
           filters={filters}
           setFilters={setFilters}
           sidebarVisible={sidebarVisible}
+          jewelryFilters={jewelryFilters}
         />
       </div>
     </div>
