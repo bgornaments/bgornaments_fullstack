@@ -29,25 +29,6 @@ interface JewelryFilters {
   engraving: string[];
 }
 
-// -----------------------------------------------------
-// Function to parse the astrology API response and obtain filter values
-// -----------------------------------------------------
-interface AstrologyAPIResponse {
-  gemstoneOptions?: string[];
-  metalOptions?: string[];
-  designStyleOptions?: string[];
-  engravingOptions?: string[];
-}
-
-const parseAstrologyAPIResponse = (data: AstrologyAPIResponse): JewelryFilters => {
-  return {
-    jewelryType: ["Pendant", "Necklaces", "Earrings", "Rings"], // fixed values
-    gemstone: data.gemstoneOptions || ["Diamond", "Emerald", "Ruby"],
-    metal: data.metalOptions || ["Gold", "Silver", "Rose gold", "Platinum"],
-    designStyle: data.designStyleOptions || ["Classic", "Modern", "Vintage"],
-    engraving: data.engravingOptions || ["No Engraving", "Engrave Name", "Custom Engraving"],
-  };
-};
 
 // ----------------------
 // FilterSidebar Component
@@ -467,7 +448,7 @@ const AstroJewelryApp: React.FC = () => {
   const initialJewelryFilters: JewelryFilters =
     locationState.state?.jewelryFilters || defaultJewelryFilters;
 
-  const [jewelryFilters, setJewelryFilters] = useState<JewelryFilters>(initialJewelryFilters);
+  const [jewelryFilters,] = useState<JewelryFilters>(initialJewelryFilters);
 
   return (
     <div className="min-h-screen">
