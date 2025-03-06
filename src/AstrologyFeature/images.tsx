@@ -29,7 +29,6 @@ interface JewelryFilters {
   engraving: string[];
 }
 
-
 // ----------------------
 // FilterSidebar Component
 // ----------------------
@@ -181,6 +180,8 @@ interface ImageGalleryProps {
   >;
   sidebarVisible: boolean;
   jewelryFilters: JewelryFilters;
+  // New prop: initialImages passed from location state
+  initialImages: ImageData[];
 }
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({
@@ -189,40 +190,20 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   setFilters,
   sidebarVisible,
   jewelryFilters,
+  initialImages,
 }) => {
   const dispatch: AppDispatch = useDispatch();
   const formData = useSelector((state: RootState) => state.form.formData);
   const likedImages = useSelector((state: RootState) => state.likedImages.likedImages);
   const { occasion, jewelryType, gender, ageGroup } = formData;
-  const [images, setImages] = useState<ImageData[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // Use initialImages from props instead of fetching via API
+  const [images, setImages] = useState<ImageData[]>(initialImages);
+  const [loading, ] = useState(false);
+  const [error, ] = useState<string | null>(null);
   const [imageLoading, setImageLoading] = useState<{ [key: string]: boolean }>({});
   const [generatePage, setGeneratePage] = useState(1);
   const { user } = useAuthenticator();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const response = await fetch("https://dem48tvmua.execute-api.us-east-1.amazonaws.com/getDB");
-        // const response = await fetch("https://3t81apzou3.execute-api.ap-south-1.amazonaws.com/dev/get_astrology_collection");
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data: ImageData[] = await response.json();
-        const shuffledData = data.sort(() => 0.5 - Math.random());
-        // Limit to 20 images
-        setImages(shuffledData.slice(0, 20));
-      } catch (error) {
-        setError(error instanceof Error ? error.message : "An error occurred");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchImages();
-  }, []);
 
   useEffect(() => {
     if (!occasion || !jewelryType || !gender || !ageGroup) {
@@ -305,7 +286,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     setFilters({ jewelryType: "", gemstone: "", metal: "", designStyle: "", engraving: "" });
   };
 
-  // Function to handle "Generate More Designs"
+  // Function to handle "Generate More Designs" (optional additional images)
   const handleGenerateMore = async () => {
     try {
       const response = await fetch(`https://picsum.photos/v2/list?page=${generatePage}&limit=6`);
@@ -423,19 +404,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
 // ----------------------
 const AstroJewelryApp: React.FC = () => {
   const locationState = useLocation();
-  const [searchTerm] = useState("");
 
-  // Use a single filters state object for gemstone, metal, designStyle, and engraving.
-  // The jewelryType filter is derived from formData and remains fixed.
-  const [filters, setFilters] = useState({
-    jewelryType: "",
-    gemstone: "",
-    metal: "",
-    designStyle: "",
-    engraving: "",
-  });
-
-  const [sidebarVisible, setSidebarVisible] = useState(false);
+  // Extract jewelryFilters and images from location state.
   const defaultJewelryFilters: JewelryFilters = {
     jewelryType: ["Pendant", "Necklaces", "Earrings", "Rings"],
     gemstone: ["Diamond", "Emerald", "Ruby"],
@@ -444,27 +414,53 @@ const AstroJewelryApp: React.FC = () => {
     engraving: ["No Engraving", "Engrave Name", "Custom Engraving"],
   };
 
-  // Instead of using sessionStorage, we use state to initialize jewelryFilters.
-  const initialJewelryFilters: JewelryFilters =
-    locationState.state?.jewelryFilters || defaultJewelryFilters;
+  const initialJewelryFilters: JewelryFilters = locationState.state?.jewelryFilters || defaultJewelryFilters;
 
-  const [jewelryFilters,] = useState<JewelryFilters>(initialJewelryFilters);
+  const initialImagesFromState: string[] = locationState.state?.images?.image_urls || [];
+  
+  const initialImages = initialImagesFromState.map((url: string) => ({
+    url,
+    description: "Astrology generated design",
+    material: "",
+    gemstone: "",
+    design: "",
+    JewelleryType: "",
+    ProcessedFlag: true,
+    Timestamp: new Date().toISOString(),
+  }));
+
+  const [searchTerm] = useState("");
+  const [filters, setFilters] = useState({
+    jewelryType: "",
+    gemstone: "",
+    metal: "",
+    designStyle: "",
+    engraving: "",
+  });
+  const [sidebarVisible, setSidebarVisible] = useState(false);
 
   return (
     <div className="min-h-screen">
+      <div className="header absolute top-0 left-0 right-0 p-4 sm:p-8 text-center z-20 mb-4 lg:border-2 lg:h-28 lg:bg-[#f7f2ee] ">
+        <h1 className="text-yellow-600 text-xl sm:text-2xl font-bold mb-2 lg:text-3xl drop-shadow-[0px_0px_16px_rgba(224,174,42,1.0)]">
+          Your Astrology Collection
+        </h1>
+      </div>
       {/* Hamburger menu (visible on small screens) */}
       <div className="md:hidden flex justify-end p-4">
         <button onClick={() => setSidebarVisible(!sidebarVisible)}>
           {sidebarVisible ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
         </button>
       </div>
-      <div className="px-[2vw] pb-10">
+      {/* The container below now includes a margin-top on large screens to shift the image gallery down from the header */}
+      <div className="px-[2vw] pb-10 lg:mt-24">
         <ImageGallery
           searchTerm={searchTerm}
           filters={filters}
           setFilters={setFilters}
           sidebarVisible={sidebarVisible}
-          jewelryFilters={jewelryFilters}
+          jewelryFilters={initialJewelryFilters}
+          initialImages={initialImages}
         />
       </div>
     </div>
