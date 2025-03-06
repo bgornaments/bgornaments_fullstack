@@ -59,3 +59,44 @@
   0% { filter: blur(0px); }
   100% { filter: blur(2px); }
 }
+
+/* Full-screen overlay for the loader */
+.fullscreen-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9); /* semi-transparent overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Generator animation */
+.generator {
+  width: fit-content;
+  font-size: 28px;
+  line-height: 1.5;
+  font-family: system-ui, sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: transparent; /* text color is made transparent so only stroke is visible */
+  -webkit-text-stroke: 1px #e0ae2a;
+  background:
+    radial-gradient(1.13em at 50% 1.6em, #e0ae2a 99%, white 101%) calc(50% - 1.6em) 0/3.2em 100% text,
+    radial-gradient(1.13em at 50% -0.8em, white 99%, #e0ae2a 101%) 50% .8em/3.2em 100% repeat-x text;
+  animation: l9 2s linear infinite;
+}
+
+
+.generator:before {
+  content: "Generating Collection";
+}
+
+@keyframes l9 {
+  to {
+    background-position: calc(50% + 1.6em) 0, calc(50% + 3.2em) .8em;
+  }
+}
