@@ -48,7 +48,7 @@ const Core: React.FC = () => {
           <div className="w-9/12 h-full flex items-center ">
             <div className="flex flex-col md:gap-[5vh] xl:gap-[3vh] px-[5vw]">
               <h1 className="font-custom font-bold text-customGreen text-[4.5vw] tracking-widest leading-tight">
-                From Imagination <br /> To Adornment
+                From Imagination <br /> To Design
               </h1>
               <h2 className="text-[1.5vw] text-lightGolden">
                 Welcome to KinMitra <span className="text-[0.8vw] italic">{user && `${user.signInDetails?.loginId}`}</span>

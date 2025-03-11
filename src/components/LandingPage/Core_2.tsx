@@ -17,7 +17,7 @@
 
 //     const handleDesignNowClick = (e: React.MouseEvent<HTMLButtonElement>) => {
 //     e.preventDefault();
-  
+
 //     if (!user) {
 //       Swal.fire({
 //         title: "Please Log In",
@@ -142,7 +142,7 @@ const Core_2: React.FC = () => {
       });
     } else {
       navigate("/modes");
-    }    
+    }
   };
 
   return (
@@ -156,7 +156,7 @@ const Core_2: React.FC = () => {
             </div>
             <div className="text-customGreen xs:text-[2.4rem] text-center">
               <h1 className="font-custom tracking-widest leading-tight font-bold">
-                From Imagination <br /> To Adornment
+                From Imagination <br /> To Design
               </h1>
             </div>
           </div>
