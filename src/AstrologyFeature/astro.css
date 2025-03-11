@@ -1,33 +1,34 @@
+@import url('https://fonts.googleapis.com/css?family=Quattrocento+Sans');
+
 /* Shimmer effect */
 @keyframes shimmer {
-    0% {
-        background-position: -200% 0;
-    }
-    100% {
-        background-position: 200% 0;
-    }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .shimmer {
-    background: linear-gradient(90deg, #f5f5f5 25%, #e0ae2a 50%, #f5f5f5 75%);
-    background-size: 200% 100%;
-    animation: shimmer 2s infinite;
+  background: linear-gradient(90deg, #f5f5f5 25%, #e0ae2a 50%, #f5f5f5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
 }
 
 /* Neon Glow effect */
 .neon {
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.6), 0 0 10px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.2), 0 0 20px #ff0000, 0 0 25px #ff0000, 0 0 30px #ff0000;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.6), 0 0 10px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.2), 0 0 20px #ff0000, 0 0 25px #ff0000, 0 0 30px #ff0000;
 }
 
 /* Glass effect */
 .glass-effect {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(15px);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
-
-@import url('https://fonts.googleapis.com/css?family=Quattrocento+Sans');
 
 .loading {
   /* Adjusted to be relative to its container instead of full-screen */
@@ -47,7 +48,8 @@
 .loading-text .loading-text-words {
   /* display: inline-block; */
   margin: 0 5px;
-  color: #000; /* Adjust color as needed */
+  color: #000;
+  /* Adjust color as needed */
   font-family: 'Quattrocento Sans', sans-serif;
   font-size: 12px;
   justify-content: center;
@@ -56,8 +58,13 @@
 }
 
 @keyframes blur-text {
-  0% { filter: blur(0px); }
-  100% { filter: blur(2px); }
+  0% {
+    filter: blur(0px);
+  }
+
+  100% {
+    filter: blur(2px);
+  }
 }
 
 /* Full-screen overlay for the loader */
@@ -67,7 +74,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.9); /* semi-transparent overlay */
+  background-color: rgba(255, 255, 255, 0.9);
+  /* semi-transparent overlay */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,7 +90,8 @@
   font-family: system-ui, sans-serif;
   font-weight: bold;
   text-transform: uppercase;
-  color: transparent; /* text color is made transparent so only stroke is visible */
+  color: transparent;
+  /* text color is made transparent so only stroke is visible */
   -webkit-text-stroke: 1px #e0ae2a;
   background:
     radial-gradient(1.13em at 50% 1.6em, #e0ae2a 99%, white 101%) calc(50% - 1.6em) 0/3.2em 100% text,

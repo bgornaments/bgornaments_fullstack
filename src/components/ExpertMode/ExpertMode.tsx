@@ -3,6 +3,8 @@ import Card from "../Basic/Card";
 import setgen from "/src/assets/set_generator_icon.jpg";
 import imgvar from "/src/assets/image_variations_icon.jpg";
 import astr from "/src/assets/vedic-astrology.png";
+import outfit from "/src/assets/outfit_matching_icon.jpg";
+import sketch from "/src/assets/sketch.png";
 
 const ExpertMode: React.FC = () => {
 
@@ -56,6 +58,30 @@ const ExpertMode: React.FC = () => {
               link="/expert-mode/image-variation"
             />
             <Card
+              img={sketch}
+              height="32vw"
+              width="22vw"
+              h4Text="Sketch To Jewelry"
+              h4Size="1.5vw"
+              pText="Effortlessly transform your rough sketches to exquisite jewelry designs."
+              pSize="1vw"
+              imgWidth="9vw"
+              gap="2vw"
+              link="/expert-mode/sketchToJwellery"
+            />
+            <Card
+              img={outfit}
+              height="32vw"
+              width="22vw"
+              h4Text="Outfit Matching Jewelry"
+              h4Size="1.5vw"
+              pText="Perfectly match your jewelry and accessories to the outfit to impress everyone."
+              pSize="1vw"
+              imgWidth="9vw"
+              gap="2vw"
+              link=""
+            />
+            <Card
               img={astr}
               height="32vw"
               width="22vw"
@@ -66,18 +92,6 @@ const ExpertMode: React.FC = () => {
               imgWidth="9vw"
               gap="2vw"
               link="/expert-mode/astrology"
-            />
-            <Card
-              img={setgen}
-              height="32vw"
-              width="22vw"
-              h4Text="Sketch To Jwellery"
-              h4Size="1.5vw"
-              pText="Effortlessly create jewellery sets, optimized for your needs with flexibility."
-              pSize="1vw"
-              imgWidth="9vw"
-              gap="2vw"
-              link="/expert-mode/sketchToJwellery"
             />
           </div>
         </div>
@@ -108,6 +122,30 @@ const ExpertMode: React.FC = () => {
               link="/expert-mode/image-variation"
             />
             <Card
+              img={sketch}
+              height="70vh"
+              width="38vw"
+              h4Text="Sketch To Jewelry"
+              h4Size="1.5rem"
+              pText="Effortlessly transform your rough sketches to exquisite jewelry designs."
+              pSize="1rem"
+              imgWidth="8rem"
+              gap="2.3rem"
+              link="/expert-mode/sketchToJwellery"
+            />
+            <Card
+              img={outfit}
+              height="70vh"
+              width="38vw"
+              h4Text="Outfit Matching Jewelry"
+              h4Size="1.5rem"
+              pText="Perfectly match your jewelry and accessories to the outfit to impress everyone."
+              pSize="1rem"
+              imgWidth="8rem"
+              gap="2.3rem"
+              link=""
+            />
+            <Card
               img={astr}
               height="70vh"
               width="38vw"
@@ -118,18 +156,6 @@ const ExpertMode: React.FC = () => {
               imgWidth="8rem"
               gap="2.3rem"
               link="/expert-mode/astrology"
-            />
-            <Card
-              img={setgen}
-              height="70vh"
-              width="38vw"
-              h4Text="Sketch To Jwellery"
-              h4Size="1.5rem"
-              pText="Effortlessly create custom data sets, optimized for your needs with precision and flexibility."
-              pSize="1rem"
-              imgWidth="8rem"
-              gap="2.3rem"
-              link="/expert-mode/sketchToJwellery"
             />
           </div>
         </div>
@@ -160,6 +186,30 @@ const ExpertMode: React.FC = () => {
               link="/expert-mode/image-variation"
             />
             <Card
+              img={sketch}
+              height="60vw"
+              width="44vw"
+              h4Text="Sketch To Jewelry"
+              h4Size="3vw"
+              pText="Effortlessly transform your rough sketches to exquisite jewelry designs."
+              pSize="2vw"
+              imgWidth="14vw"
+              gap="5vw"
+              link="/expert-mode/sketchToJwellery"
+            />
+            <Card
+              img={outfit}
+              height="60vw"
+              width="44vw"
+              h4Text="Outfit Matching Jewelry"
+              h4Size="3vw"
+              pText="Perfectly match your jewelry and accessories to the outfit to impress everyone."
+              pSize="2vw"
+              imgWidth="14vw"
+              gap="5vw"
+              link=""
+            />
+            <Card
               img={astr}
               height="60vw"
               width="44vw"
@@ -170,18 +220,6 @@ const ExpertMode: React.FC = () => {
               imgWidth="14vw"
               gap="5vw"
               link="/expert-mode/astrology"
-            />
-            <Card
-              img={astr}
-              height="60vw"
-              width="44vw"
-              h4Text="Sketch To Jwellery"
-              h4Size="3vw"
-              pText="Find your perfect astrology jewelry with personalized astrology guidance."
-              pSize="2vw"
-              imgWidth="14vw"
-              gap="5vw"
-              link="/expert-mode/sketchToJwellery"
             />
           </div>
         </div>
