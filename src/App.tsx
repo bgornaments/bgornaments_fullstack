@@ -32,6 +32,8 @@ import UserProfile from "./components/UserProfile/UserProfile.tsx";
 import AstrologyForm from "./AstrologyFeature/AstrologyForm.tsx";
 import AstrologySignature from "./AstrologyFeature/AstrologySignature.tsx";
 import AstroJewelryApp from "./AstrologyFeature/images.tsx";
+import SketchToJwellery from "./SketchToJwellery/Sketch2Jwellery_landing.tsx";
+import SketchModification from "./SketchToJwellery/Sketchmodification.tsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <HeroPage /> },
@@ -246,6 +248,22 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
+  {
+    path: "/expert-mode/sketchToJwellery",
+    element: (
+      <ProtectedRoute>
+        <SketchToJwellery />
+      </ProtectedRoute>
+    ),
+  }, 
+  {
+    path: "/expert-mode/sketchToJwellery/sketchModification",
+    element: (
+      <ProtectedRoute>
+        <SketchModification />
+      </ProtectedRoute>
+    ),
+  }, 
 ]);
 
 const App: React.FC = () => {

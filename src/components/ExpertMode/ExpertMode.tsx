@@ -30,7 +30,7 @@ const ExpertMode: React.FC = () => {
           </p>
         </div>
         <div className="hidden xl:block">
-          <div className="flex gap-[8vw]">
+          <div className="flex flex-wrap gap-[3vw] justify-center max-w-[75vw] mb-4">
             <Card
               img={setgen}
               height="32vw"
@@ -67,10 +67,22 @@ const ExpertMode: React.FC = () => {
               gap="2vw"
               link="/expert-mode/astrology"
             />
+            <Card
+              img={setgen}
+              height="32vw"
+              width="22vw"
+              h4Text="Sketch To Jwellery"
+              h4Size="1.5vw"
+              pText="Effortlessly create jewellery sets, optimized for your needs with flexibility."
+              pSize="1vw"
+              imgWidth="9vw"
+              gap="2vw"
+              link="/expert-mode/sketchToJwellery"
+            />
           </div>
         </div>
         <div className="hidden md:block xl:hidden">
-          <div className="flex flex-col gap-[8vw]">
+          <div className="flex flex-col gap-[8vw] mb-4">
             <Card
               img={setgen}
               height="70vh"
@@ -106,11 +118,23 @@ const ExpertMode: React.FC = () => {
               imgWidth="8rem"
               gap="2.3rem"
               link="/expert-mode/astrology"
+            />
+            <Card
+              img={setgen}
+              height="70vh"
+              width="38vw"
+              h4Text="Sketch To Jwellery"
+              h4Size="1.5rem"
+              pText="Effortlessly create custom data sets, optimized for your needs with precision and flexibility."
+              pSize="1rem"
+              imgWidth="8rem"
+              gap="2.3rem"
+              link="/expert-mode/sketchToJwellery"
             />
           </div>
         </div>
         <div className="block md:hidden">
-          <div className="flex flex-col gap-[5vh]">
+          <div className="flex flex-col gap-[5vh] mb-4">
             <Card
               img={setgen}
               height="60vw"
@@ -146,6 +170,18 @@ const ExpertMode: React.FC = () => {
               imgWidth="14vw"
               gap="5vw"
               link="/expert-mode/astrology"
+            />
+            <Card
+              img={astr}
+              height="60vw"
+              width="44vw"
+              h4Text="Sketch To Jwellery"
+              h4Size="3vw"
+              pText="Find your perfect astrology jewelry with personalized astrology guidance."
+              pSize="2vw"
+              imgWidth="14vw"
+              gap="5vw"
+              link="/expert-mode/sketchToJwellery"
             />
           </div>
         </div>
