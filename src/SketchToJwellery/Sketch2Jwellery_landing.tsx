@@ -26,7 +26,7 @@ const SketchToDesign: React.FC = () => {
         <div className="min-h-screen bg-white flex flex-col">
             {/* Header */}
             <header className="py-6 text-center">
-                <h1 className="text-4xl md:text-5xl font-bold text-yellow-600">
+                <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
                     Sketch to Design
                 </h1>
                 <p className="text-lg md:text-xl text-green-600 mt-1">
