@@ -4,8 +4,6 @@ import { useLocation } from "react-router-dom";
 const SketchToDesign: React.FC = () => {
     const location = useLocation();
     const image = location.state?.image || null;
-
-    // Form Refs
     const sketchDescriptionRef = useRef<HTMLTextAreaElement>(null);
     const styleRef = useRef<HTMLSelectElement>(null);
     const materialRef = useRef<HTMLSelectElement>(null);
