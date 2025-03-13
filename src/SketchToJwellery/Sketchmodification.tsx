@@ -5,8 +5,8 @@ const SketchToDesign: React.FC = () => {
         <div className="bg-white flex flex-col items-center min-h-screen p-4">
             {/* Header Section */}
             <header className="py-6 text-center w-full">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-yellow-600">Sketch to Design</h1>
-                <p className="text-base sm:text-lg md:text-xl text-green-600 mt-2">Transform your sketches into stunning jewellery</p>
+                <h1 className="font-custom text-3xl sm:text-4xl md:text-5xl font-bold text-lightGolden">Sketch to Design</h1>
+                <p className="text-base sm:text-lg md:text-xl text-lightGreen mt-2">Transform your sketches into stunning jewellery</p>
             </header>
 
             {/* Main Content */}

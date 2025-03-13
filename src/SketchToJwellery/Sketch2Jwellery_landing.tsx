@@ -29,8 +29,8 @@ const SketchToDesign: React.FC = () => {
                 <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
                     Sketch to Design
                 </h1>
-                <p className="text-lg md:text-xl text-green-600 mt-1">
-                    Transform your sketches to jewellery
+                <p className="text-lightGreen mb-6 lg:text-xl">
+                    Transform your sketch to jewelry design
                 </p>
             </header>
 

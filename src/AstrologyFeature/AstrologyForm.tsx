@@ -98,12 +98,12 @@ const AstrologyForm: React.FC = () => {
     const dob = `${dateOfBirth.getDate().toString().padStart(2, '0')}/${(dateOfBirth.getMonth() + 1)
       .toString()
       .padStart(2, '0')}/${dateOfBirth.getFullYear()}`;
-    
+
     if (!selectedGeoLocation) {
       alert('Please select a valid location from suggestions.');
       return;
     }
-    
+
     const payload = {
       dob: dob,
       tob: timeOfBirth,
@@ -120,11 +120,11 @@ const AstrologyForm: React.FC = () => {
   return (
     <div className="min-h-screen p-8 rounded-lg shadow-lg text-center max-w-full flex flex-col justify-center items-center bg-starry">
       <div className="header absolute top-0 left-0 right-0 p-8 text-center z-20 mb-4">
-        <h1 className="text-yellow-600 text-2xl font-bold mb-2 lg:text-4xl drop-shadow-[0px_0px_16px_rgba(224,174,42,1.0)]">
+        <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
           Astrology Based Jewellery
         </h1>
-        <p className="text-green-600 italic mb-6 lg:text-xl drop-shadow-[0px_0px_16px_rgba(112,240,144,1)]">
-          Let the stars and Vedas guide your divine path and get you the right piece
+        <p className="text-lightGreen mb-6 lg:text-xl">
+          Let the stars and Vedas guide you to get the right jewelry piece
         </p>
       </div>
 
