@@ -147,11 +147,11 @@ const SketchToDesign: React.FC = () => {
         <div className="bg-white flex flex-col items-center min-h-screen p-4">
             {/* Header Section */}
             <header className="py-6 text-center w-full">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-yellow-600">
+                <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
                     Sketch to Design
                 </h1>
-                <p className="text-base sm:text-lg md:text-xl text-green-600 mt-2">
-                    Transform your sketches into stunning jewellery
+                <p className="text-lightGreen mb-6 lg:text-xl">
+                    Transform your sketch to jewelry design
                 </p>
             </header>
 
