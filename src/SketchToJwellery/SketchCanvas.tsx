@@ -5,6 +5,7 @@ export interface SketchCanvasHandle {
 }
 
 const SketchCanvas = forwardRef<SketchCanvasHandle>((props, ref) => {
+  console.log(props); // Just to prevent TS error for now
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [lineWidth, setLineWidth] = useState(1);
