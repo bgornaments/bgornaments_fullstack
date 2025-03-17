@@ -4,7 +4,7 @@ export interface SketchCanvasHandle {
   getDataUrl: () => string;
 }
 
-const SketchCanvas = forwardRef<SketchCanvasHandle>((props, ref) => {
+const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [lineWidth, setLineWidth] = useState(1);
