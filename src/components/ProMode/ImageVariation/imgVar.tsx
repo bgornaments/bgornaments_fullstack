@@ -148,10 +148,31 @@ const ImgVar: React.FC = () => {
     }
   };
 
-  const handleImageSelect = (imageBase64: string) => {
+  const makeImageSquare = (imageBase64: string): Promise<string> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = imageBase64;
+      img.onload = () => {
+        const size = Math.max(img.width, img.height);
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.fillStyle = "white"; // or transparent if needed
+          ctx.fillRect(0, 0, size, size);
+          ctx.drawImage(img, (size - img.width) / 2, (size - img.height) / 2);
+          resolve(canvas.toDataURL()); // Return new base64 image
+        }
+      };
+    });
+  };
+  
+  const handleImageSelect = async (imageBase64: string) => {
     console.log("handleImageSelect: Running – image selected.");
-    setSelectedImage(imageBase64);
-  }
+    const squaredImage = await makeImageSquare(imageBase64);
+    setSelectedImage(squaredImage);
+  };
 
   const handleProcessImage = async () => {
     console.log("handleProcessImage: Running.");
