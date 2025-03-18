@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
+import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from "react";
 
 export interface SketchCanvasHandle {
   getDataUrl: () => string;
@@ -6,8 +6,8 @@ export interface SketchCanvasHandle {
 
 const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [lineWidth, setLineWidth] = useState(1);
+  const isDrawingRef = useRef(false);
+  const [lineWidth, setLineWidth] = useState(2);
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
 
   useEffect(() => {
@@ -15,10 +15,10 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
     if (canvas) {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
       if (ctx) {
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = '#000000';
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "#000000";
         ctx.lineWidth = lineWidth;
         setContext(ctx);
       }
@@ -31,7 +31,7 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
     }
   }, [lineWidth, context]);
 
-  const getCoords = (event: MouseEvent | TouchEvent) => {
+  const getCoords = (event: MouseEvent | TouchEvent | React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return { x: 0, y: 0 };
 
@@ -39,34 +39,38 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
       const touch = event.touches[0] || event.changedTouches[0];
       return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
     } else {
-      return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+      if ("clientX" in event) {
+        return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+      }
+      return { x: 0, y: 0 };
     }
   };
 
-  const startDrawing = (e: MouseEvent | TouchEvent) => {
-    e.preventDefault(); // Prevent scrolling on touch devices
+  const startDrawing = (e: MouseEvent | TouchEvent | React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
     if (!context) return;
-    setIsDrawing(true);
+    isDrawingRef.current = true;
     context.beginPath();
     const { x, y } = getCoords(e);
     context.moveTo(x, y);
   };
 
-  const draw = (e: MouseEvent | TouchEvent) => {
+  const draw = (e: MouseEvent | TouchEvent | React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     e.preventDefault();
-    if (!isDrawing || !context) return;
+    if (!isDrawingRef.current || !context) return;
     const { x, y } = getCoords(e);
     context.lineTo(x, y);
     context.stroke();
   };
 
-  const endDrawing = () => {
-    setIsDrawing(false);
+  const endDrawing = (e?: TouchEvent | MouseEvent | React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    e?.preventDefault();
+    isDrawingRef.current = false;
     context?.closePath();
   };
 
   useImperativeHandle(ref, () => ({
-    getDataUrl: () => (canvasRef.current ? canvasRef.current.toDataURL() : ''),
+    getDataUrl: () => (canvasRef.current ? canvasRef.current.toDataURL() : ""),
   }));
 
   return (
@@ -88,18 +92,18 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
       </div>
       <div
         className="border border-gray-300 relative w-full max-w-3xl"
-        style={{ height: '500px' }}
+        style={{ height: "500px" }}
       >
         <canvas
           ref={canvasRef}
-          className="w-full h-full"
+          className="w-full h-full touch-none"
           style={{ cursor: 'url("/pencil-icon.png") 16 32, auto' }}
-          onMouseDown={(e) => startDrawing(e as unknown as MouseEvent)}
-          onMouseMove={(e) => draw(e as unknown as MouseEvent)}
+          onMouseDown={startDrawing}
+          onMouseMove={draw}
           onMouseUp={endDrawing}
           onMouseLeave={endDrawing}
-          onTouchStart={(e) => startDrawing(e as unknown as TouchEvent)}
-          onTouchMove={(e) => draw(e as unknown as TouchEvent)}
+          onTouchStart={startDrawing}
+          onTouchMove={draw}
           onTouchEnd={endDrawing}
         />
       </div>
