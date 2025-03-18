@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import download from "../assets/download_gif.gif";
 
 const SketchToDesign: React.FC = () => {
     const location = useLocation();
@@ -29,6 +30,19 @@ const SketchToDesign: React.FC = () => {
             sessionStorage.setItem(`history_${session_id}`, JSON.stringify(history));
         }
     }, [history, session_id]);
+
+    // Function to handle image download
+    const handleDownloadImage = () => {
+        if (generatedDesign) {
+            // Create an anchor element and set properties for download
+            const link = document.createElement('a');
+            link.href = generatedDesign;
+            link.download = `design-${Date.now()}.jpg`; // Set a dynamic filename
+            document.body.appendChild(link); // Append to body
+            link.click(); // Programmatically click the link to trigger download
+            document.body.removeChild(link); // Clean up
+        }
+    };
 
     const handleConvertToDesign = async () => {
         console.log("Convert to Design button clicked");
@@ -162,7 +176,7 @@ const SketchToDesign: React.FC = () => {
                     {/* Preview and Controls Section */}
                     <div className="flex flex-col md:flex-row gap-6">
                         {/* Preview Area */}
-                        <div className="border-2 border-yellow-600 rounded-lg p-4 h-[28rem] w-full md:w-[28rem] flex items-center justify-center shadow-md">
+                        <div className="border-2 border-yellow-600 rounded-lg p-4 h-[28rem] w-full md:w-[28rem] flex items-center justify-center shadow-md relative">
                             {generatedDesign ? (
                                 <div className="relative w-full h-full">
                                     <img
@@ -175,6 +189,17 @@ const SketchToDesign: React.FC = () => {
                                         alt="Sketch Preview"
                                         className="absolute inset-0 w-full h-full object-contain opacity-0 hover:opacity-100 transition-opacity duration-300"
                                     />
+                                    {/* Download button */}
+                                    <div 
+                                        className="absolute top-2 right-2 cursor-pointer z-10"
+                                        onClick={handleDownloadImage}
+                                    >
+                                        <img 
+                                            src={download} 
+                                            alt="Download" 
+                                            className="w-8 h-8" 
+                                        />
+                                    </div>
                                 </div>
                             ) : image ? (
                                 <img
@@ -348,7 +373,7 @@ const SketchToDesign: React.FC = () => {
                             </div>
 
                             {/* Preview Area */}
-                            <div className="border-2 border-yellow-600 rounded-lg p-4 h-80 sm:h-96 md:h-[28rem] md:w-[28rem] w-72 sm:w-80 md:w-96 flex items-center justify-center shadow-md">
+                            <div className="border-2 border-yellow-600 rounded-lg p-4 h-80 sm:h-96 md:h-[28rem] md:w-[28rem] w-72 sm:w-80 md:w-96 flex items-center justify-center shadow-md relative">
                                 {generatedDesign ? (
                                     <div className="relative w-full h-full">
                                         <img
@@ -361,6 +386,17 @@ const SketchToDesign: React.FC = () => {
                                             alt="Sketch Preview"
                                             className="absolute inset-0 w-full h-full object-contain opacity-0 hover:opacity-100 transition-opacity duration-300"
                                         />
+                                        {/* Download button */}
+                                        <div 
+                                            className="absolute top-2 right-2 cursor-pointer z-10"
+                                            onClick={handleDownloadImage}
+                                        >
+                                            <img 
+                                                src={download} 
+                                                alt="Download" 
+                                                className="w-8 h-8" 
+                                            />
+                                        </div>
                                     </div>
                                 ) : image ? (
                                     <img
