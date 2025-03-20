@@ -796,25 +796,36 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
       if (!imageCanvas) return;
       const ctx = imageCanvas.getContext("2d");
       if (!ctx) return;
-
+    
       const img = new Image();
       img.src = imgvar;
       img.onload = () => {
+        // Calculate scaled dimensions for the display canvas
         const maxWidth = imageCanvas.parentElement!.clientWidth * 0.9;
         const maxHeight = imageCanvas.parentElement!.clientHeight * 0.9;
         const scale = Math.min(maxWidth / img.width, maxHeight / img.height);
-        imageCanvas.width = img.width * scale;
-        imageCanvas.height = img.height * scale;
-
+        
+        const canvasWidth = Math.floor((img.width * scale) / 8) * 8;
+        const canvasHeight = Math.floor((img.height * scale) / 8) * 8;
+        
+        // Set the image canvas to the scaled dimensions
+        imageCanvas.width = canvasWidth;
+        imageCanvas.height = canvasHeight;
+        
+        // Set the overlay canvas (mask) to the original image dimensions
         const overlayCanvas = overlayCanvasRef.current;
         if (overlayCanvas) {
-          overlayCanvas.width = imageCanvas.width;
-          overlayCanvas.height = imageCanvas.height;
+          overlayCanvas.width = img.width;
+          overlayCanvas.height = img.height;
         }
-
-        ctx.drawImage(img, 0, 0, imageCanvas.width, imageCanvas.height);
+        
+        console.log('imageCanvas:', imageCanvas.width, imageCanvas.height);
+        console.log('imgSize:', img.width, img.height);
+        
+        // Draw the scaled image on the image canvas
+        ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
       };
-    }, [imgvar]);
+    }, [imgvar]); 
 
     const redrawAllMasks = (
       ctx: CanvasRenderingContext2D,
