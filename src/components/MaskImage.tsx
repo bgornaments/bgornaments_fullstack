@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // /* eslint-disable @typescript-eslint/no-explicit-any */
 // /* eslint-disable no-case-declarations */
 // import React, {
@@ -52,7 +53,7 @@
 //       if (!imageCanvas) return;
 //       const ctx = imageCanvas.getContext("2d");
 //       if (!ctx) return;
-    
+
 //       const img = new Image();
 //       img.src = imgvar;
 //       img.onload = () => {
@@ -60,24 +61,24 @@
 //         const maxWidth = imageCanvas.parentElement!.clientWidth * 0.9;
 //         const maxHeight = imageCanvas.parentElement!.clientHeight * 0.9;
 //         const scale = Math.min(maxWidth / img.width, maxHeight / img.height);
-        
+
 //         const canvasWidth = Math.floor((img.width * scale) / 8) * 8;
 //         const canvasHeight = Math.floor((img.height * scale) / 8) * 8;
-        
+
 //         // Set the image canvas to the scaled dimensions
 //         imageCanvas.width = canvasWidth;
 //         imageCanvas.height = canvasHeight;
-        
+
 //         // Set the overlay canvas (mask) to the original image dimensions
 //         const overlayCanvas = overlayCanvasRef.current;
 //         if (overlayCanvas) {
 //           overlayCanvas.width = img.width;
 //           overlayCanvas.height = img.height;
 //         }
-        
+
 //         console.log('imageCanvas:', imageCanvas.width, imageCanvas.height);
 //         console.log('imgSize:', img.width, img.height);
-        
+
 //         // Draw the scaled image on the image canvas
 //         ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
 //       };
@@ -771,11 +772,9 @@ export interface ImageMaskingPopupHandle {
 
 const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupProps>(
   ({ imgvar, onClose }, ref) => {
-    // Canvas references
     const imageCanvasRef = useRef<HTMLCanvasElement>(null);
     const overlayCanvasRef = useRef<HTMLCanvasElement>(null);
 
-    // Drawing states
     const [selectedTool, setSelectedTool] = useState<string | null>(null);
     const [isDrawing, setIsDrawing] = useState(false);
     const [startPos, setStartPos] = useState<{ x: number; y: number } | null>(null);
@@ -783,19 +782,34 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
     const [drawingPath, setDrawingPath] = useState<Array<{ x: number; y: number }>>([]);
     const [masks, setMasks] = useState<any[]>([]);
     const [eraserSize, setEraserSize] = useState(5);
-
-    // <-- NEW EXPORT STATES -->
-    // s3Link will store the URL returned from the API
     const [s3Link, setS3Link] = useState<string | null>(null);
-    // isExported becomes true when the export API call succeeds.
     const [isExported, setIsExported] = useState(false);
 
+    // Load saved masks on mount
+    useEffect(() => {
+      const savedMasks = sessionStorage.getItem('savedMasks');
+      if (savedMasks) {
+        try {
+          const parsedMasks = JSON.parse(savedMasks);
+          setMasks(parsedMasks);
+        } catch (error) {
+          console.error("Error parsing saved masks:", error);
+          sessionStorage.removeItem('savedMasks');
+        }
+      }
+    }, []);
+
+    // Initialize canvas and draw masks
     useEffect(() => {
       if (!imgvar) return;
+      
       const imageCanvas = imageCanvasRef.current;
-      if (!imageCanvas) return;
-      const ctx = imageCanvas.getContext("2d");
-      if (!ctx) return;
+      const overlayCanvas = overlayCanvasRef.current;
+      if (!imageCanvas || !overlayCanvas) return;
+
+      const imageCtx = imageCanvas.getContext("2d");
+      const overlayCtx = overlayCanvas.getContext("2d");
+      if (!imageCtx || !overlayCtx) return;
 
       const img = new Image();
       img.src = imgvar;
@@ -803,18 +817,25 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
         const maxWidth = imageCanvas.parentElement!.clientWidth * 0.9;
         const maxHeight = imageCanvas.parentElement!.clientHeight * 0.9;
         const scale = Math.min(maxWidth / img.width, maxHeight / img.height);
-        imageCanvas.width = img.width * scale;
-        imageCanvas.height = img.height * scale;
 
-        const overlayCanvas = overlayCanvasRef.current;
-        if (overlayCanvas) {
-          overlayCanvas.width = imageCanvas.width;
-          overlayCanvas.height = imageCanvas.height;
+        const canvasWidth = Math.floor((img.width * scale) / 8) * 8;
+        const canvasHeight = Math.floor((img.height * scale) / 8) * 8;
+
+        // Set canvas dimensions
+        imageCanvas.width = canvasWidth;
+        imageCanvas.height = canvasHeight;
+        overlayCanvas.width = img.width;
+        overlayCanvas.height = img.height;
+
+        // Draw base image
+        imageCtx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
+
+        // Immediately redraw saved masks
+        if (masks.length > 0) {
+          redrawAllMasks(overlayCtx);
         }
-
-        ctx.drawImage(img, 0, 0, imageCanvas.width, imageCanvas.height);
       };
-    }, [imgvar]);
+    }, [imgvar, masks]);
 
     const redrawAllMasks = (
       ctx: CanvasRenderingContext2D,
@@ -822,9 +843,8 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
     ) => {
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       masksToDraw.forEach((mask) => {
-        ctx.lineWidth = mask.brushSize !== undefined ? mask.brushSize : brushSize;
+        ctx.lineWidth = mask.brushSize || brushSize;
         if (mask.tool === "freehand") {
-          // Always draw freehand with 0.5 alpha
           ctx.strokeStyle = "rgba(0,0,0,0.5)";
           ctx.beginPath();
           if (mask.drawingPath && mask.drawingPath.length > 0) {
@@ -835,7 +855,6 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
             ctx.stroke();
           }
         } else {
-          // Other shapes use fill for the semi-transparent mask
           ctx.strokeStyle = "rgba(0,0,0,1)";
           ctx.fillStyle = "rgba(0,0,0,1)";
           switch (mask.tool) {
@@ -865,8 +884,6 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
               );
               ctx.fill();
               break;
-            default:
-              break;
           }
         }
       });
@@ -878,8 +895,11 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
       const overlayCanvas = overlayCanvasRef.current;
       if (!overlayCanvas) return;
       const rect = overlayCanvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const scaleX = overlayCanvas.width / rect.width;
+      const scaleY = overlayCanvas.height / rect.height;
+      // Adjust coordinates with scaling
+      const x = (e.clientX - rect.left) * scaleX;
+      const y = (e.clientY - rect.top) * scaleY;
       setStartPos({ x, y });
 
       if (selectedTool === "freehand") {
@@ -949,9 +969,13 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
 
       // For other drawing tools, redraw and show preview
       redrawAllMasks(ctx);
+      if (!overlayCanvas) return;
       const rect = overlayCanvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const scaleX = overlayCanvas.width / rect.width;
+      const scaleY = overlayCanvas.height / rect.height;
+      // Adjust coordinates with scaling
+      const x = (e.clientX - rect.left) * scaleX;
+      const y = (e.clientY - rect.top) * scaleY;
 
       ctx.fillStyle = "rgba(0,0,0, 1)";
       ctx.strokeStyle = "rgba(0,0,0, 1)";
@@ -994,6 +1018,27 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
           break;
         default:
           break;
+      }
+    };
+
+    // Handle mask button click
+    const handleMaskButtonClick = () => {
+      const overlayCanvas = overlayCanvasRef.current;
+      if (!overlayCanvas) return;
+      const ctx = overlayCanvas.getContext("2d");
+      if (!ctx) return;
+
+      redrawAllMasks(ctx);
+
+      try {
+        sessionStorage.setItem('savedMasks', JSON.stringify(masks));
+      } catch (error) {
+        console.error("Error saving masks to sessionStorage:", error);
+        if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+          console.warn("Storage limit exceeded. Clearing old masks.");
+          sessionStorage.removeItem('savedMasks');
+          sessionStorage.setItem('savedMasks', JSON.stringify(masks));
+        }
       }
     };
 
@@ -1054,9 +1099,13 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
       const overlayCanvas = overlayCanvasRef.current;
       if (!overlayCanvas) return;
       const rect = overlayCanvas.getBoundingClientRect();
+      // Calculate scaling factors
+      const scaleX = overlayCanvas.width / rect.width;
+      const scaleY = overlayCanvas.height / rect.height;
       const touch = e.touches[0];
-      const x = touch.clientX - rect.left;
-      const y = touch.clientY - rect.top;
+      // Adjust coordinates with scaling
+      const x = (touch.clientX - rect.left) * scaleX;
+      const y = (touch.clientY - rect.top) * scaleY;
       setStartPos({ x, y });
       if (selectedTool === "freehand") {
         setDrawingPath([]);
@@ -1115,8 +1164,12 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
 
       redrawAllMasks(ctx);
       const rect = overlayCanvas.getBoundingClientRect();
-      const x = touch.clientX - rect.left;
-      const y = touch.clientY - rect.top;
+      const scaleX = overlayCanvas.width / rect.width;
+      const scaleY = overlayCanvas.height / rect.height;
+      // Adjust coordinates with scaling
+      const x = (touch.clientX - rect.left) * scaleX;
+      const y = (touch.clientY - rect.top) * scaleY;
+
 
       ctx.fillStyle = "rgba(0,0,0, 1)";
       ctx.strokeStyle = "rgba(0,0,0, 1)";
@@ -1189,8 +1242,11 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
 
       const touch = e.changedTouches[0];
       const rect = overlayCanvas.getBoundingClientRect();
-      const x = touch.clientX - rect.left;
-      const y = touch.clientY - rect.top;
+      const scaleX = overlayCanvas.width / rect.width;
+      const scaleY = overlayCanvas.height / rect.height;
+      // Adjust coordinates with scaling
+      const x = (touch.clientX - rect.left) * scaleX;
+      const y = (touch.clientY - rect.top) * scaleY;
 
       switch (selectedTool) {
         case "rectangle":
@@ -1245,13 +1301,9 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
       const overlayCanvas = overlayCanvasRef.current;
       if (!overlayCanvas) return;
 
-      // Convert canvas to Base64 and remove header
+      handleMaskButtonClick();
+
       const base64Image = overlayCanvas.toDataURL("image/png");
-      console.log(base64Image);
-
-      // base64Image = base64Image.replace(/^data:image\/png;base64,/, "");
-
-      // Retrieve user details from local storage
       const user_id = localStorage.getItem("cognito_username");
       const session_id = localStorage.getItem("sessionId");
 
@@ -1266,8 +1318,6 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
         image_base64: base64Image.split(',')[1],
       };
 
-      console.log('payload for fetching s3 link:', payload);
-
       const response = await callLambda(
         "https://yhzyxry6rj.execute-api.ap-south-1.amazonaws.com/dev/handle_promode_session_images",
         payload
@@ -1275,9 +1325,6 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
       if (response && response.s3_link) {
         setIsExported(true);
         setS3Link(response.s3_link);
-      }
-      else {
-        console.error("Upload failed:", response);
       }
     };
 
@@ -1311,161 +1358,162 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
 
     return (
       <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex justify-center items-center">
-      {isExported && (
-        <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.3 }}
-        className="absolute top-2 right-2 bg-green-500 text-white border border-green-700 text-sm px-4 py-2 rounded shadow-lg"
-        >
-        Link exported successfully!
-        </motion.div>
-      )}
-
-      <div className="bg-white border-4 border-[#e0ae2a] shadow-lg rounded-2xl p-7 w-[90%] md:w-[70%] h-[80%] flex flex-col md:flex-row relative">
-        <button
-        onClick={onClose}
-        className="absolute top-1 right-2 text-red-500 text-xl hover:text-red-600"
-        >
-        ✖
-        </button>
-
-        {/* Responsive Toolbar: Above Canvas for Small Screens */}
-        <div className="md:hidden flex flex-wrap gap-2 justify-center pb-4">
-        <h2 className="text-lg font-bold text-[#e0ae2a] w-full text-center">Mask Image</h2>
-        {[
-          { icon: rectangleIcon, name: "rectangle" },
-          { icon: circleIcon, name: "circle" },
-          { icon: ovalIcon, name: "oval" },
-          { icon: freehandIcon, name: "freehand" },
-          { icon: eraserIcon, name: "eraser" },
-        ].map((tool) => (
-          <button
-          key={tool.name}
-          onClick={() => setSelectedTool(tool.name)}
-          className={`w-[30%] sm:w-[28%] px-3 py-2 rounded-lg flex items-center justify-center transition-all ${selectedTool === tool.name
-            ? "bg-white border-4 border-[#e0ae2a] text-white"
-            : "bg-[#f0d9a8] hover:bg-[#e0ae2a]"
-            }`}
+        {isExported && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="absolute top-2 right-2 bg-green-500 text-white border border-green-700 text-sm px-4 py-2 rounded shadow-lg"
           >
-          <img src={tool.icon} alt={tool.name} className="w-6 h-6 sm:w-8 sm:h-8" />
-          </button>
-        ))}
-        </div>
-
-        {/* Sidebar Toolbar (For Larger Screens) */}
-        <div className="hidden md:flex flex-col gap-4 w-[20%] pr-4">
-        <h2 className="text-lg font-bold text-[#e0ae2a]">Mask Image</h2>
-        {[
-          { icon: rectangleIcon, name: "rectangle" },
-          { icon: circleIcon, name: "circle" },
-          { icon: ovalIcon, name: "oval" },
-          { icon: freehandIcon, name: "freehand" },
-          { icon: eraserIcon, name: "eraser" },
-        ].map((tool) => (
-          <button
-          key={tool.name}
-          onClick={() => setSelectedTool(tool.name)}
-          className={`px-3 py-2 rounded-lg flex items-center justify-center transition-all ${selectedTool === tool.name
-            ? "bg-white border-4 border-[#e0ae2a] text-white"
-            : "bg-[#f0d9a8] hover:bg-[#e0ae2a]"
-            }`}
-          >
-          <img src={tool.icon} alt={tool.name} className="w-6 h-6" />
-          </button>
-        ))}
-
-        {selectedTool === "freehand" && (
-          <div className="flex flex-col gap-2 mt-4">
-          <label className="text-sm">Brush Size: {brushSize}</label>
-          <input
-            type="range"
-            min="1"
-            max="10"
-            value={brushSize}
-            onChange={(e) => setBrushSize(Number(e.target.value))}
-            className="w-full appearance-none h-2 rounded-lg bg-[#e0ae2a]"
-          />
-          </div>
+            Link exported successfully!
+          </motion.div>
         )}
 
-        {selectedTool === "eraser" && (
-          <div className="flex flex-col gap-2 mt-4">
-          <label className="text-sm">Eraser Size: {eraserSize}</label>
-          <input
-            type="range"
-            min="1"
-            max="10"
-            value={eraserSize}
-            onChange={(e) => setEraserSize(Number(e.target.value))}
-            className="w-full appearance-none h-2 rounded-lg bg-[#e0ae2a]"
-          />
+        <div className="bg-white border-4 border-[#e0ae2a] shadow-lg rounded-2xl p-7 w-[90%] md:w-[70%] h-[80%] flex flex-col md:flex-row relative">
+          <button
+            onClick={onClose}
+            className="absolute top-1 right-2 text-red-500 text-xl hover:text-red-600"
+          >
+            ✖
+          </button>
+
+          {/* Responsive Toolbar: Above Canvas for Small Screens */}
+          <div className="md:hidden flex flex-wrap gap-2 justify-center pb-4">
+            <h2 className="text-lg font-bold text-[#e0ae2a] w-full text-center">Mask Image</h2>
+            {[
+              { icon: rectangleIcon, name: "rectangle" },
+              { icon: circleIcon, name: "circle" },
+              { icon: ovalIcon, name: "oval" },
+              { icon: freehandIcon, name: "freehand" },
+              { icon: eraserIcon, name: "eraser" },
+            ].map((tool) => (
+              <button
+                key={tool.name}
+                onClick={() => setSelectedTool(tool.name)}
+                className={`w-[30%] sm:w-[28%] px-3 py-2 rounded-lg flex items-center justify-center transition-all ${selectedTool === tool.name
+                  ? "bg-white border-4 border-[#e0ae2a] text-white"
+                  : "bg-[#f0d9a8] hover:bg-[#e0ae2a]"
+                  }`}
+              >
+                <img src={tool.icon} alt={tool.name} className="w-6 h-6 sm:w-8 sm:h-8" />
+              </button>
+            ))}
           </div>
+
+          {/* Sidebar Toolbar (For Larger Screens) */}
+          <div className="hidden md:flex flex-col gap-4 w-[20%] pr-4">
+            <h2 className="text-lg font-bold text-[#e0ae2a]">Mask Image</h2>
+            {[
+              { icon: rectangleIcon, name: "rectangle" },
+              { icon: circleIcon, name: "circle" },
+              { icon: ovalIcon, name: "oval" },
+              { icon: freehandIcon, name: "freehand" },
+              { icon: eraserIcon, name: "eraser" },
+            ].map((tool) => (
+              <button
+                key={tool.name}
+                onClick={() => setSelectedTool(tool.name)}
+                className={`px-3 py-2 rounded-lg flex items-center justify-center transition-all ${selectedTool === tool.name
+                  ? "bg-white border-4 border-[#e0ae2a] text-white"
+                  : "bg-[#f0d9a8] hover:bg-[#e0ae2a]"
+                  }`}
+              >
+                <img src={tool.icon} alt={tool.name} className="w-6 h-6" />
+              </button>
+            ))}
+
+            {selectedTool === "freehand" && (
+              <div className="flex flex-col gap-2 mt-4">
+                <label className="text-sm">Brush Size: {brushSize}</label>
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  value={brushSize}
+                  onChange={(e) => setBrushSize(Number(e.target.value))}
+                  className="w-full appearance-none h-2 rounded-lg bg-[#e0ae2a]"
+                />
+              </div>
+            )}
+
+            {selectedTool === "eraser" && (
+              <div className="flex flex-col gap-2 mt-4">
+                <label className="text-sm">Eraser Size: {eraserSize}</label>
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  value={eraserSize}
+                  onChange={(e) => setEraserSize(Number(e.target.value))}
+                  className="w-full appearance-none h-2 rounded-lg bg-[#e0ae2a]"
+                />
+              </div>
+            )}
+
+            {/* Export Button (Inside Sidebar for Large Screens) */}
+            <button
+              onClickCapture={handleMaskButtonClick}
+              onClick={exportOverlay}
+              className="px-6 py-3 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer bg-white hover:bg-[#e0ae2a] hover:border-4 hover:rounded-lg hover:border-white hover:text-white"
+            >
+              Done
+            </button>
+          </div>
+
+          {/* Canvas */}
+          <div className="flex-1 relative flex justify-center items-center">
+            <div className="border-2 border-[#e0ae2a] rounded-lg shadow-lg relative flex justify-center items-center h-full w-full">
+              <canvas ref={imageCanvasRef} className="absolute rounded-lg border-2 border-[#e0ae2a]" />
+              <canvas
+                ref={overlayCanvasRef}
+                className="absolute rounded-lg"
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                style={{ cursor: selectedTool === "eraser" ? "none" : "default" }}
+              />
+              {selectedTool === "eraser" && (
+                <img
+                  src={eraserIcon}
+                  alt="eraser cursor"
+                  style={{
+                    position: "fixed",
+                    left: cursorPos.x,
+                    top: cursorPos.y,
+                    pointerEvents: "none",
+                    transform: "translate(-50%, -50%)",
+                    width: `${0.8 + ((eraserSize - 1) / 9)}rem`,
+                    height: `${0.8 + ((eraserSize - 1) / 9)}rem`,
+                    zIndex: 9999,
+                  }}
+                />
+              )}
+            </div>
+          </div>
+
+          {/* Export Button (For Small Screens, Below the Toolbar) */}
+          <div className="md:hidden flex justify-center pt-4">
+            <button
+              onClick={exportOverlay}
+              className="px-6 py-3 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer bg-white hover:bg-[#e0ae2a] hover:border-4 hover:rounded-lg hover:border-white hover:text-white"
+            >
+              Done
+            </button>
+          </div>
+        </div>
+
+        {s3Link && (
+          <button
+            onClick={handleViewImage}
+            className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-6 py-2 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer bg-gradient-to-r from-white via-[#FDEEC7] via-[#E0AE2A] to-white hover:bg-gradient-to-r hover:from-white hover:via-[#E0AE2A] hover:to-[#FDEEC7] hover:text-white transition duration-1000 shadow-lg"
+          >
+            View Image
+          </button>
         )}
-
-        {/* Export Button (Inside Sidebar for Large Screens) */}
-        <button
-          onClick={exportOverlay}
-          className="px-6 py-3 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer bg-white hover:bg-[#e0ae2a] hover:border-4 hover:rounded-lg hover:border-white hover:text-white"
-        >
-          Done
-        </button>
-        </div>
-
-        {/* Canvas */}
-        <div className="flex-1 relative flex justify-center items-center">
-        <div className="border-2 border-[#e0ae2a] rounded-lg shadow-lg relative flex justify-center items-center h-full w-full">
-          <canvas ref={imageCanvasRef} className="absolute rounded-lg border-2 border-[#e0ae2a]" />
-          <canvas
-          ref={overlayCanvasRef}
-          className="absolute rounded-lg"
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          style={{ cursor: selectedTool === "eraser" ? "none" : "default" }}
-          />
-          {selectedTool === "eraser" && (
-          <img
-            src={eraserIcon}
-            alt="eraser cursor"
-            style={{
-            position: "fixed",
-            left: cursorPos.x,
-            top: cursorPos.y,
-            pointerEvents: "none",
-            transform: "translate(-50%, -50%)",
-            width: `${0.8 + ((eraserSize - 1) / 9)}rem`,
-            height: `${0.8 + ((eraserSize - 1) / 9)}rem`,
-            zIndex: 9999,
-            }}
-          />
-          )}
-        </div>
-        </div>
-
-        {/* Export Button (For Small Screens, Below the Toolbar) */}
-        <div className="md:hidden flex justify-center pt-4">
-        <button
-          onClick={exportOverlay}
-          className="px-6 py-3 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer bg-white hover:bg-[#e0ae2a] hover:border-4 hover:rounded-lg hover:border-white hover:text-white"
-        >
-          Done
-        </button>
-        </div>
-      </div>
-
-      {s3Link && (
-        <button
-        onClick={handleViewImage}
-        className="absolute bottom-5 left-1/2 transform -translate-x-1/2 px-6 py-2 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer bg-gradient-to-r from-white via-[#FDEEC7] via-[#E0AE2A] to-white hover:bg-gradient-to-r hover:from-white hover:via-[#E0AE2A] hover:to-[#FDEEC7] hover:text-white transition duration-1000 shadow-lg"
-        >
-        View Image
-        </button>
-      )}
       </div>
     );
   }

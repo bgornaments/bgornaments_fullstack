@@ -46,6 +46,11 @@ const ImgVar: React.FC = () => {
     console.log("Exported Status:", isMaskExported);
   }, [maskS3url, isMaskExported]);
 
+  useEffect(() => {
+    if (maskS3url && isMaskExported) {
+      alert('Mask is applied!');
+    }
+  }, [maskS3url, isMaskExported]);
 
   const handleCloseMaskingPopup = () => {
     console.log("handleCloseMaskingPopup: Running – closing masking popup.");
