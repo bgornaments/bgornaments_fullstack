@@ -166,7 +166,6 @@ const ImageUploader: React.FC = () => {
     setSelectedImage(url);
   };
   
-
   return (
     <div className="min-h-screen bg-[#fff9f5] p-20">
       <h1 className="text-2xl font-bold mb-4">Image Uploader</h1>
