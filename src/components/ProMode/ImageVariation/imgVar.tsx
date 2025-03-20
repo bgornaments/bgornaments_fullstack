@@ -322,7 +322,7 @@ const ImgVar: React.FC = () => {
               backgroundImage: "url('https://img.freepik.com/free-vector/gradient-golden-linear-background_23-2148957745.jpg?t=st=1730912970~exp=1730916570~hmac=2214eb1073666d65e11ff89c47d76300904bf1001e6128bf610138ef42d5e872&w=900')",
             }}
           ></div>
-          <div className="absolute top-0 left-0 right-0 bottom-0 bg-white opacity-80 z-[-90]"></div>
+          <div className="absolute top-0 left-0 right-0 bottom-0 bg-white opacity-60 z-[-90]"></div>
           {/* Header as in Code 1 */}
           <div className="flex items-center justify-center text-xl p-5 text-[#585858] relative z-10 w-full">
             <header className="text-center">

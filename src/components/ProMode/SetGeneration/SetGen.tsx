@@ -83,7 +83,7 @@ const SetGen: React.FC = () => {
           if (parsedBody.uploaded_image_urls) {
             setGeneratedImages(parsedBody.uploaded_image_urls);
           } else {
-            setError('Failed to generate image variations.');
+            setError('Failed to generate set.');
           }
         } catch (error) {
           setError('Error parsing Lambda response.');
