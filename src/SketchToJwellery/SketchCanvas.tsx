@@ -1,14 +1,14 @@
-import React, { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
+import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from "react";
 
 export interface SketchCanvasHandle {
   getDataUrl: () => string;
 }
 
-const SketchCanvas = forwardRef<SketchCanvasHandle>((props, ref) => {
-  console.log(props); // Just to prevent TS error for now
+const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [lineWidth, setLineWidth] = useState(1);
+  const isDrawingMouseRef = useRef(false);
+  const isDrawingTouchRef = useRef(false);
+  const [lineWidth, setLineWidth] = useState(2);
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
 
   useEffect(() => {
@@ -16,15 +16,15 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((props, ref) => {
     if (canvas) {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
       if (ctx) {
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = '#000000';
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "#000000";
         ctx.lineWidth = lineWidth;
         setContext(ctx);
       }
     }
-  }, []);
+  }, [lineWidth]);
 
   useEffect(() => {
     if (context) {
@@ -32,35 +32,68 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((props, ref) => {
     }
   }, [lineWidth, context]);
 
-  const startDrawing = (e: React.MouseEvent) => {
-    if (!context) return;
-    setIsDrawing(true);
-    context.beginPath();
+  /** Get Mouse Coordinates */
+  const getMouseCoords = (event: MouseEvent) => {
     const rect = canvasRef.current?.getBoundingClientRect();
-    const x = e.clientX - (rect?.left || 0);
-    const y = e.clientY - (rect?.top || 0);
+    if (!rect) return { x: 0, y: 0 };
+    return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+  };
+
+  /** Get Touch Coordinates */
+  const getTouchCoords = (event: TouchEvent) => {
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return { x: 0, y: 0 };
+    const touch = event.touches[0] || event.changedTouches[0];
+    return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+  };
+
+  /** MOUSE EVENTS */
+  const startMouseDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!context) return;
+    isDrawingMouseRef.current = true;
+    context.beginPath();
+    const { x, y } = getMouseCoords(e.nativeEvent as MouseEvent);
     context.moveTo(x, y);
   };
 
-  const draw = (e: React.MouseEvent) => {
-    if (!isDrawing || !context) return;
-    const rect = canvasRef.current?.getBoundingClientRect();
-    const x = e.clientX - (rect?.left || 0);
-    const y = e.clientY - (rect?.top || 0);
+  const drawMouse = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawingMouseRef.current || !context) return;
+    const { x, y } = getMouseCoords(e.nativeEvent as MouseEvent);
     context.lineTo(x, y);
     context.stroke();
   };
 
-  const endDrawing = () => {
+  const endMouseDrawing = () => {
+    isDrawingMouseRef.current = false;
+    context?.closePath();
+  };
+
+  /** TOUCH EVENTS */
+  const startTouchDrawing = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
     if (!context) return;
-    setIsDrawing(false);
-    context.closePath();
+    isDrawingTouchRef.current = true;
+    context.beginPath();
+    const { x, y } = getTouchCoords(e.nativeEvent);
+    context.moveTo(x, y);
+  };
+
+  const drawTouch = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    if (!isDrawingTouchRef.current || !context) return;
+    const { x, y } = getTouchCoords(e.nativeEvent);
+    context.lineTo(x, y);
+    context.stroke();
+  };
+
+  const endTouchDrawing = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    isDrawingTouchRef.current = false;
+    context?.closePath();
   };
 
   useImperativeHandle(ref, () => ({
-    getDataUrl: () => {
-      return canvasRef.current ? canvasRef.current.toDataURL() : '';
-    }
+    getDataUrl: () => (canvasRef.current ? canvasRef.current.toDataURL() : ""),
   }));
 
   return (
@@ -80,15 +113,23 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((props, ref) => {
         />
         <span className="ml-2 text-gray-700">{lineWidth}</span>
       </div>
-      <div className="border border-gray-300 relative w-full max-w-3xl" style={{ height: '500px' }}>
+      <div
+        className="border border-gray-300 relative w-full max-w-3xl"
+        style={{ height: "500px" }}
+      >
         <canvas
           ref={canvasRef}
-          className="w-full h-full"
+          className="w-full h-full touch-none"
           style={{ cursor: 'url("/pencil-icon.png") 16 32, auto' }}
-          onMouseDown={startDrawing}
-          onMouseMove={draw}
-          onMouseUp={endDrawing}
-          onMouseLeave={endDrawing}
+          /** Mouse Events */
+          onMouseDown={startMouseDrawing}
+          onMouseMove={drawMouse}
+          onMouseUp={endMouseDrawing}
+          onMouseLeave={endMouseDrawing}
+          /** Touch Events */
+          onTouchStart={startTouchDrawing}
+          onTouchMove={drawTouch}
+          onTouchEnd={endTouchDrawing}
         />
       </div>
     </div>
