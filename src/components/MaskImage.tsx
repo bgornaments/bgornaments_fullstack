@@ -802,7 +802,7 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
     // Initialize canvas and draw masks
     useEffect(() => {
       if (!imgvar) return;
-      
+
       const imageCanvas = imageCanvasRef.current;
       const overlayCanvas = overlayCanvasRef.current;
       if (!imageCanvas || !overlayCanvas) return;
@@ -821,16 +821,14 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
         const canvasWidth = Math.floor((img.width * scale) / 8) * 8;
         const canvasHeight = Math.floor((img.height * scale) / 8) * 8;
 
-        // Set canvas dimensions
+        // Set both canvases to the same scaled dimensions
         imageCanvas.width = canvasWidth;
         imageCanvas.height = canvasHeight;
-        overlayCanvas.width = img.width;
-        overlayCanvas.height = img.height;
+        overlayCanvas.width = canvasWidth;  // Fix: Match imageCanvas
+        overlayCanvas.height = canvasHeight; // Fix: Match imageCanvas
 
-        // Draw base image
         imageCtx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
 
-        // Immediately redraw saved masks
         if (masks.length > 0) {
           redrawAllMasks(overlayCtx);
         }
@@ -1099,13 +1097,9 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
       const overlayCanvas = overlayCanvasRef.current;
       if (!overlayCanvas) return;
       const rect = overlayCanvas.getBoundingClientRect();
-      // Calculate scaling factors
-      const scaleX = overlayCanvas.width / rect.width;
-      const scaleY = overlayCanvas.height / rect.height;
       const touch = e.touches[0];
-      // Adjust coordinates with scaling
-      const x = (touch.clientX - rect.left) * scaleX;
-      const y = (touch.clientY - rect.top) * scaleY;
+      const x = touch.clientX - rect.left; // Remove scaling
+      const y = touch.clientY - rect.top;  // Remove scaling
       setStartPos({ x, y });
       if (selectedTool === "freehand") {
         setDrawingPath([]);
@@ -1120,6 +1114,10 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
       if (!overlayCanvas) return;
       const ctx = overlayCanvas.getContext("2d");
       if (!ctx) return;
+
+      const rect = overlayCanvas.getBoundingClientRect();
+      const x = touch.clientX - rect.left; // Remove scaling
+      const y = touch.clientY - rect.top;  // Remove scaling
 
       if (selectedTool === "eraser") {
         const rect = overlayCanvas.getBoundingClientRect();
@@ -1163,13 +1161,6 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
       }
 
       redrawAllMasks(ctx);
-      const rect = overlayCanvas.getBoundingClientRect();
-      const scaleX = overlayCanvas.width / rect.width;
-      const scaleY = overlayCanvas.height / rect.height;
-      // Adjust coordinates with scaling
-      const x = (touch.clientX - rect.left) * scaleX;
-      const y = (touch.clientY - rect.top) * scaleY;
-
 
       ctx.fillStyle = "rgba(0,0,0, 1)";
       ctx.strokeStyle = "rgba(0,0,0, 1)";
@@ -1217,16 +1208,22 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
 
     const handleTouchEnd = (e: React.TouchEvent<HTMLCanvasElement>) => {
       e.preventDefault();
-      if (selectedTool === "eraser") {
-        setIsDrawing(false);
-        return;
-      }
-      setIsDrawing(false);
-      if (!selectedTool || !startPos) return;
-      const overlayCanvas = overlayCanvasRef.current;
-      if (!overlayCanvas) return;
-      const ctx = overlayCanvas.getContext("2d");
-      if (!ctx) return;
+  if (selectedTool === "eraser") {
+    setIsDrawing(false);
+    return;
+  }
+  setIsDrawing(false);
+  if (!selectedTool || !startPos) return;
+  const overlayCanvas = overlayCanvasRef.current;
+  if (!overlayCanvas) return;
+  const ctx = overlayCanvas.getContext("2d");
+  if (!ctx) return;
+
+  const touch = e.changedTouches[0];
+  const rect = overlayCanvas.getBoundingClientRect();
+  const x = touch.clientX - rect.left; // Remove scaling
+  const y = touch.clientY - rect.top;  // Remove scaling
+
       const currentMask: {
         tool: string;
         startPos: { x: number; y: number };
@@ -1239,14 +1236,6 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
         startPos: { ...startPos },
         brushSize: brushSize,
       };
-
-      const touch = e.changedTouches[0];
-      const rect = overlayCanvas.getBoundingClientRect();
-      const scaleX = overlayCanvas.width / rect.width;
-      const scaleY = overlayCanvas.height / rect.height;
-      // Adjust coordinates with scaling
-      const x = (touch.clientX - rect.left) * scaleX;
-      const y = (touch.clientY - rect.top) * scaleY;
 
       switch (selectedTool) {
         case "rectangle":

@@ -164,10 +164,10 @@ const ImgVar: React.FC = () => {
         canvas.height = size;
         const ctx = canvas.getContext('2d');
         if (ctx) {
-          ctx.fillStyle = "white"; // or transparent if needed
+          ctx.fillStyle = "white"; 
           ctx.fillRect(0, 0, size, size);
           ctx.drawImage(img, (size - img.width) / 2, (size - img.height) / 2);
-          resolve(canvas.toDataURL()); // Return new base64 image
+          resolve(canvas.toDataURL()); 
         }
       };
     });
