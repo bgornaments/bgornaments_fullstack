@@ -160,7 +160,9 @@ const ImageUploader: React.FC = () => {
 
   const handleCancelViewMetadata = () => {
     setViewingMetadata(null);
+    setSelectedImage(null); 
   };
+  
   const handleViewAndSelectImage = (url: string) => {
     handleViewMetadata(url);
     setSelectedImage(url);
