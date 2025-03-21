@@ -53,7 +53,7 @@ const ImageUploader: React.FC = () => {
   };
 
   const handleAddData = async () => {
-    console.log("clicked 23")
+    console.log("clicked handleAddData")
     
     if (selectedImage) {
       console.log("clicked")
@@ -77,6 +77,13 @@ const ImageUploader: React.FC = () => {
         );
 
         console.log("Response:", response);
+        setMetadata((prev) => ({
+          ...prev,
+          [selectedImage]: { ...requestBody },
+        }));
+        setImages((prevImages) =>
+          prevImages.filter((image) => image.url !== selectedImage)
+        );
         setSelectedImage(null);
         setFormData({
           description: "",
@@ -85,7 +92,7 @@ const ImageUploader: React.FC = () => {
           material: "",
           design: "",
         });
-        window.location.reload();
+        alert("Metadata added successfully!");
       } catch (error) {
         console.error("Error adding data to catalogue:", error);
         alert("Failed to add data to catalogue");
