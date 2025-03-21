@@ -91,7 +91,7 @@ const Core: React.FC = () => {
             <div className="border-r border-lightGolden w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-darkGolden bg-navbar">
               <img src={img8} alt="" className=" md:w-[3vh]" />
               <p className="text-center md:text-[1.5vh] xl:text-[2.8vh] xl:max-w-[60%] font-custom leading-tight">
-                Data- <br />Driven <br />Insights
+                Trend <br />Driven <br />Innovation
               </p>
             </div>
             <div className="border-r border-lightGolden w-1/4 h-full flex flex-col gap-[1.5vh] justify-center items-center text-darkGolden bg-navbar">

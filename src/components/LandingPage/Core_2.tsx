@@ -197,7 +197,7 @@ const Core_2: React.FC = () => {
             <div className="bg-navbar gap-[0.8rem] min-h-[10rem] rounded-lg border border-darkGolden flex flex-col justify-center items-center text-darkGolden">
               <img src={img8} alt="Data Insights" className="size-[1.5rem]" />
               <p className="max-w-[60%] text-center text-[1.3rem] font-custom">
-                Data-Driven Insights
+                Trend Driven Innovation
               </p>
             </div>
             <div className="bg-navbar gap-[0.8rem] min-h-[10rem] rounded-lg border border-darkGolden flex flex-col justify-center items-center text-darkGolden">

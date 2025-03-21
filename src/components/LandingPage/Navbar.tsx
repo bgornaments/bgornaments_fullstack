@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
       {/* Left - Logo */}
       <div className="flex items-center">
         <Link to="/" className="block">
-          <img src={logo} alt="Logo" className="w-[8vh] xl:w-[10vh]" />
+          <img src={logo} alt="Logo" className="w-[14vh] xl:w-[16vh]" />
         </Link>
       </div>
 
@@ -83,7 +83,7 @@ const Navbar: React.FC = () => {
             Logout
           </Link>
         ) : (
-          <Link to="/login" className="text-[0.9rem] font-bold">Jeweller Login</Link>
+          <Link to="/login" className="text-[0.9rem] font-bold">Login</Link>
         )}
 
         {/* Profile Image - Click to Navigate to Profile Page */}
