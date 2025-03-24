@@ -713,11 +713,12 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
 
           {/* Done Button (For Small Screens, Below the Toolbar) */}
           <div className="md:hidden flex justify-center pt-4">
-            <button
+          <button
               onClick={saveAndExportOverlay}
-              className="px-6 py-3 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer bg-white hover:bg-[#e0ae2a] hover:border-4 hover:rounded-lg hover:border-white hover:text-white"
+              disabled={isSaving}
+              className={`px-6 py-3 text-[#E0AE2A] border-2 border-[#E0AE2A] rounded-md cursor-pointer bg-white hover:bg-[#e0ae2a] hover:border-4 hover:rounded-lg hover:border-white hover:text-white ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-              Done
+              {isSaving ? "Saving..." : "Done"}
             </button>
           </div>
         </div>
