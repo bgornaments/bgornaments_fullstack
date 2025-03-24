@@ -43,19 +43,24 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
     const [s3Link, setS3Link] = useState<string | null>(null);
     const [isExported, setIsExported] = useState(false);
 
+    const getMaskStorageKey = () => `savedMasks_${btoa(imgvar)}`;
+
     // Load saved masks on mount
     useEffect(() => {
-      const savedMasks = sessionStorage.getItem('savedMasks');
+      const maskKey = getMaskStorageKey();
+      const savedMasks = sessionStorage.getItem(maskKey);
       if (savedMasks) {
         try {
           const parsedMasks = JSON.parse(savedMasks);
           setMasks(parsedMasks);
         } catch (error) {
-          console.error("Error parsing saved masks:", error);
-          sessionStorage.removeItem('savedMasks');
+          console.error(`Error parsing saved masks for ${imgvar}:`, error);
+          sessionStorage.removeItem(maskKey); // Clear invalid data
         }
+      } else {
+        setMasks([]); // Ensure masks are empty if no data exists for this image
       }
-    }, []);
+    }, [imgvar]);
 
     // Initialize canvas and draw masks
     useEffect(() => {
@@ -517,7 +522,8 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
         if (!overlayCtx) return;
         redrawAllMasks(overlayCtx);
 
-        sessionStorage.setItem('savedMasks', JSON.stringify(masks));
+        const maskKey = getMaskStorageKey();
+        sessionStorage.setItem(maskKey, JSON.stringify(masks));
 
         const base64Image = overlayCanvas.toDataURL("image/png");
         const user_id = localStorage.getItem("cognito_username");
