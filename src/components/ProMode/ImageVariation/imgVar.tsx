@@ -50,7 +50,7 @@ const ImgVar: React.FC = () => {
     if (!showMaskingPopup && maskS3url && isMaskExported) {
       const timer = setTimeout(() => {
         alert('Mask is applied!');
-      }, 5000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [showMaskingPopup, maskS3url, isMaskExported]);
