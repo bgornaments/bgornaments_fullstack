@@ -47,34 +47,30 @@ const ImgVar: React.FC = () => {
   }, [maskS3url, isMaskExported]);
 
   useEffect(() => {
-    if (maskS3url && isMaskExported) {
-      alert('Mask is applied!');
+    if (!showMaskingPopup && maskS3url && isMaskExported) {
+      const timer = setTimeout(() => {
+        alert('Mask is applied!');
+      }, 5000);
+      return () => clearTimeout(timer);
     }
-  }, [maskS3url, isMaskExported]);
+  }, [showMaskingPopup, maskS3url, isMaskExported]);
 
-  const handleCloseMaskingPopup = () => {
+  const handleCloseMaskingPopup = (s3Link: string | null, isExported: boolean) => {
     console.log("handleCloseMaskingPopup: Running – closing masking popup.");
     setShowMaskingPopup(false);
 
-    if (popupRef.current) {
-      const { s3Link, isExported } = popupRef.current;
-      console.log("handleCloseMaskingPopup: popupRef.current exists.");
-      console.log("handleCloseMaskingPopup: s3Link =", s3Link);
-      console.log("handleCloseMaskingPopup: isExported =", isExported);
+    console.log("handleCloseMaskingPopup: s3Link =", s3Link);
+    console.log("handleCloseMaskingPopup: isExported =", isExported);
 
-      setMaskS3url(s3Link);
-      setIsMaskExported(isExported);
+    setMaskS3url(s3Link);
+    setIsMaskExported(isExported);
 
-      // Conditional logic based on isExported
-      if (isExported) {
-        console.log("handleCloseMaskingPopup: Exported! Setting payload with S3 URL:", s3Link);
-        const payload = { imageUrl: s3Link };
-        console.log("handleCloseMaskingPopup: Payload =", payload);
-      } else {
-        console.log("handleCloseMaskingPopup: Not exported yet.");
-      }
+    if (isExported) {
+      console.log("handleCloseMaskingPopup: Exported! Setting payload with S3 URL:", s3Link);
+      const payload = { imageUrl: s3Link };
+      console.log("handleCloseMaskingPopup: Payload =", payload);
     } else {
-      console.log("handleCloseMaskingPopup: popupRef.current is not available.");
+      console.log("handleCloseMaskingPopup: Not exported yet.");
     }
   };
 
@@ -164,15 +160,15 @@ const ImgVar: React.FC = () => {
         canvas.height = size;
         const ctx = canvas.getContext('2d');
         if (ctx) {
-          ctx.fillStyle = "white"; 
+          ctx.fillStyle = "white";
           ctx.fillRect(0, 0, size, size);
           ctx.drawImage(img, (size - img.width) / 2, (size - img.height) / 2);
-          resolve(canvas.toDataURL()); 
+          resolve(canvas.toDataURL());
         }
       };
     });
   };
-  
+
   const handleImageSelect = async (imageBase64: string) => {
     console.log("handleImageSelect: Running – image selected.");
     const squaredImage = await makeImageSquare(imageBase64);
@@ -383,7 +379,7 @@ const ImgVar: React.FC = () => {
                 }}
               >
                 {selectedImage ? (
-                  
+
                   <img
                     src={selectedImage}
                     alt="Selected"
@@ -473,10 +469,9 @@ const ImgVar: React.FC = () => {
               <ImageMaskingPopup
                 ref={popupRef}
                 imgvar={selectedImage}
-                onClose={handleCloseMaskingPopup} // Pass the handler for masked image
+                onClose={handleCloseMaskingPopup} // Updated to use the new handler
               />
             )}
-
             {selectedImage && !isProcessing && (
               <button
                 onClick={handleProcessImage}
