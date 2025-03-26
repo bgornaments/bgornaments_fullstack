@@ -39,6 +39,7 @@
     "keen-slider": "^6.8.6",
     "lottie-web": "^5.12.2",
     "lucide-react": "^0.477.0",
+    "md5": "^2.3.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-datepicker": "^8.0.0",
@@ -53,7 +54,8 @@
     "react-toastify": "^10.0.6",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.6.13",
-    "tailwindcss": "^3.4.4"
+    "tailwindcss": "^3.4.4",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@aws-amplify/backend": "^1.0.0",
@@ -64,6 +66,7 @@
     "@babel/plugin-transform-runtime": "^7.25.4",
     "@babel/preset-env": "^7.25.4",
     "@babel/preset-react": "^7.24.7",
+    "@types/md5": "^2.3.5",
     "@types/react": "^18.2.66",
     "@types/react-datepicker": "^6.2.0",
     "@types/react-dom": "^18.2.22",

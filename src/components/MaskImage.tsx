@@ -16,6 +16,7 @@ import freehandIcon from "../assets/pen.png";
 import eraserIcon from "../assets/eraser.png";
 import axios from "axios";
 import './MaskStyle.css';
+import md5 from 'md5';
 
 interface ImageMaskingPopupProps {
   imgvar: string;
@@ -43,7 +44,7 @@ const ImageMaskingPopup = forwardRef<ImageMaskingPopupHandle, ImageMaskingPopupP
     const [s3Link, setS3Link] = useState<string | null>(null);
     const [isExported, setIsExported] = useState(false);
 
-    const getMaskStorageKey = () => `savedMasks_${btoa(imgvar)}`;
+    const getMaskStorageKey = () => `savedMasks_${md5(imgvar).slice(0, 8)}`;
 
     // Load saved masks on mount
     useEffect(() => {

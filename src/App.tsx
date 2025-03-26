@@ -34,6 +34,7 @@ import AstrologySignature from "./AstrologyFeature/AstrologySignature.tsx";
 import AstroJewelryApp from "./AstrologyFeature/images.tsx";
 import SketchToJwellery from "./SketchToJwellery/Sketch2Jwellery_landing.tsx";
 import SketchModification from "./SketchToJwellery/Sketchmodification.tsx";
+import MetadataEditor from "./components/BrowseCatalogue/MetadataEditor.tsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <HeroPage /> },
@@ -116,6 +117,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <EditImageData />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/metadata-editor",
+    element: (
+      <ProtectedRoute>
+        <MetadataEditor />
       </ProtectedRoute>
     ),
   },
