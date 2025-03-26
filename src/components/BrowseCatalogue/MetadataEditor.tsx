@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { motion } from "framer-motion";
 
 interface ImageData {
   url: string;
@@ -40,11 +40,19 @@ const MetadataEditor: React.FC = () => {
     const fetchImages = async () => {
       try {
         const response = await fetch("https://dem48tvmua.execute-api.us-east-1.amazonaws.com/getDB");
-        const isResponseOk = response.ok;
-        if (!isResponseOk) {
-          throw new Error('Network response was not ok');
+        console.log("GET API Response:", {
+          status: response.status,
+          ok: response.ok,
+          bodyUsed: response.bodyUsed,
+          headers: Object.fromEntries(response.headers.entries())
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data: ImageData[] = await response.json();
+        const textData = await response.text();
+        console.log("GET API Raw Response Body:", textData);
+        const data: ImageData[] = JSON.parse(textData);
+        console.log("GET API Parsed Data:", data);
         const sortedData = data.sort((a, b) => {
           const aTimestamp = a.Timestamp;
           const bTimestamp = b.Timestamp;
@@ -59,6 +67,7 @@ const MetadataEditor: React.FC = () => {
         setImages(sortedData);
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+        console.error("GET API Error:", error);
         setError(errorMessage);
       } finally {
         setLoading(false);
@@ -83,56 +92,88 @@ const MetadataEditor: React.FC = () => {
         url: selectedImage,
         description: formData.description,
         gemstone: formData.gemstone,
-        JewelleryType: formData.type,
+        type: formData.type, // Use "type" to match ImageUploader
         material: formData.material,
         design: formData.design,
         mode: "add_to_catalog",
       };
+      console.log("POST API Payload Sent:", requestBody);
       const jsonBody = JSON.stringify(requestBody);
       const sendData = { body: jsonBody };
       const config = { headers: { "Content-Type": "application/json" } };
-      await axios.post(
+      const response = await axios.post(
         "https://q6j33yoy61.execute-api.us-east-1.amazonaws.com/fetchdb",
         sendData,
         config
       );
-      const updatedImages = images.filter((image) => {
-        const shouldKeep = image.url !== selectedImage;
-        return shouldKeep;
+      console.log("POST API Full Response Data:", response.data);
+  
+      // Update local state optimistically
+      const updatedImages = images.map((image) => {
+        if (image.url === selectedImage) {
+          return {
+            ...image,
+            description: formData.description,
+            gemstone: formData.gemstone,
+            JewelleryType: formData.type, // Map to JewelleryType locally
+            material: formData.material,
+            design: formData.design,
+          };
+        }
+        return image;
       });
       setImages(updatedImages);
       setSelectedImage(null);
       setViewingMetadata(null);
-      const resetForm = {
+      setFormData({
         description: "",
         gemstone: "",
         type: "",
         material: "",
-        design: ""
-      };
-      setFormData(resetForm);
+        design: "",
+      });
       alert("Metadata added successfully!");
-    } catch {
-      alert("Failed to add data to catalogue");
+  
+      // Refresh data
+      const refreshResponse = await fetch("https://dem48tvmua.execute-api.us-east-1.amazonaws.com/getDB");
+      const refreshText = await refreshResponse.text();
+      const refreshData: ImageData[] = JSON.parse(refreshText);
+      console.log("Refresh GET API Data:", refreshData);
+      setImages(refreshData.sort((a, b) => {
+        const aTimestamp = a.Timestamp;
+        const bTimestamp = b.Timestamp;
+        if (aTimestamp && bTimestamp) {
+          return new Date(bTimestamp).getTime() - new Date(aTimestamp).getTime();
+        }
+        return 0;
+      }));
+    } catch (error: any) {
+      console.error("POST API Error:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
+      alert(`Failed to add data to catalogue: ${error.message}`);
     }
   };
 
   const handleViewMetadata = (url: string) => {
     setViewingMetadata(url);
     setSelectedImage(url);
-    const image = images.find((img) => {
-      const matches = img.url === url;
-      return matches;
-    });
+    const image = images.find((img) => img.url === url);
     if (image) {
       const newFormData = {
         description: image.description || "",
         gemstone: image.gemstone || "",
-        type: image.JewelleryType || "",
+        type: image.JewelleryType || "", 
         material: image.material || "",
         design: image.design || ""
       };
       setFormData(newFormData);
+      console.log("Metadata Received for Popup:", {
+        received: image,
+        mappedToForm: newFormData
+      });
     }
   };
 
@@ -180,12 +221,7 @@ const MetadataEditor: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fff5e6] via-[#f0f0f0] to-[#e6e9f0] p-8">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-center mb-12"
-      >
+      <div className="text-center mb-12 animate-fade-in">
         <h1 className="text-4xl font-bold text-[#d4af37] mb-4">
           Metadata Editor
         </h1>
@@ -193,14 +229,13 @@ const MetadataEditor: React.FC = () => {
           Easily edit jewelry details with our Metadata Editor! Update descriptions, gemstones,
           and more in a quick popup, then save to keep your collection fresh and customized.
         </p>
-      </motion.div>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {filteredImages.map((image) => (
-          <motion.div
+          <div
             key={image.url}
-            whileHover={{ scale: 1.03 }}
-            className="bg-white rounded-xl shadow-lg overflow-hidden border border-[#e6e6e6] relative"
+            className="bg-white rounded-xl shadow-lg overflow-hidden border border-[#e6e6e6] relative hover:scale-103 transition-transform duration-300"
             onMouseEnter={() => handleMouseEnter(image.url)}
             onMouseLeave={handleMouseLeave}
           >
@@ -210,44 +245,42 @@ const MetadataEditor: React.FC = () => {
               className="w-full h-80 object-cover" 
             />
             {hoveredImage === image.url && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center"
+              <div
+                className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300"
               >
-                <div className="text-white p-4 space-y-2">
+                <div className="text-white p-4 space-y-2 pointer-events-none">
                   <p className="mb-2">Description: {image.description || "N/A"}</p>
                   <p className="mb-2">Gemstone: {image.gemstone || "N/A"}</p>
                   <p className="mb-2">Type: {image.JewelleryType || "N/A"}</p>
                   <p className="mb-2">Material: {image.material || "N/A"}</p>
                   <p className="mb-2">Design: {image.design || "N/A"}</p>
                 </div>
-              </motion.div>
+                <button
+                  onClick={() => handleViewMetadata(image.url)}
+                  className="absolute bottom-4 bg-gradient-to-r from-[#d4af37] to-[#b8860b] text-white px-6 py-2 rounded-full font-medium hover:scale-105 transition-transform duration-200"
+                >
+                  Edit Metadata
+                </button>
+              </div>
             )}
             <div className="p-4 flex justify-center">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <button
                 onClick={() => handleViewMetadata(image.url)}
-                className="bg-gradient-to-r from-[#d4af37] to-[#b8860b] text-white px-6 py-2 rounded-full font-medium"
+                className="bg-gradient-to-r from-[#d4af37] to-[#b8860b] text-white px-6 py-2 rounded-full font-medium hover:scale-105 transition-transform duration-200"
               >
                 Edit Metadata
-              </motion.button>
+              </button>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
 
       {viewingMetadata && selectedImage && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4"
+        <div
+          className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 animate-fade-in"
         >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full border border-[#d4af37]"
+          <div
+            className="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full border border-[#d4af37] scale-90 animate-scale-up"
           >
             <h3 className="font-semibold text-[#8c7853] text-xl mb-4">
               Edit Metadata
@@ -272,25 +305,21 @@ const MetadataEditor: React.FC = () => {
               </label>
             ))}
             <div className="flex justify-center gap-4 mt-6">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <button
                 onClick={handleAddData}
-                className="bg-[#d4af37] text-white px-6 py-2 rounded-full"
+                className="bg-[#d4af37] text-white px-6 py-2 rounded-full hover:scale-105 transition-transform duration-200"
               >
                 Save
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              </button>
+              <button
                 onClick={handleCancelViewMetadata}
-                className="bg-[#8c7853] text-white px-6 py-2 rounded-full"
+                className="bg-[#8c7853] text-white px-6 py-2 rounded-full hover:scale-105 transition-transform duration-200"
               >
                 Cancel
-              </motion.button>
+              </button>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       )}
     </div>
   );
