@@ -1,9 +1,6 @@
 import React from 'react';
 import logo from "/src/assets/image.png";
-import { FaInstagram } from 'react-icons/fa';
-import { FaLinkedin } from 'react-icons/fa';
-import { FaFacebook } from 'react-icons/fa';
-import { FaWhatsapp } from 'react-icons/fa';
+import { FaInstagram, FaLinkedin, FaFacebook, FaWhatsapp } from 'react-icons/fa';
 
 const Footer: React.FC = () => {
   return (
@@ -17,18 +14,20 @@ const Footer: React.FC = () => {
               className="w-32 md:w-40 lg:w-48 mb-3"
             />
             <p className="text-xs text-brown-800 opacity-80">
-              Bharat Gold Ornaments Pvt Ltd
+              A 'Bharat Gold Ornaments Pvt Ltd' Product
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 flex-grow">
             <div>
               <h3 className="text-base font-semibold mb-3 text-brown-900">
-                Legal
+                <b>Legal</b>
               </h3>
               <ul className="space-y-1.5">
                 <li>
                   <a 
-                    href="/privacy" 
+                    href="/privacy-Notice" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
                     className="text-sm text-brown-700 hover:text-brown-900 transition-colors"
                   >
                     Privacy Notice
@@ -36,7 +35,9 @@ const Footer: React.FC = () => {
                 </li>
                 <li>
                   <a 
-                    href="/terms" 
+                    href="/terms-and-conditions" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
                     className="text-sm text-brown-700 hover:text-brown-900 transition-colors"
                   >
                     Terms & Conditions
@@ -46,7 +47,7 @@ const Footer: React.FC = () => {
             </div>
             <div>
               <h3 className="text-base font-semibold mb-3 text-brown-900">
-                Contact
+                <b>Contact</b>
               </h3>
               <ul className="space-y-1.5">
                 <li className="text-sm text-brown-700">
@@ -59,29 +60,37 @@ const Footer: React.FC = () => {
             </div>
             <div>
               <h3 className="text-base font-semibold mb-3 text-brown-900">
-                Follow Us
+                <b>Follow Us</b>
               </h3>
               <div className="flex space-x-3">
                 <a 
-                  href="https://instagram.com/yourhandle" 
+                  href="https://instagram.com/kinmitra_com" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
                   className="hover:opacity-80 transition-opacity"
                 >
                   <FaInstagram size={20} className="text-[#E1306C]" />
                 </a>
                 <a 
-                  href="https://linkedin.com/company/yourcompany" 
+                  href="https://linkedin.com/company/bgornaments" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
                   className="hover:opacity-80 transition-opacity"
                 >
                   <FaLinkedin size={20} className="text-[#0077B5]" />
                 </a>
                 <a 
-                  href="https://facebook.com/yourpage" 
+                  href="https://facebook.com/kinmitra_com" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
                   className="hover:opacity-80 transition-opacity"
                 >
                   <FaFacebook size={20} className="text-[#1877F2]" />
                 </a>
                 <a 
-                  href="https://wa.me/yournumber" 
+                  href="https://wa.me/1234567890" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
                   className="hover:opacity-80 transition-opacity"
                 >
                   <FaWhatsapp size={20} className="text-[#25D366]" />
