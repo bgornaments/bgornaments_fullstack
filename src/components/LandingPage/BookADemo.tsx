@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import emailjs from '@emailjs/browser';
 
 interface FormData {
     name: string;
@@ -19,6 +20,8 @@ const DemoForm: React.FC = () => {
         message: "",
     });
 
+    const form = useRef<HTMLFormElement>(null);
+
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
@@ -32,28 +35,31 @@ const DemoForm: React.FC = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Generate the mailto link with form data
-        const mailtoLink = `mailto:contact@kinmitra.com?subject=Book a Demo Request&body=${encodeURIComponent(
-            `Name: ${formData.name}
-Email: ${formData.email}
-Mobile: ${formData.mobile}
-Company Name: ${formData.companyName}
-Designation: ${formData.designation}
-Message: ${formData.message}`
-        )}`;
-
-        // Open the mailto link
-        window.location.href = mailtoLink;
-
-        // Reset form data after submission
-        setFormData({
-            name: "",
-            email: "",
-            mobile: "",
-            companyName: "",
-            designation: "",
-            message: "",
-        });
+        if (form.current) {
+            emailjs
+                .sendForm('service_qjgx74e', 'template_eihpgee', form.current, {
+                    publicKey: '7mAHKpMscZZpj_-lt',
+                })
+                .then(
+                    () => {
+                        console.log('SUCCESS!');
+                        // Reset form data after successful submission
+                        setFormData({
+                            name: "",
+                            email: "",
+                            mobile: "",
+                            companyName: "",
+                            designation: "",
+                            message: "",
+                        });
+                        alert('Your demo request has been sent successfully!');
+                    },
+                    (error) => {
+                        console.log('FAILED...', error.text);
+                        alert('Failed to send the demo request. Please try again.');
+                    },
+                );
+        }
     };
 
     return (
@@ -61,22 +67,18 @@ Message: ${formData.message}`
             {/* Left side: Kinmitra logo and heading */}
             <div
                 className="w-1/3 bg-cover bg-center flex flex-col items-center justify-center"
-            // style={{
-            //   backgroundImage:
-            //     "url('https://img.freepik.com/free-vector/gradient-golden-linear-background_23-2148957745.jpg?t=st=1730912970~exp=1730916570~hmac=2214eb1073666d65e11ff89c47d76300904bf1001e6128bf610138ef42d5e872&w=900')",
-            // }}
             >
                 <h2 className="text-3xl font-bold text-gray-800 mb-8">Book a Demo</h2>
                 <img
                     src="https://www.kinmitra.com/assets/image-BEwmDLXF.png"
                     alt="Kinmitra Logo"
-                    className="max-w-[50%] max-h-[33%]" // Reduced overall image size
+                    className="max-w-[50%] max-h-[33%]"
                 />
             </div>
 
             {/* Right side: Form */}
             <div className="w-2/3 bg-white p-8 flex flex-col justify-center">
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form ref={form} onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <label
                             htmlFor="name"
@@ -96,7 +98,6 @@ Message: ${formData.message}`
                     </div>
 
                     <div className="flex space-x-4">
-                        {/* Added space between email and mobile */}
                         <div className="flex-1">
                             <label
                                 htmlFor="email"
