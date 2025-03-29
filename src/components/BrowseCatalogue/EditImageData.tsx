@@ -53,18 +53,27 @@ const ImageUploader: React.FC = () => {
     });
   };
 
-  const handleAddData = async () => {
-    if (!selectedImage) return;
+  const handleAddData = async (mode: "add_to_catalog" | "discard_images" = "add_to_catalog") => {
+    if (!selectedImage && mode === "add_to_catalog") return;
+    if (selectedImages.size === 0 && mode === "discard_images") return;
 
     try {
-      const requestBody = {
-        url: selectedImage,
-        ...formData,
-      };
+      const requestBody = mode === "add_to_catalog"
+        ? {
+          url: selectedImage,
+          ...formData,
+          mode: "add_to_catalog"
+        }
+        : {
+          url: Array.from(selectedImages),
+          mode: "discard_images"
+        };
+
       const sendData = {
         body: JSON.stringify(requestBody),
       };
-      console.log("Adding data:", requestBody);
+
+      console.log(`${mode === "add_to_catalog" ? "Adding" : "Discarding"} data:`, requestBody);
       const response = await axios.post(
         "https://q6j33yoy61.execute-api.us-east-1.amazonaws.com/fetchdb",
         sendData,
@@ -76,28 +85,42 @@ const ImageUploader: React.FC = () => {
       );
 
       console.log("Response:", response);
-      // Update metadata for the selected image only, preserving others
-      setMetadata((prev) => ({
-        ...prev,
-        [selectedImage]: { ...requestBody },
-      }));
-      // Remove the image from the display list as per current functionality
-      setImages((prevImages) =>
-        prevImages.filter((image) => image.url !== selectedImage)
-      );
-      setSelectedImage(null);
-      setViewingMetadata(null); // Close the metadata view/edit modal
-      setFormData({
-        description: "",
-        gemstone: "",
-        type: "",
-        material: "",
-        design: "",
-      });
-      alert("Metadata added successfully!");
+
+      if (mode === "add_to_catalog") {
+        setMetadata((prev) => ({
+          ...prev,
+          [selectedImage!]: { ...requestBody },
+        }));
+        setImages((prevImages) =>
+          prevImages.filter((image) => image.url !== selectedImage)
+        );
+        setSelectedImage(null);
+        setViewingMetadata(null);
+        setFormData({
+          description: "",
+          gemstone: "",
+          type: "",
+          material: "",
+          design: "",
+        });
+        alert("Metadata added successfully!");
+      } else {
+        // Handle discard_images mode
+        setImages((prevImages) =>
+          prevImages.filter((image) => !selectedImages.has(image.url))
+        );
+        setSelectedImages(new Set());
+        alert("Images discarded successfully!");
+      }
     } catch (error) {
-      console.error("Error adding data to catalogue:", error);
-      alert("Failed to add data to catalogue");
+      console.error(`Error ${mode === "add_to_catalog" ? "adding data to catalogue" : "discarding images"}:`, error);
+      alert(`Failed to ${mode === "add_to_catalog" ? "add data to catalogue" : "discard images"}`);
+    }
+  };
+
+  const handleDiscardImages = () => {
+    if (selectedImages.size > 0) {
+      handleAddData("discard_images");
     }
   };
 
@@ -189,14 +212,25 @@ const ImageUploader: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#fff9f5] p-20">
       <h1 className="text-2xl font-bold mb-4">Image Uploader</h1>
-      <button
-        onClick={selectedImages.size > 0 ? handleFetchMetadata : undefined}
-        className="bg-purple-500 text-white px-4 py-2 rounded my-4"
-      >
-        {selectedImages.size > 0
-          ? "Generate Metadata"
-          : "Select Images to get metadata"}
-      </button>
+      <div className="flex gap-4 my-4">
+        <button
+          onClick={selectedImages.size > 0 ? handleFetchMetadata : undefined}
+          className="bg-purple-500 text-white px-4 py-2 rounded"
+        >
+          {selectedImages.size > 0
+            ? "Generate Metadata"
+            : "Select Images to get metadata"}
+        </button>
+        <button
+          onClick={selectedImages.size > 0 ? handleDiscardImages : undefined}
+          className={`px-4 py-2 rounded text-white ${selectedImages.size > 0 ? "bg-red-500" : "bg-red-300 cursor-not-allowed"
+            }`}
+        >
+          {selectedImages.size > 0
+            ? "Discard Images"
+            : "Select Images to discard"}
+        </button>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {images.map((image) => (
           <div key={image.url} className="border p-4 rounded-lg shadow-md">
@@ -277,7 +311,7 @@ const ImageUploader: React.FC = () => {
                     />
                   </label>
                   <button
-                    onClick={handleAddData}
+                    onClick={() => handleAddData("add_to_catalog")}
                     className="bg-green-500 text-white px-4 py-2 rounded mt-2"
                   >
                     Add Metadata
@@ -345,7 +379,7 @@ const ImageUploader: React.FC = () => {
               />
             </label>
             <button
-              onClick={handleAddData}
+              onClick={() => handleAddData("add_to_catalog")}
               className="bg-blue-500 text-white px-4 py-2 rounded"
             >
               Save

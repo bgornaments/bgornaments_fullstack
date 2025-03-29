@@ -34,11 +34,16 @@ import AstrologySignature from "./AstrologyFeature/AstrologySignature.tsx";
 import AstroJewelryApp from "./AstrologyFeature/images.tsx";
 import SketchToJwellery from "./SketchToJwellery/Sketch2Jwellery_landing.tsx";
 import SketchModification from "./SketchToJwellery/Sketchmodification.tsx";
+import MetadataEditor from "./components/BrowseCatalogue/MetadataEditor.tsx";
+import TermsAndConditions from "./components/LandingPage/terms_and_conditions.tsx";
+import PrivacyNotice from "./components/LandingPage/privacy_notice.tsx";
 
 const router = createBrowserRouter([
   { path: "/", element: <HeroPage /> },
   { path: "/login", element: <Login /> },
   { path: "/Contact-Us", element: <DemoForm/> },
+  { path: "/terms-and-conditions", element: <TermsAndConditions/> },
+  { path: "/privacy-Notice", element: <PrivacyNotice/> },
   {
     path: "/orders",
     element: (
@@ -116,6 +121,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <EditImageData />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/metadata-editor",
+    element: (
+      <ProtectedRoute>
+        <MetadataEditor />
       </ProtectedRoute>
     ),
   },
