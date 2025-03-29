@@ -106,7 +106,6 @@
 // export default Core_2;
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "/src/assets/image.png";
 import img21 from "/src/assets/Group 28.png";
 import img3 from "/src/assets/img3.svg";
 import img7 from "/src/assets/img7.svg";
@@ -151,13 +150,13 @@ const Core_2: React.FC = () => {
       <div className="flex flex-col">
         <div className="min-h-screen w-full flex flex-col items-center gap-[10vh]">
           <div className="flex gap-[3vh] flex-col items-center mt-[5vh]">
-            <div>
-              <img src={logo} alt="Logo" className="w-[6rem]" />
-            </div>
-            <div className="text-customGreen xs:text-[2.4rem] text-center">
+            <div className="text-lightGolden xs:text-[2rem] text-center">
               <h1 className="font-custom tracking-widest leading-tight font-bold">
                 From Imagination <br /> To Design
               </h1>
+              <h2 className="font-custom xs:text-[1.2rem] text-lightGreen">
+                Welcome to KinMitra <span className="text-[0.5rem]">{user && `${user.signInDetails?.loginId}`}</span>
+              </h2>
             </div>
           </div>
 

@@ -22,7 +22,8 @@ const LogoCarousel: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center mt-20">
-      <h3 className="w-full text-customGreen xs:text-[2rem] xl:text-[3.5vw] md:text-[3.4vw] tracking-widest leading-tight font-bold font-custom text-center">
+      {/* <h3 className="w-full text-customGreen xs:text-[2rem] xl:text-[3.5vw] md:text-[3.4vw] tracking-widest leading-tight font-bold font-custom text-center"> */}
+      <h3 className="w-full text-lightGolden xs:text-[2rem] xl:text-[3vw] md:text-[3vw] font-bold font-custom text-center">
         Associations and Certifications
       </h3>
       <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-200px),transparent_100%)] my-10 md:my-20 ">
