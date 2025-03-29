@@ -45,21 +45,20 @@ const DemoForm: React.FC = () => {
 
   return (
     <div className="flex min-h-screen">
-      {/* Left side: Kinmitra logo and background image */}
+      {/* Left side: Kinmitra logo and heading */}
       <div
-        className="w-1/3 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://img.freepik.com/free-vector/gradient-golden-linear-background_23-2148957745.jpg?t=st=1730912970~exp=1730916570~hmac=2214eb1073666d65e11ff89c47d76300904bf1001e6128bf610138ef42d5e872&w=900')",
-        }}
+        className="w-1/3 bg-cover bg-center flex flex-col items-center justify-center"
+      // style={{
+      //   backgroundImage:
+      //     "url('https://img.freepik.com/free-vector/gradient-golden-linear-background_23-2148957745.jpg?t=st=1730912970~exp=1730916570~hmac=2214eb1073666d65e11ff89c47d76300904bf1001e6128bf610138ef42d5e872&w=900')",
+      // }}
       >
-        <div className="flex items-center justify-center h-full bg-black bg-opacity-50">
-          <img
-            src="https://www.kinmitra.com/assets/image-BEwmDLXF.png"
-            alt="Kinmitra Logo"
-            className="max-w-[50%] max-h-[33%]" // Reduced overall image size
-          />
-        </div>
+        <h2 className="text-3xl font-bold text-gray-800 mb-8">Book a Demo</h2>
+        <img
+          src="https://www.kinmitra.com/assets/image-BEwmDLXF.png"
+          alt="Kinmitra Logo"
+          className="max-w-[50%] max-h-[33%]" // Reduced overall image size
+        />
       </div>
 
 

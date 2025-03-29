@@ -7,7 +7,8 @@ import Page1 from "./Page1";
 // import Page3 from "./Page3";
 import Footer from "./Footer";
 import LogoCarousel from "./LogoCarousel";
-import DemoForm from "./BookADemo";
+// import DemoForm from "./BookADemo";
+import DemoForm from "../Contact/contactSAP.tsx";
 
 const HeroPage: React.FC = () => {
   return (
