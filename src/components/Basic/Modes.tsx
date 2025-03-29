@@ -4,7 +4,7 @@ import Card from "./Card";
 import lightning from "/src/assets/lightning.png";
 import pro from "/src/assets/worker.png";
 import expert from "/src/assets/data-analysis.png";
-import icon from "/src/assets/image.png";
+// import icon from "/src/assets/image.png";
 import { useNavigate } from "react-router-dom";
 
 const Modes: React.FC = () => {
