@@ -8,9 +8,9 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row gap-6">
           <div className="flex-shrink-0 md:w-1/4">
-            <img 
-              src={logo} 
-              alt="Company Logo" 
+            <img
+              src={logo}
+              alt="Company Logo"
               className="w-32 md:w-40 lg:w-48 mb-3"
             />
             <p className="text-xs text-brown-800 opacity-80">
@@ -24,20 +24,20 @@ const Footer: React.FC = () => {
               </h3>
               <ul className="space-y-1.5">
                 <li>
-                  <a 
-                    href="/privacy-Notice" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                  <a
+                    href="/privacy-Notice"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-sm text-brown-700 hover:text-brown-900 transition-colors"
                   >
                     Privacy Notice
                   </a>
                 </li>
                 <li>
-                  <a 
-                    href="/terms-and-conditions" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                  <a
+                    href="/terms-and-conditions"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-sm text-brown-700 hover:text-brown-900 transition-colors"
                   >
                     Terms & Conditions
@@ -51,10 +51,10 @@ const Footer: React.FC = () => {
               </h3>
               <ul className="space-y-1.5">
                 <li className="text-sm text-brown-700">
-                  kinmitra.com
+                  ceo@kinmitra.com
                 </li>
                 <li className="text-sm text-brown-700">
-                  +1 (123) 456-7890
+                  +91 (835) 608-5861
                 </li>
               </ul>
             </div>
@@ -63,38 +63,38 @@ const Footer: React.FC = () => {
                 <b>Follow Us</b>
               </h3>
               <div className="flex space-x-3">
-                <a 
-                  href="https://instagram.com/kinmitra_com" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href="https://instagram.com/kinmitra_com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hover:opacity-80 transition-opacity"
                 >
                   <FaInstagram size={20} className="text-[#E1306C]" />
                 </a>
-                <a 
-                  href="https://linkedin.com/company/bgornaments" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href="https://linkedin.com/company/bgornaments"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hover:opacity-80 transition-opacity"
                 >
                   <FaLinkedin size={20} className="text-[#0077B5]" />
                 </a>
-                <a 
-                  href="https://facebook.com/kinmitra_com" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href="https://www.facebook.com/profile.php?id=61574416178019"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hover:opacity-80 transition-opacity"
                 >
                   <FaFacebook size={20} className="text-[#1877F2]" />
                 </a>
-                <a 
-                  href="https://wa.me/1234567890" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                {/* <a
+                  href="https://wa.me/1234567890"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hover:opacity-80 transition-opacity"
                 >
                   <FaWhatsapp size={20} className="text-[#25D366]" />
-                </a>
+                </a> */}
               </div>
             </div>
           </div>

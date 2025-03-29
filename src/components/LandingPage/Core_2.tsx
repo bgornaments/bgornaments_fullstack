@@ -151,7 +151,7 @@ const Core_2: React.FC = () => {
         <div className="min-h-screen w-full flex flex-col items-center gap-[10vh]">
           <div className="flex gap-[3vh] flex-col items-center mt-[5vh]">
             <div className="text-lightGolden xs:text-[2rem] text-center">
-              <h1 className="font-custom tracking-widest leading-tight font-bold">
+              <h1 className="font-custom tracking-widest leading-tight font-bold mb-4">
                 From Imagination <br /> To Design
               </h1>
               <h2 className="font-custom xs:text-[1.2rem] text-lightGreen">

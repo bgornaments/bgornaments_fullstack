@@ -19,15 +19,16 @@ const Modes: React.FC = () => {
     <div className="w-full min-h-screen flex justify-center items-center">
       <div className="xs:w-[90vw] xl:w-[75vw] flex flex-col justify-center items-center xs:gap-[5vh] xl:gap-[10vh]">
         <div className="flex flex-col gap-[2vh] md:gap-[3vh] items-center">
-          <img
+          {/* <img
             src={icon}
             alt=""
             className="xs:w-[3.8rem] md:w-[4.8rem] xl:w-[6.5rem]"
-          />
-          <h4 className="pt-[1vh] text-lightGolden xs:text-[5vw] md:text-[3vw] xl:text-[2.3vw] tracking-widest leading-tight font-bold font-custom text-center">
+          /> */}
+          {/* <h4 className="pt-[1vh] text-lightGolden xs:text-[5vw] md:text-[3vw] xl:text-[2.3vw] tracking-widest leading-tight font-bold font-custom text-center"> */}
+          <h4 className="pt-[1vh] text-lightGolden xs:text-[5vw] md:text-[3vw] xl:text-[2.3vw] font-bold font-custom text-center">
             Create Your Own Design{" "}
           </h4>
-          <p className="text-customGreen text-center xs:text-[2vw] md:text-[1.2vw] xl:text-[1vw]">
+          <p className="text-customGreen text-center xs:text-[2vw] md:text-[1.2vw] xl:text-[1.2vw]">
             Choose the Mode of Operation{" "}
           </p>
         </div>
@@ -38,7 +39,7 @@ const Modes: React.FC = () => {
               height="32vw"
               width="22vw"
               h4Text="Lightning Mode"
-              h4Size="2vw"
+              h4Size="1.8vw"
               pText="Quick and Effortless Design for Beginners"
               pSize="1vw"
               imgWidth="8.4vw"
@@ -51,7 +52,7 @@ const Modes: React.FC = () => {
               height="32vw"
               width="22vw"
               h4Text="Pro Mode"
-              h4Size="2vw"
+              h4Size="1.8vw"
               pText="Detailed Customization for Design Lovers"
               pSize="1vw"
               imgWidth="9vw"
@@ -64,7 +65,7 @@ const Modes: React.FC = () => {
               height="32vw"
               width="22vw"
               h4Text="Expert Mode"
-              h4Size="2vw"
+              h4Size="1.8vw"
               pText="Advanced Creativity Tools and Features for Experts"
               pSize="1vw"
               imgWidth="9vw"

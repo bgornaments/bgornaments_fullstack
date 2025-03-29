@@ -24,10 +24,12 @@ const ExpertMode: React.FC = () => {
     <div className="w-full min-h-screen flex justify-center items-center">
       <div className="xs:w-[90vw] xl:w-[75vw] flex flex-col justify-center items-center xs:gap-[2rem] md:gap-[10vh]">
         <div className="flex flex-col gap-[3vh] items-center">
-          <h4 className="text-customGreen text-center xs:text-[1.2rem] md:text-[1.7rem] xl:text-[2rem] pt-[1rem]">
+          {/* <h4 className="text-customGreen text-center xs:text-[1.2rem] md:text-[1.7rem] xl:text-[2rem] pt-[1rem]"> */}
+          <h4 className="pt-[1vh] text-lightGolden xs:text-[5vw] md:text-[3vw] xl:text-[2.3vw] font-bold font-custom text-center">
             Expert Mode
           </h4>
-          <p className="text-customBlack text-center xs:text-[0.6rem] md:text-[1rem] xl:text-[1.2rem]">
+          {/* <p className="text-customBlack text-center xs:text-[0.6rem] md:text-[1rem] xl:text-[1.2rem]"> */}
+          <p className="text-customGreen text-center xs:text-[2vw] md:text-[1.2vw] xl:text-[1.2vw]">
             Select a feature
           </p>
         </div>
