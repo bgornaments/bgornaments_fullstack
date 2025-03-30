@@ -151,8 +151,9 @@ const Core_2: React.FC = () => {
         <div className="min-h-screen w-full flex flex-col items-center gap-[10vh]">
           <div className="flex gap-[3vh] flex-col items-center mt-[5vh]">
             <div className="text-lightGolden xs:text-[2rem] text-center">
-              <h1 className="font-custom tracking-widest leading-tight font-bold mb-4">
-                From Imagination <br /> To Design
+              <h1 className="font-custom font-bold mb-4">
+                <span className="text-[4vw]">From</span> Imagination <br />
+                <span className="text-[4vw]">To</span> Design
               </h1>
               <h2 className="font-custom xs:text-[1.2rem] text-lightGreen">
                 Welcome to KinMitra <span className="text-[0.5rem]">{user && `${user.signInDetails?.loginId}`}</span>
@@ -161,7 +162,7 @@ const Core_2: React.FC = () => {
           </div>
 
           <div className="bg-navbar h-[30vh] w-full flex items-center justify-center">
-            <img className="w-[45vh]" alt="Design Preview" src={img21} />
+            <img className="w-[40vh]" alt="Design Preview" src={img21} />
           </div>
 
           <div className="flex gap-[6vw] text-[0.9rem] justify-center items-center">

@@ -162,7 +162,8 @@ const Core: React.FC = () => {
           <div className="w-9/12 h-full flex items-center ">
             <div className="flex flex-col md:gap-[5vh] xl:gap-[3vh] px-[5vw]">
               <h1 className="font-custom text-lightGolden text-[3vw]">
-                From Imagination <br /> To Design
+                <span className="text-[2vw]">From</span> Imagination <br />
+                <span className="text-[2vw]">To</span> Design
               </h1>
               <h2 className="font-custom text-[1.5vw] text-lightGreen">
                 Welcome to KinMitra <span className="text-[1vw]">{user && `${user.signInDetails?.loginId}`}</span>
@@ -186,7 +187,10 @@ const Core: React.FC = () => {
           <img
             src={img21}
             alt=""
-            className="absolute  md:right-[3vw] lg:right-[8vw] md:top-[25vh] xl:top-[16vh] xl:h-[53vh] md:h-[30vh]"
+            className="absolute right-[5vw] top-[30vh] h-[10vh]  
+            md:right-[3vw] lg:right-[8vw] 
+            md:top-[16vh] xl:top-[15vh] 
+            md:h-[51vh] xl:h-[55vh]"
           />
         </div>
         <div className="h-[20vh] w-full flex">

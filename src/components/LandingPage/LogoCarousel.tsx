@@ -5,8 +5,8 @@ import colLogo2 from "/src/assets/colLogo2.png";
 import colLogo3 from "/src/assets/colLogo3.png";
 import colLogo4 from "/src/assets/colLogo4.png";
 import colLogo5 from "/src/assets/colLogo5.png";
-// import certi from "/src/assets/Group 27.png";
-// import vision from "/src/assets/vision.png";
+import certi from "/src/assets/Group 27.png";
+import vision from "/src/assets/vision.png";
 
 const LogoCarousel: React.FC = () => {
   const logosRef = useRef<HTMLUListElement>(null);
@@ -69,7 +69,7 @@ const LogoCarousel: React.FC = () => {
         </ul>
       </div>
 
-      {/* <div className="w-full flex flex-col my-10">
+      <div className="w-full flex flex-col my-10">
         <div className="py-[10vh] my-[6vh] border-navbar border  flex justify-around items-center">
           <div className="md:max-w-[40vw] flex flex-col justify-center items-center gap-[4vh] ">
             <h4 className="max-w-[90%] text-customGreen xs:text-[1.8rem] md:text-[3vw] tracking-widest leading-tight font-bold font-custom text-center ">
@@ -94,7 +94,7 @@ const LogoCarousel: React.FC = () => {
             className="hidden md:block md:h-[30vw] xl:h-[20vw]"
           />
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

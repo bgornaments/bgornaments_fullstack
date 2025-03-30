@@ -100,18 +100,17 @@
 
 // export default Navbar;
 
-
+import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
 import logo from "/src/assets/image.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import Swal from "sweetalert2";
-import { Menu, X } from "lucide-react"; // Import icons for hamburger and close
 
 const Navbar: React.FC = () => {
-  const { user, signOut } = useAuthenticator(context => [context.user]);
+  const { user, signOut } = useAuthenticator((context) => [context.user]);
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false); // Track menu state
+  const [sidebarVisible, setSidebarVisible] = useState(false);
 
   const handleDesignClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -136,66 +135,94 @@ const Navbar: React.FC = () => {
       navigate("/catalog");
     }
   };
+
   return (
-    <nav className="w-full h-[10vh] bg-navbar flex items-center px-6 md:px-12 xl:px-20 justify-between relative">
-      {/* Mobile - Hamburger Icon (Left) */}
-      <div className="md:hidden">
-        {isOpen ? (
-          <X className="w-8 h-8 text-darkGolden cursor-pointer" onClick={() => setIsOpen(false)} />
-        ) : (
-          <Menu className="w-8 h-8 text-darkGolden cursor-pointer" onClick={() => setIsOpen(true)} />
-        )}
-      </div>
-
-      {/* Center - Logo (Absolute Center on Small Screens) */}
-      <div className="absolute left-1/2 -translate-x-1/2 md:left-[5%] md:translate-x-0">
-        <Link to="/" className="block">
-          <img src={logo} alt="Logo" className="w-[16vh] md:w-[18vh] xl:w-[20vh]" />
-        </Link>
-      </div>
-
-      {/* Desktop - Navigation Links */}
-      <div className="hidden md:flex flex-1 justify-center space-x-6 md:space-x-10 text-darkGolden text-[1rem] md:text-[1.2rem] font-bold">
-        <Link to="/">Home</Link>
-        <button onClick={handleDesignClick}>AI Designs</button>
-        <Link to="/">Pricing</Link>
-        <Link to="/Contact-Us">Contact Us</Link>
-      </div>
-
-      {/* Right - Profile & Authentication */}
-      <div className="hidden md:flex items-center space-x-4 text-darkGolden">
-        {user ? (
-          <Link to="#" onClick={signOut} className="text-[1.2rem] font-bold">
-            Logout
+    <div className="w-full flex flex-col transition-all duration-300">
+      {/* Navbar Header */}
+      <nav className="w-full h-[10vh] bg-navbar flex items-center px-6 md:px-12 xl:px-20 justify-between relative">
+        {/* Logo */}
+        <div className="absolute left-1/2 -translate-x-1/2 md:left-[5%] md:translate-x-0">
+          <Link to="/" className="block">
+            <img src={logo} alt="Logo" className="w-[16vh] md:w-[18vh] xl:w-[20vh]" />
           </Link>
-        ) : (
-          <Link to="/login" className="text-[1.2rem] font-bold">Login</Link>
-        )}
-        <img
-          className="w-[35px] h-[35px] rounded-full cursor-pointer border-2 border-darkGolden"
-          src="https://img.freepik.com/premium-vector/vector-set-women-with-jewelry-flat-design-style_995281-17686.jpg"
-          alt="User Icon"
-          onClick={() => navigate("/profile-page")}
-        />
-      </div>
+        </div>
 
-      {/* Mobile - Dropdown Menu */}
-      {isOpen && (
-        <div className="absolute top-[10vh] left-0 w-full bg-navbar text-darkGolden flex flex-col space-y-4 p-6 text-center shadow-lg">
-          <Link to="/" className="py-2" onClick={() => setIsOpen(false)}>Home</Link>
-          <button onClick={handleDesignClick} className="py-2">AI Designs</button>
-          <Link to="/" className="py-2" onClick={() => setIsOpen(false)}>Pricing</Link>
-          <Link to="/Contact-Us" className="py-2" onClick={() => setIsOpen(false)}>Contact Us</Link>
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex flex-1 justify-center space-x-6 md:space-x-10 text-darkGolden text-[1rem] md:text-[1.2rem] font-bold">
+          <Link to="/">Home</Link>
+          <button onClick={handleDesignClick}>AI Designs</button>
+          <Link to="/">Pricing</Link>
+          <Link to="/Contact-Us">Contact Us</Link>
+        </div>
+
+        {/* Right Section */}
+        <div className="hidden md:flex items-center space-x-4 text-darkGolden">
           {user ? (
-            <Link to="#" onClick={() => { signOut(); setIsOpen(false); }} className="py-2 font-bold">
+            <Link to="#" onClick={signOut} className="text-[1.2rem] font-bold">
               Logout
             </Link>
           ) : (
-            <Link to="/login" className="py-2 font-bold" onClick={() => setIsOpen(false)}>Login</Link>
+            <Link to="/login" className="text-[1.2rem] font-bold">Login</Link>
+          )}
+          <img
+            className="w-[35px] h-[35px] rounded-full cursor-pointer border-2 border-darkGolden"
+            src="https://img.freepik.com/premium-vector/vector-set-women-with-jewelry-flat-design-style_995281-17686.jpg"
+            alt="User Icon"
+            onClick={() => navigate("/profile-page")}
+          />
+        </div>
+
+        {/* Mobile - Hamburger Button */}
+        <button
+          className="z-50 md:hidden"
+          onClick={() => setSidebarVisible(!sidebarVisible)}
+        >
+          {sidebarVisible ? (
+            <AiOutlineClose size={20} color="black" />
+          ) : (
+            <AiOutlineMenu size={20} color="black" />
+          )}
+        </button>
+      </nav>
+
+      {/* Mobile Dropdown Menu */}
+      <div
+        className={`overflow-hidden transition-all duration-300 bg-white text-darkGolden shadow-lg ${sidebarVisible ? "h-auto" : "h-0"
+          }`}
+      >
+        <div className="w-full flex flex-col space-y-3 p-4 text-center">
+          <Link to="/" className="py-2" onClick={() => setSidebarVisible(false)}>
+            Home
+          </Link>
+          <button onClick={handleDesignClick} className="py-2">
+            AI Designs
+          </button>
+          <Link to="/" className="py-2" onClick={() => setSidebarVisible(false)}>
+            Pricing
+          </Link>
+          <Link to="/Contact-Us" className="py-2" onClick={() => setSidebarVisible(false)}>
+            Contact Us
+          </Link>
+          {user ? (
+            <Link
+              to="#"
+              onClick={() => {
+                signOut();
+                setSidebarVisible(false);
+              }}
+              className="py-2 font-bold"
+            >
+              Logout
+            </Link>
+          ) : (
+            <Link to="/login" className="py-2 font-bold" onClick={() => setSidebarVisible(false)}>
+              Login
+            </Link>
           )}
         </div>
-      )}
-    </nav>
+      </div>
+
+    </div>
   );
 };
 
