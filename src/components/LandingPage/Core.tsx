@@ -10,7 +10,6 @@ import Navbar from './Navbar';
 import Swal from 'sweetalert2';
 import { useAuthenticator } from "@aws-amplify/ui-react";
 
-
 const Core: React.FC = () => {
   const { user } = useAuthenticator();
   const navigate = useNavigate();
