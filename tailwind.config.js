@@ -24,15 +24,15 @@ export default {
         'xs': '300px'
       },
       fontFamily: {
-        custom: ['gabriola', 'sans-serif'],
+        custom: ['serif', 'sans-serif'],
         second: ['Manrope', 'serif']
       },
       colors: {
-        lightGreen: '#00AA4F',
+        lightGreen: '#00AA4F', //pallete
         customGreen: '#007F3ACC',
-        customRed: '#EB2D2E',
-        lightGolden: '#E0AE2A',
-        darkGolden: '#B2801D',
+        customRed: '#EB2D2E', //pallete
+        lightGolden: '#E0AE2A', //pallete
+        darkGolden: '#B2801D', //pallete
         navbar: '#B2801D30',
         customBlack: '#0d0d0d'
       },

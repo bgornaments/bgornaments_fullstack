@@ -73,7 +73,8 @@ const Card: React.FC<CardProps> = ({
       {/* Header Section */}
       <div className="bg-navbar w-full flex text-center justify-center items-center">
         <h4
-          className="text-customGreen text-center font-bold py-[1.5vw] xs:max-w-[32vw] xl:max-w-[20vw] font-custom"
+          // className="text-customGreen text-center font-bold py-[1.5vw] xs:max-w-[32vw] xl:max-w-[20vw] font-custom"
+          className="text-darkGolden text-center font-bold py-[1.5vw] xs:max-w-[32vw] xl:max-w-[20vw] font-custom"
           style={{ fontSize: h4Size }}
         >
           {h4Text}
@@ -85,7 +86,8 @@ const Card: React.FC<CardProps> = ({
 
       {/* Description Section */}
       <p
-        className="text-customBlack/70 text-center xs:max-w-[35vw] md:max-w-[16vw]"
+        // className="text-customBlack/70 text-center xs:max-w-[35vw] md:max-w-[16vw]"
+        className="text-lightGreen text-center xs:max-w-[35vw] md:max-w-[16vw]"
         style={{ fontSize: pSize }}
       >
         {pText}

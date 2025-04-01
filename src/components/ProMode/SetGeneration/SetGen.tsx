@@ -105,7 +105,7 @@ const SetGen: React.FC = () => {
           if (parsedBody.uploaded_image_urls) {
             setGeneratedImages(parsedBody.uploaded_image_urls);
           } else {
-            setError('Failed to generate image variations.');
+            setError('Failed to generate set.');
           }
         } catch (error) {
           setError('Error parsing Lambda response.');
@@ -136,24 +136,20 @@ const SetGen: React.FC = () => {
               backgroundImage: "url('https://img.freepik.com/free-vector/gradient-golden-linear-background_23-2148957745.jpg')",
             }}
           ></div>
-          <div className="absolute top-0 left-0 right-0 bottom-0 bg-white opacity-60 z-[-90]"></div>
-
           {/* Header */}
-          <div className="flex items-center justify-between text-xl p-5 text-[#585858] relative z-10">
-            <div className="name flex flex-col items-center gap-1">
-              <h2 className="text-xl">
-                <img src="https://www.kinmitra.com/assets/image-BEwmDLXF.png" alt="Kinmitra Logo" className="h-5" />
-              </h2>
-              <p className="inline-block text-xl font-medium bg-gradient-to-r from-[#00AA4F] via-[#E0AE2A] to-[#EB2D2E] bg-clip-text text-transparent animate-[moveText_4s_linear_infinite]">
-                Pro Mode
+          <div className="absolute top-0 left-0 right-0 bottom-0 bg-white opacity-80 z-[-90]"></div>
+          {/* Header as in Code 1 */}
+          <div className="flex items-center justify-center text-xl p-5 text-[#585858] relative z-10 w-full">
+            <header className="text-center">
+              {/* Title */}
+              <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
+                Set Generator
+              </h1>
+              {/* Subtitle */}
+              <p className="text-lightGreen lg:text-xl">
+                Create stunning jewelry sets effortlessly
               </p>
-            </div>
-            <p>Set Generation</p>
-            <img
-              className="w-[50px] rounded-full"
-              src="https://img.freepik.com/premium-vector/vector-set-women-with-jewelry-flat-design-style_995281-17686.jpg"
-              alt="User Icon"
-            />
+            </header>
           </div>
 
           {/* Main Content */}
@@ -163,11 +159,11 @@ const SetGen: React.FC = () => {
               <div
                 className="h-[250px] w-[250px] border-2 flex items-center justify-center cursor-pointer p-4"
                 onClick={() => {
-                  if (!selectedImage){
-                  setIsUploadVisible(true); // Always show the upload modal
-                  setSelectedImage(null);   // Reset selected image state
-                  setGeneratedImages([]);   // Reset generated images state
-                  setError(null);     
+                  if (!selectedImage) {
+                    setIsUploadVisible(true); // Always show the upload modal
+                    setSelectedImage(null);   // Reset selected image state
+                    setGeneratedImages([]);   // Reset generated images state
+                    setError(null);
                   }      // Reset any error state
                 }}
               >
