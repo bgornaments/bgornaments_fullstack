@@ -3,6 +3,7 @@ import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from "re
 
 export interface SketchCanvasHandle {
   getDataUrl: () => string;
+  clearCanvas: () => void;
 }
 
 const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
@@ -10,6 +11,7 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
   const isDrawingMouseRef = useRef(false);
   const isDrawingTouchRef = useRef(false);
   const [lineWidth, setLineWidth] = useState(2);
+  const [isEraser, setIsEraser] = useState(false);
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
 
   useEffect(() => {
@@ -29,18 +31,17 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
 
   useEffect(() => {
     if (context) {
-      context.lineWidth = lineWidth;
+      context.lineWidth = isEraser ? 20 : lineWidth;
+      context.globalCompositeOperation = isEraser ? "destination-out" : "source-over";
     }
-  }, [lineWidth]);
+  }, [lineWidth, isEraser, context]);
 
-  /** Get Mouse Coordinates */
   const getMouseCoords = (event: MouseEvent) => {
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return { x: 0, y: 0 };
     return { x: event.clientX - rect.left, y: event.clientY - rect.top };
   };
 
-  /** Get Touch Coordinates */
   const getTouchCoords = (event: TouchEvent) => {
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return { x: 0, y: 0 };
@@ -48,7 +49,6 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
     return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
   };
 
-  /** MOUSE EVENTS */
   const startMouseDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!context) return;
     isDrawingMouseRef.current = true;
@@ -69,7 +69,6 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
     context?.closePath();
   };
 
-  /** TOUCH EVENTS */
   const startTouchDrawing = (e: React.TouchEvent<HTMLCanvasElement>) => {
     e.preventDefault();
     if (!context) return;
@@ -93,41 +92,60 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
     context?.closePath();
   };
 
+  const clearCanvas = () => {
+    if (!canvasRef.current || !context) return;
+    context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+  };
+
   useImperativeHandle(ref, () => ({
     getDataUrl: () => (canvasRef.current ? canvasRef.current.toDataURL() : ""),
+    clearCanvas,
   }));
 
   return (
     <div className="flex flex-col items-center p-4">
-      <div className="mb-4 flex items-center">
-        <label htmlFor="width" className="mr-2 text-gray-700">
-          Pencil Width:
-        </label>
-        <input
-          id="width"
-          type="range"
-          min="1"
-          max="10"
-          value={lineWidth}
-          onChange={(e) => setLineWidth(Number(e.target.value))}
-          className="accent-blue-500"
-        />
-        <span className="ml-2 text-gray-700">{lineWidth}</span>
+      <div className="mb-4 flex flex-wrap items-center gap-4">
+        <div className="flex items-center">
+          <label htmlFor="width" className="mr-2 text-gray-700">
+            Pencil Width:
+          </label>
+          <input
+            id="width"
+            type="range"
+            min="1"
+            max="20"
+            value={lineWidth}
+            onChange={(e) => setLineWidth(Number(e.target.value))}
+            className="accent-blue-500"
+          />
+          <span className="ml-2 text-gray-700">{lineWidth}</span>
+        </div>
+        
+        <div className="flex items-center">
+          <button
+            onClick={() => setIsEraser(!isEraser)}
+            className={`px-3 py-1 rounded-md ${isEraser ? 'bg-gray-300' : 'bg-white border border-gray-300'}`}
+          >
+            Eraser
+          </button>
+        </div>
       </div>
       <div
-        className="border border-gray-300 relative w-full max-w-3xl"
+        className="border border-gray-300 relative w-full max-w-3xl bg-white"
         style={{ height: "500px" }}
       >
         <canvas
           ref={canvasRef}
           className="w-full h-full touch-none"
-          style={{ cursor: 'url("/pencil-icon.png") 16 32, auto' }}
-          /** Mouse Events */
+          style={{ 
+            cursor: isEraser 
+              ? `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 20 20'><rect x='0' y='0' width='20' height='20' fill='white' stroke='black' stroke-width='1'/></svg>") 10 10, auto`
+              : `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'><circle cx='8' cy='8' r='${Math.max(2, lineWidth/2)}' fill='black'/></svg>") 8 8, auto`
+          }}
           onMouseDown={startMouseDrawing}
           onMouseMove={drawMouse}
           onMouseUp={endMouseDrawing}
           onMouseLeave={endMouseDrawing}
-          /** Touch Events */
           onTouchStart={startTouchDrawing}
           onTouchMove={drawTouch}
           onTouchEnd={endTouchDrawing}
