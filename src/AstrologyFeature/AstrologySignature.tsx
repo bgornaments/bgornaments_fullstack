@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './astro.css';
 
 interface AstroSignatureType {
@@ -45,8 +46,10 @@ const AstroSignature: React.FC = () => {
   const [astroSuggestionsData, setAstroSuggestionsData] = useState<AstroSuggestionsType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [astrologyResponse, setAstrologyResponse] = useState<any>(null);
-  // New state to control the full-screen generating animation
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null); // Added error state like SetGen
+
+  const base_url = 'https://3t81apzou3.execute-api.ap-south-1.amazonaws.com/dev/get_astrology_collection';
 
   useEffect(() => {
     if (payload) {
@@ -88,6 +91,58 @@ const AstroSignature: React.FC = () => {
     }
   }, [payload]);
 
+  // Function to call the Lambda API (similar to SetGen)
+  const callLambda = async (endpointUrl: string, payload: object) => {
+    setIsGenerating(true); // Using isGenerating like isLoading in SetGen
+    setError(null); // Reset error state
+    console.log('Sending payload to Lambda:', payload);
+    try {
+      const response = await axios.post(endpointUrl, payload, {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 30000, // 30-second timeout
+      });
+      console.log('Lambda response:', response.data);
+      return response.data;
+    } catch (error) {
+      setError('Error processing the request. Please try again later.');
+      console.error("Lambda call error:", error);
+      return null;
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const saveGeneratedImages = async (imageUrls: string[]) => {
+    const cognitoUserId = localStorage.getItem('cognito_username');
+  
+    if (!cognitoUserId) {
+      console.error("Cognito User ID not found in local storage.");
+      return;
+    }
+  
+    const payload = {
+      CognitoUserID: cognitoUserId,
+      S3Links: imageUrls,
+    };
+  
+    console.log("Saving images with payload:", payload);
+  
+    try {
+      const response = await axios.post(
+        "https://1ih5vdayz5.execute-api.us-east-1.amazonaws.com/test/image",
+        payload
+      );
+      
+      if (response.status === 200) {
+        console.log(`Links saved for user: ${cognitoUserId}`);
+      } else {
+        console.error("Failed to save image links:", response.data);
+      }
+    } catch (error) {
+      console.error("Error saving image links:", error);
+    }
+  };
+
   const defaultSignature = {
     zodiac_summary: "Your zodiac summary will appear here.",
     personality_summary: "Your personality summary will appear here.",
@@ -102,26 +157,38 @@ const AstroSignature: React.FC = () => {
     engraving_suggestions: ["Default Engraving"]
   };
 
-  // When "View Design" is clicked, start the generating animation
-  // and then fetch the images.
   const handleView = async () => {
     console.log("View button clicked");
     if (!astrologyResponse) {
+      setError("No astrology data available to generate images.");
       console.error("No astrology response available for fetching images");
       return;
     }
-    // Start the full-screen generating animation
-    setIsGenerating(true);
-    console.log("Fetching images from get_astrology_collection with payload:", astrologyResponse);
-    try {
-      const response = await fetch('https://3t81apzou3.execute-api.ap-south-1.amazonaws.com/dev/get_astrology_collection', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(astrologyResponse)
-      });
-      const imagesData = await response.json();
-      console.log("Images API Response:", imagesData);
-      // Navigate to 'astro-images' with jewelry filters and images data
+
+    const response = await callLambda(base_url, astrologyResponse);
+    if (response) {
+      let imageUrls: string[] = [];
+      if (response.statusCode === 200 && response.body) {
+        const parsedBody = JSON.parse(response.body);
+        imageUrls = parsedBody.image_urls || [];
+        console.log("Parsed image URLs from body:", imageUrls);
+      } else if (response.image_urls && Array.isArray(response.image_urls)) {
+        imageUrls = response.image_urls;
+        console.log("Direct image URLs:", imageUrls);
+      } else {
+        setError("Unexpected response format from image generation.");
+        console.error("Unexpected image data format:", response);
+        return;
+      }
+
+      if (imageUrls.length > 0) {
+        console.log("Attempting to save images:", imageUrls);
+        await saveGeneratedImages(imageUrls);
+        console.log("Image saving completed");
+      } else {
+        console.warn("No image URLs found to save");
+      }
+
       navigate('astro-images', {
         state: {
           jewelryFilters: {
@@ -131,14 +198,10 @@ const AstroSignature: React.FC = () => {
             designStyle: [astroSuggestionsData?.design_style || "Default Design"],
             engraving: astroSuggestionsData?.engraving_suggestions || ["Default Engraving"],
           },
-          images: imagesData
+          images: response
         }
       });
       console.log("Navigation triggered with images and filters");
-    } catch (error) {
-      console.error("Error fetching images from get_astrology_collection:", error);
-      // If there's an error, hide the loader
-      setIsGenerating(false);
     }
   };
 
@@ -147,7 +210,6 @@ const AstroSignature: React.FC = () => {
 
   return (
     <div className="main min-h-screen p-4 sm:p-8 rounded-lg shadow-lg text-center max-w-full flex flex-col justify-center items-center">
-      {/* Conditionally render the full-screen generating animation */}
       {isGenerating && (
         <div className="fullscreen-loader">
           <div className="generator"></div>
@@ -212,10 +274,15 @@ const AstroSignature: React.FC = () => {
       </div>
       
       <div className="view-design">
-        <button onClick={handleView} className="border-2 border-[#e0ae2a] rounded-xl m-4 p-2 bg-[#F1E7D4]">
-          View Design
+        <button 
+          onClick={handleView} 
+          className="border-2 border-[#e0ae2a] rounded-xl m-4 p-2 bg-[#F1E7D4]"
+          disabled={isGenerating} // Disable button while generating, like SetGen
+        >
+          {isGenerating ? 'Generating...' : 'View Design'}
         </button>
       </div>
+      {error && <div className="mt-4 text-red-500">{error}</div>} {/* Display error like SetGen */}
     </div>
   );
 };
