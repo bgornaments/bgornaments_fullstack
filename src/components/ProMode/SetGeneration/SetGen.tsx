@@ -83,12 +83,13 @@ const SetGen: React.FC = () => {
     console.log("handleImageSelect: Running – image selected.");
     const squaredImage = await makeImageSquare(imageBase64);
     setSelectedImage(squaredImage);
+    setGeneratedImages([]); // Clear previous generated images when new image is selected
   };
-  
 
   // Handle image processing and generation
   const handleProcessImage = async () => {
     setIsProcessing(true);
+    setError(null);
     if (selectedImage) {
       const payload = {
         image: selectedImage.split(',')[1], // Sending Base64 image string
@@ -102,10 +103,11 @@ const SetGen: React.FC = () => {
       if (response && response.body) {
         try {
           const parsedBody = JSON.parse(response.body);
-          if (parsedBody.uploaded_image_urls) {
+          if (parsedBody.uploaded_image_urls && Array.isArray(parsedBody.uploaded_image_urls)) {
             setGeneratedImages(parsedBody.uploaded_image_urls);
+            await saveGeneratedImages(parsedBody.uploaded_image_urls); 
           } else {
-            setError('Failed to generate set.');
+            setError('Failed to generate set or invalid response format.');
           }
         } catch (error) {
           setError('Error parsing Lambda response.');
@@ -117,6 +119,38 @@ const SetGen: React.FC = () => {
       setError('No image uploaded.');
     }
     setIsProcessing(false);
+  };
+
+  const saveGeneratedImages = async (imageUrls: string[]) => {
+    const cognitoUserId = localStorage.getItem('cognito_username'); // Retrieve user ID
+  
+    if (!cognitoUserId) {
+      console.error("Cognito User ID not found in local storage.");
+      return;
+    }
+  
+    const payload = {
+      CognitoUserID: cognitoUserId,
+      S3Links: imageUrls, // Array of S3 links
+    };
+  
+    console.log("Saving images with payload:", payload);
+  
+    try {
+      const response = await axios.post(
+        "https://1ih5vdayz5.execute-api.us-east-1.amazonaws.com/test/image",
+        payload
+      );
+      
+      if (response.status === 200) {
+        console.log(`Links saved for user: ${cognitoUserId}`);
+      } else {
+        console.error("Failed to save image links:", response.data);
+      }
+      
+    } catch (error) {
+      console.error("Error saving image links:", error);
+    }
   };
 
   return (
@@ -153,18 +187,18 @@ const SetGen: React.FC = () => {
           </div>
 
           {/* Main Content */}
-          {/* Main Content */}
           <main className="flex flex-col items-center flex-grow p-6 relative z-10">
             <div className="flex flex-wrap gap-6 justify-center items-center w-full">
+              {/* Upload Box */}
               <div
                 className="h-[250px] w-[250px] border-2 flex items-center justify-center cursor-pointer p-4"
                 onClick={() => {
                   if (!selectedImage) {
-                    setIsUploadVisible(true); // Always show the upload modal
-                    setSelectedImage(null);   // Reset selected image state
-                    setGeneratedImages([]);   // Reset generated images state
+                    setIsUploadVisible(true);
+                    setSelectedImage(null);
+                    setGeneratedImages([]);
                     setError(null);
-                  }      // Reset any error state
+                  }
                 }}
               >
                 {selectedImage ? (
@@ -174,22 +208,27 @@ const SetGen: React.FC = () => {
                 )}
               </div>
 
-              <div className="relative h-[250px] w-[250px] border-2 flex items-center justify-center p-4">
-                {generatedImages.length > 0 ? (
-                  <>
-                    <img
-                      src={generatedImages[0]}
-                      alt="Generated Variation"
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                    <div className="absolute top-2 right-2">
-                      <DownloadButton imageUrl={generatedImages[0]} />
+              {/* Generated Images Grid */}
+              {generatedImages.length > 0 ? (
+                <div className="grid grid-cols-2 gap-4">
+                  {generatedImages.map((imageUrl, index) => (
+                    <div key={index} className="relative h-[250px] w-[250px] border-2 flex items-center justify-center p-4">
+                      <img
+                        src={imageUrl}
+                        alt={`Generated Variation ${index + 1}`}
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                      <div className="absolute top-2 right-2">
+                        <DownloadButton imageUrl={imageUrl} />
+                      </div>
                     </div>
-                  </>
-                ) : (
-                  <span className="text-sm text-gray-600">Generated Image</span>
-                )}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="relative h-[250px] w-[250px] border-2 flex items-center justify-center p-4">
+                  <span className="text-sm text-gray-600">Generated Images will appear here</span>
+                </div>
+              )}
             </div>
 
             {/* Dropdowns for Source and Target Types */}
@@ -232,6 +271,13 @@ const SetGen: React.FC = () => {
               </button>
             )}
 
+            {isProcessing && (
+              <div className="mt-6 flex items-center">
+                <span className="mr-2">Processing...</span>
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
+              </div>
+            )}
+
             {error && <div className="mt-6 text-red-500">{error}</div>}
           </main>
 
@@ -243,7 +289,6 @@ const SetGen: React.FC = () => {
               onImageSelect={handleImageSelect}
             />
           )}
-
         </div>
       ) : (
         <GlassComponent />
