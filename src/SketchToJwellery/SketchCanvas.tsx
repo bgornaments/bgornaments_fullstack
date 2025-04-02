@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from "react";
 
 export interface SketchCanvasHandle {
@@ -24,13 +25,13 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
         setContext(ctx);
       }
     }
-  }, [lineWidth]);
+  }, []);
 
   useEffect(() => {
     if (context) {
       context.lineWidth = lineWidth;
     }
-  }, [lineWidth, context]);
+  }, [lineWidth]);
 
   /** Get Mouse Coordinates */
   const getMouseCoords = (event: MouseEvent) => {
