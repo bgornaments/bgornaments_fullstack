@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import download from "../assets/download_gif.gif";
+import axios from 'axios';
 
 const SketchToDesign: React.FC = () => {
     const location = useLocation();
@@ -146,7 +147,8 @@ const SketchToDesign: React.FC = () => {
                     sessionStorage.setItem(`history_${session_id}`, JSON.stringify(updatedHistory));
                     return updatedHistory;
                 });
-                setGeneratedDesign(newDesignUrl); // Set the generated design
+                setGeneratedDesign(newDesignUrl); 
+                await saveGeneratedImages([newDesignUrl]);
             } else {
                 alert("Error generating design. Please try again.");
             }
@@ -156,6 +158,37 @@ const SketchToDesign: React.FC = () => {
             alert("Error during design generation. Check console for details.");
         }
     };
+
+    const saveGeneratedImages = async (imageUrls: string[]) => {
+        const cognitoUserId = localStorage.getItem('cognito_username'); // Retrieve user ID
+      
+        if (!cognitoUserId) {
+          console.error("Cognito User ID not found in local storage.");
+          return;
+        }
+      
+        const payload = {
+          CognitoUserID: cognitoUserId,
+          S3Links: imageUrls, // Array of S3 links
+        };
+      
+        console.log("Saving images with payload:", payload);
+      
+        try {
+          const response = await axios.post(
+            "https://1ih5vdayz5.execute-api.us-east-1.amazonaws.com/test/image",
+            payload
+          );
+      
+          if (response.status === 200) {
+            console.log(`Links saved for user: ${cognitoUserId}`);
+          } else {
+            console.error("Failed to save image links:", response.data);
+          }
+        } catch (error) {
+          console.error("Error saving image links:", error);
+        }
+      };
 
     return (
         <div className="bg-white flex flex-col items-center min-h-screen p-4">
