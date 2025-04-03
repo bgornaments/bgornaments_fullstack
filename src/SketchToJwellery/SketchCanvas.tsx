@@ -31,8 +31,9 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
 
   useEffect(() => {
     if (context) {
-      context.lineWidth = isEraser ? 20 : lineWidth;
+      context.lineWidth = isEraser ? Math.max(lineWidth * 2, 10) : lineWidth;
       context.globalCompositeOperation = isEraser ? "destination-out" : "source-over";
+      context.beginPath(); // Prevents stroke artifacts
     }
   }, [lineWidth, isEraser, context]);
 
@@ -66,7 +67,7 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
 
   const endMouseDrawing = () => {
     isDrawingMouseRef.current = false;
-    context?.closePath();
+    context?.beginPath();
   };
 
   const startTouchDrawing = (e: React.TouchEvent<HTMLCanvasElement>) => {
@@ -89,7 +90,7 @@ const SketchCanvas = forwardRef<SketchCanvasHandle>((_, ref) => {
   const endTouchDrawing = (e: React.TouchEvent<HTMLCanvasElement>) => {
     e.preventDefault();
     isDrawingTouchRef.current = false;
-    context?.closePath();
+    context?.beginPath();
   };
 
   const clearCanvas = () => {

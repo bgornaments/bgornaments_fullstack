@@ -131,6 +131,7 @@ const SetGen: React.FC = () => {
   
     const payload = {
       CognitoUserID: cognitoUserId,
+      ImageId: cognitoUserId,
       S3Links: imageUrls, // Array of S3 links
     };
   

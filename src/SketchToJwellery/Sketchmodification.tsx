@@ -169,7 +169,8 @@ const SketchToDesign: React.FC = () => {
       
         const payload = {
           CognitoUserID: cognitoUserId,
-          S3Links: imageUrls, // Array of S3 links
+          ImageId: cognitoUserId,
+          S3Links: imageUrls,
         };
       
         console.log("Saving images with payload:", payload);
