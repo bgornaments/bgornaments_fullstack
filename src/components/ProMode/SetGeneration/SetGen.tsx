@@ -123,36 +123,36 @@ const SetGen: React.FC = () => {
 
   const saveGeneratedImages = async (imageUrls: string[]) => {
     const cognitoUserId = localStorage.getItem('cognito_username'); // Retrieve user ID
-  
+
     if (!cognitoUserId) {
-      console.error("Cognito User ID not found in local storage.");
-      return;
+        console.error("Cognito User ID not found in local storage.");
+        return;
     }
-  
+
     const payload = {
-      CognitoUserID: cognitoUserId,
-      ImageId: cognitoUserId,
-      S3Links: imageUrls, // Array of S3 links
+        CognitoUserID: cognitoUserId,
+        ImageId: cognitoUserId, // ImageId is the same as CognitoUserID
+        S3Links: imageUrls, // Array of S3 links
     };
-  
+
     console.log("Saving images with payload:", payload);
-  
+
     try {
-      const response = await axios.post(
-        "https://1ih5vdayz5.execute-api.us-east-1.amazonaws.com/test/image",
-        payload
-      );
-      
-      if (response.status === 200) {
-        console.log(`Links saved for user: ${cognitoUserId}`);
-      } else {
-        console.error("Failed to save image links:", response.data);
-      }
-      
+        const response = await axios.post(
+            "https://1ih5vdayz5.execute-api.us-east-1.amazonaws.com/test/image",
+            payload
+        );
+
+        if (response.status === 200) {
+            console.log(`Links saved for user: ${cognitoUserId}`);
+        } else {
+            console.error("Failed to save image links:", response.data);
+        }
+
     } catch (error) {
-      console.error("Error saving image links:", error);
+        console.error("Error saving image links:", error);
     }
-  };
+};
 
   return (
     <>

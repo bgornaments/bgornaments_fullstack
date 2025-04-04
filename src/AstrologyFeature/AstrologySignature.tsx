@@ -114,34 +114,35 @@ const AstroSignature: React.FC = () => {
 
   const saveGeneratedImages = async (imageUrls: string[]) => {
     const cognitoUserId = localStorage.getItem('cognito_username');
-  
+
     if (!cognitoUserId) {
-      console.error("Cognito User ID not found in local storage.");
-      return;
+        console.error("Cognito User ID not found in local storage.");
+        return;
     }
-  
+
     const payload = {
-      CognitoUserID: cognitoUserId,
-      S3Links: imageUrls,
+        CognitoUserID: cognitoUserId,
+        ImageId: cognitoUserId, // Added ImageId as required
+        S3Links: imageUrls,
     };
-  
+
     console.log("Saving images with payload:", payload);
-  
+
     try {
-      const response = await axios.post(
-        "https://1ih5vdayz5.execute-api.us-east-1.amazonaws.com/test/image",
-        payload
-      );
-      
-      if (response.status === 200) {
-        console.log(`Links saved for user: ${cognitoUserId}`);
-      } else {
-        console.error("Failed to save image links:", response.data);
-      }
+        const response = await axios.post(
+            "https://1ih5vdayz5.execute-api.us-east-1.amazonaws.com/test/image",
+            payload
+        );
+
+        if (response.status === 200) {
+            console.log(`Links saved for user: ${cognitoUserId}`);
+        } else {
+            console.error("Failed to save image links:", response.data);
+        }
     } catch (error) {
-      console.error("Error saving image links:", error);
+        console.error("Error saving image links:", error);
     }
-  };
+};
 
   const defaultSignature = {
     zodiac_summary: "Your zodiac summary will appear here.",
