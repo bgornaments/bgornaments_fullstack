@@ -35,7 +35,7 @@ const ImgVar: React.FC = () => {
   const popupRef = useRef<ImageMaskingPopupHandle>(null);
   const [maskS3url, setMaskS3url] = useState<string | null>(null);
   const [isMaskExported, setIsMaskExported] = useState<boolean>(false);
-  const [,setGeneratedImages] = useState<string[]>([]);
+  const [, setGeneratedImages] = useState<string[]>([]);
 
   const handleShowMaskingPopup = () => {
     console.log("handleShowMaskingPopup: Running – setting showMaskingPopup to true.");
@@ -317,31 +317,32 @@ const ImgVar: React.FC = () => {
 
   const saveGeneratedImages = async (imageUrls: string[]) => {
     const cognitoUserId = localStorage.getItem('cognito_username'); // Retrieve user ID
-  
+
     if (!cognitoUserId) {
       console.error("Cognito User ID not found in local storage.");
       return;
     }
-  
+
     const payload = {
       CognitoUserID: cognitoUserId,
+      ImageId: cognitoUserId, 
       S3Links: imageUrls,
     };
-  
+
     console.log("Saving images with payload:", payload);
-  
+
     try {
       const response = await axios.post(
         "https://1ih5vdayz5.execute-api.us-east-1.amazonaws.com/test/image",
         payload
       );
-  
+
       if (response.status === 200) {
         console.log(`Links saved for user: ${cognitoUserId}`);
       } else {
         console.error("Failed to save image links:", response.data);
       }
-  
+
     } catch (error) {
       console.error("Error saving image links:", error);
     }

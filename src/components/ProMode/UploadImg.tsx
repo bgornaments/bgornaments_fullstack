@@ -16,8 +16,8 @@ const UploadImg: React.FC<UploadImgProps> = ({ onClose, sessionId, onImageSelect
   const [selectedImages, setSelectedImages] = useState<string[]>([]); // Changed to allow multiple image selection
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [, setImageFile] = useState<File | null>(null);
-
-  const userId = 'unknown'; // Fixed userId for now
+  const cognitoUserId = localStorage.getItem('cognito_username');
+  const userId = cognitoUserId;
 
   // Utility function to fetch an image URL and convert it to Base64
   const fetchImageAsBase64 = async (url: string): Promise<string> => {
