@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import download from "../assets/download_gif.gif";
 import axios from 'axios';
+import './SketchToDesign.css';
 
 const SketchToDesign: React.FC = () => {
     const location = useLocation();
@@ -16,6 +17,7 @@ const SketchToDesign: React.FC = () => {
 
     // Retrieve session_id
     const session_id = localStorage.getItem("sessionId");
+    const [isLoading, setIsLoading] = useState(false);
 
     // Load History from sessionStorage
     const [history, setHistory] = useState<string[]>(() => {
@@ -47,7 +49,7 @@ const SketchToDesign: React.FC = () => {
 
     const handleConvertToDesign = async () => {
         console.log("Convert to Design button clicked");
-
+        setIsLoading(true);
         // Retrieve values from form elements
         const sketch_description = sketchDescriptionRef.current?.value || "";
         const style = styleRef.current?.value || "";
@@ -157,6 +159,9 @@ const SketchToDesign: React.FC = () => {
             console.error("Error during API call", err);
             alert("Error during design generation. Check console for details.");
         }
+        finally {
+            setIsLoading(false);
+        }
     };
 
     const saveGeneratedImages = async (imageUrls: string[]) => {
@@ -193,6 +198,12 @@ const SketchToDesign: React.FC = () => {
 
     return (
         <div className="bg-white flex flex-col items-center min-h-screen p-4">
+            {/* Loading Overlay */}
+            {isLoading && (
+                <div className="fullscreen-loader">
+                    <div className="generator"></div>
+                </div>
+            )}
             {/* Header Section */}
             <header className="py-6 text-center w-full">
                 <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
