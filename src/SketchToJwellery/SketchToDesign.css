@@ -30,7 +30,7 @@
 }
 
 .generator::before {
-    content: "Generating Collection";
+    content: "Generating Design";
 }
 
 @keyframes shimmer-animate {

@@ -221,7 +221,6 @@ const Core: React.FC = () => {
           <div className="w-3/12 h-full"></div>
         </div>
       </div>
-
     </>
   );
 };
