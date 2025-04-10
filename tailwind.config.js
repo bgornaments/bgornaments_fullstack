@@ -24,7 +24,7 @@ export default {
         'xs': '300px'
       },
       fontFamily: {
-        custom: ['serif', 'sans-serif'],
+        custom: 'Gabriola',
         second: ['Manrope', 'serif']
       },
       colors: {

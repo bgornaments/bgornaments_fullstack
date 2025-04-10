@@ -1,6 +1,5 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HeroPage from "./components/LandingPage/HeroPage.tsx";
 import AIimages from "./components/AIimages.tsx";
 import JewelryForm from "./components/Basic/BasicForm.tsx";
 import Option from "./components/Basic/Option.tsx";
@@ -37,9 +36,9 @@ import SketchModification from "./SketchToJwellery/Sketchmodification.tsx";
 import MetadataEditor from "./components/BrowseCatalogue/MetadataEditor.tsx";
 import TermsAndConditions from "./components/LandingPage/terms_and_conditions.tsx";
 import PrivacyNotice from "./components/LandingPage/privacy_notice.tsx";
-
+import Landing from "./landingNew/main.tsx";
 const router = createBrowserRouter([
-  { path: "/", element: <HeroPage /> },
+  { path: "/", element: <Landing /> },
   { path: "/login", element: <Login /> },
   { path: "/Contact-Us", element: <DemoForm/> },
   { path: "/terms-and-conditions", element: <TermsAndConditions/> },
