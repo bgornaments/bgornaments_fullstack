@@ -9,11 +9,17 @@ export default {
       animation: {
         'infinite-scroll': 'infinite-scroll 25s linear infinite',
         loader: 'loader 4s infinite linear', // New animation
+        'spin-slow': 'spin 20s linear infinite',
+        'counter-spin': 'counterspin 20s linear infinite',
       },
       keyframes: {
         'infinite-scroll': {
           from: { transform: 'translateX(0)' },
           to: { transform: 'translateX(-100%)' },
+        },
+        counterspin: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(-360deg)' },
         },
         loader: { // New keyframes for the loader animation
           '0%': { backgroundPosition: '0 0' },
