@@ -1,9 +1,10 @@
+{/*With navigations*/}
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { Link } from 'react-router-dom';
 import logo from "/src/assets/image.png";
 import certImage from "/src/assets/cert.png";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
-import homepageimg1 from '/src/assets/homepageImg1.jpg';
 
 const LandingPage: React.FC = () => {
   const introRef = useRef<HTMLDivElement>(null);
@@ -75,19 +76,23 @@ const LandingPage: React.FC = () => {
       {/* Header */}
       <header className="flex justify-between items-center py-6 border-b-2 border-gray-200 text-xl font-custom">
         <div className="flex items-center space-x-2 pl-8">
-          <img src={logo} alt="Logo" className="w-40" />
+          <Link to="/">
+            <img src={logo} alt="Logo" className="w-40" />
+          </Link>
         </div>
         <nav className="flex space-x-6 text-xl font-custom">
-          <a href="#" className="font-custom">Home</a>
-          <a href="#" className="font-custom">All Designs</a>
-          <a href="#" className="font-custom">Pricing</a>
-          <a href="#" className="font-custom">Contact Us</a>
+          <Link to="/" className="font-custom">Home</Link>
+          <Link to="/catalog" className="font-custom">AI Designs</Link>
+          <Link to="/" className="font-custom">Pricing</Link>
+          <Link to="/Contact-Us" className="font-custom">Contact Us</Link>
         </nav>
-        <button className="border border-yellow-500 text-yellow-500 px-4 py-1 rounded text-xl font-custom mr-8">Log In</button>
+        <Link to="/login">
+          <button className="border border-yellow-500 text-yellow-500 px-4 py-1 rounded text-xl font-custom mr-8">Log In</button>
+        </Link>
       </header>
 
       {/* Hero Section */}
-      {/* <section className="relative h-[60vh] overflow-hidden text-white text-center flex flex-col justify-center items-center">
+      <section className="relative h-[60vh] overflow-hidden text-white text-center flex flex-col justify-center items-center">
         <video
           autoPlay
           loop
@@ -99,7 +104,7 @@ const LandingPage: React.FC = () => {
         <div
           className="absolute inset-0 z-10 pointer-events-none"
           style={{
-            background: 'radial-gradient(circle at center, rgba(0,0,0,0) 20%, rgba(0,0,0,0.5) 90%, rgba(0,0,0,0.9) 100%)',
+            background: 'radial-gradient(circle at center, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 70%, rgba(0,0,0,0.9) 90%)',
           }}
         />
         <div className="relative z-20 px-4">
@@ -108,30 +113,16 @@ const LandingPage: React.FC = () => {
             KinMitra revolutionizes the design journey with intelligent tools that help you ideate, visualize, and refine your creations — all in one place.
           </p>
           <div className="space-x-4">
-            <button className="bg-yellow-500 text-white px-5 py-2 rounded text-xl font-custom">Try the Design Studio</button>
-            <button className="border border-yellow-500 text-yellow-500 px-5 py-2 rounded text-xl font-custom">See Video</button>
-          </div>
-        </div>
-      </section> */}
-
-      <section
-        className="relative bg-cover bg-center text-white pt-32 pb-32 text-lg font-custo"
-        style={{ backgroundImage: `url(${homepageimg1})` }}
-      >
-        <div
-          className="absolute inset-0 z-10 pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle at center, rgba(0,0,0,0) 30%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.9) 90%)',
-          }}
-        />
-        <div className="relative z-20 text-white text-center flex flex-col justify-center items-center h-full px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-5xl font-custom">Design Smarter. Create Faster.</h1>
-          <p className="max-w-md text-gray-200 mb-6 text-xl font-custom">
-            KinMitra revolutionizes the design journey with intelligent tools that help you ideate, visualize, and refine your creations — all in one place.
-          </p>
-          <div className="space-x-4">
-            <button className="bg-yellow-500 text-white px-5 py-2 rounded text-lg font-custom">Try the Design Studio</button>
-            <button className="border border-yellow-500 text-yellow-500 px-5 py-2 rounded text-lg font-custom">See Video</button>
+            <Link to="/modes">
+              <button className="bg-yellow-500 text-white px-5 py-2 rounded text-xl font-custom">Try the Design Studio</button>
+            </Link>
+            <a 
+              href="https://qflpgffwo9.execute-api.us-east-1.amazonaws.com/prod/redirect" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <button className="border border-yellow-500 text-yellow-500 px-5 py-2 rounded text-xl font-custom">See Video</button>
+            </a>
           </div>
         </div>
       </section>
@@ -175,9 +166,9 @@ const LandingPage: React.FC = () => {
                 <p className='text-lg font-custom'>📞 +91 (931) 008-5981</p>
                 <p className='text-lg font-custom'>✉️ ceo@kinmitra.com</p>
                 <div className="flex space-x-4 mt-4 text-xl">
-                  <a href="#">🔗</a>
-                  <a href="#">🐦</a>
-                  <a href="#">📸</a>
+                  <a href="https://linkedin.com/company/bgornaments" target="_blank" rel="noopener noreferrer">🔗</a>
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">🐦</a>
+                  <a href="https://instagram.com/kinmitra_com" target="_blank" rel="noopener noreferrer">📸</a>
                 </div>
               </div>
             </div>
@@ -221,18 +212,20 @@ const LandingPage: React.FC = () => {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
           {/* Logo & Tagline */}
           <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
-            <img src={logo} alt="Company Logo" className="mb-4 w-32" />
+            <Link to="/">
+              <img src={logo} alt="Company Logo" className="mb-4 w-32" />
+            </Link>
             <p className="text-center md:text-left mb-4 text-2xl font-custom">
               Your Style, Our Craftsmanship — Together,
               <br />
               We Sparkle with Elegance.
             </p>
             <div className="flex space-x-4 text-xl">
-              <a className="text-gray-600 hover:text-gray-800" href="#"><FaFacebookF /></a>
-              <a className="text-gray-600 hover:text-gray-800" href="#"><FaTwitter /></a>
-              <a className="text-gray-600 hover:text-gray-800" href="#"><FaInstagram /></a>
-              <a className="text-gray-600 hover:text-gray-800" href="#"><FaLinkedinIn /></a>
-              <a className="text-gray-600 hover:text-gray-800" href="#"><FaYoutube /></a>
+              <a className="text-gray-600 hover:text-gray-800" href="https://www.facebook.com/profile.php?id=61574416178019" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
+              <a className="text-gray-600 hover:text-gray-800" href="https://twitter.com" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
+              <a className="text-gray-600 hover:text-gray-800" href="https://instagram.com/kinmitra_com" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
+              <a className="text-gray-600 hover:text-gray-800" href="https://linkedin.com/company/bgornaments" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
+              <a className="text-gray-600 hover:text-gray-800" href="https://youtube.com" target="_blank" rel="noopener noreferrer"><FaYoutube /></a>
             </div>
           </div>
 
@@ -241,11 +234,11 @@ const LandingPage: React.FC = () => {
             <div className="mb-6 md:mb-0">
               <h3 className="text-gray-800 font-bold mb-4 text-2xl font-custom">Company</h3>
               <ul className="space-y-2">
-                <li><a className="text-gray-600 hover:text-gray-800 text-xl font-custom" href="#">Home</a></li>
-                <li><a className="text-gray-600 hover:text-gray-800 text-xl font-custom" href="#">AI Design</a></li>
-                <li><a className="text-gray-600 hover:text-gray-800 text-xl font-custom" href="#">Pricing</a></li>
-                <li><a className="text-gray-600 hover:text-gray-800 text-xl font-custom" href="#">Contact Us</a></li>
-                <li><a className="text-gray-600 hover:text-gray-800 text-xl font-custom" href="#">Our Work</a></li>
+                <li><Link className="text-gray-600 hover:text-gray-800 text-xl font-custom" to="/">Home</Link></li>
+                <li><Link className="text-gray-600 hover:text-gray-800 text-xl font-custom" to="/catalog">AI Design</Link></li>
+                <li><Link className="text-gray-600 hover:text-gray-800 text-xl font-custom" to="/">Pricing</Link></li>
+                <li><Link className="text-gray-600 hover:text-gray-800 text-xl font-custom" to="/Contact-Us">Contact Us</Link></li>
+                <li><Link className="text-gray-600 hover:text-gray-800 text-xl font-custom" to="/">Our Work</Link></li>
               </ul>
             </div>
 
@@ -256,10 +249,13 @@ const LandingPage: React.FC = () => {
                 <li className="text-gray-600 text-xl font-custom">+91 (835) 608-5861</li>
                 <li className="text-gray-600 text-xl font-custom">ceo@kinmitra.com</li>
               </ul>
+              <div className="mt-4">
+                <a href="/privacy-Notice" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-800 text-lg font-custom block">Privacy Notice</a>
+                <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-800 text-lg font-custom block mt-1">Terms & Conditions</a>
+              </div>
             </div>
           </div>
         </div>
-
         {/* Bottom copyright */}
         <div className="border-t border-gray-200 mt-8 pt-4 text-center text-xs text-gray-500">
           Copyright © 2025
