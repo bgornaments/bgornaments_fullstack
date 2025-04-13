@@ -31,7 +31,8 @@ export default {
       },
       fontFamily: {
         custom: 'Gabriola',
-        second: ['Manrope', 'serif']
+        // second: ['Manrope', 'serif']
+        second: ['sans-serif']
       },
       colors: {
         lightGreen: '#00AA4F', //pallete
