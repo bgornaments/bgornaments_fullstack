@@ -187,10 +187,10 @@ const LandingPage: React.FC = () => {
           <p className="mx-auto text-gray-200 text-xl mb-6">
             The AI-powered design studio for modern jewelry designers.
           </p>
-          <p className="mx-auto text-gray-200 text-xl mb-6">
+          {/* <p className="mx-auto text-gray-200 text-xl mb-6">
             KinMitra revolutionizes the jewellery design journey with intelligent tools
             <br /> that help you ideate, visualize, and refine your creations — all in one place.
-          </p>
+          </p> */}
           <div className="space-x-4 mt-10">
             <Link to="/modes">
               <button className="bg-yellow-500 text-white px-5 py-2 rounded text-lg">Try the Design Studio</button>
@@ -271,11 +271,16 @@ const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
           {/* Left Column: Text */}
           <div className="md:w-1/2 text-left">
-            <h2 className="text-5xl font-semibold text-[#e0ae2a] mb-6 font-custom tracking-wide">
+            <h2 className="text-5xl font-semibold text-[#e0ae2a] mb-6 font-custom tracking-wide leading-tight">
               Designed for Jewellery Designers
             </h2>
-            <p className="text-gray-700 max-w-lg mb-16 text-xl text-center mt-10">
-              KinMitra is your AI co-designer. <br /> Helping you craft stunning jewellery designs fast.
+
+            <p className="text-gray-700 max-w-lg mb-8 text-xl mt-6 text-center md:text-left">
+              KinMitra is your AI co-designer, helping you craft stunning jewellery designs faster than ever.
+            </p>
+
+            <p className="text-gray-700 max-w-lg mb-0 text-xl text-center md:text-left">
+              Revolutionize your creative journey with KinMitra's intelligent design tools to ideate, visualize, and refine — all in one seamless space.
             </p>
           </div>
 
@@ -287,37 +292,37 @@ const LandingPage: React.FC = () => {
                 {/* 6 evenly spaced features */}
                 <div className="absolute top-[-10px] left-1/2 -translate-x-1/2">
                   <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Lightbulb size={28} />} text="AI-Driven Creativity" />
+                    <FeatureCircle icon={<Lightbulb size={40} />} text="AI-Driven Creativity" />
                   </div>
                 </div>
 
                 <div className="absolute top-[25%] right-[-5px] -translate-y-1/2">
                   <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Target size={28} />} text="Effortless Personalization" />
+                    <FeatureCircle icon={<Target size={40} />} text="Effortless Personalization" />
                   </div>
                 </div>
 
                 <div className="absolute bottom-[25%] right-[-5px] translate-y-1/2">
                   <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Smartphone size={28} />} text="Mobile Friendly" />
+                    <FeatureCircle icon={<Smartphone size={40} />} text="Mobile Friendly" />
                   </div>
                 </div>
 
                 <div className="absolute bottom-[-10px] left-1/2 -translate-x-1/2">
                   <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Globe size={28} />} text="Web Software" />
+                    <FeatureCircle icon={<Globe size={40} />} text="Web Software" />
                   </div>
                 </div>
 
                 <div className="absolute bottom-[25%] left-[-5px] translate-y-1/2">
                   <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Puzzle size={28} />} text="Synthesizable Designs" />
+                    <FeatureCircle icon={<Puzzle size={40} />} text="Synthesizable Designs" />
                   </div>
                 </div>
 
                 <div className="absolute top-[25%] left-[-5px] -translate-y-1/2">
                   <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Clock size={28} />} text="Trend Innovation" />
+                    <FeatureCircle icon={<Clock size={40} />} text="Trend Innovation" />
                   </div>
                 </div>
               </div>
