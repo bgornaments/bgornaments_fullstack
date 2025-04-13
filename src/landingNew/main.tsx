@@ -24,11 +24,13 @@ type FeatureProps = {
 gsap.registerPlugin(ScrollTrigger);
 
 const FeatureCircle = ({ icon, text }: { icon: JSX.Element; text: string }) => (
-  <div className="flex flex-col items-center text-center text-sm w-24">
+  <div className="flex flex-col items-center text-center w-24">
+    {/* <div className="flex flex-col items-center text-center text-sm w-24">*/}
     <div className="text-yellow-500 mb-1">{icon}</div>
-    <p className="text-black text-base">{text}</p>
+    <p className="text-black text-base text-lg">{text}</p>
   </div>
 );
+
 
 const Feature = ({ icon, text }: FeatureProps) => (
   <div className="flex items-center justify-center gap-2 px-4 py-2 bg-[#f9f3e7] rounded-md text-gray-800 text-lg font-medium shadow-sm">
@@ -181,11 +183,15 @@ const LandingPage: React.FC = () => {
           }}
         />
         <div className="relative z-20 px-4">
-          <h1 className="text-5xl font-bold mb-6 font-custom">Design Smarter. Create Faster.</h1>
-          <p className="max-w-md mx-auto text-gray-200 text-xl mb-6">
-            KinMitra revolutionizes the design journey with intelligent tools that help you ideate, visualize, and refine your creations — all in one place.
+          <h1 className="text-6xl font-bold mb-6 font-custom">Design Smarter. Create Faster.</h1>
+          <p className="mx-auto text-gray-200 text-xl mb-6">
+            The AI-powered design studio for modern jewelry designers.
           </p>
-          <div className="space-x-4">
+          <p className="mx-auto text-gray-200 text-xl mb-6">
+            KinMitra revolutionizes the jewellery design journey with intelligent tools
+            <br /> that help you ideate, visualize, and refine your creations — all in one place.
+          </p>
+          <div className="space-x-4 mt-10">
             <Link to="/modes">
               <button className="bg-yellow-500 text-white px-5 py-2 rounded text-lg">Try the Design Studio</button>
             </Link>
@@ -243,7 +249,7 @@ const LandingPage: React.FC = () => {
         </div>
       </section> */}
 
-      <section className="text-center px-4 py-20 bg-white">
+      {/* <section className="text-center px-4 py-20 bg-white">
         <h2 className="text-4xl font-semibold text-black mb-6 font-custom">
           Designed for Jewellery Designers
         </h2>
@@ -257,11 +263,11 @@ const LandingPage: React.FC = () => {
           <Feature icon={<Puzzle />} text="Synthesizable Designs" />
           <Feature icon={<Globe />} text="Web-based Platform" />
           <Feature icon={<Smartphone />} text="Mobile Friendly" />
-          <Feature icon={<Clock />} text="Time-Saving Tools" />
+          <Feature icon={<Clock />} text="Design Trend Innovation" />
         </div>
-      </section>
+      </section> */}
 
-      <section className="py-8 bg-white relative overflow-hidden px-8">
+      <section className="py-20 bg-white relative overflow-hidden px-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
           {/* Left Column: Text */}
           <div className="md:w-1/2 text-left">
@@ -281,37 +287,37 @@ const LandingPage: React.FC = () => {
                 {/* 6 evenly spaced features */}
                 <div className="absolute top-[-10px] left-1/2 -translate-x-1/2">
                   <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Lightbulb size={28} />} text="AI Creativity" />
+                    <FeatureCircle icon={<Lightbulb size={28} />} text="AI-Driven Creativity" />
                   </div>
                 </div>
 
                 <div className="absolute top-[25%] right-[-5px] -translate-y-1/2">
                   <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Target size={28} />} text="Personalization" />
+                    <FeatureCircle icon={<Target size={28} />} text="Effortless Personalization" />
                   </div>
                 </div>
 
                 <div className="absolute bottom-[25%] right-[-5px] translate-y-1/2">
                   <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Puzzle size={28} />} text="Synthesizable" />
+                    <FeatureCircle icon={<Smartphone size={28} />} text="Mobile Friendly" />
                   </div>
                 </div>
 
                 <div className="absolute bottom-[-10px] left-1/2 -translate-x-1/2">
                   <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Globe size={28} />} text="Web App" />
+                    <FeatureCircle icon={<Globe size={28} />} text="Web Software" />
                   </div>
                 </div>
 
                 <div className="absolute bottom-[25%] left-[-5px] translate-y-1/2">
                   <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Smartphone size={28} />} text="Mobile Use" />
+                    <FeatureCircle icon={<Puzzle size={28} />} text="Synthesizable Designs" />
                   </div>
                 </div>
 
                 <div className="absolute top-[25%] left-[-5px] -translate-y-1/2">
                   <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Clock size={28} />} text="Time Saver" />
+                    <FeatureCircle icon={<Clock size={28} />} text="Trend Innovation" />
                   </div>
                 </div>
               </div>
@@ -465,7 +471,7 @@ const LandingPage: React.FC = () => {
         {/* Bottom copyright */}
         <div className="border-t border-gray-200 mt-8 pt-4 text-center text-xs text-gray-500">
           Copyright © 2025 KinMitra. All rights reserved. <br /> Unauthorized reproduction or distribution is prohibited.
-          KinMitra is a registered trademark of BG Ornaments Pvt. Ltd.
+          KinMitra is a registered trademark of Bharat Gold Ornaments Pvt. Ltd.
         </div>
       </footer>
     </div>
