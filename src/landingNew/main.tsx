@@ -16,10 +16,10 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 // import colLogo4 from "/src/assets/colLogo4.png";
 // import colLogo5 from "/src/assets/colLogo5.png";
 
-type FeatureProps = {
-  icon: React.ReactNode;
-  text: string;
-};
+// type FeatureProps = {
+//   icon: React.ReactNode;
+//   text: string;
+// };
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,12 +32,12 @@ const FeatureCircle = ({ icon, text }: { icon: JSX.Element; text: string }) => (
 );
 
 
-const Feature = ({ icon, text }: FeatureProps) => (
-  <div className="flex items-center justify-center gap-2 px-4 py-2 bg-[#f9f3e7] rounded-md text-gray-800 text-lg font-medium shadow-sm">
-    <span className="text-[#e0ae2a] w-5 h-5">{icon}</span>
-    {text}
-  </div>
-);
+// const Feature = ({ icon, text }: FeatureProps) => (
+//   <div className="flex items-center justify-center gap-2 px-4 py-2 bg-[#f9f3e7] rounded-md text-gray-800 text-lg font-medium shadow-sm">
+//     <span className="text-[#e0ae2a] w-5 h-5">{icon}</span>
+//     {text}
+//   </div>
+// );
 
 const LandingPage: React.FC = () => {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
@@ -274,8 +274,8 @@ const LandingPage: React.FC = () => {
             <h2 className="text-5xl font-semibold text-[#e0ae2a] mb-6 font-custom tracking-wide">
               Designed for Jewellery Designers
             </h2>
-            <p className="text-gray-700 max-w-lg mb-16 text-xl text-center mt-16">
-              Say goodbye to guesswork and long hours spent sketching. <br />KinMitra is your AI co-designer — helping you craft stunning jewellery designs fast.
+            <p className="text-gray-700 max-w-lg mb-16 text-xl text-center mt-10">
+              KinMitra is your AI co-designer. <br /> Helping you craft stunning jewellery designs fast.
             </p>
           </div>
 
