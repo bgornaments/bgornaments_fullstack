@@ -280,7 +280,7 @@ const LandingPage: React.FC = () => {
             </p>
 
             <p className="text-gray-700 max-w-lg mb-0 text-xl text-center md:text-left">
-              Revolutionize your creative journey with KinMitra's intelligent design tools to ideate, visualize, and refine — all in one seamless space.
+              Revolutionize your creative journey with KinMitra's intelligent jewellery design tools to ideate, visualize, and refine your creations — all in one place.
             </p>
           </div>
 
