@@ -27,7 +27,9 @@ export default {
         },
       },
       screens: {
-        'xs': '300px'
+        'xs': '300px',
+        'custom-sm': { 'max': '820px' }, // Custom breakpoint for width ≤ 820px
+        'custom-md': { 'max': '1180px' }, // Custom breakpoint for height ≤ 1180px
       },
       fontFamily: {
         custom: 'Gabriola',

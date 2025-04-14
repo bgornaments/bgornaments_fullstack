@@ -6,34 +6,22 @@ import logo from "/src/assets/image.png";
 import certImage from "/src/assets/cert.png";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 import { Lightbulb, Target, Puzzle, Globe, Smartphone, Clock } from "lucide-react";
-// import { FaComments, FaGem, FaRandom, FaTshirt, FaPencilAlt, FaStar } from "react-icons/fa";
+import { FaComments, FaGem, FaRandom, FaTshirt, FaPencilAlt, FaStar } from "react-icons/fa";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 // import Swal from "sweetalert2";
 // import homepageimg1 from '/src/assets/homepageImg1.jpg';
-// import colLogo1 from "/src/assets/colLogo1.png";
-// import colLogo2 from "/src/assets/colLogo2.png";
-// import colLogo3 from "/src/assets/colLogo3.png";
-// import colLogo4 from "/src/assets/colLogo4.png";
-// import colLogo5 from "/src/assets/colLogo5.png";
-
-type FeatureProps = {
-  icon: React.ReactNode;
-  text: string;
-};
+import colLogo1 from "/src/assets/colLogo1.png";
+import colLogo2 from "/src/assets/colLogo2.png";
+import colLogo3 from "/src/assets/colLogo3.png";
+import colLogo4 from "/src/assets/colLogo4.png";
+import colLogo5 from "/src/assets/colLogo5.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const FeatureCircle = ({ icon, text }: { icon: JSX.Element; text: string }) => (
   <div className="flex flex-col items-center text-center text-sm w-24">
     <div className="text-yellow-500 mb-1">{icon}</div>
-    <p className="text-black text-base">{text}</p>
-  </div>
-);
-
-const Feature = ({ icon, text }: FeatureProps) => (
-  <div className="flex items-center justify-center gap-2 px-4 py-2 bg-[#f9f3e7] rounded-md text-gray-800 text-lg font-medium shadow-sm">
-    <span className="text-[#e0ae2a] w-5 h-5">{icon}</span>
-    {text}
+    <p className="text-black text-lg">{text}</p>
   </div>
 );
 
@@ -243,26 +231,8 @@ const LandingPage: React.FC = () => {
         </div>
       </section> */}
 
-      <section className="text-center px-4 py-20 bg-white">
-        <h2 className="text-4xl font-semibold text-black mb-6 font-custom">
-          Designed for Jewellery Designers
-        </h2>
-        <p className="text-gray-700 max-w-2xl mx-auto mb-12 text-xl">
-          Say goodbye to guesswork and long hours spent sketching. KinMitra is your AI co-designer — helping you craft stunning jewellery designs fast.
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          <Feature icon={<Lightbulb />} text="AI-Driven Creativity" />
-          <Feature icon={<Target />} text="Effortless Personalization" />
-          <Feature icon={<Puzzle />} text="Synthesizable Designs" />
-          <Feature icon={<Globe />} text="Web-based Platform" />
-          <Feature icon={<Smartphone />} text="Mobile Friendly" />
-          <Feature icon={<Clock />} text="Time-Saving Tools" />
-        </div>
-      </section>
-
       <section className="py-8 bg-white relative overflow-hidden px-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center md:gap-8 px-4">
           {/* Left Column: Text */}
           <div className="md:w-1/2 text-left">
             <h2 className="text-5xl font-semibold text-[#e0ae2a] mb-6 font-custom tracking-wide">
@@ -327,6 +297,183 @@ const LandingPage: React.FC = () => {
 
       <div className='h-1vh bg-black'></div>
 
+      {/* What's Inside Section */}
+      <section className="bg-[#fdf7f2] py-16 px-6 flex flex-col items-center">
+        <h1 className="text-4xl font-bold text-center font-custom mb-2">What's Inside KinMitra</h1>
+        <p className="text-center text-gray-600 mb-12 max-w-2xl text-xl">
+          Discover our powerful AI-powered tools designed to revolutionize your jewelry design experience
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
+          {[
+            {
+              icon: <FaComments className="text-[#e0ae2a]-500" />,
+              title: "Intelligent Design Chat",
+              desc: "Engage with our AI assistant to bring your jewelry ideas to life through natural conversation",
+              bg: "bg-[#e0ae2a]-100",
+            },
+            {
+              icon: <FaGem className="text-blue-500" />,
+              title: "Jewelry Set Generation",
+              desc: "Create complete, coordinated jewelry sets with our advanced AI generation system",
+              bg: "bg-blue-100",
+            },
+            {
+              icon: <FaRandom className="text-green-500" />,
+              title: "Design Variation Generation",
+              desc: "Explore multiple design variations with a single click using our AI algorithm",
+              bg: "bg-green-100",
+            },
+            {
+              icon: <FaTshirt className="text-red-500" />,
+              title: "Outfit Matching Suggestions",
+              desc: "Get perfect jewelry recommendations that complement your outfits",
+              bg: "bg-red-100",
+            },
+            {
+              icon: <FaPencilAlt className="text-yellow-500" />,
+              title: "Sketch-to-Design Conversion",
+              desc: "Transform your hand-drawn sketches into professional jewelry designs instantly",
+              bg: "bg-yellow-100",
+            },
+            {
+              icon: <FaStar className="text-indigo-500" />,
+              title: "Astrology-Based Personalization",
+              desc: "Create designs influenced by celestial alignments and zodiac elements",
+              bg: "bg-indigo-100",
+            },
+          ].map((feature, idx) => (
+            <div
+              key={idx}
+              ref={(el) => {
+                if (el) cardsRef.current[idx] = el;
+              }}
+              className="bg-white p-6 rounded-lg shadow-md flex flex-col items-start"
+            >
+              <div className={`${feature.bg} p-3 rounded-full mb-4 text-lg`}>
+                {feature.icon}
+              </div>
+              <h2 className="text-lg font-semibold mb-2">{feature.title}</h2>
+              <p className="text-gray-600 text-xl">{feature.desc}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-center text-gray-600 mt-10 text-xl">And many more Premium Features!</p>
+      </section>
+
+      {/* Personalized Design Section*/}
+      <section className="text-center py-12 font-serif">
+        <h2 className="text-4xl font-bold mb-12 text-[#e0ae2a] font-custom text-5xl">
+          Personalised Design Made Easy
+        </h2>
+        <div className="flex flex-col md:flex-row justify-center items-center space-y-12 md:space-y-0 md:space-x-12 px-4">
+          {/* Card 1 */}
+          <div className="flex flex-col items-center max-w-xs">
+            <img
+              src="https://storage.googleapis.com/a1aa/image/eVXiQw98MZad6YcOtEjXYGNR3T6xQg3ko7c6mGL2P6c.jpg"
+              alt="Custom Designs"
+              width={100}
+              height={100}
+              className="mb-4 rounded"
+            />
+            <h3 className="text-xl font-semibold mb-2 text-gray-900">
+              Custom Designs Just for You.
+            </h3>
+            <p className="text-gray-600">
+              Leverage AI to create personalized jewellery designs tailored to your unique style. Answer a few questions and let AI do the rest.
+            </p>
+          </div>
+
+          {/* Card 2 */}
+          <div className="flex flex-col items-center max-w-xs">
+            <img
+              src="https://storage.googleapis.com/a1aa/image/ShklPBgaQqD95r8-XiXf9_HLKSufnszVLGBwkklUlg8.jpg"
+              alt="Interactive Design"
+              width={100}
+              height={100}
+              className="mb-4 rounded"
+            />
+            <h3 className="text-xl font-semibold mb-2 text-gray-900">
+              Interactive Design Process.
+            </h3>
+            <p className="text-gray-600">
+              Share your preferences by answering a few simple questions, and our AI will generate initial jewellery design concepts for you.
+            </p>
+          </div>
+
+          {/* Card 3 */}
+          <div className="flex flex-col items-center max-w-xs">
+            <img
+              src="https://storage.googleapis.com/a1aa/image/0ZmeRP-t3G7iUN4BMUkj3ZYJIN2cv3xlxfVvu4e6lWI.jpg"
+              alt="Tailored Designs"
+              width={100}
+              height={100}
+              className="mb-4 rounded"
+            />
+            <h3 className="text-xl font-semibold mb-2 text-gray-900">
+              Tailored to Your Taste.
+            </h3>
+            <p className="text-gray-600">
+              Our AI will ask additional questions to refine the designs, ensuring the final pieces match your unique style and preferences.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Logo Carousel Section */}
+      <section className="bg-[#fefaf2] flex flex-col justify-center items-center mt-10">
+        <h3 className="text-5xl font-custom text-darkGolden mb-6 mt-12">
+          Associations and Certifications
+        </h3>
+
+        <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-200px),transparent_100%)] my-6 md:my-10">
+          <ul
+            ref={(el) => {
+              if (el && el.nextSibling === null) {
+                const clone = el.cloneNode(true) as HTMLUListElement;
+                clone.setAttribute("aria-hidden", "true");
+                el.insertAdjacentElement("afterend", clone);
+              }
+            }}
+            className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
+          >
+            <li>
+              <img
+                src={colLogo1}
+                alt="Logo 1"
+                className="w-[20vh] md:w-[15vh] xl:w-[24vh]"
+              />
+            </li>
+            <li>
+              <img
+                src={colLogo2}
+                alt="Logo 2"
+                className="w-[20vh] md:w-[15vh] xl:w-[24vh]"
+              />
+            </li>
+            <li>
+              <img
+                src={colLogo3}
+                alt="Logo 3"
+                className="w-[20vh] md:w-[15vh] xl:w-[24vh]"
+              />
+            </li>
+            <li>
+              <img
+                src={colLogo4}
+                alt="Logo 4"
+                className="w-[20vh] md:w-[15vh] xl:w-[24vh]"
+              />
+            </li>
+            <li>
+              <img
+                src={colLogo5}
+                alt="Logo 5"
+                className="w-[20vh] md:w-[15vh] xl:w-[24vh]"
+              />
+            </li>
+          </ul>
+        </div>
+      </section>
       {/* Certificate Section */}
       <section className="bg-[#FFFBF6] py-24">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between space-y-8 md:space-y-0">
@@ -444,7 +591,7 @@ const LandingPage: React.FC = () => {
                 <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/catalog">AI Design</Link></li>
                 <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Pricing</Link></li>
                 <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/Contact-Us">Contact Us</Link></li>
-                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/catalog">Our Team</Link></li>
+                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/kinmitra_team">Our Team</Link></li>
               </ul>
             </div>
 

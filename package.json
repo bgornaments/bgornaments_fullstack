@@ -32,6 +32,7 @@
     "aws-amplify": "6.11.0",
     "aws-sdk": "^2.1692.0",
     "axios": "^1.7.9",
+    "clsx": "^2.1.1",
     "core-js": "^3.38.1",
     "fabric": "^6.5.4",
     "font-awesome": "^4.7.0",
@@ -44,6 +45,7 @@
     "lottie-web": "^5.12.2",
     "lucide-react": "^0.477.0",
     "md5": "^2.3.0",
+    "motion": "^12.6.5",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-datepicker": "^8.0.0",
@@ -61,6 +63,7 @@
     "styled-jsx": "^5.1.6",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.6.13",
+    "tailwind-merge": "^3.2.0",
     "tailwindcss": "^3.4.4",
     "three": "^0.165.0",
     "uuid": "^11.1.0"

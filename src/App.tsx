@@ -37,6 +37,8 @@ import MetadataEditor from "./components/BrowseCatalogue/MetadataEditor.tsx";
 import TermsAndConditions from "./components/LandingPage/terms_and_conditions.tsx";
 import PrivacyNotice from "./components/LandingPage/privacy_notice.tsx";
 import Landing from "./landingNew/main.tsx";
+import TeamComponent from "./landingNew/KinMitraTeam.tsx";
+
 const router = createBrowserRouter([
   { path: "/", element: <Landing /> },
   { path: "/login", element: <Login /> },
@@ -65,6 +67,12 @@ const router = createBrowserRouter([
       <ProtectedRoute>
         <Modes />
       </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/kinmitra_team",
+    element: (
+        <TeamComponent />
     ),
   },
   {
