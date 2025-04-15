@@ -10,6 +10,10 @@ import { Dialog } from "@headlessui/react";
 import ImageMaskingPopup, { ImageMaskingPopupHandle } from '../../MaskImage';
 import { Img_Var_Base } from '../../../constantsAWS';
 import { IMAGE_GENERATOR_LEONARDO_NEW } from '../../../constantsAWS';
+import Navbar from '../../../landingNew/navbar';
+import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import logo from '../../../assets/image.png';
 
 const ImgVar: React.FC = () => {
   const [isUploadVisible, setIsUploadVisible] = useState(false);
@@ -109,7 +113,7 @@ const ImgVar: React.FC = () => {
   }, []);
 
   const imageToDownload = generatedImageUrl;
-
+  const demoSectionRef = useRef<HTMLDivElement>(null);
   const sessionId = localStorage.getItem('sessionId');
 
   const base_url = Img_Var_Base;
@@ -243,6 +247,38 @@ const ImgVar: React.FC = () => {
       }
     }
   };
+
+  const features = [
+    {
+      title: 'Set Generator',
+      imgSrc:
+        'https://oaidalleapiprodscus.blob.core.windows.net/private/org-LmQ09WWGIGwOeeA4ArnRw0x5/user-uJPET5fjNenSso8wCETWVNOp/img-Wr4BkNBkryvh3eZRcIs2g0uT.png?st=2025-04-15T15%3A14%3A16Z&se=2025-04-15T17%3A14%3A16Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=cc612491-d948-4d2e-9821-2683df3719f5&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-15T04%3A51%3A42Z&ske=2025-04-16T04%3A51%3A42Z&sks=b&skv=2024-08-04&sig=3wz8jJNpCoK5WYEyGsG6AshmuDOddVrwnUbrwGqz0Xg%3D',
+      alt: 'Jewelry set on a wooden plate',
+      description: 'Effortlessly create jewelry sets, optimized for your needs with flexibility.',
+    },
+    {
+      title: 'Sketch To Design',
+      imgSrc:
+        'https://oaidalleapiprodscus.blob.core.windows.net/private/org-LmQ09WWGIGwOeeA4ArnRw0x5/user-uJPET5fjNenSso8wCETWVNOp/img-DO6Gf1b5lWsKrViKmED6yJIN.png?st=2025-04-15T15%3A14%3A18Z&se=2025-04-15T17%3A14%3A18Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=cc612491-d948-4d2e-9821-2683df3719f5&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-15T05%3A11%3A19Z&ske=2025-04-16T05%3A11%3A19Z&sks=b&skv=2024-08-04&sig=%2BI3EEQ7YVqy3nEOc5fDOXJmsuJdQOm1ejNBa1k7%2BwtA%3D',
+      alt: 'Notebook with a sketch of a diamond and a pencil',
+      description: 'Effortlessly transform your rough sketches to exquisite jewelry designs.',
+    },
+    {
+      title: 'Outfit Matching Jewelry',
+      imgSrc:
+        'https://oaidalleapiprodscus.blob.core.windows.net/private/org-LmQ09WWGIGwOeeA4ArnRw0x5/user-uJPET5fjNenSso8wCETWVNOp/img-uzycTvxyBgMpJGZ6LU3tZxuK.png?st=2025-04-15T15%3A14%3A22Z&se=2025-04-15T17%3A14%3A22Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=cc612491-d948-4d2e-9821-2683df3719f5&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-15T05%3A29%3A14Z&ske=2025-04-16T05%3A29%3A14Z&sks=b&skv=2024-08-04&sig=%2BPBlnGNxW0%2BkJq2RyLoSHTcXXADFxxmJnnTxBMFiJDg%3D',
+      alt: 'Golden picture frame',
+      description: 'Perfectly match your jewelry & accessories to the outfit to impress everyone.',
+    },
+    {
+      title: 'Astrology Jewelry',
+      imgSrc:
+        'https://oaidalleapiprodscus.blob.core.windows.net/private/org-LmQ09WWGIGwOeeA4ArnRw0x5/user-uJPET5fjNenSso8wCETWVNOp/img-GUXsiF7wgoK5PgefEw1pm3i6.png?st=2025-04-15T15%3A14%3A21Z&se=2025-04-15T17%3A14%3A21Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=cc612491-d948-4d2e-9821-2683df3719f5&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-15T05%3A16%3A48Z&ske=2025-04-16T05%3A16%3A48Z&sks=b&skv=2024-08-04&sig=mHdqsZpO9fPAd3wysrIMGXwTovO8HQ8reDBJRo76Cnw%3D',
+      alt: 'Astrology chart with a glowing center',
+      description: 'Find your perfect astrology jewelry with personalized astrology guidance.',
+    },
+  ];
+
   const handleNext = async () => {
     setIsProcessing(true);
     if (!selectedModification) {
@@ -325,7 +361,7 @@ const ImgVar: React.FC = () => {
 
     const payload = {
       CognitoUserID: cognitoUserId,
-      ImageId: cognitoUserId, 
+      ImageId: cognitoUserId,
       S3Links: imageUrls,
     };
 
@@ -365,7 +401,7 @@ const ImgVar: React.FC = () => {
   return (
     <>
       {showComponent ? (
-        <div className="flex-1 min-h-screen pb-[15vh] relative">
+        <div className="flex flex-col min-h-screen">
           {/* Loading Overlay */}
           {isLoading && (
             <div className="fixed inset-0 flex items-center justify-center bg-gray-100 bg-opacity-70 z-50">
@@ -376,13 +412,11 @@ const ImgVar: React.FC = () => {
               />
             </div>
           )}
-          {/* White overlay on the background image */}
-          <div
-            className="absolute top-0 left-0 right-0 bottom-0 bg-cover bg-bottom opacity-70 z-[-100]"
-            style={{
-              backgroundImage: "url('https://img.freepik.com/free-vector/gradient-golden-linear-background_23-2148957745.jpg?t=st=1730912970~exp=1730916570~hmac=2214eb1073666d65e11ff89c47d76300904bf1001e6128bf610138ef42d5e872&w=900')",
-            }}
-          ></div>
+
+          <Navbar onContactClick={() => {
+            demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+          }} />
+
           <div className="absolute top-0 left-0 right-0 bottom-0 bg-white opacity-60 z-[-90]"></div>
           {/* Header as in Code 1 */}
           <div className="flex items-center justify-center text-xl p-5 text-[#585858] relative z-10 w-full">
@@ -398,19 +432,18 @@ const ImgVar: React.FC = () => {
             </header>
           </div>
           {/* Main Content */}
-          <main className="flex flex-col items-center flex-grow p-6 relative z-10">
+          <main className="w-[80%] mx-[10%] bg-[#f5f3f2] flex flex-col items-center flex-grow p-6 relative z-10">
             <div className="flex flex-wrap gap-6 justify-center items-center w-full">
               <div
-                className="h-[250px] w-[250px] md:h-[350px] md:w-[350px] border-2 flex items-center justify-center cursor-pointer p-4"
+                className="h-[250px] w-[250px] md:h-[350px] md:w-[350px] border-2 border-[#e0ae2a] flex items-center justify-center cursor-pointer p-4"
                 onClick={() => {
                   if (!selectedImage) {
-                    setIsUploadVisible(true); // Show upload image modal if no image or after image generation
-                    handleUploadNewImage(); // Reset states to start fresh
+                    setIsUploadVisible(true);
+                    handleUploadNewImage();
                   }
                 }}
               >
                 {selectedImage ? (
-
                   <img
                     src={selectedImage}
                     alt="Selected"
@@ -420,8 +453,9 @@ const ImgVar: React.FC = () => {
                   <span className="text-sm text-gray-600">Click to upload</span>
                 )}
               </div>
+
               <div
-                className="relative h-[250px] w-[250px] md:h-[350px] md:w-[350px] border-2 flex items-center justify-center p-4 overflow-hidden cursor-pointer"
+                className="relative h-[250px] w-[250px] md:h-[350px] md:w-[350px] border-2 border-[#e0ae2a] flex items-center justify-center p-4 overflow-hidden cursor-pointer"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 onClick={() => generatedImageUrl && setIsOpen(true)}
@@ -448,7 +482,6 @@ const ImgVar: React.FC = () => {
                   <span className="text-sm text-gray-600">Generated Image</span>
                 )}
               </div>
-
               {generatedImageUrl && (
                 <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
                   <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center">
@@ -490,7 +523,7 @@ const ImgVar: React.FC = () => {
             </div>
 
             <div>
-              <button onClick={handleShowMaskingPopup} className="mt-4 p-2 bg-blue-500 text-white rounded">
+              <button onClick={handleShowMaskingPopup} className="mt-4 p-2 bg-[#e0ae2a] text-white rounded">
                 Mask Image
               </button>
             </div>
@@ -506,7 +539,7 @@ const ImgVar: React.FC = () => {
             {selectedImage && !isProcessing && (
               <button
                 onClick={handleProcessImage}
-                className="mt-6 px-8 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
+                className="mt-6 px-8 py-3 bg-[#e0ae2a] text-white rounded-lg shadow hover:bg-[#d49b1f] transition"
                 disabled={isProcessing}
               >
                 Process Image
@@ -545,18 +578,17 @@ const ImgVar: React.FC = () => {
                   onClick={() => {
                     const paramToSend = selectedParam === "Other" ? customParam : selectedParam;
                     if (paramToSend) {
-                      fetchModifications(paramToSend); // Send the correct value
+                      fetchModifications(paramToSend);
                     } else {
                       alert("Please select or enter a parameter to modify.");
                     }
                   }}
-                  className={`px-6 py-2 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-yellow-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 transition ${(!selectedParam && !customParam) || isProcessing ? "opacity-50 cursor-not-allowed" : ""
+                  className={`px-6 py-2 bg-[#e0ae2a] text-white rounded-lg shadow-md hover:bg-[#d49b1f] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 transition ${(!selectedParam && !customParam) || isProcessing ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                   disabled={(!selectedParam && !customParam) || isProcessing}
                 >
                   Go
                 </button>
-
               </div>
             )}
 
@@ -612,7 +644,7 @@ const ImgVar: React.FC = () => {
                   {/* 'Next' Button */}
                   <button
                     onClick={handleNext}
-                    className={`px-8 py-3 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-400 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 transition ${!selectedModification || isProcessing ? 'opacity-50 cursor-not-allowed' : ''
+                    className={`px-8 py-3 bg-[#e0ae2a] text-white rounded-lg shadow-md hover:bg-[#d49b1f] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 transition ${!selectedModification || isProcessing ? 'opacity-50 cursor-not-allowed' : ''
                       }`}
                     disabled={!selectedModification || isProcessing}
                   >
@@ -636,6 +668,91 @@ const ImgVar: React.FC = () => {
               onImageSelect={handleImageSelect}
             />
           )}
+          <div className='h-16'></div>
+          <div className="w-full bg-gray-100 border-t border-b border-gray-300">
+            <div className="py-6 font-custom mx-8">
+              <div className="container mx-auto px-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                  {features.map((feature, index) => (
+                    <div
+                      key={index}
+                      className="bg-white rounded-2xl shadow text-center border border-orange-200 min-h-[350px] flex flex-col justify-between max-w-[80%] mx-auto"
+                    >
+                      <h2 className="text-orange-600 text-lg font-semibold mb-2 bg-orange-100 p-3 rounded-t-2xl">
+                        {feature.title}
+                      </h2>
+                      <div className="flex-grow flex flex-col items-center justify-center px-4">
+                        <img
+                          src={feature.imgSrc}
+                          alt={feature.alt}
+                          width={100}
+                          height={100}
+                          className="mb-3"
+                        />
+                        <p className="text-gray-600 text-base">{feature.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='h-16'></div>
+          <footer className="bg-[#f8f8f8] py-8 text-sm text-gray-600 px-8">
+            <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+              {/* Logo & Tagline */}
+              <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
+                <Link to="/">
+                  <img src={logo} alt="Company Logo" className="mb-4 w-32" />
+                </Link>
+                <p className="text-center md:text-left mb-4 text-2xl font-custom">
+                  Your Style, Our Craftsmanship — Together,
+                  <br />
+                  We Sparkle with Elegance.
+                </p>
+                <div className="flex space-x-4 text-xl">
+                  <a className="text-gray-600 hover:text-gray-800" href="https://www.facebook.com/profile.php?id=61574416178019" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
+                  <a className="text-gray-600 hover:text-gray-800" href="https://twitter.com" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
+                  <a className="text-gray-600 hover:text-gray-800" href="https://instagram.com/kinmitra_com" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
+                  <a className="text-gray-600 hover:text-gray-800" href="https://linkedin.com/company/bgornaments" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
+                  <a className="text-gray-600 hover:text-gray-800" href="https://youtube.com" target="_blank" rel="noopener noreferrer"><FaYoutube /></a>
+                </div>
+              </div>
+
+              {/* Navigation Links */}
+              <div className="flex flex-col md:flex-row md:space-x-16 text-center md:text-left">
+                <div className="mb-6 md:mb-0">
+                  <h3 className="text-gray-800 font-bold mb-4 text-2xl font-custom">Company</h3>
+                  <ul className="space-y-2">
+                    <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Home</Link></li>
+                    <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Our Work</Link></li>
+                    <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/catalog">AI Design</Link></li>
+                    <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Pricing</Link></li>
+                    <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/Contact-Us">Contact Us</Link></li>
+                    <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/kinmitra_team">Our Team</Link></li>
+                  </ul>
+                </div>
+
+                {/* Contact Info */}
+                <div>
+                  <h3 className="text-gray-800 font-bold mb-4 text-2xl font-custom">Support</h3>
+                  <ul className="space-y-2">
+                    <li className="text-gray-600 text-base">+91 (835) 608-5861</li>
+                    <li className="text-gray-600 text-base">ceo@kinmitra.com</li>
+                  </ul>
+                  <div className="mt-4">
+                    <a href="/privacy-Notice" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-800 text-base block">Privacy Notice</a>
+                    <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-800 text-base block mt-1">Terms & Conditions</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Bottom copyright */}
+            <div className="border-t border-gray-200 mt-8 pt-4 text-center text-xs text-gray-500">
+              Copyright © 2025 KinMitra. All rights reserved. <br /> Unauthorized reproduction or distribution is prohibited.
+              KinMitra is a registered trademark of Bharat Gold Ornaments Pvt. Ltd.
+            </div>
+          </footer>
         </div>
       ) : (
         <GlassComponent />
