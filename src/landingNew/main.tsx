@@ -7,7 +7,6 @@ import certImage from "/src/assets/cert.png";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 import { Lightbulb, Target, Puzzle, Globe, Smartphone, Clock } from "lucide-react";
 import { FaComments, FaGem, FaRandom, FaTshirt, FaPencilAlt, FaStar } from "react-icons/fa";
-// import { useAuthenticator } from "@aws-amplify/ui-react";
 import colLogo1 from "/src/assets/colLogo1.png";
 import colLogo2 from "/src/assets/colLogo2.png";
 import colLogo3 from "/src/assets/colLogo3.png";
@@ -16,26 +15,17 @@ import colLogo5 from "/src/assets/colLogo5.png";
 import Navbar from './navbar';
 
 gsap.registerPlugin(ScrollTrigger);
-
+// Removed from the top level and will be added inside the component
 const FeatureCircle = ({ icon, text }: { icon: JSX.Element; text: string }) => (
   <div className="flex flex-col items-center text-center w-24">
-    {/* <div className="flex flex-col items-center text-center text-sm w-24">*/}
     <div className="text-yellow-500 mb-1">{icon}</div>
     <p className="text-black text-base text-lg">{text}</p>
   </div>
 );
 
-
-// const Feature = ({ icon, text }: FeatureProps) => (
-//   <div className="flex items-center justify-center gap-2 px-4 py-2 bg-[#f9f3e7] rounded-md text-gray-800 text-lg font-medium shadow-sm">
-//     <span className="text-[#e0ae2a] w-5 h-5">{icon}</span>
-//     {text}
-//   </div>
-// );
-
 const LandingPage: React.FC = () => {
-  // const { user, signOut } = useAuthenticator((context) => [context.user]);
   const introRef = useRef<HTMLDivElement>(null);
+  const demoSectionRef = useRef<HTMLDivElement>(null); // Moved inside the component
   const cardsRef = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
@@ -132,7 +122,9 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Header */}
-      <Navbar/>
+      <Navbar onContactClick={() => {
+        demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }} />
 
       {/* Hero Section */}
       <section className="relative h-[100vh] overflow-hidden text-white text-center flex flex-col justify-center items-center">
@@ -173,67 +165,6 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* <section
-        className="relative bg-cover bg-center text-white pt-32 pb-32 text-lg"
-        style={{ backgroundImage: `url(${homepageimg1})` }}
-      >
-        <div
-          className="absolute inset-0 z-10 pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle at center, rgba(0,0,0,0) 30%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.9) 90%)',
-          }}
-        />
-        <div className="relative z-20 text-white text-center flex flex-col justify-center items-center h-full px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-5xl font-custom">Design Smarter. Create Faster.</h1>
-          <p className="max-w-md text-gray-200 mb-6 text-xl">
-            KinMitra revolutionizes the design journey with intelligent tools that help you ideate, visualize, and refine your creations — all in one place.
-          </p>
-          <div className="space-x-4">
-            <button className="bg-yellow-500 text-white px-5 py-2 rounded text-lg">Try the Design Studio</button>
-            <button className="border border-yellow-500 text-yellow-500 px-5 py-2 rounded text-lg">See Video</button>
-          </div>
-        </div>
-      </section> */}
-
-      {/* Features Section */}
-      {/* <section className="text-center px-4 py-16 bg-white">
-        <h2 className="text-4xl font-semibold text-black mb-4 font-custom">
-          Designed for Jewellery Designers
-        </h2>
-        <p className="text-gray-700 max-w-xl mx-auto mb-10 text-2xl">
-          Say goodbye to guesswork and long hours spent sketching. KinMitra is your AI co-designer — helping you craft stunning jewellery designs fast.
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
-          <Feature icon={<Lightbulb />} text="AI-Driven Creativity" />
-          <Feature icon={<Target />} text="Effortless Personalization" />
-          <Feature icon={<Puzzle />} text="Synthesizable Designs" />
-          <Feature icon={<Globe />} text="Web-based Platform" />
-        </div>
-
-        <div className="mt-4 flex justify-center">
-          <Feature icon={<Smartphone />} text="Smartphone Operatable" />
-        </div>
-      </section> */}
-
-      {/* <section className="text-center px-4 py-20 bg-white">
-        <h2 className="text-4xl font-semibold text-black mb-6 font-custom">
-          Designed for Jewellery Designers
-        </h2>
-        <p className="text-gray-700 max-w-2xl mx-auto mb-12 text-xl">
-          Say goodbye to guesswork and long hours spent sketching. KinMitra is your AI co-designer — helping you craft stunning jewellery designs fast.
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          <Feature icon={<Lightbulb />} text="AI-Driven Creativity" />
-          <Feature icon={<Target />} text="Effortless Personalization" />
-          <Feature icon={<Puzzle />} text="Synthesizable Designs" />
-          <Feature icon={<Globe />} text="Web-based Platform" />
-          <Feature icon={<Smartphone />} text="Mobile Friendly" />
-          <Feature icon={<Clock />} text="Design Trend Innovation" />
-        </div>
-      </section> */}
 
       <section className="py-20 bg-white relative overflow-hidden px-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
@@ -511,7 +442,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Book a Demo Section */}
-      <section className="py-16 px-8">
+      <section ref={demoSectionRef} className="py-16 px-8">
         <div className="max-w-6xl mx-auto border border-#F8F8F8-500 rounded-lg p-1">
           <div className="flex flex-col md:flex-row overflow-hidden">
             {/* Left Panel */}

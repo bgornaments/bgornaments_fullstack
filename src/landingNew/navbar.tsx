@@ -4,7 +4,11 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Menu, X } from 'lucide-react';
 import logo from '/src/assets/image.png';
 
-const Navbar: React.FC = () => {
+type NavbarProps = {
+  onContactClick: () => void;
+};
+
+const Navbar: React.FC<NavbarProps> = ({ onContactClick }) => {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -23,7 +27,7 @@ const Navbar: React.FC = () => {
           <Link to="/" className="text-lg">Home</Link>
           <Link to="/" className="text-lg">Pricing</Link>
           <Link to="/" className="text-lg">FAQs</Link>
-          <Link to="/Contact-Us" className="text-lg">Contact Us</Link>
+          <button onClick={onContactClick} className="text-lg">Contact Us</button>
         </div>
 
         {/* Login/Logout on right */}
@@ -62,7 +66,13 @@ const Navbar: React.FC = () => {
           <Link to="/" className="block text-lg" onClick={() => setMenuOpen(false)}>Home</Link>
           <Link to="/" className="block text-lg" onClick={() => setMenuOpen(false)}>Pricing</Link>
           <Link to="/" className="block text-lg" onClick={() => setMenuOpen(false)}>FAQs</Link>
-          <Link to="/Contact-Us" className="block text-lg" onClick={() => setMenuOpen(false)}>Contact Us</Link>
+          <button onClick={() => {
+            onContactClick();
+            setMenuOpen(false);
+          }} className="block text-lg w-full text-left">
+            Contact Us
+          </button>
+
           {user ? (
             <button
               onClick={() => {
