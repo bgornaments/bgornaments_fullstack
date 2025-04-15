@@ -9,6 +9,7 @@ import Navbar from './navbar';
 import FeaturesSection from './FeaturesSection';
 import HeroSection from './HeroSection'
 import AssociationsAndCertifications from './AssociationsAndCertifications';
+import BookDemoSection from './BookADemo';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -249,40 +250,7 @@ const LandingPage: React.FC = () => {
       <AssociationsAndCertifications/>
 
       {/* Book a Demo Section */}
-      <section ref={demoSectionRef} className="py-16 px-8">
-        <div className="max-w-6xl mx-auto border border-#F8F8F8-500 rounded-lg p-1">
-          <div className="flex flex-col md:flex-row overflow-hidden">
-            {/* Left Panel */}
-            <div className="md:w-1/2 bg-[#F8F8F8] p-6 space-y-4">
-              <h3 className="font-custom text-5xl text-[#e0ae2a] mb-4">Book a Demo</h3>
-              <p className="text-lg text-gray-700 mb-4">Book a free demo to explore features tailored to you. Get expert guidance.</p>
-              <div>
-                <p className='text-lg mt-4 mb-4'>📞 +91 (931) 008-5981</p>
-                <p className='text-lg mt-4 mb-4'>✉️ ceo@kinmitra.com</p>
-                <div className="flex space-x-4 mt-4 text-xl mt-4">
-                  <a className="text-gray-600 hover:text-gray-800" href="https://www.facebook.com/profile.php?id=61574416178019" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
-                  <a className="text-gray-600 hover:text-gray-800" href="https://twitter.com" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
-                  <a className="text-gray-600 hover:text-gray-800" href="https://instagram.com/kinmitra_com" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
-                  <a className="text-gray-600 hover:text-gray-800" href="https://linkedin.com/company/bgornaments" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
-                  <a className="text-gray-600 hover:text-gray-800" href="https://youtube.com" target="_blank" rel="noopener noreferrer"><FaYoutube /></a>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Form Panel */}
-            <div className="md:w-1/2 p-6 bg-white space-y-4">
-              <div className="flex space-x-2">
-                <input type="text" placeholder="First Name" className="w-1/2 border px-3 py-2 text-sm rounded" />
-                <input type="text" placeholder="Last Name" className="w-1/2 border px-3 py-2 text-sm rounded" />
-              </div>
-              <input type="text" placeholder="Phone Number" className="w-full border px-3 py-2 text-sm rounded" />
-              <input type="email" placeholder="Email" className="w-full border px-3 py-2 text-sm rounded" />
-              <textarea placeholder="Write your message..." className="w-full border px-3 py-2 text-sm rounded h-24" />
-              <button className="bg-yellow-500 text-white px-4 py-2 rounded text-base">Send Message</button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <BookDemoSection/>
 
       {/* Newsletter */}
       <section className="py-12 px-8">
