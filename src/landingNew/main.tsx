@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import logo from "/src/assets/image.png";
 import certImage from "/src/assets/cert.png";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
-import { Lightbulb, Target, Puzzle, Globe, Smartphone, Clock } from "lucide-react";
 import { FaComments, FaGem, FaRandom, FaTshirt, FaPencilAlt, FaStar } from "react-icons/fa";
 import colLogo1 from "/src/assets/colLogo1.png";
 import colLogo2 from "/src/assets/colLogo2.png";
@@ -13,15 +12,9 @@ import colLogo3 from "/src/assets/colLogo3.png";
 import colLogo4 from "/src/assets/colLogo4.png";
 import colLogo5 from "/src/assets/colLogo5.png";
 import Navbar from './navbar';
+import FeaturesSection from './FeaturesSection';
 
 gsap.registerPlugin(ScrollTrigger);
-// Removed from the top level and will be added inside the component
-const FeatureCircle = ({ icon, text }: { icon: JSX.Element; text: string }) => (
-  <div className="flex flex-col items-center text-center w-24">
-    <div className="text-yellow-500 mb-1">{icon}</div>
-    <p className="text-black text-base text-lg">{text}</p>
-  </div>
-);
 
 const LandingPage: React.FC = () => {
   const introRef = useRef<HTMLDivElement>(null);
@@ -166,75 +159,10 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="py-20 bg-white relative overflow-hidden px-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
-          {/* Left Column: Text */}
-          <div className="md:w-1/2 text-left">
-            <h2 className="text-5xl font-semibold text-[#e0ae2a] mb-6 font-custom tracking-wide leading-tight ml-16">
-              Designed for Jewellery Designers
-            </h2>
+      {/* Features Section */}
+      <FeaturesSection />
 
-            <p className="text-gray-700 max-w-lg mb-8 text-xl mt-6 text-center md:text-left ml-16">
-              KinMitra is your AI co-designer, helping you craft stunning jewellery designs faster than ever.
-            </p>
-
-            <p className="text-gray-700 max-w-lg mb-0 text-xl text-center md:text-left ml-16">
-              Revolutionize your creative journey with KinMitra's intelligent jewellery design tools to ideate, visualize, and refine your creations — all in one place.
-            </p>
-          </div>
-
-          {/* Right Column: Circular Animation with Logo */}
-          <div className="md:w-1/2 flex justify-end mr-16">
-            <div className="relative w-[500px] h-[500px]">
-              {/* Rotating container */}
-              <div className="absolute inset-0 animate-spin-slow">
-                {/* 6 evenly spaced features */}
-                <div className="absolute top-[-10px] left-1/2 -translate-x-1/2">
-                  <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Lightbulb size={40} />} text="AI-Driven Creativity" />
-                  </div>
-                </div>
-
-                <div className="absolute top-[25%] right-[-5px] -translate-y-1/2">
-                  <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Target size={40} />} text="Effortless Personalization" />
-                  </div>
-                </div>
-
-                <div className="absolute bottom-[25%] right-[-5px] translate-y-1/2">
-                  <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Smartphone size={40} />} text="Mobile Friendly" />
-                  </div>
-                </div>
-
-                <div className="absolute bottom-[-10px] left-1/2 -translate-x-1/2">
-                  <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Globe size={40} />} text="Web Software" />
-                  </div>
-                </div>
-
-                <div className="absolute bottom-[25%] left-[-5px] translate-y-1/2">
-                  <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Puzzle size={40} />} text="Synthesizable Designs" />
-                  </div>
-                </div>
-
-                <div className="absolute top-[25%] left-[-5px] -translate-y-1/2">
-                  <div className="animate-counter-spin">
-                    <FeatureCircle icon={<Clock size={40} />} text="Trend Innovation" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Center Logo */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <img src={logo} alt="KinMitra Logo" className="w-40 h-32 object-contain" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      {/* Spacing */}
       <div className='h-1vh bg-black'></div>
 
       {/* What's Inside Section */}
