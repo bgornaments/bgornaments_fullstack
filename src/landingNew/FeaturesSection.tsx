@@ -36,8 +36,10 @@ const FeaturesSection: React.FC = () => {
   const iconSize = isVerySmallScreen ? 28 : isSmallScreen ? 36 : 40;
   const textSizeClass = isVerySmallScreen ? "text-sm" : isSmallScreen ? "text-base" : "text-lg";
   const featureCircleWidth = isVerySmallScreen ? "w-20" : "w-24";
+
+  // Update the container size for very small screens to reduce the radius
   const circleContainerSize = isVerySmallScreen
-    ? "w-[340px] h-[340px] my-6 mx-auto"
+    ? "w-[280px] h-[280px] my-4 mx-auto"
     : isSmallScreen
       ? "w-[420px] h-[420px] my-8 mx-auto"
       : "w-[500px] h-[500px]";
@@ -45,19 +47,16 @@ const FeaturesSection: React.FC = () => {
   return (
     <section className="py-20 bg-white relative overflow-hidden px-8">
       <div
-        className={`max-w-7xl mx-auto flex ${isSmallScreen ? "flex-col items-center" : "flex-col md:flex-row items-center"
-          }`}
+        className={`max-w-7xl mx-auto flex ${isSmallScreen ? "flex-col items-center" : "flex-col md:flex-row items-center"}`}
       >
         {/* Left Column */}
         <div className={`${isSmallScreen ? "text-center" : "md:w-1/2 text-left"}`}>
           <h2 className={`text-5xl font-semibold text-[#e0ae2a] mb-6 font-custom tracking-wide leading-tight ${isSmallScreen ? "mx-auto" : "lg:ml-16"}`}>
             Designed for Jewellery Designers
           </h2>
-
           <p className={`text-gray-700 max-w-lg mb-8 text-xl mt-6 ${isSmallScreen ? "mx-auto text-center" : "text-center md:text-left lg:ml-16"}`}>
             KinMitra is your AI co-designer, helping you craft stunning jewellery designs faster than ever.
           </p>
-
           <p className={`text-gray-700 max-w-lg mb-0 text-xl ${isSmallScreen ? "mx-auto text-center" : "text-center md:text-left lg:ml-16"}`}>
             Revolutionize your creative journey with KinMitra's intelligent jewellery design tools to ideate, visualize, and refine your creations — all in one place.
           </p>
@@ -77,7 +76,6 @@ const FeaturesSection: React.FC = () => {
                   />
                 </div>
               </div>
-
               <div className="absolute top-[25%] right-[-5px] -translate-y-1/2">
                 <div className="animate-counter-spin">
                   <FeatureCircle
@@ -88,7 +86,6 @@ const FeaturesSection: React.FC = () => {
                   />
                 </div>
               </div>
-
               <div className="absolute bottom-[25%] right-[-5px] translate-y-1/2">
                 <div className="animate-counter-spin">
                   <FeatureCircle
@@ -99,7 +96,6 @@ const FeaturesSection: React.FC = () => {
                   />
                 </div>
               </div>
-
               <div className="absolute bottom-[-10px] left-1/2 -translate-x-1/2">
                 <div className="animate-counter-spin">
                   <FeatureCircle
@@ -110,7 +106,6 @@ const FeaturesSection: React.FC = () => {
                   />
                 </div>
               </div>
-
               <div className="absolute bottom-[25%] left-[-5px] translate-y-1/2">
                 <div className="animate-counter-spin">
                   <FeatureCircle
@@ -121,7 +116,6 @@ const FeaturesSection: React.FC = () => {
                   />
                 </div>
               </div>
-
               <div className="absolute top-[25%] left-[-5px] -translate-y-1/2">
                 <div className="animate-counter-spin">
                   <FeatureCircle
@@ -133,9 +127,12 @@ const FeaturesSection: React.FC = () => {
                 </div>
               </div>
             </div>
-
             <div className="absolute inset-0 flex items-center justify-center">
-              <img src={logo} alt="KinMitra Logo" className="w-36 h-28 object-contain" />
+              <img
+                src={logo}
+                alt="KinMitra Logo"
+                className={`object-contain ${isVerySmallScreen ? "w-20 h-16" : isSmallScreen ? "w-28 h-24" : "w-36 h-28"}`}
+              />
             </div>
           </div>
         </div>
