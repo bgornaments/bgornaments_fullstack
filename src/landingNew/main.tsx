@@ -3,18 +3,12 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import logo from "/src/assets/image.png";
-import certImage from "/src/assets/cert.png";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 import { FaComments, FaGem, FaRandom, FaTshirt, FaPencilAlt, FaStar } from "react-icons/fa";
-import colLogo1 from "/src/assets/colLogo1.png";
-import colLogo2 from "/src/assets/colLogo2.png";
-import colLogo3 from "/src/assets/colLogo3.png";
-import colLogo4 from "/src/assets/colLogo4.png";
-import colLogo5 from "/src/assets/colLogo5.png";
 import Navbar from './navbar';
 import FeaturesSection from './FeaturesSection';
 import HeroSection from './HeroSection'
-import PersonalizedDesignSection from './PersonalizedDesignSection';
+import AssociationsAndCertifications from './AssociationsAndCertifications';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -194,89 +188,65 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Personalized Design Section*/}
-      <PersonalizedDesignSection/>
-
-      {/* Logo Carousel Section */}
-      <section className="bg-[#fefaf2] flex flex-col justify-center items-center mt-10">
-        <h3 className="text-5xl font-custom text-darkGolden mb-6 mt-12">
-          Associations and Certifications
-        </h3>
-
-        <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-200px),transparent_100%)] my-6 md:my-10">
-          <ul
-            ref={(el) => {
-              if (el && el.nextSibling === null) {
-                const clone = el.cloneNode(true) as HTMLUListElement;
-                clone.setAttribute("aria-hidden", "true");
-                el.insertAdjacentElement("afterend", clone);
-              }
-            }}
-            className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
-          >
-            <li>
-              <img
-                src={colLogo1}
-                alt="Logo 1"
-                className="w-[20vh] md:w-[15vh] xl:w-[24vh]"
-              />
-            </li>
-            <li>
-              <img
-                src={colLogo2}
-                alt="Logo 2"
-                className="w-[20vh] md:w-[15vh] xl:w-[24vh]"
-              />
-            </li>
-            <li>
-              <img
-                src={colLogo3}
-                alt="Logo 3"
-                className="w-[20vh] md:w-[15vh] xl:w-[24vh]"
-              />
-            </li>
-            <li>
-              <img
-                src={colLogo4}
-                alt="Logo 4"
-                className="w-[20vh] md:w-[15vh] xl:w-[24vh]"
-              />
-            </li>
-            <li>
-              <img
-                src={colLogo5}
-                alt="Logo 5"
-                className="w-[20vh] md:w-[15vh] xl:w-[24vh]"
-              />
-            </li>
-          </ul>
-        </div>
-      </section>
-      {/* Certificate Section */}
-      <section className="bg-[#FFFBF6] py-24">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between space-y-8 md:space-y-0">
-          <div className="md:w-1/2 px-8">
-            <h2 className="text-5xl font-custom text-darkGolden mb-6">Proudly Recognized by the Government of India</h2>
-            <p className="text-xl text-gray-700 mb-6 text">
-              We are proud to be officially recognized by the Government of India as an innovative brand, reflecting our commitment to preserving culture and driving industry progress.
-              This recognition underscores our dedication to innovation and impact.
-            </p>
-            <a
-              href="https://recognition-be.startupindia.gov.in/s3/download/document/RECOGNITION_CERTIFICATE/c9c3cdf7-e66a-431e-8444-f8335f384985.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <button className="bg-yellow-500 text-white px-5 py-2 rounded text-lg">View Certificate</button>
-            </a>
-          </div>
-          <div className="md:w-1/2 px-8">
+      <section className="text-center py-12 font-serif">
+        <h2 className="font-bold mb-12 text-[#e0ae2a] font-custom text-5xl">
+          Personalised Design Made Easy
+        </h2>
+        <div className="flex flex-col md:flex-row justify-center items-center space-y-12 md:space-y-0 md:space-x-12 px-4">
+          {/* Card 1 */}
+          <div className="flex flex-col items-center max-w-xs">
             <img
-              src={certImage}
-              alt="Certificate"
-              className="rounded shadow"
+              src="https://storage.googleapis.com/a1aa/image/eVXiQw98MZad6YcOtEjXYGNR3T6xQg3ko7c6mGL2P6c.jpg"
+              alt="Custom Designs"
+              width={100}
+              height={100}
+              className="mb-4 rounded"
             />
+            <h3 className="text-xl font-semibold mb-2 text-gray-900">
+              Custom Designs Just for You.
+            </h3>
+            <p className="text-gray-600">
+              Leverage AI to create personalized jewellery designs tailored to your unique style. Answer a few questions and let AI do the rest.
+            </p>
+          </div>
+
+          {/* Card 2 */}
+          <div className="flex flex-col items-center max-w-xs">
+            <img
+              src="https://storage.googleapis.com/a1aa/image/ShklPBgaQqD95r8-XiXf9_HLKSufnszVLGBwkklUlg8.jpg"
+              alt="Interactive Design"
+              width={100}
+              height={100}
+              className="mb-4 rounded"
+            />
+            <h3 className="text-xl font-semibold mb-2 text-gray-900">
+              Interactive Design Process.
+            </h3>
+            <p className="text-gray-600">
+              Share your preferences by answering a few simple questions, and our AI will generate initial jewellery design concepts for you.
+            </p>
+          </div>
+
+          {/* Card 3 */}
+          <div className="flex flex-col items-center max-w-xs">
+            <img
+              src="https://storage.googleapis.com/a1aa/image/0ZmeRP-t3G7iUN4BMUkj3ZYJIN2cv3xlxfVvu4e6lWI.jpg"
+              alt="Tailored Designs"
+              width={100}
+              height={100}
+              className="mb-4 rounded"
+            />
+            <h3 className="text-xl font-semibold mb-2 text-gray-900">
+              Tailored to Your Taste.
+            </h3>
+            <p className="text-gray-600">
+              Our AI will ask additional questions to refine the designs, ensuring the final pieces match your unique style and preferences.
+            </p>
           </div>
         </div>
       </section>
+
+      <AssociationsAndCertifications/>
 
       {/* Book a Demo Section */}
       <section ref={demoSectionRef} className="py-16 px-8">
