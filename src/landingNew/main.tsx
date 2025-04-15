@@ -7,12 +7,13 @@ import certImage from "/src/assets/cert.png";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 import { Lightbulb, Target, Puzzle, Globe, Smartphone, Clock } from "lucide-react";
 import { FaComments, FaGem, FaRandom, FaTshirt, FaPencilAlt, FaStar } from "react-icons/fa";
-import { useAuthenticator } from "@aws-amplify/ui-react";
+// import { useAuthenticator } from "@aws-amplify/ui-react";
 import colLogo1 from "/src/assets/colLogo1.png";
 import colLogo2 from "/src/assets/colLogo2.png";
 import colLogo3 from "/src/assets/colLogo3.png";
 import colLogo4 from "/src/assets/colLogo4.png";
 import colLogo5 from "/src/assets/colLogo5.png";
+import Navbar from './navbar';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,7 +34,7 @@ const FeatureCircle = ({ icon, text }: { icon: JSX.Element; text: string }) => (
 // );
 
 const LandingPage: React.FC = () => {
-  const { user, signOut } = useAuthenticator((context) => [context.user]);
+  // const { user, signOut } = useAuthenticator((context) => [context.user]);
   const introRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
 
@@ -131,33 +132,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Header */}
-      <header className="flex justify-between items-center py-6 border-b-2 border-gray-200 text-xl">
-        <div className="flex items-center space-x-2 pl-8">
-          <Link to="/">
-            <img src={logo} alt="Logo" className="w-40" />
-          </Link>
-        </div>
-        <nav className="flex space-x-6 text-xl">
-          <Link to="/" className='text-lg'>Home</Link>
-          <Link to="/" className='text-lg'>Pricing</Link>
-          <Link to="/" className='text-lg'>FAQs</Link>
-          <Link to="/Contact-Us" className='text-lg'>Contact Us</Link>
-        </nav>
-        {user ? (
-          <button
-            onClick={signOut}
-            className="border border-yellow-500 text-yellow-500 px-4 py-1 rounded text-lg mr-8"
-          >
-            Log Out
-          </button>
-        ) : (
-          <Link to="/login">
-            <button className="border border-yellow-500 text-yellow-500 px-4 py-1 rounded text-lg mr-8">
-              Log In
-            </button>
-          </Link>
-        )}
-      </header>
+      <Navbar/>
 
       {/* Hero Section */}
       <section className="relative h-[100vh] overflow-hidden text-white text-center flex flex-col justify-center items-center">
