@@ -2,7 +2,7 @@ import React from 'react';
 
 const PersonalizedDesignSection: React.FC = () => {
   return (
-    <section className="bg-[#fefaf2] text-center py-12 font-serif">
+    <section className="text-center py-12 font-serif">
       <h2 className="text-4xl font-bold mb-12 text-[#e0ae2a] font-custom text-5xl">
         Personalised Design Made Easy
       </h2>
