@@ -7,7 +7,7 @@ import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 're
 import { FaComments, FaGem, FaRandom, FaTshirt, FaPencilAlt, FaStar } from "react-icons/fa";
 import Navbar from './navbar';
 import FeaturesSection from './FeaturesSection';
-import HeroSection from './HeroSection'
+import HeroSection from './HeroSection';
 import AssociationsAndCertifications from './AssociationsAndCertifications';
 import BookDemoSection from './BookADemo';
 
@@ -15,7 +15,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const LandingPage: React.FC = () => {
   const introRef = useRef<HTMLDivElement>(null);
-  const demoSectionRef = useRef<HTMLDivElement>(null); // Moved inside the component
+  const demoSectionRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
@@ -64,19 +64,34 @@ const LandingPage: React.FC = () => {
           ease: "Elastic.easeOut",
           scrollTrigger: {
             trigger: card,
-            start: "top 80%", // Animation starts when card's top is 80% from the top of the viewport
+            start: "top 80%",
             toggleActions: "play reverse play reverse",
           },
-          delay: index * 0.2, // Stagger each card's animation
+          delay: index * 0.2,
         }
       );
     });
 
-    // Cleanup ScrollTriggers on component unmount
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
+
+  // Improved scroll to demo section function
+  const scrollToDemoSection = () => {
+    // Add a small delay to ensure the ref is properly attached
+    setTimeout(() => {
+      if (demoSectionRef.current) {
+        const yOffset = -100; // Offset to account for fixed header
+        const y = demoSectionRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        
+        window.scrollTo({
+          top: y,
+          behavior: 'smooth'
+        });
+      }
+    }, 100);
+  };
 
   return (
     <div className="px-0 font-custom">
@@ -112,12 +127,10 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Header */}
-      <Navbar onContactClick={() => {
-        demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }} />
+      <Navbar onContactClick={scrollToDemoSection} />
 
       {/* Hero Section */}
-      <HeroSection/>
+      <HeroSection />
       
       {/* Features Section */}
       <FeaturesSection />
@@ -188,7 +201,7 @@ const LandingPage: React.FC = () => {
         <p className="text-center text-gray-600 mt-10 text-xl">And many more Premium Features!</p>
       </section>
 
-      {/* Personalized Design Section*/}
+      {/* Personalized Design Section */}
       <section className="text-center py-12 font-serif">
         <h2 className="font-bold mb-12 text-[#e0ae2a] font-custom text-5xl">
           Personalised Design Made Easy
@@ -247,10 +260,12 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      <AssociationsAndCertifications/>
+      <AssociationsAndCertifications />
 
-      {/* Book a Demo Section */}
-      <BookDemoSection/>
+      {/* Book a Demo Section with ID for direct linking */}
+      <div id="book-demo-section" ref={demoSectionRef}>
+        <BookDemoSection />
+      </div>
 
       {/* Newsletter */}
       <section className="py-12 px-8">
@@ -272,7 +287,6 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
-
 
       {/* Footer */}
       <footer className="bg-[#f8f8f8] py-8 text-sm text-gray-600 px-8">

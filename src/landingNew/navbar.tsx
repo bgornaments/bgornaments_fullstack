@@ -12,6 +12,11 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick }) => {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const handleContactClick = () => {
+    setMenuOpen(false); // Close menu if open
+    onContactClick(); // Execute the passed function
+  };
+
   return (
     <header className="w-full border-b-2 border-gray-200 px-4 py-4 md:py-6 text-xl relative">
       <div className="flex justify-between items-center relative">
@@ -27,7 +32,7 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick }) => {
           <Link to="/" className="text-lg">Home</Link>
           <Link to="/" className="text-lg">Pricing</Link>
           <Link to="/" className="text-lg">FAQs</Link>
-          <button onClick={onContactClick} className="text-lg">Contact Us</button>
+          <button onClick={handleContactClick} className="text-lg">Contact Us</button>
         </div>
 
         {/* Login/Logout on right */}
@@ -66,10 +71,7 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick }) => {
           <Link to="/" className="block text-lg" onClick={() => setMenuOpen(false)}>Home</Link>
           <Link to="/" className="block text-lg" onClick={() => setMenuOpen(false)}>Pricing</Link>
           <Link to="/" className="block text-lg" onClick={() => setMenuOpen(false)}>FAQs</Link>
-          <button onClick={() => {
-            onContactClick();
-            setMenuOpen(false);
-          }} className="block text-lg w-full text-left">
+          <button onClick={handleContactClick} className="block text-lg w-full text-left">
             Contact Us
           </button>
 
