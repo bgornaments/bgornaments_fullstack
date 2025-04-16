@@ -31,9 +31,9 @@ const HeroSection: React.FC = () => {
         }}
       />
       <div className="relative z-20 px-4">
-        <h1 className="text-5xl font-bold mb-6 font-custom">Design Smarter. Create Faster.</h1>
-        <p className="max-w-md mx-auto text-gray-200 text-xl mb-6">
-          KinMitra revolutionizes the design journey with intelligent tools that help you ideate, visualize, and refine your creations — all in one place.
+        <h1 className="text-6xl font-bold mb-6 font-custom">Design Smarter. Create Faster.</h1>
+        <p className="max-w mx-auto text-gray-200 text-xl mb-10">
+          The AI-powered design studio for modern jewelry designers.
         </p>
         <div className={`${isTinyScreen ? "flex flex-col items-center gap-2" : "space-x-4"}`}>
           <Link to="/modes">

@@ -75,9 +75,9 @@ const BookDemoSection: React.FC = () => {
                     {/* Left Panel */}
                     <div className="md:w-1/2 bg-[#F8F8F8] p-6 space-y-4">
                         <h3 className="font-custom text-5xl text-[#e0ae2a] mb-4">Book a Demo</h3>
-                        <p className="text-lg text-gray-700 mb-4">Book a free demo to explore features tailored to you. Get expert guidance.</p>
+                        <p className="text-lg text-gray-700 mb-4">Book a free demo to explore features tailored to you. <br />Get expert guidance.</p>
                         <div>
-                            <p className='text-lg mt-4 mb-4'>📞 +91 (931) 008-5981</p>
+                            <p className='text-lg mt-4 mb-4'>📞 +91 (835) 608-5861</p>
                             <p className='text-lg mt-4 mb-4'>✉️ ceo@kinmitra.com</p>
                             <div className="flex space-x-4 mt-4 text-xl mt-4">
                                 <a className="text-gray-600 hover:text-gray-800" href="https://www.facebook.com/profile.php?id=61574416178019" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
@@ -175,7 +175,7 @@ const BookDemoSection: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </section>
+        </section >
     );
 };
 

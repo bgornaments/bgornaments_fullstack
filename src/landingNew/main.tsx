@@ -84,7 +84,7 @@ const LandingPage: React.FC = () => {
       if (demoSectionRef.current) {
         const yOffset = -100; // Offset to account for fixed header
         const y = demoSectionRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        
+
         window.scrollTo({
           top: y,
           behavior: 'smooth'
@@ -131,7 +131,7 @@ const LandingPage: React.FC = () => {
 
       {/* Hero Section */}
       <HeroSection />
-      
+
       {/* Features Section */}
       <FeaturesSection />
 
@@ -142,20 +142,20 @@ const LandingPage: React.FC = () => {
       <section className="bg-[#fdf7f2] py-16 px-6 flex flex-col items-center">
         <h1 className="font-bold mb-4 text-[#e0ae2a] text-center font-custom text-5xl ">What's Inside KinMitra</h1>
         <p className="text-center text-gray-600 mb-12 max-w-6xl text-xl">
-          Discover our powerful AI-powered tools designed to revolutionize your jewelry design experience
+          Discover our powerful AI-powered tools designed to revolutionize your jewellery design experience
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
           {[
             {
               icon: <FaComments className="text-[#e0ae2a]-500" />,
               title: "Intelligent Design Chat",
-              desc: "Engage with our AI assistant to bring your jewelry ideas to life through natural conversation",
-              bg: "bg-[#e0ae2a]-100",
+              desc: "Engage with our AI assistant to bring jewellery ideas to life through natural conversation",
+              bg: "bg-orange-100",
             },
             {
               icon: <FaGem className="text-blue-500" />,
-              title: "Jewelry Set Generation",
-              desc: "Create complete, coordinated jewelry sets with our advanced AI generation system",
+              title: "Jewellery Set Generation",
+              desc: "Create complete, coordinated jewellery sets with our advanced AI generation system",
               bg: "bg-blue-100",
             },
             {
@@ -166,14 +166,14 @@ const LandingPage: React.FC = () => {
             },
             {
               icon: <FaTshirt className="text-red-500" />,
-              title: "Outfit Matching Suggestions",
-              desc: "Get perfect jewelry recommendations that complement your outfits",
+              title: "Outfit Matching Jewellery",
+              desc: "Get perfect jewellery recommendations that complement your outfits",
               bg: "bg-red-100",
             },
             {
               icon: <FaPencilAlt className="text-yellow-500" />,
               title: "Sketch-to-Design Conversion",
-              desc: "Transform your hand-drawn sketches into professional jewelry designs instantly",
+              desc: "Transform your hand-drawn sketches into professional jewellery designs instantly",
               bg: "bg-yellow-100",
             },
             {
@@ -198,7 +198,7 @@ const LandingPage: React.FC = () => {
             </div>
           ))}
         </div>
-        <p className="text-center text-gray-600 mt-10 text-xl">And many more Premium Features!</p>
+        <p className="text-center text-gray-600 mt-10 text-xl">And many more premium features !!!</p>
       </section>
 
       {/* Personalized Design Section */}
@@ -272,7 +272,7 @@ const LandingPage: React.FC = () => {
         <div className="max-w-6xl mx-auto flex justify-center">
           <div className="bg-[#FEFAF5] rounded-tl-[50px] rounded-br-lg p-8 w-full">
             <h4 className="text-2xl font-custom mb-6 text-center">
-              Subscribe to get the latest jewelry trends, style tips, and exclusive offers from KinMitra.
+              Subscribe to get the latest jewellery trends, style tips, and exclusive offers from KinMitra.
             </h4>
             <div className="flex flex-col sm:flex-row justify-center space-x-4 w-[90%] mx-auto">
               <input
@@ -296,10 +296,10 @@ const LandingPage: React.FC = () => {
             <Link to="/">
               <img src={logo} alt="Company Logo" className="mb-4 w-32" />
             </Link>
-            <p className="text-center md:text-left mb-4 text-2xl font-custom">
-              Your Style, Our Craftsmanship — Together,
+            <p className="text-center md:text-left mb-4 text-base">
+              Design Smarter. Create Faster.
               <br />
-              We Sparkle with Elegance.
+              Join the jewellery design revolution.
             </p>
             <div className="flex space-x-4 text-xl">
               <a className="text-gray-600 hover:text-gray-800" href="https://www.facebook.com/profile.php?id=61574416178019" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>

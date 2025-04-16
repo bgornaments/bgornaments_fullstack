@@ -11,7 +11,7 @@ const AssociationsAndCertificate: React.FC = () => {
     <section>
       {/* Combined Logo Carousel */}
       <div className="bg-[#fefaf2] flex flex-col justify-center items-center mt-10 px-4">
-        <h3 className="text-3xl sm:text-4xl md:text-5xl font-custom text-darkGolden mb-6 mt-12 text-center">
+        <h3 className="text-4xl sm:text-4xl md:text-5xl font-custom text-[#e0ae2a] mb-6 mt-12 text-center">
           Associations and Certifications
         </h3>
 
@@ -45,7 +45,7 @@ const AssociationsAndCertificate: React.FC = () => {
       <div className="bg-[#FFFBF6] py-20 px-4">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between space-y-10 md:space-y-0">
           <div className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left px-4 sm:px-8">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-custom text-darkGolden mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-custom text-[#e0ae2a] mb-4">
               Proudly Recognized by the Government of India
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-6">

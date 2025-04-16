@@ -29,10 +29,10 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick }) => {
 
         {/* Centered Menu Links on large screens */}
         <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-6 items-center">
-          <Link to="/" className="text-lg">Home</Link>
-          <Link to="/" className="text-lg">Pricing</Link>
-          <Link to="/" className="text-lg">FAQs</Link>
-          <button onClick={handleContactClick} className="text-lg">Contact Us</button>
+          <Link to="/" className="text-xl">Home</Link>
+          <Link to="/" className="text-xl">Pricing</Link>
+          <Link to="/" className="text-xl">FAQs</Link>
+          <button onClick={handleContactClick} className="text-xl">Contact Us</button>
         </div>
 
         {/* Login/Logout on right */}
