@@ -14,6 +14,10 @@ import Navbar from '../../../landingNew/navbar';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/image.png';
+import setGen from '../../../assets/set_generator_icon.jpg';
+import s2d from '../../../assets/sketch.png';
+import outfitmatch from '../../../assets/outfit_matching_icon.jpg';
+import astro from '../../../assets/vedic-astrology.png';
 
 const ImgVar: React.FC = () => {
   const [isUploadVisible, setIsUploadVisible] = useState(false);
@@ -252,28 +256,28 @@ const ImgVar: React.FC = () => {
     {
       title: 'Set Generator',
       imgSrc:
-        'https://oaidalleapiprodscus.blob.core.windows.net/private/org-LmQ09WWGIGwOeeA4ArnRw0x5/user-uJPET5fjNenSso8wCETWVNOp/img-Wr4BkNBkryvh3eZRcIs2g0uT.png?st=2025-04-15T15%3A14%3A16Z&se=2025-04-15T17%3A14%3A16Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=cc612491-d948-4d2e-9821-2683df3719f5&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-15T04%3A51%3A42Z&ske=2025-04-16T04%3A51%3A42Z&sks=b&skv=2024-08-04&sig=3wz8jJNpCoK5WYEyGsG6AshmuDOddVrwnUbrwGqz0Xg%3D',
+        setGen,
       alt: 'Jewelry set on a wooden plate',
       description: 'Effortlessly create jewelry sets, optimized for your needs with flexibility.',
     },
     {
       title: 'Sketch To Design',
       imgSrc:
-        'https://oaidalleapiprodscus.blob.core.windows.net/private/org-LmQ09WWGIGwOeeA4ArnRw0x5/user-uJPET5fjNenSso8wCETWVNOp/img-DO6Gf1b5lWsKrViKmED6yJIN.png?st=2025-04-15T15%3A14%3A18Z&se=2025-04-15T17%3A14%3A18Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=cc612491-d948-4d2e-9821-2683df3719f5&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-15T05%3A11%3A19Z&ske=2025-04-16T05%3A11%3A19Z&sks=b&skv=2024-08-04&sig=%2BI3EEQ7YVqy3nEOc5fDOXJmsuJdQOm1ejNBa1k7%2BwtA%3D',
+        s2d,
       alt: 'Notebook with a sketch of a diamond and a pencil',
       description: 'Effortlessly transform your rough sketches to exquisite jewelry designs.',
     },
     {
       title: 'Outfit Matching Jewelry',
       imgSrc:
-        'https://oaidalleapiprodscus.blob.core.windows.net/private/org-LmQ09WWGIGwOeeA4ArnRw0x5/user-uJPET5fjNenSso8wCETWVNOp/img-uzycTvxyBgMpJGZ6LU3tZxuK.png?st=2025-04-15T15%3A14%3A22Z&se=2025-04-15T17%3A14%3A22Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=cc612491-d948-4d2e-9821-2683df3719f5&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-15T05%3A29%3A14Z&ske=2025-04-16T05%3A29%3A14Z&sks=b&skv=2024-08-04&sig=%2BPBlnGNxW0%2BkJq2RyLoSHTcXXADFxxmJnnTxBMFiJDg%3D',
+        outfitmatch,
       alt: 'Golden picture frame',
       description: 'Perfectly match your jewelry & accessories to the outfit to impress everyone.',
     },
     {
       title: 'Astrology Jewelry',
       imgSrc:
-        'https://oaidalleapiprodscus.blob.core.windows.net/private/org-LmQ09WWGIGwOeeA4ArnRw0x5/user-uJPET5fjNenSso8wCETWVNOp/img-GUXsiF7wgoK5PgefEw1pm3i6.png?st=2025-04-15T15%3A14%3A21Z&se=2025-04-15T17%3A14%3A21Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=cc612491-d948-4d2e-9821-2683df3719f5&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-15T05%3A16%3A48Z&ske=2025-04-16T05%3A16%3A48Z&sks=b&skv=2024-08-04&sig=mHdqsZpO9fPAd3wysrIMGXwTovO8HQ8reDBJRo76Cnw%3D',
+        astro,
       alt: 'Astrology chart with a glowing center',
       description: 'Find your perfect astrology jewelry with personalized astrology guidance.',
     },
