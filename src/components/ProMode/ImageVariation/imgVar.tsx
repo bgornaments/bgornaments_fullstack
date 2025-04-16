@@ -418,8 +418,8 @@ const ImgVar: React.FC = () => {
           }} />
 
           <div className="absolute top-0 left-0 right-0 bottom-0 bg-white opacity-60 z-[-90]"></div>
-          {/* Header as in Code 1 */}
-          <div className="flex items-center justify-center text-xl p-5 text-[#585858] relative z-10 w-full">
+          <main className="w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen">
+          <div className="flex items-center justify-center text-xl p-5 text-[#585858] relative w-full">
             <header className="text-center">
               {/* Title */}
               <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
@@ -432,10 +432,9 @@ const ImgVar: React.FC = () => {
             </header>
           </div>
           {/* Main Content */}
-          <main className="w-[80%] mx-[10%] bg-[#f5f3f2] flex flex-col items-center flex-grow p-6 relative z-10">
             <div className="flex flex-wrap gap-6 justify-center items-center w-full">
               <div
-                className="h-[250px] w-[250px] md:h-[350px] md:w-[350px] border-2 border-[#e0ae2a] flex items-center justify-center cursor-pointer p-4"
+                className="h-[250px] w-[250px] md:h-[350px] md:w-[350px] border-4 flex items-center justify-center cursor-pointer p-4"
                 onClick={() => {
                   if (!selectedImage) {
                     setIsUploadVisible(true);
@@ -455,7 +454,7 @@ const ImgVar: React.FC = () => {
               </div>
 
               <div
-                className="relative h-[250px] w-[250px] md:h-[350px] md:w-[350px] border-2 border-[#e0ae2a] flex items-center justify-center p-4 overflow-hidden cursor-pointer"
+                className="relative h-[250px] w-[250px] md:h-[350px] md:w-[350px] border-4 flex items-center justify-center p-4 overflow-hidden cursor-pointer"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 onClick={() => generatedImageUrl && setIsOpen(true)}
@@ -523,7 +522,7 @@ const ImgVar: React.FC = () => {
             </div>
 
             <div>
-              <button onClick={handleShowMaskingPopup} className="mt-4 p-2 bg-[#e0ae2a] text-white rounded">
+              <button onClick={handleShowMaskingPopup} className="mt-8 p-2 bg-[#e0ae2a] text-white rounded">
                 Mask Image
               </button>
             </div>
