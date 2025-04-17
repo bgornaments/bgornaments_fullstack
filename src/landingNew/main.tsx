@@ -95,7 +95,6 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="px-0 font-custom">
-      {/* Intro Animation Overlay */}
       <section
         ref={introRef}
         style={{
@@ -121,7 +120,7 @@ const LandingPage: React.FC = () => {
             justifyContent: "center",
             alignItems: "center",
             width: "100%",
-            padding: "0 5vw", // small side padding to prevent overflow
+            padding: "0 5vw",
             boxSizing: "border-box",
           }}
         >
@@ -136,7 +135,7 @@ const LandingPage: React.FC = () => {
           />
         </div>
       </section>
-      
+
       {/* Header */}
       <Navbar onContactClick={scrollToDemoSection} />
 
