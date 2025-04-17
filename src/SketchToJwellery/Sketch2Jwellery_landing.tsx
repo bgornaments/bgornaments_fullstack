@@ -11,7 +11,6 @@ import astro from '../assets/vedic-astrology.png';
 import Navbar from '../landingNew/navbar';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 
-
 const SketchToDesign: React.FC = () => {
     const navigate = useNavigate();
     const [isUploadVisible, setUploadVisible] = useState(false);
@@ -197,7 +196,7 @@ const SketchToDesign: React.FC = () => {
                     {/* Image preview column */}
                     <div className="flex flex-col items-center">
                         <div className="
-                            border-2 border-yellow-400 
+                            border-4
                             w-80 h-80 
                             md:w-96 md:h-96 
                             lg:w-[16rem] lg:h-[16rem] 
@@ -209,7 +208,7 @@ const SketchToDesign: React.FC = () => {
                                 <img src={uploadedImage} alt="Uploaded Sketch" className="w-full h-full object-contain" />
                             ) : (
                                 <p className="text-gray-400 text-center">
-                                    Uploaded/Drawn Sketch Preview (Placeholder)
+                                    Your uploaded/drawn sketch
                                 </p>
                             )}
                         </div>
