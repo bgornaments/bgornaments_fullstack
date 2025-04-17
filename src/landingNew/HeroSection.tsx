@@ -62,7 +62,7 @@ const HeroSection: React.FC = () => {
         <h1 className="text-6xl font-bold mb-6 font-custom">Design Smarter. Create Faster.</h1>
         <p className="max-w mx-auto text-gray-200 text-xl mb-10">
           The AI-powered design studio for modern jewelry designers.
-          {user && <span className="text-base italic ml-2">{user.signInDetails?.loginId}</span>}
+          {/* {user && <span className="text-base italic ml-2">{user.signInDetails?.loginId}</span>} */}
         </p>
         <div className={`${isTinyScreen ? "flex flex-col items-center gap-2" : "space-x-4"}`}>
           <button 
