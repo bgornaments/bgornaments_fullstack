@@ -115,17 +115,28 @@ const LandingPage: React.FC = () => {
         <div
           className="intro-text"
           style={{
-            fontSize: "8vw",
-            fontWeight: 800,
-            color: "#e0ae2a",
             transformOrigin: "center center",
             willChange: "transform, opacity",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            padding: "0 5vw", // small side padding to prevent overflow
+            boxSizing: "border-box",
           }}
         >
-          <img src={logo} alt="KinMitra Logo" />
+          <img
+            src={logo}
+            alt="KinMitra Logo"
+            style={{
+              width: "100%",
+              maxWidth: "60vw",
+              height: "auto",
+            }}
+          />
         </div>
       </section>
-
+      
       {/* Header */}
       <Navbar onContactClick={scrollToDemoSection} />
 
