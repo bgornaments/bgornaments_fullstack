@@ -119,7 +119,7 @@ const LandingPage: React.FC = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            width: "100%",
+            width: "40%",
             padding: "0 5vw",
             boxSizing: "border-box",
           }}
@@ -129,7 +129,7 @@ const LandingPage: React.FC = () => {
             alt="KinMitra Logo"
             style={{
               width: "100%",
-              maxWidth: "60vw",
+              maxWidth: "70vw",
               height: "auto",
             }}
           />
