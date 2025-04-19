@@ -8,7 +8,7 @@ import logo from '../assets/image.png'
 import imgVar from '../assets/image_variations_icon.jpg';
 import s2d from '../assets/sketch.png';
 import outfitmatch from '../assets/outfit_matching_icon.jpg';
-import astro from '../assets/vedic-astrology.png';
+import setgen from '../assets/set_generator_icon.jpg'
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 
 const SketchToDesign: React.FC = () => {
@@ -206,31 +206,31 @@ const SketchToDesign: React.FC = () => {
     const features = [
         {
             title: 'Image Variation',
-            imgSrc:
-                imgVar,
+            imgSrc: imgVar,
             alt: 'Jewelry set on a wooden plate',
             description: 'Effortlessly create jewelry sets, optimized for your needs with flexibility.',
+            link: '/expert-mode/image-variation',
         },
         {
             title: 'Sketch To Design',
-            imgSrc:
-                s2d,
+            imgSrc: s2d,
             alt: 'Notebook with a sketch of a diamond and a pencil',
             description: 'Effortlessly transform your rough sketches to exquisite jewelry designs.',
+            link: '/expert-mode/sketchToJwellery',
         },
         {
             title: 'Outfit Matching Jewelry',
-            imgSrc:
-                outfitmatch,
+            imgSrc: outfitmatch,
             alt: 'Golden picture frame',
             description: 'Perfectly match your jewelry & accessories to the outfit to impress everyone.',
+            link: '/expert-mode/.../#',
         },
         {
-            title: 'Astrology Jewelry',
-            imgSrc:
-                astro,
+            title: 'Set Generation',
+            imgSrc: setgen,
             alt: 'Astrology chart with a glowing center',
             description: 'Find your perfect astrology jewelry with personalized astrology guidance.',
+            link: '/expert-mode/set-generation',
         },
     ];
 
@@ -626,9 +626,10 @@ const SketchToDesign: React.FC = () => {
                     <div className="container mx-auto px-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                             {features.map((feature, index) => (
-                                <div
+                                <Link
+                                    to={feature.link}
                                     key={index}
-                                    className="bg-white rounded-2xl shadow text-center border border-orange-200 min-h-[350px] flex flex-col justify-between max-w-[80%] mx-auto"
+                                    className="bg-white rounded-2xl shadow text-center border border-orange-200 min-h-[350px] flex flex-col justify-between max-w-[80%] mx-auto hover:shadow-xl transition-shadow duration-300"
                                 >
                                     <h2 className="text-orange-600 text-lg font-semibold mb-2 bg-orange-100 p-3 rounded-t-2xl">
                                         {feature.title}
@@ -637,13 +638,13 @@ const SketchToDesign: React.FC = () => {
                                         <img
                                             src={feature.imgSrc}
                                             alt={feature.alt}
-                                            width={100}
-                                            height={100}
+                                            width={150}
+                                            height={150}
                                             className="mb-8"
                                         />
                                         <p className="text-gray-600 text-base">{feature.description}</p>
                                     </div>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </div>
