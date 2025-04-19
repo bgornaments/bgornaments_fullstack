@@ -182,7 +182,7 @@ const SetGen: React.FC = () => {
       imgSrc: astro,
       alt: 'Astrology chart with a glowing center',
       description: 'Find your perfect astrology jewelry with personalized astrology guidance.',
-      link: '/expert-mode/astrology',
+      link: '/expert-mode/set-generation',
     },
   ];
 
@@ -319,7 +319,7 @@ const SetGen: React.FC = () => {
                     <Link
                       to={feature.link}
                       key={index}
-                      className="bg-white rounded-2xl shadow text-center border border-orange-200 min-h-[350px] flex flex-col justify-between max-w-[80%] mx-auto hover:shadow-lg transition-shadow duration-300"
+                      className="bg-white rounded-2xl shadow text-center border border-orange-200 min-h-[350px] flex flex-col justify-between max-w-[80%] mx-auto hover:shadow-xl transition-shadow duration-300"
                     >
                       <h2 className="text-orange-600 text-lg font-semibold mb-2 bg-orange-100 p-3 rounded-t-2xl">
                         {feature.title}
@@ -328,8 +328,8 @@ const SetGen: React.FC = () => {
                         <img
                           src={feature.imgSrc}
                           alt={feature.alt}
-                          width={100}
-                          height={100}
+                          width={150}
+                          height={150}
                           className="mb-8"
                         />
                         <p className="text-gray-600 text-base">{feature.description}</p>
