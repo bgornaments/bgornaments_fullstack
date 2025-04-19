@@ -169,7 +169,7 @@ const AstrologyForm: React.FC = () => {
         demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
       }} />
       <div className="flex-grow flex flex-col justify-center items-center pt-16">
-        <div className="w-[90%] sm:w-[80%] md:w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center p-4 sm:p-6 relative z-10 mt-4 sm:mt-2">
+      <div className="w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen shadow-[4px_4px_4px_rgba(0,0,0,0.1),-4px_-4px_4px_rgba(0,0,0,0.1),4px_-4px_4px_rgba(0,0,0,0.1),-4px_4px_4px_rgba(0,0,0,0.1)]">
           <div className="header w-full text-center z-20 mb-10 sm:mb-14 md:mb-20">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-custom font-bold text-lightGolden">
               Astrology Based Jewellery
