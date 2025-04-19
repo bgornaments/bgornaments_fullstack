@@ -10,6 +10,7 @@ import FeaturesSection from './FeaturesSection';
 import HeroSection from './HeroSection';
 import AssociationsAndCertifications from './AssociationsAndCertifications';
 import BookDemoSection from './BookADemo';
+import Faqs from './FAQs';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -271,6 +272,8 @@ const LandingPage: React.FC = () => {
       </section>
 
       <AssociationsAndCertifications />
+      
+      <Faqs/>
 
       {/* Book a Demo Section with ID for direct linking */}
       <div id="book-demo-section" ref={demoSectionRef}>
