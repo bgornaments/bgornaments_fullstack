@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import TextField from '@mui/material/TextField';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import Navbar from '../landingNew/navbar';
+import { useNavigate, Link } from 'react-router-dom';
 import logo from '../assets/image.png';
 import imgVar from '../assets/image_variations_icon.jpg';
 import s2d from '../assets/sketch.png';
@@ -15,6 +13,7 @@ interface GeoSuggestion {
   lat: number;
   lon: number;
 }
+import Navbar from '../landingNew/navbar';
 
 const AstrologyForm: React.FC = () => {
   const [gender, setGender] = useState('');
@@ -30,7 +29,6 @@ const AstrologyForm: React.FC = () => {
   const tabsRef = useRef<(HTMLElement | null)[]>([]);
   const [tabUnderlineWidth, setTabUnderlineWidth] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
-
   const demoSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,7 +42,6 @@ const AstrologyForm: React.FC = () => {
   }, [activeTabIndex]);
 
   useEffect(() => {
-    // Set default time in HH:MM (24-hour format) for input type="time"
     const currentTime = new Date();
     const hours = currentTime.getHours();
     const minutes = currentTime.getMinutes();
@@ -67,6 +64,18 @@ const AstrologyForm: React.FC = () => {
         .catch((error) => console.error('Error fetching location suggestions:', error));
     }
   }, [location]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (tabsRef.current[activeTabIndex]) {
+        const activeTab = tabsRef.current[activeTabIndex];
+        setTabUnderlineLeft(activeTab.offsetLeft);
+        setTabUnderlineWidth(activeTab.offsetWidth);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [activeTabIndex]);
 
   const handleGenderSelect = (selectedGender: string) => {
     setGender(selectedGender);
@@ -104,16 +113,13 @@ const AstrologyForm: React.FC = () => {
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    // Format date of birth as dd/mm/yyyy
     const dob = `${dateOfBirth.getDate().toString().padStart(2, '0')}/${(dateOfBirth.getMonth() + 1)
       .toString()
       .padStart(2, '0')}/${dateOfBirth.getFullYear()}`;
-
     if (!selectedGeoLocation) {
       alert('Please select a valid location from suggestions.');
       return;
     }
-
     const payload = {
       dob: dob,
       tob: timeOfBirth,
@@ -123,7 +129,6 @@ const AstrologyForm: React.FC = () => {
       }
     };
     console.log('Payload:', payload);
-    // Pass the payload to the next route via state
     navigate('astroSign', { state: payload });
   };
 
@@ -147,7 +152,7 @@ const AstrologyForm: React.FC = () => {
       imgSrc: outfitmatch,
       alt: 'Golden picture frame',
       description: 'Perfectly match your jewelry & accessories to the outfit to impress everyone.',
-      link: '/expert-mode/.../#', // update this when you have a final URL
+      link: '/expert-mode/.../#',
     },
     {
       title: 'Set Generation',
@@ -158,32 +163,14 @@ const AstrologyForm: React.FC = () => {
     },
   ];
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (tabsRef.current[activeTabIndex]) {
-        const activeTab = tabsRef.current[activeTabIndex];
-        setTabUnderlineLeft(activeTab.offsetLeft);
-        setTabUnderlineWidth(activeTab.offsetWidth);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    // cleanup
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [activeTabIndex]);
-
-
   return (
-    <div className="main min-h-screen sm:rounded-lg shadow-lg text-center min-w-full flex flex-col justify-center items-center">
+    <div className="min-h-screen flex flex-col bg-starry">
       <Navbar onContactClick={() => {
         demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
       }} />
-      <div className="min-h-screen p-8 rounded-lg shadow-lg text-center max-w-full flex flex-col justify-center items-center bg-starry">
-        <div className="w-[90%] sm:w-[80%] md:w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-4 sm:p-6 relative z-10 mt-4 sm:mt-2">
-          <div className="header absolute top-4 sm:top-0 left-0 right-0 px-4 sm:px-8 text-center z-20 mb-10 sm:mb-14 md:mb-20">
+      <div className="flex-grow flex flex-col justify-center items-center pt-16">
+        <div className="w-[90%] sm:w-[80%] md:w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center p-4 sm:p-6 relative z-10 mt-4 sm:mt-2">
+          <div className="header w-full text-center z-20 mb-10 sm:mb-14 md:mb-20">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-custom font-bold text-lightGolden">
               Astrology Based Jewellery
             </h1>
@@ -329,7 +316,7 @@ const AstrologyForm: React.FC = () => {
                   <Link
                     to={feature.link}
                     key={index}
-                    className="bg-white rounded-2xl shadow text-center border border-orange-200 min-h-[350px] flex flex-col justify-between max-w-[80%] mx-auto hover:shadow-lg transition-shadow duration-300"
+                    className="bg-white rounded-2xl shadow text-center border border-orange-200 min-h-[350px] flex flex-col justify-between max-w-[80%] mx-auto hover:shadow-xl transition-shadow duration-300"
                   >
                     <h2 className="text-orange-600 text-lg font-semibold mb-2 bg-orange-100 p-3 rounded-t-2xl">
                       {feature.title}
@@ -351,13 +338,11 @@ const AstrologyForm: React.FC = () => {
           </div>
         </div>
 
-        {/* Spacer */}
         <div className="h-16"></div>
 
         {/* Footer */}
-        <footer className="bg-[#f8f8f8] py-8 text-sm text-gray-600 px-8 min-w-full">
+        <footer ref={demoSectionRef} className="w-full bg-[#f8f8f8] py-8 text-sm text-gray-600 px-8">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
-            {/* Logo & Tagline */}
             <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
               <Link to="/">
                 <img src={logo} alt="Company Logo" className="mb-4 w-32" />
@@ -376,7 +361,6 @@ const AstrologyForm: React.FC = () => {
               </div>
             </div>
 
-            {/* Navigation Links */}
             <div className="flex flex-col md:flex-row md:space-x-16 text-center md:text-left">
               <div className="mb-6 md:mb-0">
                 <h3 className="text-gray-800 font-bold mb-4 text-2xl font-custom">Company</h3>
@@ -390,7 +374,6 @@ const AstrologyForm: React.FC = () => {
                 </ul>
               </div>
 
-              {/* Contact Info */}
               <div>
                 <h3 className="text-gray-800 font-bold mb-4 text-2xl font-custom">Support</h3>
                 <ul className="space-y-2">
