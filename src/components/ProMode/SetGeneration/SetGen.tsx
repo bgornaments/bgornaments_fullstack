@@ -182,7 +182,7 @@ const SetGen: React.FC = () => {
       imgSrc: astro,
       alt: 'Astrology chart with a glowing center',
       description: 'Find your perfect astrology jewelry with personalized astrology guidance.',
-      link: '/expert-mode/set-generation',
+      link: '/expert-mode/astrology',
     },
   ];
 

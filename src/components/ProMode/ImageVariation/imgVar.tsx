@@ -14,7 +14,7 @@ import Navbar from '../../../landingNew/navbar';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/image.png';
-import setGen from '../../../assets/set_generator_icon.jpg';
+import setgen from '../../../assets/set_generator_icon.jpg';
 import s2d from '../../../assets/sketch.png';
 import outfitmatch from '../../../assets/outfit_matching_icon.jpg';
 import astro from '../../../assets/vedic-astrology.png';
@@ -254,32 +254,32 @@ const ImgVar: React.FC = () => {
 
   const features = [
     {
-      title: 'Set Generator',
-      imgSrc:
-        setGen,
+      title: 'Set Generation',
+      imgSrc: setgen,
       alt: 'Jewelry set on a wooden plate',
       description: 'Effortlessly create jewelry sets, optimized for your needs with flexibility.',
+      link: '/expert-mode/set-generation',
     },
     {
       title: 'Sketch To Design',
-      imgSrc:
-        s2d,
+      imgSrc: s2d,
       alt: 'Notebook with a sketch of a diamond and a pencil',
       description: 'Effortlessly transform your rough sketches to exquisite jewelry designs.',
+      link: '/expert-mode/sketchToJwellery',
     },
     {
       title: 'Outfit Matching Jewelry',
-      imgSrc:
-        outfitmatch,
+      imgSrc: outfitmatch,
       alt: 'Golden picture frame',
       description: 'Perfectly match your jewelry & accessories to the outfit to impress everyone.',
+      link: '/expert-mode/.../#',
     },
     {
       title: 'Astrology Jewelry',
-      imgSrc:
-        astro,
+      imgSrc: astro,
       alt: 'Astrology chart with a glowing center',
       description: 'Find your perfect astrology jewelry with personalized astrology guidance.',
+      link: '/expert-mode/astro',
     },
   ];
 
@@ -423,19 +423,19 @@ const ImgVar: React.FC = () => {
 
           <div className="absolute top-0 left-0 right-0 bottom-0 bg-white opacity-60 z-[-90]"></div>
           <main className="w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen">
-          <div className="flex items-center justify-center text-xl p-5 text-[#585858] relative w-full">
-            <header className="text-center">
-              {/* Title */}
-              <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
-                Image Variation
-              </h1>
-              {/* Subtitle */}
-              <p className="text-lightGreen lg:text-xl">
-                Get unlimited unique variations of your design
-              </p>
-            </header>
-          </div>
-          {/* Main Content */}
+            <div className="flex items-center justify-center text-xl p-5 text-[#585858] relative w-full">
+              <header className="text-center">
+                {/* Title */}
+                <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
+                  Image Variation
+                </h1>
+                {/* Subtitle */}
+                <p className="text-lightGreen lg:text-xl">
+                  Get unlimited unique variations of your design
+                </p>
+              </header>
+            </div>
+            {/* Main Content */}
             <div className="flex flex-wrap gap-6 justify-center items-center w-full">
               <div
                 className="h-[250px] w-[250px] md:h-[350px] md:w-[350px] border-4 flex items-center justify-center cursor-pointer p-4"
@@ -677,9 +677,10 @@ const ImgVar: React.FC = () => {
               <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                   {features.map((feature, index) => (
-                    <div
+                    <Link
+                      to={feature.link}
                       key={index}
-                      className="bg-white rounded-2xl shadow text-center border border-orange-200 min-h-[350px] flex flex-col justify-between max-w-[80%] mx-auto"
+                      className="bg-white rounded-2xl shadow text-center border border-orange-200 min-h-[350px] flex flex-col justify-between max-w-[80%] mx-auto hover:shadow-xl transition-shadow duration-300"
                     >
                       <h2 className="text-orange-600 text-lg font-semibold mb-2 bg-orange-100 p-3 rounded-t-2xl">
                         {feature.title}
@@ -688,13 +689,13 @@ const ImgVar: React.FC = () => {
                         <img
                           src={feature.imgSrc}
                           alt={feature.alt}
-                          width={100}
-                          height={100}
-                          className="mb-3"
+                          width={150}
+                          height={150}
+                          className="mb-8"
                         />
                         <p className="text-gray-600 text-base">{feature.description}</p>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>
