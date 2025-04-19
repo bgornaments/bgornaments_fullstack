@@ -20,8 +20,8 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick }) => {
   return (
     <header className="w-full border-b-2 border-gray-200 px-4 py-4 md:py-6 text-xl relative">
       <div className="flex justify-between items-center relative">
-        {/* Logo */}
-        <div className="flex items-center">
+        {/* Logo with left margin on md and above */}
+        <div className="flex items-center md:ml-8">
           <Link to="/">
             <img src={logo} alt="Logo" className="w-32 md:w-40" />
           </Link>
@@ -35,8 +35,8 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick }) => {
           <button onClick={handleContactClick} className="text-xl">Contact Us</button>
         </div>
 
-        {/* Login/Logout on right */}
-        <div className="hidden md:flex items-center">
+        {/* Login/Logout on right with right margin */}
+        <div className="hidden md:flex items-center mr-8">
           {user ? (
             <button
               onClick={signOut}
