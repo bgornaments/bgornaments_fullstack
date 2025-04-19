@@ -18,6 +18,7 @@ const LandingPage: React.FC = () => {
   const introRef = useRef<HTMLDivElement>(null);
   const demoSectionRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
+  const faqsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const intro = introRef.current;
@@ -94,6 +95,10 @@ const LandingPage: React.FC = () => {
     }, 100);
   };
 
+  const scrollToFaqs = () => {
+    faqsRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="px-0 font-custom">
       <section
@@ -138,7 +143,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Header */}
-      <Navbar onContactClick={scrollToDemoSection} />
+      <Navbar onContactClick={scrollToDemoSection} onFaqClick={scrollToFaqs} />
 
       {/* Hero Section */}
       <HeroSection />
@@ -273,7 +278,9 @@ const LandingPage: React.FC = () => {
 
       <AssociationsAndCertifications />
       
-      <Faqs/>
+      <div ref={faqsRef}>
+        <Faqs />
+      </div>
 
       {/* Book a Demo Section with ID for direct linking */}
       <div id="book-demo-section" ref={demoSectionRef}>

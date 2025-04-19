@@ -6,15 +6,21 @@ import logo from '/src/assets/image.png';
 
 type NavbarProps = {
   onContactClick: () => void;
+  onFaqClick: () => void;
 };
 
-const Navbar: React.FC<NavbarProps> = ({ onContactClick }) => {
+const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleContactClick = () => {
     setMenuOpen(false); // Close menu if open
     onContactClick(); // Execute the passed function
+  };
+
+  const handleFaqClick = () => {
+    setMenuOpen(false);
+    onFaqClick();
   };
 
   return (
@@ -31,7 +37,9 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick }) => {
         <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-6 items-center">
           <Link to="/" className="text-xl">Home</Link>
           <Link to="/" className="text-xl">Pricing</Link>
-          <Link to="/" className="text-xl">FAQs</Link>
+          <button onClick={handleFaqClick} className="text-xl">
+            FAQs
+          </button>
           <button onClick={handleContactClick} className="text-xl">Contact Us</button>
         </div>
 
@@ -70,7 +78,9 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick }) => {
         <div className="absolute right-4 top-full mt-2 bg-white shadow-lg border rounded-lg w-56 py-4 px-4 space-y-3 z-50">
           <Link to="/" className="block text-lg" onClick={() => setMenuOpen(false)}>Home</Link>
           <Link to="/" className="block text-lg" onClick={() => setMenuOpen(false)}>Pricing</Link>
-          <Link to="/" className="block text-lg" onClick={() => setMenuOpen(false)}>FAQs</Link>
+          <button onClick={handleFaqClick} className="block text-lg w-full text-left">
+            FAQs
+          </button>
           <button onClick={handleContactClick} className="block text-lg w-full text-left">
             Contact Us
           </button>

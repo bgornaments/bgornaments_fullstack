@@ -17,7 +17,7 @@ const Faqs: React.FC = () => {
       <h2 className="font-custom text-4xl md:text-5xl text-[#e0ae2a] text-center mb-4">
         Frequently Asked Questions
       </h2>
-      <p className="text-center text-gray-600 mb-8 max-w-2xl">
+      <p className="text-center text-lg text-gray-600 mb-8 max-w-2xl">
         If you can't find an answer you're looking for, feel free to drop us a line.
       </p>
 
