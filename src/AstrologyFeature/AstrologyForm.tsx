@@ -168,9 +168,9 @@ const AstrologyForm: React.FC = () => {
       <Navbar onContactClick={() => {
         demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
       }} />
-      <div className="flex-grow flex flex-col justify-center items-center pt-16">
-      <div className="w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen shadow-[4px_4px_4px_rgba(0,0,0,0.1),-4px_-4px_4px_rgba(0,0,0,0.1),4px_-4px_4px_rgba(0,0,0,0.1),-4px_4px_4px_rgba(0,0,0,0.1)]">
-          <div className="header w-full text-center z-20 mb-10 sm:mb-14 md:mb-20">
+      <div className="flex-grow flex flex-col justify-center items-center">
+      <div className="w-[85%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen/2 shadow-[2px_2px_4px_rgba(0,0,0,0.1),-2px_-2px_4px_rgba(0,0,0,0.1),2px_-2px_4px_rgba(0,0,0,0.1),-2px_2px_4px_rgba(0,0,0,0.1)]">
+          <div className="header w-full text-center z-20 mb-36 sm:mb-32 md:mb-44">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-custom font-bold text-lightGolden">
               Astrology Based Jewellery
             </h1>
@@ -178,7 +178,6 @@ const AstrologyForm: React.FC = () => {
               Let the stars and Vedas guide you to get the right jewelry piece
             </p>
           </div>
-
           <div className="form bg-gray-100 p-4 sm:p-6 rounded-lg border border-yellow-600 lg:p-10 max-w-3xl w-full mt-24 sm:mt-20 lg:mt-32 z-10 relative">
             <div className="flex justify-center mb-4 relative flex-row mx-auto flex h-12 rounded-3xl border border-[#e0ae2a] bg-[#e0ae2aaa] px-2 backdrop-blur-lg sm:px-4">
               <span
