@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Menu, X } from 'lucide-react';
 import logo from '/src/assets/image.png';
@@ -12,15 +12,36 @@ type NavbarProps = {
 const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+  const [activeLink, setActiveLink] = useState('');
+
+  // Update active link based on current path
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === '/') {
+      setActiveLink('Home');
+    } else if (path.includes('pricing')) {
+      setActiveLink('Pricing');
+    }
+    // For FAQs and Contact, we'll handle them differently since they're buttons
+  }, [location]);
 
   const handleContactClick = () => {
-    setMenuOpen(false); // Close menu if open
-    onContactClick(); // Execute the passed function
+    setMenuOpen(false);
+    setActiveLink('Contact Us');
+    onContactClick();
   };
 
   const handleFaqClick = () => {
     setMenuOpen(false);
+    setActiveLink('FAQs');
     onFaqClick();
+  };
+
+  const getLinkClass = (linkName: string) => {
+    return `text-xl relative group ${
+      activeLink === linkName ? 'text-[#e0ae2a]' : ''
+    }`;
   };
 
   return (
@@ -35,12 +56,40 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
 
         {/* Centered Menu Links on large screens */}
         <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-6 items-center">
-          <Link to="/" className="text-xl">Home</Link>
-          <Link to="/" className="text-xl">Pricing</Link>
-          <button onClick={handleFaqClick} className="text-xl">
+          <Link
+            to="/"
+            className={getLinkClass('Home')}
+            onClick={() => setActiveLink('Home')}
+          >
+            Home
+            <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+            <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Home' ? 'scale-x-100' : 'scale-x-0'}`} />
+          </Link>
+          <Link
+            to="/pricing"
+            className={getLinkClass('Pricing')}
+            onClick={() => setActiveLink('Pricing')}
+          >
+            Pricing
+            <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+            <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Pricing' ? 'scale-x-100' : 'scale-x-0'}`} />
+          </Link>
+          <button
+            onClick={handleFaqClick}
+            className={getLinkClass('FAQs')}
+          >
             FAQs
+            <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+            <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'FAQs' ? 'scale-x-100' : 'scale-x-0'}`} />
           </button>
-          <button onClick={handleContactClick} className="text-xl">Contact Us</button>
+          <button
+            onClick={handleContactClick}
+            className={getLinkClass('Contact Us')}
+          >
+            Contact Us
+            <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+            <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Contact Us' ? 'scale-x-100' : 'scale-x-0'}`} />
+          </button>
         </div>
 
         {/* Login/Logout on right with right margin */}
@@ -76,13 +125,41 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
       {/* Mobile Dropdown Menu */}
       {menuOpen && (
         <div className="absolute right-4 top-full mt-2 bg-white shadow-lg border rounded-lg w-56 py-4 px-4 space-y-3 z-50">
-          <Link to="/" className="block text-lg" onClick={() => setMenuOpen(false)}>Home</Link>
-          <Link to="/" className="block text-lg" onClick={() => setMenuOpen(false)}>Pricing</Link>
-          <button onClick={handleFaqClick} className="block text-lg w-full text-left">
+          <Link
+            to="/"
+            className={`block text-lg relative ${activeLink === 'Home' ? 'text-[#e0ae2a]' : ''}`}
+            onClick={() => {
+              setMenuOpen(false);
+              setActiveLink('Home');
+            }}
+          >
+            Home
+            <span className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Home' ? 'scale-x-100' : 'scale-x-0'}`} />
+          </Link>
+          <Link
+            to="/pricing"
+            className={`block text-lg relative ${activeLink === 'Pricing' ? 'text-[#e0ae2a]' : ''}`}
+            onClick={() => {
+              setMenuOpen(false);
+              setActiveLink('Pricing');
+            }}
+          >
+            Pricing
+            <span className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Pricing' ? 'scale-x-100' : 'scale-x-0'}`} />
+          </Link>
+          <button
+            onClick={handleFaqClick}
+            className={`block text-lg w-full text-left relative ${activeLink === 'FAQs' ? 'text-[#e0ae2a]' : ''}`}
+          >
             FAQs
+            <span className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'FAQs' ? 'scale-x-100' : 'scale-x-0'}`} />
           </button>
-          <button onClick={handleContactClick} className="block text-lg w-full text-left">
+          <button
+            onClick={handleContactClick}
+            className={`block text-lg w-full text-left relative ${activeLink === 'Contact Us' ? 'text-[#e0ae2a]' : ''}`}
+          >
             Contact Us
+            <span className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Contact Us' ? 'scale-x-100' : 'scale-x-0'}`} />
           </button>
 
           {user ? (
