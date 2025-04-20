@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Faqs: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  // Debug: Log when Faqs component mounts
+  useEffect(() => {
+    console.log('Faqs component mounted');
+  }, []);
 
   const toggleQuestion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -12,7 +17,6 @@ const Faqs: React.FC = () => {
     { question: "How can I sign up?", answer: "Click on the Sign Up button on the homepage and follow the steps to create your account." },
   ];
 
-  
   return (
     <div className="mt-12 mb-12 flex flex-col items-center px-4">
       <h2 className="font-custom text-4xl md:text-5xl text-[#e0ae2a] text-center mb-4">

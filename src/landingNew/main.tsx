@@ -20,6 +20,11 @@ const LandingPage: React.FC = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const faqsRef = useRef<HTMLDivElement>(null);
 
+  // Debug: Log when faqsRef is mounted
+  useEffect(() => {
+    console.log('faqsRef mounted:', faqsRef.current);
+  }, []);
+
   useEffect(() => {
     const intro = introRef.current;
     if (!intro) return;
@@ -81,10 +86,9 @@ const LandingPage: React.FC = () => {
 
   // Improved scroll to demo section function
   const scrollToDemoSection = () => {
-    // Add a small delay to ensure the ref is properly attached
     setTimeout(() => {
       if (demoSectionRef.current) {
-        const yOffset = -100; // Offset to account for fixed header
+        const yOffset = -100;
         const y = demoSectionRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
         window.scrollTo({
@@ -95,8 +99,16 @@ const LandingPage: React.FC = () => {
     }, 100);
   };
 
+  // Updated scroll to FAQs with delay and logging
   const scrollToFaqs = () => {
-    faqsRef.current?.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      if (faqsRef.current) {
+        console.log('Scrolling to FAQs');
+        faqsRef.current.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        console.error('faqsRef is not attached');
+      }
+    }, 100);
   };
 
   return (
@@ -144,7 +156,6 @@ const LandingPage: React.FC = () => {
 
       {/* Header */}
       <Navbar onContactClick={scrollToDemoSection} onFaqClick={scrollToFaqs} />
-
 
       {/* Hero Section */}
       <HeroSection />

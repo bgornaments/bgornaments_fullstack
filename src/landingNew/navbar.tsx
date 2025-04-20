@@ -15,6 +15,11 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
   const location = useLocation();
   const [activeLink, setActiveLink] = useState('');
 
+  // Debug: Log activeLink changes
+  useEffect(() => {
+    console.log('Active link:', activeLink);
+  }, [activeLink]);
+
   // Update active link based on current path
   useEffect(() => {
     const path = location.pathname;
@@ -23,7 +28,6 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
     } else if (path.includes('pricing')) {
       setActiveLink('Pricing');
     }
-    // For FAQs and Contact, we'll handle them differently since they're buttons
   }, [location]);
 
   const handleContactClick = () => {
@@ -53,7 +57,6 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
             <img src={logo} alt="Logo" className="w-32 md:w-40" />
           </Link>
         </div>
-
 
         {/* Centered Menu Links on large screens */}
         <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-6 items-center">
