@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import vid from '../assets/LandingPageVideo.mp4';
 
 const HeroSection: React.FC = () => {
   const [isTinyScreen, setIsTinyScreen] = useState(false);
@@ -50,7 +51,7 @@ const HeroSection: React.FC = () => {
         muted
         playsInline
         className="absolute inset-0 w-full h-full object-cover filter brightness-[0.4] contrast-[1.1] saturate-[1.2] sepia-[0.1]"
-        src="https://dm0qx8t0i9gc9.cloudfront.net/watermarks/video/H2qwMhbkqkzg2flz4/videoblocks-646c7a82cdf8cd05c427ac1b_rrp7owas3__0405133d275c6b206830714a02f00c75__P360.mp4"
+        src={vid}
       />
       <div
         className="absolute inset-0 z-10 pointer-events-none"
