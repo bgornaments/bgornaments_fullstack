@@ -54,6 +54,7 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
           </Link>
         </div>
 
+
         {/* Centered Menu Links on large screens */}
         <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-6 items-center">
           <Link

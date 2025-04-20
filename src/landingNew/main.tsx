@@ -145,6 +145,7 @@ const LandingPage: React.FC = () => {
       {/* Header */}
       <Navbar onContactClick={scrollToDemoSection} onFaqClick={scrollToFaqs} />
 
+
       {/* Hero Section */}
       <HeroSection />
 
