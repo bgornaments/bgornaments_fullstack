@@ -4,10 +4,10 @@ import UploadImg from '../components/ProMode/UploadImg';
 import SketchCanvas, { SketchCanvasHandle } from './SketchCanvas';
 import { Link } from 'react-router-dom';
 import logo from '../assets/image.png'
-import setGen from '../assets/set_generator_icon.jpg';
-import s2d from '../assets/sketch.png';
+import setgen from '../assets/set_generator_icon.jpg';
+import astro from '../assets/vedic-astrology.png'
 import outfitmatch from '../assets/outfit_matching_icon.jpg';
-import astro from '../assets/vedic-astrology.png';
+import imgVar from '../assets/image_variations_icon.jpg';
 import Navbar from '../landingNew/navbar';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 
@@ -19,6 +19,7 @@ const SketchToDesign: React.FC = () => {
     const sketchRef = useRef<SketchCanvasHandle>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const demoSectionRef = useRef<HTMLDivElement>(null);
+    const faqsRef = useRef<HTMLDivElement>(null);
     const getSessionId = () => {
         const sessionId = sessionStorage.getItem("sessionId") || localStorage.getItem("sessionId");
         console.log("Retrieved sessionId:", sessionId);
@@ -120,82 +121,87 @@ const SketchToDesign: React.FC = () => {
 
     const features = [
         {
-          title: 'Image Variation',
-          imgSrc:
-            setGen,
-          alt: 'Jewelry set on a wooden plate',
-          description: 'Effortlessly create jewelry sets, optimized for your needs with flexibility.',
+            title: 'Image Variation',
+            imgSrc: imgVar,
+            alt: 'Jewelry set on a wooden plate',
+            description: 'Effortlessly create jewelry sets, optimized for your needs with flexibility.',
+            link: '/expert-mode/image-variation',
         },
         {
-          title: 'Sketch To Design',
-          imgSrc:
-            s2d,
-          alt: 'Notebook with a sketch of a diamond and a pencil',
-          description: 'Effortlessly transform your rough sketches to exquisite jewelry designs.',
+            title: 'Astrology Jwellery',
+            imgSrc: astro,
+            alt: 'Find your perfect astrology jewelry with personalized astrology guidance.',
+            description: 'Find your perfect astrology jewelry with personalized astrology guidance.',
+            link: '/expert-mode/astrology',
         },
         {
-          title: 'Outfit Matching Jewelry',
-          imgSrc:
-            outfitmatch,
-          alt: 'Golden picture frame',
-          description: 'Perfectly match your jewelry & accessories to the outfit to impress everyone.',
+            title: 'Outfit Matching Jewelry',
+            imgSrc: outfitmatch,
+            alt: 'Golden picture frame',
+            description: 'Perfectly match your jewelry & accessories to the outfit to impress everyone.',
+            link: '/expert-mode/.../#',
         },
         {
-          title: 'Astrology Jewelry',
-          imgSrc:
-            astro,
-          alt: 'Astrology chart with a glowing center',
-          description: 'Find your perfect astrology jewelry with personalized astrology guidance.',
+            title: 'Set Generation',
+            imgSrc: setgen,
+            alt: 'Astrology chart with a glowing center',
+            description: 'Find your perfect astrology jewelry with personalized astrology guidance.',
+            link: '/expert-mode/set-generation',
         },
-      ];
+    ];
     return (
         <div className="min-h-screen bg-white flex flex-col">
-            <Navbar onContactClick={() => {
-                demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-            }} />
+            <Navbar
+                onContactClick={() => {
+                    demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                onFaqClick={() => {
+                    faqsRef.current?.scrollIntoView({ behavior: 'smooth' });
+                }}
+            />
             {/* Header */}
-            <div className="w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-2">
-            <header className="py-6 text-center">
-                <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
-                    Sketch to Design
-                </h1>
-                <p className="text-lightGreen mb-6 lg:text-xl">
-                    Transform your sketch to jewelry design
-                </p>
-            </header>
+            <div className="w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen shadow-[4px_4px_4px_rgba(0,0,0,0.1),-4px_-4px_4px_rgba(0,0,0,0.1),4px_-4px_4px_rgba(0,0,0,0.1),-4px_4px_4px_rgba(0,0,0,0.1)]">
+                <header className="py-6 text-center">
+                    <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
+                        Sketch to Design
+                    </h1>
+                    <p className="text-lightGreen mb-6 lg:text-xl">
+                        Transform your sketch to jewelry design
+                    </p>
+                </header>
 
-            {/* Main content */}
-            <main className="flex-grow flex items-center justify-center px-4">
-                <div className="flex flex-col md:flex-row items-center justify-center md:space-x-8 space-y-6 md:space-y-0">
-                    {/* Buttons column */}
-                    <div className="inline-block md:-mt-12 md:mb-12 md:mr-16">
-                        <div className="flex flex-col items-stretch space-y-3 md:space-y-8 w-72">
-                            <button
-                                onClick={handleUploadClick}
-                                className="w-full whitespace-nowrap px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-600 rounded-md"
-                            >
-                                Upload a sketch
-                            </button>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                ref={fileInputRef}
-                                className="hidden"
-                                onChange={handleFileChange}
-                            />
-                            <p className="text-black font-semibold text-center">OR</p>
-                            <button
-                                onClick={handleDrawClick}
-                                className="w-full whitespace-nowrap px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-600 rounded-md"
-                            >
-                                Draw a sketch
-                            </button>
+                {/* Main content */}
+                <main className="flex-grow flex items-center justify-center px-4">
+                    <div className="flex flex-col md:flex-row items-center justify-center md:space-x-8 space-y-6 md:space-y-0">
+                        {/* Buttons column */}
+                        <div className="inline-block md:-mt-12 md:mb-12 md:mr-16">
+                            <div className="flex flex-col items-stretch space-y-3 md:space-y-8 w-72">
+                                <button
+                                    onClick={handleUploadClick}
+                                    className="w-full whitespace-nowrap px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-600 rounded-md"
+                                >
+                                    Upload a sketch
+                                </button>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    ref={fileInputRef}
+                                    className="hidden"
+                                    onChange={handleFileChange}
+                                />
+                                <p className="text-black font-semibold text-center">OR</p>
+                                <button
+                                    onClick={handleDrawClick}
+                                    className="w-full whitespace-nowrap px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-600 rounded-md"
+                                >
+                                    Draw a sketch
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Image preview column */}
-                    <div className="flex flex-col items-center">
-                        <div className="
+                        {/* Image preview column */}
+                        <div className="flex flex-col items-center">
+                            <div className="
                             border-4
                             w-80 h-80 
                             md:w-96 md:h-96 
@@ -204,33 +210,33 @@ const SketchToDesign: React.FC = () => {
                             2xl:w-[28em] 2xl:h-[28rem] 
                             flex items-center justify-center
                         ">
-                            {uploadedImage ? (
-                                <img src={uploadedImage} alt="Uploaded Sketch" className="w-full h-full object-contain" />
-                            ) : (
-                                <p className="text-gray-400 text-center">
-                                    Your uploaded/drawn sketch
-                                </p>
-                            )}
+                                {uploadedImage ? (
+                                    <img src={uploadedImage} alt="Uploaded Sketch" className="w-full h-full object-contain" />
+                                ) : (
+                                    <p className="text-gray-400 text-center">
+                                        Your uploaded/drawn sketch
+                                    </p>
+                                )}
+                            </div>
+                            <button
+                                onClick={handleNext}
+                                className="mt-4 md:mt-6 px-8 md:px-10 py-3 md:py-4 bg-yellow-600 text-white rounded-md"
+                            >
+                                Next
+                            </button>
                         </div>
-                        <button
-                            onClick={handleNext}
-                            className="mt-4 md:mt-6 px-8 md:px-10 py-3 md:py-4 bg-yellow-600 text-white rounded-md"
-                        >
-                            Next
-                        </button>
                     </div>
-                </div>
-            </main>
+                </main>
 
-            {/* Upload Image Component - Shows when upload button is clicked */}
-            {isUploadVisible && (
-                <UploadImg
-                    sessionId={getSessionId()}
-                    onImageSelect={handleImageSelect}
-                    onClose={() => setUploadVisible(false)}
-                />
-            )}
-        </div>
+                {/* Upload Image Component - Shows when upload button is clicked */}
+                {isUploadVisible && (
+                    <UploadImg
+                        sessionId={getSessionId()}
+                        onImageSelect={handleImageSelect}
+                        onClose={() => setUploadVisible(false)}
+                    />
+                )}
+            </div>
             {/* Modal Popup for Drawing Sketch */}
             {showModal && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -269,9 +275,10 @@ const SketchToDesign: React.FC = () => {
                     <div className="container mx-auto px-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                             {features.map((feature, index) => (
-                                <div
+                                <Link
+                                    to={feature.link}
                                     key={index}
-                                    className="bg-white rounded-2xl shadow text-center border border-orange-200 min-h-[350px] flex flex-col justify-between max-w-[80%] mx-auto"
+                                    className="bg-white rounded-2xl shadow text-center border border-orange-200 min-h-[350px] flex flex-col justify-between max-w-[80%] mx-auto hover:shadow-xl transition-shadow duration-300"
                                 >
                                     <h2 className="text-orange-600 text-lg font-semibold mb-2 bg-orange-100 p-3 rounded-t-2xl">
                                         {feature.title}
@@ -280,13 +287,13 @@ const SketchToDesign: React.FC = () => {
                                         <img
                                             src={feature.imgSrc}
                                             alt={feature.alt}
-                                            width={100}
-                                            height={100}
+                                            width={150}
+                                            height={150}
                                             className="mb-8"
                                         />
                                         <p className="text-gray-600 text-base">{feature.description}</p>
                                     </div>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </div>

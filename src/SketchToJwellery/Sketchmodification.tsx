@@ -6,7 +6,7 @@ import './SketchToDesign.css';
 import Navbar from "../landingNew/navbar";
 import logo from '../assets/image.png'
 import imgVar from '../assets/image_variations_icon.jpg';
-import s2d from '../assets/sketch.png';
+import astro from '../assets/vedic-astrology.png';
 import outfitmatch from '../assets/outfit_matching_icon.jpg';
 import setgen from '../assets/set_generator_icon.jpg'
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
@@ -203,6 +203,7 @@ const SketchToDesign: React.FC = () => {
         }
     };
     const demoSectionRef = useRef<HTMLDivElement>(null);
+    const faqsRef = useRef<HTMLDivElement>(null);
     const features = [
         {
             title: 'Image Variation',
@@ -212,11 +213,11 @@ const SketchToDesign: React.FC = () => {
             link: '/expert-mode/image-variation',
         },
         {
-            title: 'Sketch To Design',
-            imgSrc: s2d,
-            alt: 'Notebook with a sketch of a diamond and a pencil',
-            description: 'Effortlessly transform your rough sketches to exquisite jewelry designs.',
-            link: '/expert-mode/sketchToJwellery',
+            title: 'Astrology Jwellery',
+            imgSrc: astro,
+            alt: 'Find your perfect astrology jewelry with personalized astrology guidance.',
+            description: 'Find your perfect astrology jewelry with personalized astrology guidance.',
+            link: '/expert-mode/astrology',
         },
         {
             title: 'Outfit Matching Jewelry',
@@ -242,11 +243,16 @@ const SketchToDesign: React.FC = () => {
                     <div className="generator"></div>
                 </div>
             )}
-            <Navbar onContactClick={() => {
-                demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-            }} />
+            <Navbar
+                onContactClick={() => {
+                    demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                onFaqClick={() => {
+                    faqsRef.current?.scrollIntoView({ behavior: 'smooth' });
+                }}
+            />
             {/* Header Section */}
-            <div className="w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-2">
+            <div className="w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen shadow-[4px_4px_4px_rgba(0,0,0,0.1),-4px_-4px_4px_rgba(0,0,0,0.1),4px_-4px_4px_rgba(0,0,0,0.1),-4px_4px_4px_rgba(0,0,0,0.1)]">
                 <header className="py-6 text-center w-full">
                     <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
                         Sketch to Design
