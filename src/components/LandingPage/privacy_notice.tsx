@@ -1,10 +1,3 @@
-// const PrivacyNotice:React.FC = () =>{
-//     return(
-//         <h1>Privacy Notice</h1>
-//     )
-// }
-// export default PrivacyNotice;
-
 import React from "react";
 
 const Privacy: React.FC = () => {
@@ -25,7 +18,7 @@ const Privacy: React.FC = () => {
                 {/* Sections */}
                 <div className="mt-8 space-y-6 max-w-3xl w-full px-2">
                     <div>
-                        <h2 className="font-bold text-lightGolden text-[6vw] sm:text-[4vw] md:text-[1.5vw] text-left">
+                        <h2 className="font-bold text-lightGolden text-[5vw] sm:text-[3vw] md:text-[1.2vw] text-left">
                             Information We Collect
                         </h2>
                         <p className="text-customBlack/50 text-[3.5vw] sm:text-[2.2vw] md:text-[1vw] leading-relaxed text-left">
@@ -34,7 +27,7 @@ const Privacy: React.FC = () => {
                         </p>
                     </div>
                     <div>
-                        <h2 className="font-bold text-lightGolden text-[6vw] sm:text-[4vw] md:text-[1.5vw] text-left">
+                        <h2 className="font-bold text-lightGolden text-[5vw] sm:text-[3vw] md:text-[1.2vw] text-left">
                             How We Use Your Information
                         </h2>
                         <p className="text-customBlack/50 text-[3.5vw] sm:text-[2.2vw] md:text-[1vw] leading-relaxed text-left">
@@ -44,7 +37,7 @@ const Privacy: React.FC = () => {
                         </p>
                     </div>
                     <div>
-                        <h2 className="font-bold text-lightGolden text-[6vw] sm:text-[4vw] md:text-[1.5vw] text-left">
+                        <h2 className="font-bold text-lightGolden text-[5vw] sm:text-[3vw] md:text-[1.2vw] text-left">
                             Data Protection
                         </h2>
                         <p className="text-customBlack/50 text-[3.5vw] sm:text-[2.2vw] md:text-[1vw] leading-relaxed text-left">
@@ -53,7 +46,7 @@ const Privacy: React.FC = () => {
                         </p>
                     </div>
                     <div>
-                        <h2 className="font-bold text-lightGolden text-[6vw] sm:text-[4vw] md:text-[1.5vw] text-left">
+                        <h2 className="font-bold text-lightGolden text-[5vw] sm:text-[3vw] md:text-[1.2vw] text-left">
                             Contact Us
                         </h2>
                         <p className="text-customBlack/50 text-[3.5vw] sm:text-[2.2vw] md:text-[1vw] leading-relaxed text-left">
