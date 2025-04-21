@@ -60,7 +60,8 @@ const AstroSignature: React.FC = () => {
   const base_url = 'https://3t81apzou3.execute-api.ap-south-1.amazonaws.com/dev/get_astrology_collection';
 
   const demoSectionRef = useRef<HTMLDivElement>(null);
-
+  const faqsRef = useRef<HTMLDivElement>(null);
+  
   useEffect(() => {
     if (payload) {
       console.log("Fetching astrology data with payload:", payload);
@@ -257,9 +258,14 @@ const AstroSignature: React.FC = () => {
           <div className="generator"></div>
         </div>
       )}
-      <Navbar onContactClick={() => {
-        demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }} />
+      <Navbar
+        onContactClick={() => {
+          demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }}
+        onFaqClick={() => {
+          faqsRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }}
+      />
       <div className="w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen shadow-[4px_4px_4px_rgba(0,0,0,0.1),-4px_-4px_4px_rgba(0,0,0,0.1),4px_-4px_4px_rgba(0,0,0,0.1),-4px_4px_4px_rgba(0,0,0,0.1)]">
         <div className="header absolute top-0 left-0 right-0 p-4 sm:p-8 text-center z-20 mb-4">
           <h1 className="text-yellow-600 text-xl sm:text-2xl font-bold mb-2 lg:text-4xl">
