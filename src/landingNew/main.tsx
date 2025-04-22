@@ -11,6 +11,9 @@ import HeroSection from './HeroSection';
 import AssociationsAndCertifications from './AssociationsAndCertifications';
 import BookDemoSection from './BookADemo';
 import Faqs from './FAQs';
+import step1 from "/src/assets/step1.jpg";
+import step2 from "/src/assets/step2.png";
+import step3 from "/src/assets/step3.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -238,7 +241,8 @@ const LandingPage: React.FC = () => {
           {/* Card 1 */}
           <div className="flex flex-col items-center max-w-xs">
             <img
-              src="https://storage.googleapis.com/a1aa/image/eVXiQw98MZad6YcOtEjXYGNR3T6xQg3ko7c6mGL2P6c.jpg"
+              // src="https://storage.googleapis.com/a1aa/image/eVXiQw98MZad6YcOtEjXYGNR3T6xQg3ko7c6mGL2P6c.jpg"
+              src={step1}
               alt="Custom Designs"
               width={100}
               height={100}
@@ -255,7 +259,8 @@ const LandingPage: React.FC = () => {
           {/* Card 2 */}
           <div className="flex flex-col items-center max-w-xs">
             <img
-              src="https://storage.googleapis.com/a1aa/image/ShklPBgaQqD95r8-XiXf9_HLKSufnszVLGBwkklUlg8.jpg"
+              // src="https://storage.googleapis.com/a1aa/image/ShklPBgaQqD95r8-XiXf9_HLKSufnszVLGBwkklUlg8.jpg"
+              src={step2}
               alt="Interactive Design"
               width={100}
               height={100}
@@ -272,7 +277,8 @@ const LandingPage: React.FC = () => {
           {/* Card 3 */}
           <div className="flex flex-col items-center max-w-xs">
             <img
-              src="https://storage.googleapis.com/a1aa/image/0ZmeRP-t3G7iUN4BMUkj3ZYJIN2cv3xlxfVvu4e6lWI.jpg"
+              // src="https://storage.googleapis.com/a1aa/image/0ZmeRP-t3G7iUN4BMUkj3ZYJIN2cv3xlxfVvu4e6lWI.jpg"
+              src={step3}
               alt="Tailored Designs"
               width={100}
               height={100}
@@ -289,7 +295,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       <AssociationsAndCertifications />
-      
+
       <div ref={faqsRef}>
         <Faqs />
       </div>
@@ -348,8 +354,7 @@ const LandingPage: React.FC = () => {
               <h3 className="text-gray-800 font-bold mb-4 text-2xl font-custom">Company</h3>
               <ul className="space-y-2">
                 <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Home</Link></li>
-                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Our Work</Link></li>
-                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/catalog">AI Design</Link></li>
+                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/catalog">AI Designs</Link></li>
                 <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Pricing</Link></li>
                 <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/Contact-Us">Contact Us</Link></li>
                 <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/kinmitra_team">Our Team</Link></li>

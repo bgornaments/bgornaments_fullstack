@@ -1,16 +1,16 @@
 import React from "react";
-import colLogo1 from "/src/assets/colLogo1.png";
-import colLogo2 from "/src/assets/colLogo2.png";
-import colLogo3 from "/src/assets/colLogo3.png";
-import colLogo4 from "/src/assets/colLogo4.png";
-import colLogo5 from "/src/assets/colLogo5.png";
+// import colLogo1 from "/src/assets/colLogo1.png";
+// import colLogo2 from "/src/assets/colLogo2.png";
+// import colLogo3 from "/src/assets/colLogo3.png";
+// import colLogo4 from "/src/assets/colLogo4.png";
+// import colLogo5 from "/src/assets/colLogo5.png";
 import certImage from "/src/assets/cert.png";
 
 const AssociationsAndCertificate: React.FC = () => {
   return (
     <section>
       {/* Combined Logo Carousel */}
-      <div className="bg-[#fefaf2] flex flex-col justify-center items-center mt-10 px-4">
+      {/* <div className="bg-[#fefaf2] flex flex-col justify-center items-center mt-10 px-4">
         <h3 className="text-4xl sm:text-4xl md:text-5xl font-custom text-[#e0ae2a] mb-6 mt-12 text-center">
           Associations and Certifications
         </h3>
@@ -26,7 +26,7 @@ const AssociationsAndCertificate: React.FC = () => {
             }}
             className="flex items-center justify-center md:justify-start [&_li]:mx-6 [&_img]:max-w-none animate-infinite-scroll"
           >
-            {[colLogo1, colLogo2, colLogo3, colLogo4, colLogo5].map(
+            {[colLogo2, colLogo4, colLogo5].map(
               (logo, index) => (
                 <li key={index}>
                   <img
@@ -39,7 +39,7 @@ const AssociationsAndCertificate: React.FC = () => {
             )}
           </ul>
         </div>
-      </div>
+      </div> */}
 
       {/* Certificate Section */}
       <div className="bg-[#FFFBF6] py-20 px-4">
