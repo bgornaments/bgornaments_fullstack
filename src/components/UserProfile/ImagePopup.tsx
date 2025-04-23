@@ -11,7 +11,7 @@ const ImagePopup: React.FC<ImagePopupProps> = ({ images, onClose }) => {
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-5xl h-[80vh] flex flex-col">
         {/* Close Button */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">Uploaded Images</h2>
+          <h2 className="text-2xl font-bold">Your Images</h2>
           <button
             onClick={onClose}
             className="bg-red-500 text-white px-3 py-1 rounded-lg"
@@ -34,7 +34,7 @@ const ImagePopup: React.FC<ImagePopupProps> = ({ images, onClose }) => {
                 </div>
               ))
             ) : (
-              <p className="text-center col-span-full">No images found.</p>
+              <p className="text-center col-span-full text-2xl text-[#e0ae2a]">Fetching your images ....</p>
             )}
           </div>
         </div>

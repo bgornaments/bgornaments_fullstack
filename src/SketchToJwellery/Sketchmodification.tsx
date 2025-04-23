@@ -172,7 +172,7 @@ const SketchToDesign: React.FC = () => {
     };
 
     const saveGeneratedImages = async (imageUrls: string[]) => {
-        const cognitoUserId = localStorage.getItem('cognito_username'); // Retrieve user ID
+        const cognitoUserId = localStorage.getItem('cognito_username'); 
 
         if (!cognitoUserId) {
             console.error("Cognito User ID not found in local storage.");
