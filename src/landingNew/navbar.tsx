@@ -189,7 +189,6 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
             </Link>
           )}
 
-
           {user ? (
             <button
               onClick={() => {
