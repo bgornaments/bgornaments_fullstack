@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuthenticator } from "@aws-amplify/ui-react";
@@ -16,6 +16,18 @@ const HeroSection: React.FC = () => {
     checkSize();
     window.addEventListener("resize", checkSize);
     return () => window.removeEventListener("resize", checkSize);
+  }, []);
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      videoRef.current.play().catch((e) => {
+        console.warn('Autoplay failed:', e);
+      });
+    }
   }, []);
 
   const handleDesignStudioClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -50,6 +62,7 @@ const HeroSection: React.FC = () => {
         loop
         muted
         playsInline
+        preload="auto"
         className="absolute inset-0 w-full h-full object-cover filter brightness-[0.4] contrast-[1.1] saturate-[1.2] sepia-[0.1]"
         src={vid}
       />
@@ -66,8 +79,8 @@ const HeroSection: React.FC = () => {
           {/* {user && <span className="text-base italic ml-2">{user.signInDetails?.loginId}</span>} */}
         </p>
         <div className={`${isTinyScreen ? "flex flex-col items-center gap-2" : "space-x-4"}`}>
-          <button 
-            onClick={handleDesignStudioClick} 
+          <button
+            onClick={handleDesignStudioClick}
             className="bg-yellow-500 text-white px-5 py-2 rounded text-lg"
           >
             Try the Design Studio
