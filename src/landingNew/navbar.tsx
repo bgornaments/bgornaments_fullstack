@@ -93,15 +93,17 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
             <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
             <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Contact Us' ? 'scale-x-100' : 'scale-x-0'}`} />
           </button>
-          {/* <Link
-            to="/profile-page"
-            className={getLinkClass('Profile')}
-            onClick={() => setActiveLink('Profile')}
-          >
-            Profile
-            <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-            <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Pricing' ? 'scale-x-100' : 'scale-x-0'}`} />
-          </Link> */}
+          {user && (
+            <Link
+              to="/profile-page"
+              className={getLinkClass('Profile')}
+              onClick={() => setActiveLink('Profile')}
+            >
+              Profile
+              <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+              <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Pricing' ? 'scale-x-100' : 'scale-x-0'}`} />
+            </Link>
+          )}
         </div>
 
         {/* Login/Logout on right with right margin */}
@@ -173,6 +175,19 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
             Contact Us
             <span className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Contact Us' ? 'scale-x-100' : 'scale-x-0'}`} />
           </button>
+          {user && (
+            <Link
+              to="/profile-page"
+              className={`block text-lg relative ${activeLink === 'Profile' ? 'text-[#e0ae2a]' : ''}`}
+              onClick={() => {
+                setMenuOpen(false);
+                setActiveLink('Profile');
+              }}
+            >
+              Profile
+              <span className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Profile' ? 'scale-x-100' : 'scale-x-0'}`} />
+            </Link>
+          )}
 
           {user ? (
             <button

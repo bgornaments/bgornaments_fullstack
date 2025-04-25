@@ -1,52 +1,54 @@
-import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AIimages from "./components/AIimages.tsx";
-import JewelryForm from "./components/Basic/BasicForm.tsx";
-import Option from "./components/Basic/Option.tsx";
-import Modes from "./components/Basic/Modes.tsx";
-import Questions from "./components/LightningMode/Questions.tsx";
-import Login from "./components/Login.tsx";
-import { Authenticator } from "@aws-amplify/ui-react";
-import Catalogue from "./components/BrowseCatalogue/Catalogue.tsx";
-import DetailedImageView from "./components/BrowseCatalogue/DetailedImageView.tsx";
-import EditImageData from "./components/BrowseCatalogue/EditImageData.tsx";
-import LikedImages from "./components/BrowseCatalogue/LikedImages.tsx";
-import DashboardPage from "./components/Dashboards/Admin/DashboardPage.tsx";
-import OrderPage from "./components/Dashboards/Admin/OrderPage.tsx";
-import AdminLayout from "./components/Dashboards/Admin/AdminLayout.tsx";
-import Orders from "./components/BrowseCatalogue/Orders.tsx";
-import OrderDetailsPage from "./components/Dashboards/Admin/OrderDetailsPage.tsx";
-import CADPage from "./components/Dashboards/Admin/CADPage.tsx";
-import CADDetailsPage from "./components/Dashboards/Admin/CADDetailsPage.tsx";
-import ImageGrid from "./components/ImageManager/ImageGrid.tsx";
-import FilteredImageGrid from "./components/ImageManager/FilteredImageGrid.tsx";
-import ProModeChatUI from "./components/ProMode/chat.tsx";
-import ContextProvider from "./context/context.tsx";
-import ImgVar from "./components/ProMode/ImageVariation/imgVar.tsx";
-import SetGen from "./components/ProMode/SetGeneration/SetGen.tsx";
-import ProtectedRoute from "./ProtectedRoute";  // import the ProtectedRoute component
-import ExpertMode from "./components/ExpertMode/ExpertMode.tsx";
-import DemoForm from "./components/Contact/contactSAP.tsx";
-import UserProfile from "./components/UserProfile/UserProfile.tsx";
-import AstrologyForm from "./AstrologyFeature/AstrologyForm.tsx";
-import AstrologySignature from "./AstrologyFeature/AstrologySignature.tsx";
-import AstroJewelryApp from "./AstrologyFeature/images.tsx";
-import SketchToJwellery from "./SketchToJwellery/Sketch2Jwellery_landing.tsx";
-import SketchModification from "./SketchToJwellery/Sketchmodification.tsx";
-import MetadataEditor from "./components/BrowseCatalogue/MetadataEditor.tsx";
-import TermsAndConditions from "./components/LandingPage/terms_and_conditions.tsx";
-import PrivacyNotice from "./components/LandingPage/privacy_notice.tsx";
-import Landing from "./landingNew/main.tsx";
-import TeamComponent from "./landingNew/KinMitraTeam.tsx";
+import React from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import AIimages from './components/AIimages';
+import JewelryForm from './components/Basic/BasicForm';
+import Option from './components/Basic/Option';
+import Modes from './components/Basic/Modes';
+import Questions from './components/LightningMode/Questions';
+import Login from './components/Login';
+import { Authenticator } from '@aws-amplify/ui-react';
+import Catalogue from './components/BrowseCatalogue/Catalogue';
+import DetailedImageView from './components/BrowseCatalogue/DetailedImageView';
+import EditImageData from './components/BrowseCatalogue/EditImageData';
+import LikedImages from './components/BrowseCatalogue/LikedImages';
+import DashboardPage from './components/Dashboards/Admin/DashboardPage';
+import OrderPage from './components/Dashboards/Admin/OrderPage';
+import AdminLayout from './components/Dashboards/Admin/AdminLayout';
+import Orders from './components/BrowseCatalogue/Orders';
+import OrderDetailsPage from './components/Dashboards/Admin/OrderDetailsPage';
+import CADPage from './components/Dashboards/Admin/CADPage';
+import CADDetailsPage from './components/Dashboards/Admin/CADDetailsPage';
+import ImageGrid from './components/ImageManager/ImageGrid';
+import FilteredImageGrid from './components/ImageManager/FilteredImageGrid';
+import ProModeChatUI from './components/ProMode/chat';
+import ContextProvider from './context/context';
+import ImgVar from './components/ProMode/ImageVariation/imgVar';
+import SetGen from './components/ProMode/SetGeneration/SetGen';
+import ProtectedRoute from './ProtectedRoute';
+import ExpertMode from './components/ExpertMode/ExpertMode';
+import DemoForm from './components/Contact/contactSAP';
+import UserProfile from './components/UserProfile/UserProfile';
+import AstrologyForm from './AstrologyFeature/AstrologyForm';
+import AstrologySignature from './AstrologyFeature/AstrologySignature';
+import AstroJewelryApp from './AstrologyFeature/images';
+import SketchToJwellery from './SketchToJwellery/Sketch2Jwellery_landing';
+import SketchModification from './SketchToJwellery/Sketchmodification';
+import MetadataEditor from './components/BrowseCatalogue/MetadataEditor';
+import TermsAndConditions from './components/LandingPage/terms_and_conditions';
+import PrivacyNotice from './components/LandingPage/privacy_notice';
+import Landing from './landingNew/main';
+import TeamComponent from './landingNew/KinMitraTeam';
+import ErrorBoundary from './ErrorBoundary'; // Import ErrorBoundary
+import NotFoundPage from './NotFoundPage'; // Import NotFoundPage
 
 const router = createBrowserRouter([
-  { path: "/", element: <Landing /> },
-  { path: "/login", element: <Login /> },
-  { path: "/Contact-Us", element: <DemoForm/> },
-  { path: "/terms-and-conditions", element: <TermsAndConditions/> },
-  { path: "/privacy-Notice", element: <PrivacyNotice/> },
+  { path: '/', element: <Landing /> },
+  { path: '/login', element: <Login /> },
+  { path: '/Contact-Us', element: <DemoForm /> },
+  { path: '/terms-and-conditions', element: <TermsAndConditions /> },
+  { path: '/privacy-Notice', element: <PrivacyNotice /> },
   {
-    path: "/orders",
+    path: '/orders',
     element: (
       <ProtectedRoute>
         <Orders />
@@ -54,7 +56,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/option",
+    path: '/option',
     element: (
       <ProtectedRoute>
         <Option />
@@ -62,7 +64,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/modes",
+    path: '/modes',
     element: (
       <ProtectedRoute>
         <Modes />
@@ -70,13 +72,11 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/kinmitra_team",
-    element: (
-        <TeamComponent />
-    ),
+    path: '/kinmitra_team',
+    element: <TeamComponent />,
   },
   {
-    path: "/form",
+    path: '/form',
     element: (
       <ProtectedRoute>
         <JewelryForm />
@@ -84,7 +84,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/lightningMode",
+    path: '/lightningMode',
     element: (
       <ProtectedRoute>
         <Questions />
@@ -92,7 +92,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/aiimages",
+    path: '/aiimages',
     element: (
       <ProtectedRoute>
         <AIimages />
@@ -100,7 +100,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/catalog",
+    path: '/catalog',
     element: (
       <ProtectedRoute>
         <Catalogue />
@@ -108,7 +108,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/catalog/likedimages",
+    path: '/catalog/likedimages',
     element: (
       <ProtectedRoute>
         <LikedImages />
@@ -116,7 +116,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/catalog/:url",
+    path: '/catalog/:url',
     element: (
       <ProtectedRoute>
         <DetailedImageView />
@@ -124,7 +124,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/edit",
+    path: '/edit',
     element: (
       <ProtectedRoute>
         <EditImageData />
@@ -132,7 +132,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/metadata-editor",
+    path: '/metadata-editor',
     element: (
       <ProtectedRoute>
         <MetadataEditor />
@@ -140,7 +140,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/profile-page",
+    path: '/profile-page',
     element: (
       <ProtectedRoute>
         <UserProfile />
@@ -148,20 +148,20 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/admin/*",
+    path: '/admin/*',
     element: (
       <ProtectedRoute>
         <AdminLayout />
       </ProtectedRoute>
     ),
     children: [
-      { path: "", element: <DashboardPage /> },
-      { path: "orders", element: <OrderPage /> },
-      { path: "cad", element: <CADPage /> },
+      { path: '', element: <DashboardPage /> },
+      { path: 'orders', element: <OrderPage /> },
+      { path: 'cad', element: <CADPage /> },
     ],
   },
   {
-    path: "/order/:orderID",
+    path: '/order/:orderID',
     element: (
       <ProtectedRoute>
         <OrderDetailsPage />
@@ -169,7 +169,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/cad/:cadId",
+    path: '/cad/:cadId',
     element: (
       <ProtectedRoute>
         <CADDetailsPage />
@@ -177,7 +177,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/imageManager",
+    path: '/imageManager',
     element: (
       <ProtectedRoute>
         <ImageGrid />
@@ -185,7 +185,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/filteredImages",
+    path: '/filteredImages',
     element: (
       <ProtectedRoute>
         <FilteredImageGrid />
@@ -193,7 +193,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/promode",
+    path: '/promode',
     element: (
       <ProtectedRoute>
         <ContextProvider>
@@ -203,7 +203,7 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "ImageVariation",
+        path: 'ImageVariation',
         element: (
           <ProtectedRoute>
             <ImgVar />
@@ -211,7 +211,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "SetGeneration",
+        path: 'SetGeneration',
         element: (
           <ProtectedRoute>
             <SetGen />
@@ -219,9 +219,9 @@ const router = createBrowserRouter([
         ),
       },
     ],
-  }, 
+  },
   {
-    path: "/expert-mode",
+    path: '/expert-mode',
     element: (
       <ProtectedRoute>
         <ExpertMode />
@@ -229,7 +229,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/expert-mode/set-generation",
+    path: '/expert-mode/set-generation',
     element: (
       <ProtectedRoute>
         <SetGen />
@@ -237,7 +237,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/expert-mode/image-variation",
+    path: '/expert-mode/image-variation',
     element: (
       <ProtectedRoute>
         <ImgVar />
@@ -245,23 +245,23 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/expert-mode/astrology",
+    path: '/expert-mode/astrology',
     element: (
       <ProtectedRoute>
         <AstrologyForm />
       </ProtectedRoute>
     ),
-  }, 
+  },
   {
-    path: "/expert-mode/astrology/astroSign",
+    path: '/expert-mode/astrology/astroSign',
     element: (
       <ProtectedRoute>
         <AstrologySignature />
       </ProtectedRoute>
     ),
-  }, 
+  },
   {
-    path: "/expert-mode/astrology/astroSign/astro-images",
+    path: '/expert-mode/astrology/astroSign/astro-images',
     element: (
       <ProtectedRoute>
         <AstroJewelryApp />
@@ -269,27 +269,35 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/expert-mode/sketchToJwellery",
+    path: '/expert-mode/sketchToJwellery',
     element: (
       <ProtectedRoute>
         <SketchToJwellery />
       </ProtectedRoute>
     ),
-  }, 
+  },
   {
-    path: "/expert-mode/sketchToJwellery/sketchModification",
+    path: '/expert-mode/sketchToJwellery/sketchModification',
     element: (
       <ProtectedRoute>
         <SketchModification />
       </ProtectedRoute>
     ),
-  }, 
+  },
+  {
+    // Catch-all route for navigation errors (404)
+    path: '*',
+    element: <NotFoundPage />,
+    errorElement: <NotFoundPage />, // Handle navigation errors
+  },
 ]);
 
 const App: React.FC = () => {
   return (
     <Authenticator.Provider>
-      <RouterProvider router={router} />
+      <ErrorBoundary>
+        <RouterProvider router={router} />
+      </ErrorBoundary>
     </Authenticator.Provider>
   );
 };
