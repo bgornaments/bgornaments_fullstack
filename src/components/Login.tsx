@@ -43,19 +43,19 @@
 //         try {
 //           const session = await fetchAuthSession({ forceRefresh: true });
 //           console.log("Full session object:", session);
-    
+
 //           if (session?.tokens?.idToken?.payload) {
 //             const payload = session.tokens.idToken.payload;
 //             const cognitoUsername = payload["cognito:username"];
 //             console.log("Cognito Username:", cognitoUsername);
-    
+
 //             // API call for trial status
 //             const url = `https://4ouksse92i.execute-api.us-east-1.amazonaws.com/default/checkTrialStatus?cognito_username=${cognitoUsername}`;
 //             const response = await fetch(url, { method: "GET", headers: { "Content-Type": "application/json" } });
 //             const responseData = await response.json();
-            
+
 //             console.log("API Response Data:", responseData);  // Debugging line to check response
-    
+
 //             if (response.ok) {
 //               const { trial_start_date, trial_end_date, trial_status, cognito_username } = responseData.data;
 //               // Persist session data in sessionStorage
@@ -63,16 +63,16 @@
 //               localStorage.setItem("trial_status", trial_status.toLowerCase());
 //               localStorage.setItem("trial_start_date", trial_start_date);
 //               localStorage.setItem("trial_end_date", trial_end_date);
-    
+
 //               const trialDaysLeft = Math.max(
 //                 0,
 //                 Math.ceil((new Date(trial_end_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
 //               );
 //               localStorage.setItem("trial_days_left", trialDaysLeft.toString());
-    
+
 //               setMessage("Trial status retrieved successfully.");
 //               setMessageType("success");
-    
+
 //               if (trialDaysLeft > 0) {
 //                 alert(`${trialDaysLeft} days left in your trial version.`);
 //               } else {
@@ -113,7 +113,7 @@
 //         }
 //       }
 //     };
-  
+
 //     fetchSession();
 //   }, [user, navigate]);
 
@@ -175,8 +175,8 @@ const formFields = {
   signUp: {
     email: { order: 1, placeholder: "Enter your email", label: "Email", isRequired: true },
     phone_number: { order: 2, placeholder: "Enter your phone", label: "Phone", isRequired: true },
-    pan: { order: 3, placeholder: "Enter your PAN number", label: "PAN", isRequired: true },
-    gst: { order: 4, placeholder: "Enter your GST number", label: "GST", isRequired: true },
+    // pan: { order: 3, placeholder: "Enter your PAN number", label: "PAN", isRequired: true },
+    // gst: { order: 4, placeholder: "Enter your GST number", label: "GST", isRequired: true },
     password: { order: 5, placeholder: "Enter your password", label: "Password", isRequired: true },
     confirm_password: { order: 6, placeholder: "Confirm password", label: "Confirm Password", isRequired: true },
   },

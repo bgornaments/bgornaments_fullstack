@@ -69,7 +69,7 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
             <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Home' ? 'scale-x-100' : 'scale-x-0'}`} />
           </Link>
           <Link
-            to="/"
+            to="/pricing"
             className={getLinkClass('Pricing')}
             onClick={() => setActiveLink('Pricing')}
           >
@@ -96,12 +96,12 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
           {user && (
             <Link
               to="/profile-page"
-              className={getLinkClass('Profile')}
-              onClick={() => setActiveLink('Profile')}
+              className={getLinkClass('User Profile')}
+              onClick={() => setActiveLink('User Profile')}
             >
-              Profile
+              User Profile
               <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-              <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Pricing' ? 'scale-x-100' : 'scale-x-0'}`} />
+              <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'User Profile' ? 'scale-x-100' : 'scale-x-0'}`} />
             </Link>
           )}
         </div>
@@ -178,14 +178,14 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
           {user && (
             <Link
               to="/profile-page"
-              className={`block text-lg relative ${activeLink === 'Profile' ? 'text-[#e0ae2a]' : ''}`}
+              className={`block text-lg relative ${activeLink === 'User Profile' ? 'text-[#e0ae2a]' : ''}`}
               onClick={() => {
                 setMenuOpen(false);
-                setActiveLink('Profile');
+                setActiveLink('User Profile');
               }}
             >
-              Profile
-              <span className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Profile' ? 'scale-x-100' : 'scale-x-0'}`} />
+              User Profile
+              <span className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'User Profile' ? 'scale-x-100' : 'scale-x-0'}`} />
             </Link>
           )}
 
