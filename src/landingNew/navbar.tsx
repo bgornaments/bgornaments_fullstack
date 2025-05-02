@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import { Menu, X } from 'lucide-react';
-import logo from '/src/assets/image.png';
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+import { Menu, X } from "lucide-react";
+import logo from "/src/assets/image.png";
+import Swal from "sweetalert2";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 type NavbarProps = {
   onContactClick: () => void;
@@ -13,100 +15,208 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
-  const [activeLink, setActiveLink] = useState('');
+  const [activeLink, setActiveLink] = useState("");
 
-  // Debug: Log activeLink changes
-  useEffect(() => {
-    console.log('Active link:', activeLink);
-  }, [activeLink]);
-
-  // Update active link based on current path
   useEffect(() => {
     const path = location.pathname;
-    if (path === '/') {
-      setActiveLink('Home');
-    } else if (path.includes('pricing')) {
-      setActiveLink('Pricing');
+    if (path === "/") {
+      setActiveLink("Home");
+    } else if (path.includes("pricing")) {
+      setActiveLink("Pricing");
     }
   }, [location]);
 
   const handleContactClick = () => {
     setMenuOpen(false);
-    setActiveLink('Contact Us');
+    setActiveLink("Contact Us");
     onContactClick();
   };
 
   const handleFaqClick = () => {
     setMenuOpen(false);
-    setActiveLink('FAQs');
+    setActiveLink("FAQs");
     onFaqClick();
   };
 
+  const handleStartTrial = async () => {
+    if (!user) {
+      Swal.fire({
+        title: "Please Log In",
+        text: "You need to be logged in to start a trial.",
+        icon: "warning",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
+
+    const result = await Swal.fire({
+      title: "Start Trial",
+      text: "Do you want to start your free trial?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const session = await fetchAuthSession({ forceRefresh: true });
+        const cognitoUsername = session?.tokens?.idToken?.payload["cognito:username"];
+
+        if (!cognitoUsername) {
+          Swal.fire({
+            title: "Error",
+            text: "Unable to retrieve user information.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+
+        const trialStartDate = new Date().toISOString();
+        const trialEndDate = new Date();
+        trialEndDate.setDate(trialEndDate.getDate() + 10);
+        const trialEndDateString = trialEndDate.toISOString();
+
+        const trialData = {
+          cognito_username: cognitoUsername,
+          trial_start_date: trialStartDate,
+          trial_end_date: trialEndDateString,
+          trial_status: "True",
+        };
+
+        const response = await fetch(
+          "https://lhn7iin1ia.execute-api.us-east-1.amazonaws.com/default/DynamoEntry",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(trialData),
+          }
+        );
+
+        const responseData = await response.json();
+
+        if (response.ok) {
+          Swal.fire({
+            title: "Success",
+            text: responseData.message || "Trial period started successfully.",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: responseData.message || "Failed to start trial period. Please try again.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      } catch (err) {
+        console.error("Error starting trial:", err);
+        Swal.fire({
+          title: "Error",
+          text: "An error occurred while starting the trial.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    }
+  };
+
   const getLinkClass = (linkName: string) => {
-    return `text-xl relative group ${activeLink === linkName ? 'text-[#e0ae2a]' : ''
-      }`;
+    return `text-xl relative group ${activeLink === linkName ? "text-[#e0ae2a]" : ""}`;
   };
 
   return (
     <header className="w-full border-b-2 border-gray-200 px-4 py-4 md:py-6 text-xl relative">
       <div className="flex justify-between items-center relative">
-        {/* Logo with left margin on md and above */}
+        {/* Logo */}
         <div className="flex items-center md:ml-8">
           <Link to="/">
             <img src={logo} alt="Logo" className="w-32 md:w-40" />
           </Link>
         </div>
 
-        {/* Centered Menu Links on large screens */}
+        {/* Centered Menu Links */}
         <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-6 items-center">
           <Link
             to="/"
-            className={getLinkClass('Home')}
-            onClick={() => setActiveLink('Home')}
+            className={getLinkClass("Home")}
+            onClick={() => setActiveLink("Home")}
           >
             Home
             <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-            <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Home' ? 'scale-x-100' : 'scale-x-0'}`} />
+            <span
+              className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${
+                activeLink === "Home" ? "scale-x-100" : "scale-x-0"
+              }`}
+            />
           </Link>
           <Link
             to="/pricing"
-            className={getLinkClass('Pricing')}
-            onClick={() => setActiveLink('Pricing')}
+            className={getLinkClass("Pricing")}
+            onClick={() => setActiveLink("Pricing")}
           >
             Pricing
             <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-            <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Pricing' ? 'scale-x-100' : 'scale-x-0'}`} />
+            <span
+              className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${
+                activeLink === "Pricing" ? "scale-x-100" : "scale-x-0"
+              }`}
+            />
           </Link>
-          <button
-            onClick={handleFaqClick}
-            className={getLinkClass('FAQs')}
-          >
+          <button onClick={handleFaqClick} className={getLinkClass("FAQs")}>
             FAQs
             <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-            <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'FAQs' ? 'scale-x-100' : 'scale-x-0'}`} />
+            <span
+              className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${
+                activeLink === "FAQs" ? "scale-x-100" : "scale-x-0"
+              }`}
+            />
           </button>
-          <button
-            onClick={handleContactClick}
-            className={getLinkClass('Contact Us')}
-          >
+          <button onClick={handleContactClick} className={getLinkClass("Contact Us")}>
             Contact Us
             <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-            <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Contact Us' ? 'scale-x-100' : 'scale-x-0'}`} />
+            <span
+              className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${
+                activeLink === "Contact Us" ? "scale-x-100" : "scale-x-0"
+              }`}
+            />
           </button>
           {user && (
             <Link
               to="/profile-page"
-              className={getLinkClass('Profile')}
-              onClick={() => setActiveLink('Profile')}
+              className={getLinkClass("Profile")}
+              onClick={() => setActiveLink("Profile")}
             >
               Profile
               <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-              <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Pricing' ? 'scale-x-100' : 'scale-x-0'}`} />
+              <span
+                className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${
+                  activeLink === "Profile" ? "scale-x-100" : "scale-x-0"
+                }`}
+              />
             </Link>
+          )}
+          {user && (
+            <button
+              onClick={handleStartTrial}
+              className={getLinkClass("Start Trial")}
+            >
+              Start Trial
+              <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+              <span
+                className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${
+                  activeLink === "Start Trial" ? "scale-x-100" : "scale-x-0"
+                }`}
+              />
+            </button>
           )}
         </div>
 
-        {/* Login/Logout on right with right margin */}
+        {/* Login/Logout */}
         <div className="hidden md:flex items-center mr-8">
           {user ? (
             <button
@@ -141,54 +251,95 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
         <div className="absolute right-4 top-full mt-2 bg-white shadow-lg border rounded-lg w-56 py-4 px-4 space-y-3 z-50">
           <Link
             to="/"
-            className={`block text-lg relative ${activeLink === 'Home' ? 'text-[#e0ae2a]' : ''}`}
+            className={`block text-lg relative ${activeLink === "Home" ? "text-[#e0ae2a]" : ""}`}
             onClick={() => {
               setMenuOpen(false);
-              setActiveLink('Home');
+              setActiveLink("Home");
             }}
           >
             Home
-            <span className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Home' ? 'scale-x-100' : 'scale-x-0'}`} />
+            <span
+              className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${
+                activeLink === "Home" ? "scale-x-100" : "scale-x-0"
+              }`}
+            />
           </Link>
           <Link
             to="/pricing"
-            className={`block text-lg relative ${activeLink === 'Pricing' ? 'text-[#e0ae2a]' : ''}`}
+            className={`block text-lg relative ${activeLink === "Pricing" ? "text-[#e0ae2a]" : ""}`}
             onClick={() => {
               setMenuOpen(false);
-              setActiveLink('Pricing');
+              setActiveLink("Pricing");
             }}
           >
             Pricing
-            <span className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Pricing' ? 'scale-x-100' : 'scale-x-0'}`} />
+            <span
+              className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${
+                activeLink === "Pricing" ? "scale-x-100" : "scale-x-0"
+              }`}
+            />
           </Link>
           <button
             onClick={handleFaqClick}
-            className={`block text-lg w-full text-left relative ${activeLink === 'FAQs' ? 'text-[#e0ae2a]' : ''}`}
+            className={`block text-lg w-full text-left relative ${
+              activeLink === "FAQs" ? "text-[#e0ae2a]" : ""
+            }`}
           >
             FAQs
-            <span className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'FAQs' ? 'scale-x-100' : 'scale-x-0'}`} />
+            <span
+              className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${
+                activeLink === "FAQs" ? "scale-x-100" : "scale-x-0"
+              }`}
+            />
           </button>
           <button
             onClick={handleContactClick}
-            className={`block text-lg w-full text-left relative ${activeLink === 'Contact Us' ? 'text-[#e0ae2a]' : ''}`}
+            className={`block text-lg w-full text-left relative ${
+              activeLink === "Contact Us" ? "text-[#e0ae2a]" : ""
+            }`}
           >
             Contact Us
-            <span className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Contact Us' ? 'scale-x-100' : 'scale-x-0'}`} />
+            <span
+              className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${
+                activeLink === "Contact Us" ? "scale-x-100" : "scale-x-0"
+              }`}
+            />
           </button>
           {user && (
             <Link
               to="/profile-page"
-              className={`block text-lg relative ${activeLink === 'Profile' ? 'text-[#e0ae2a]' : ''}`}
+              className={`block text-lg relative ${activeLink === "Profile" ? "text-[#e0ae2a]" : ""}`}
               onClick={() => {
                 setMenuOpen(false);
-                setActiveLink('Profile');
+                setActiveLink("Profile");
               }}
             >
               Profile
-              <span className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'Profile' ? 'scale-x-100' : 'scale-x-0'}`} />
+              <span
+                className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${
+                  activeLink === "Profile" ? "scale-x-100" : "scale-x-0"
+                }`}
+              />
             </Link>
           )}
-
+          {user && (
+            <button
+              onClick={() => {
+                setMenuOpen(false);
+                handleStartTrial();
+              }}
+              className={`block text-lg w-full text-left relative ${
+                activeLink === "Start Trial" ? "text-[#e0ae2a]" : ""
+              }`}
+            >
+              Start Trial
+              <span
+                className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${
+                  activeLink === "Start Trial" ? "scale-x-100" : "scale-x-0"
+                }`}
+              />
+            </button>
+          )}
           {user ? (
             <button
               onClick={() => {
