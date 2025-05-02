@@ -48,7 +48,7 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
       });
       return;
     }
-
+  
     const result = await Swal.fire({
       title: "Start Trial",
       text: "Do you want to start your free trial?",
@@ -57,34 +57,42 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
       confirmButtonText: "Yes",
       cancelButtonText: "No",
     });
-
+  
     if (result.isConfirmed) {
+      Swal.fire({
+        title: "Verifying Trial Status",
+        html: "Please wait while we verify your trial eligibility...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+  
       try {
         const session = await fetchAuthSession({ forceRefresh: true });
         const cognitoUsername = session?.tokens?.idToken?.payload["cognito:username"];
-
+  
         if (!cognitoUsername) {
           Swal.fire({
             title: "Error",
             text: "Unable to retrieve user information.",
             icon: "error",
-            confirmButtonText: "OK",
           });
           return;
         }
-
+  
         const trialStartDate = new Date().toISOString();
         const trialEndDate = new Date();
         trialEndDate.setDate(trialEndDate.getDate() + 10);
         const trialEndDateString = trialEndDate.toISOString();
-
+  
         const trialData = {
           cognito_username: cognitoUsername,
           trial_start_date: trialStartDate,
           trial_end_date: trialEndDateString,
           trial_status: "True",
         };
-
+  
         const response = await fetch(
           "https://lhn7iin1ia.execute-api.us-east-1.amazonaws.com/default/DynamoEntry",
           {
@@ -95,35 +103,33 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
             body: JSON.stringify(trialData),
           }
         );
-
+  
         const responseData = await response.json();
-
+        Swal.close();
+  
         if (response.ok) {
           Swal.fire({
-            title: "Success",
-            text: responseData.message || "Trial period started successfully.",
+            title: "Trial Activated",
+            text: responseData.message || "Your free trial has been successfully started.",
             icon: "success",
-            confirmButtonText: "OK",
           });
         } else {
           Swal.fire({
-            title: "Error",
-            text: responseData.message || "Failed to start trial period. Please try again.",
-            icon: "error",
-            confirmButtonText: "OK",
+            title: "Trial Status",
+            text: "You have already activated your trial period.",
+            icon: "info",
           });
         }
-      } catch (err) {
-        console.error("Error starting trial:", err);
+      } catch (error) {
+        console.error("Trial start error:", error);
         Swal.fire({
           title: "Error",
-          text: "An error occurred while starting the trial.",
+          text: "Something went wrong while starting your trial. Please try again later.",
           icon: "error",
-          confirmButtonText: "OK",
         });
       }
     }
-  };
+  };  
 
   const getLinkClass = (linkName: string) => {
     return `text-xl relative group ${activeLink === linkName ? "text-[#e0ae2a]" : ""}`;
@@ -205,7 +211,7 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
               onClick={handleStartTrial}
               className={getLinkClass("Start Trial")}
             >
-              Start Trial
+              Free Trial
               <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
               <span
                 className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${
@@ -332,7 +338,7 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
                 activeLink === "Start Trial" ? "text-[#e0ae2a]" : ""
               }`}
             >
-              Start Trial
+              Free Trial
               <span
                 className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${
                   activeLink === "Start Trial" ? "scale-x-100" : "scale-x-0"
