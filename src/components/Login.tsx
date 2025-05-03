@@ -183,7 +183,7 @@ const formFields = {
 };
 
 const Login: React.FC<LoginProps> = ({ children }) => {
-  const { user } = useAuthenticator();
+  const { route, user } = useAuthenticator();
   const navigate = useNavigate();
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<"success" | "error" | "warn" | null>(null);
@@ -197,6 +197,7 @@ const Login: React.FC<LoginProps> = ({ children }) => {
     },
   };
 
+  // Handle session fetch and trial status check
   useEffect(() => {
     const fetchSession = async () => {
       if (user) {
@@ -206,44 +207,34 @@ const Login: React.FC<LoginProps> = ({ children }) => {
 
           if (session?.tokens?.idToken?.payload) {
             const payload = session.tokens.idToken.payload;
+            console.log("Parsed ID Token Payload:", payload);
+
             const cognitoUsername = payload["cognito:username"];
             console.log("Cognito Username:", cognitoUsername);
 
-            // API call for trial status
+            // Check trial status
             const url = `https://4ouksse92i.execute-api.us-east-1.amazonaws.com/default/checkTrialStatus?cognito_username=${cognitoUsername}`;
-            const response = await fetch(url, { method: "GET", headers: { "Content-Type": "application/json" } });
+            const response = await fetch(url, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+
             const responseData = await response.json();
+            console.log("GET request backend response:", responseData);
 
-            console.log("API Response Data:", responseData);  // Debugging line to check response
-
-            if (response.ok) {
-              const { trial_start_date, trial_end_date, trial_status, cognito_username } = responseData.data;
-              // Persist session data in localStorage
-              localStorage.setItem("cognito_username", cognito_username);
-              localStorage.setItem("trial_status", trial_status.toLowerCase());
-              localStorage.setItem("trial_start_date", trial_start_date);
-              localStorage.setItem("trial_end_date", trial_end_date);
-
-              const trialDaysLeft = Math.max(
-                0,
-                Math.ceil((new Date(trial_end_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
-              );
-              localStorage.setItem("trial_days_left", trialDaysLeft.toString());
-
-              setMessage("Trial status retrieved successfully.");
+            if (response.ok && responseData.trial_exists) {
+              // Trial exists, mark as done
+              setMessage("Trial is already active.");
               setMessageType("success");
-
-              if (trialDaysLeft > 0) {
-                alert(`${trialDaysLeft} days left in your trial version.`);
-              } else {
-                alert("Your trial version has expired.");
-              }
             } else {
-              setMessage(responseData.message || "Failed to retrieve trial status.");
-              setMessageType("error");
+              // Trial doesn't exist, do nothing
+              setMessage("No active trial found.");
+              setMessageType("warn");
             }
           } else {
-            setMessage("ID Token payload is unavailable in the session.");
+            setMessage("ID Token payload is not available in the session.");
             setMessageType("error");
           }
         } catch (err) {
@@ -262,50 +253,12 @@ const Login: React.FC<LoginProps> = ({ children }) => {
   }, [user]);
 
   useEffect(() => {
-    const fetchSession = async () => {
-      if (user) {
-        const redirectTo = sessionStorage.getItem("redirectTo");
-        if (redirectTo) {
-          sessionStorage.removeItem("redirectTo"); // Clear the redirect path after use
-          navigate(redirectTo);
-        } else {
-          navigate("/"); // Default fallback
-        }
-      }
-    };
-
-    fetchSession();
-  }, [user, navigate]);
-
-  // Ensure localStorage is cleared when all tabs are closed
-  useEffect(() => {
-    const onTabClose = () => {
-      const otherTabs = localStorage.getItem("openTabsCount");
-      if (otherTabs === "0") {
-        // Clear localStorage when all tabs are closed
-        localStorage.clear();
-      }
-    };
-
-    const incrementTabCount = () => {
-      const count = localStorage.getItem("openTabsCount");
-      localStorage.setItem("openTabsCount", (parseInt(count || "1") + 1).toString());
-    };
-
-    const decrementTabCount = () => {
-      const count = localStorage.getItem("openTabsCount");
-      localStorage.setItem("openTabsCount", (parseInt(count || "0") - 1).toString());
-    };
-
-    window.addEventListener("beforeunload", onTabClose);
-    incrementTabCount();
-
-    // Cleanup on tab close
-    return () => {
-      decrementTabCount();
-      window.removeEventListener("beforeunload", onTabClose);
-    };
-  }, []);
+    if (route === "authenticated") {
+      const redirectPath = localStorage.getItem("redirectPath") || "/";
+      localStorage.removeItem("redirectPath");
+      navigate(redirectPath);
+    }
+  }, [route, navigate]);
 
   const messageStyles = {
     success: "bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4",
@@ -326,7 +279,11 @@ const Login: React.FC<LoginProps> = ({ children }) => {
           <Authenticator formFields={formFields}>
             {({ signOut, user }) => (
               <div>
-                {message && <div className={messageStyles[messageType || "success"]}>{message}</div>}
+                {message && (
+                  <div className={messageStyles[messageType || "success"]}>
+                    {message}
+                  </div>
+                )}
                 {user ? (
                   <div>
                     {children}
