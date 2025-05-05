@@ -13,8 +13,14 @@ const Faqs: React.FC = () => {
   };
 
   const faqData = [
-    { question: "What is KinMitra?", answer: "KinMitra is a platform designed for jewellery designers to easily create personalized designs." },
-    { question: "How can I sign up?", answer: "Click on the Sign Up button on the homepage and follow the steps to create your account." },
+    { question: "What is KinMitra?", answer: "KinMitra is an AI-powered platform that helps you design personalized jewelry based on your client's style and preferences — all through a simple and interactive process." },
+    // { question: "How can I sign up?", answer: "Click on the Sign Up button on the homepage and follow the steps to create your account." },
+    { question: "Is KinMitra free to use?", answer: "You can start with a 3-day free trial to explore our design features and see what KinMitra can do for you." },
+
+    { question: "How do I activate the free trial?", answer: "Click the 'Free Trial' button in the navigation bar. If you're not logged in, you’ll be prompted to log in or sign up first." },
+    { question: "What happens after the 3-day trial ends?", answer: "After the trial, access to KinMitra may be limited. Join the waitlist to stay informed, request extended access, and get early feature updates." },
+    { question: "Why should I join the waitlist?", answer: "Joining the waitlist helps you stay connected and ensures you don’t miss early feature launches, extended access opportunities, or pricing updates." },
+    { question: "Can I join the waitlist during my trial?", answer: "Yes! You can join at any time — during or after the trial. Just submit 'Join the Waitlist' form on the website." }
   ];
 
   return (
@@ -36,9 +42,8 @@ const Faqs: React.FC = () => {
             >
               <span className="text-lg font-semibold">{faq.question}</span>
               <svg
-                className={`w-5 h-5 text-gray-700 transition-transform duration-300 ${
-                  openIndex === index ? "rotate-180" : ""
-                }`}
+                className={`w-5 h-5 text-gray-700 transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""
+                  }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

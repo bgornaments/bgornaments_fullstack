@@ -74,12 +74,21 @@ const BookDemoSection: React.FC = () => {
                 <div className="flex flex-col md:flex-row overflow-hidden">
                     {/* Left Panel */}
                     <div className="md:w-1/2 bg-[#F8F8F8] p-6 space-y-4">
-                        <h3 className="font-custom text-5xl text-[#e0ae2a] mb-4">Book a Demo</h3>
-                        <p className="text-lg text-gray-700 mb-4">Book a free demo to explore features tailored to you. <br />Get expert guidance.</p>
+                        <h3 className="font-custom text-5xl text-[#e0ae2a] mt-4 mb-6">Join the Waitlist</h3>
+                        {/* <p className="text-lg text-gray-700 mb-4">Book a free demo to explore features tailored to you. <br />Get expert guidance.</p> */}
                         <div>
-                            <p className='text-lg mt-4 mb-4'>📞 +91 (835) 608-5861</p>
-                            <p className='text-lg mt-4 mb-4'>✉️ ceo@kinmitra.com</p>
-                            <div className="flex space-x-4 mt-4 text-xl mt-4">
+                            <p className="text-lg text-gray-700 mb-10">
+                                Loved KinMitra during trial? You’re Almost There!<br />
+                                <span className="block mt-5">👉 <strong>Join the Waitlist for:</strong></span>
+                                <ul className="list-disc pl-6 mt-2">
+                                    <li className="mb-2">🚀 <strong>Priority Access</strong> to Upcoming Features</li>
+                                    <li className="mb-2">📝 Request Extended Access to KinMitra</li>
+                                    <li className="mb-2">💰 <strong>Updates on Pricing!</strong></li>
+                                </ul>
+                            </p>
+                            {/* <p className='text-lg mt-4 mb-4'>📞 +91 (835) 608-5861</p>
+                            <p className='text-lg mt-4 mb-4'>✉️ ceo@kinmitra.com</p> */}
+                            <div className="flex space-x-4 mt-4 text-xl mb-4">
                                 <a className="text-gray-600 hover:text-gray-800" href="https://www.facebook.com/profile.php?id=61574416178019" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
                                 <a className="text-gray-600 hover:text-gray-800" href="https://twitter.com" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
                                 <a className="text-gray-600 hover:text-gray-800" href="https://instagram.com/kinmitra_com" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
@@ -167,7 +176,7 @@ const BookDemoSection: React.FC = () => {
                                         type="submit"
                                         className="px-6 py-2 rounded text-base font-semibold transition-all duration-300 bg-yellow-500 text-white hover:bg-yellow-600"
                                     >
-                                        Send Message
+                                        Submit
                                     </button>
                                 )}
                             </div>

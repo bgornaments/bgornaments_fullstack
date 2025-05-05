@@ -159,7 +159,7 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
                 }`}
             />
           </Link>
-          <Link
+          {/* <Link
             to="/pricing"
             className={getLinkClass("Pricing")}
             onClick={() => setActiveLink("Pricing")}
@@ -170,7 +170,7 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
               className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === "Pricing" ? "scale-x-100" : "scale-x-0"
                 }`}
             />
-          </Link>
+          </Link> */}
           <button onClick={handleFaqClick} className={getLinkClass("FAQs")}>
             FAQs
             <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
@@ -179,8 +179,22 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
                 }`}
             />
           </button>
+          {/* {user && ( */}
+          <button
+            onClick={handleStartTrial}
+            className={getLinkClass("Start Trial")}
+          >
+            Free Trial
+            <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+            <span
+              className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === "Start Trial" ? "scale-x-100" : "scale-x-0"
+                }`}
+            />
+          </button>
+          {/* )} */}
+
           <button onClick={handleContactClick} className={getLinkClass("Contact Us")}>
-            Contact Us
+            Join Waitlist
             <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
             <span
               className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === "Contact Us" ? "scale-x-100" : "scale-x-0"
@@ -190,26 +204,13 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
           {user && (
             <Link
               to="/profile-page"
-              className={getLinkClass('User Profile')}
-              onClick={() => setActiveLink('User Profile')}
+              className={getLinkClass('My Profile')}
+              onClick={() => setActiveLink('My Profile')}
             >
-              User Profile
+              My Profile
               <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-              <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'User Profile' ? 'scale-x-100' : 'scale-x-0'}`} />
+              <span className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'My Profile' ? 'scale-x-100' : 'scale-x-0'}`} />
             </Link>
-          )}
-          {user && (
-            <button
-              onClick={handleStartTrial}
-              className={getLinkClass("Start Trial")}
-            >
-              Free Trial
-              <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-              <span
-                className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === "Start Trial" ? "scale-x-100" : "scale-x-0"
-                  }`}
-              />
-            </button>
           )}
         </div>
 
@@ -285,12 +286,31 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
                 }`}
             />
           </button>
+
+
+          {/* {user && ( */}
+          <button
+            onClick={() => {
+              setMenuOpen(false);
+              handleStartTrial();
+            }}
+            className={`block text-lg w-full text-left relative ${activeLink === "Start Trial" ? "text-[#e0ae2a]" : ""
+              }`}
+          >
+            Free Trial
+            <span
+              className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === "Start Trial" ? "scale-x-100" : "scale-x-0"
+                }`}
+            />
+          </button>
+          {/* )} */}
+
           <button
             onClick={handleContactClick}
             className={`block text-lg w-full text-left relative ${activeLink === "Contact Us" ? "text-[#e0ae2a]" : ""
               }`}
           >
-            Contact Us
+            Join Waitlist
             <span
               className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === "Contact Us" ? "scale-x-100" : "scale-x-0"
                 }`}
@@ -299,31 +319,15 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
           {user && (
             <Link
               to="/profile-page"
-              className={`block text-lg relative ${activeLink === 'User Profile' ? 'text-[#e0ae2a]' : ''}`}
+              className={`block text-lg relative ${activeLink === 'My Profile' ? 'text-[#e0ae2a]' : ''}`}
               onClick={() => {
                 setMenuOpen(false);
-                setActiveLink('User Profile');
+                setActiveLink('My Profile');
               }}
             >
-              User Profile
-              <span className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'User Profile' ? 'scale-x-100' : 'scale-x-0'}`} />
+              My Profile
+              <span className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === 'My Profile' ? 'scale-x-100' : 'scale-x-0'}`} />
             </Link>
-          )}
-          {user && (
-            <button
-              onClick={() => {
-                setMenuOpen(false);
-                handleStartTrial();
-              }}
-              className={`block text-lg w-full text-left relative ${activeLink === "Start Trial" ? "text-[#e0ae2a]" : ""
-                }`}
-            >
-              Free Trial
-              <span
-                className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === "Start Trial" ? "scale-x-100" : "scale-x-0"
-                  }`}
-              />
-            </button>
           )}
           {user ? (
             <button
