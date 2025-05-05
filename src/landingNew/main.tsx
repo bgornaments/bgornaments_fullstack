@@ -300,9 +300,9 @@ const LandingPage: React.FC = () => {
               <ul className="space-y-2">
                 <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Home</Link></li>
                 <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/catalog">AI Designs</Link></li>
-                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Pricing</Link></li>
-                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/Contact-Us">Contact Us</Link></li>
-                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/kinmitra_team">Our Team</Link></li>
+                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/pricing">Pricing</Link></li>
+                {/* <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/Contact-Us">Contact Us</Link></li> */}
+                {/* <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/kinmitra_team">Our Team</Link></li> */}
               </ul>
             </div>
 
@@ -313,7 +313,7 @@ const LandingPage: React.FC = () => {
                 <li className="text-gray-600 text-base">+91 (835) 608-5861</li>
                 <li className="text-gray-600 text-base">ceo@kinmitra.com</li>
               </ul>
-              <div className="mt-4">
+              <div className="mt-2">
                 <a href="/privacy-Notice" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-800 text-base block">Privacy Notice</a>
                 <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-800 text-base block mt-1">Terms & Conditions</a>
               </div>
