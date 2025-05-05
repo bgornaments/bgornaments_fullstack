@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuthenticator } from "@aws-amplify/ui-react";
-import vid from '../assets/LandingPageVideo.mp4';
+// import vid from '../assets/LandingPageVideo.mp4';
 
 const HeroSection: React.FC = () => {
   const [isTinyScreen, setIsTinyScreen] = useState(false);
