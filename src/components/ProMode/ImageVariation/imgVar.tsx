@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import UploadImg from '../UploadImg'; // Ensure correct import path
 import axios from 'axios';
-import '/src/assets/kinmitraAnimation.mp4'
+// import '/src/assets/kinmitraAnimation.mp4'
 import kinmitraAnimation from '/src/assets/kinmitraAnimation.gif';
 import GlassComponent from '../../GlassComponent';
 import DownloadButton from '../../DownloadButton';
