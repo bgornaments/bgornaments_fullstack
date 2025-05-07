@@ -19,7 +19,7 @@ import PersonalizedDesignSection from './PersonalizedDesignSection';
 gsap.registerPlugin(ScrollTrigger);
 
 const LandingPage: React.FC = () => {
-  const introRef = useRef<HTMLDivElement>(null);
+  // const introRef = useRef<HTMLDivElement>(null);
   const demoSectionRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const faqsRef = useRef<HTMLDivElement>(null);
@@ -29,36 +29,36 @@ const LandingPage: React.FC = () => {
     console.log('faqsRef mounted:', faqsRef.current);
   }, []);
 
-  useEffect(() => {
-    const intro = introRef.current;
-    if (!intro) return;
+  // useEffect(() => {
+  //   const intro = introRef.current;
+  //   if (!intro) return;
 
-    const text = intro.querySelector<HTMLDivElement>(".intro-text");
-    if (!text) return;
+  //   const text = intro.querySelector<HTMLDivElement>(".intro-text");
+  //   if (!text) return;
 
-    const tl = gsap.timeline();
+  //   const tl = gsap.timeline();
 
-    requestAnimationFrame(() => {
-      tl.to(text, {
-        scale: 1.8,
-        opacity: 0,
-        duration: 1.2,
-        ease: "power2.in",
-        willChange: "transform, opacity",
-      }).to(intro, {
-        opacity: 0,
-        duration: 2,
-        pointerEvents: "none",
-        onComplete: () => {
-          intro.style.display = "none";
-        },
-      });
-    });
+  //   requestAnimationFrame(() => {
+  //     tl.to(text, {
+  //       scale: 1.8,
+  //       opacity: 0,
+  //       duration: 1.2,
+  //       ease: "power2.in",
+  //       willChange: "transform, opacity",
+  //     }).to(intro, {
+  //       opacity: 0,
+  //       duration: 2,
+  //       pointerEvents: "none",
+  //       onComplete: () => {
+  //         intro.style.display = "none";
+  //       },
+  //     });
+  //   });
 
-    return () => {
-      tl.kill();
-    };
-  }, []);
+  //   return () => {
+  //     tl.kill();
+  //   };
+  // }, []);
 
   useEffect(() => {
     cardsRef.current.forEach((card, index) => {
@@ -120,7 +120,7 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="px-0 font-custom">
-      <section
+      {/* <section
         ref={introRef}
         style={{
           position: "fixed",
@@ -159,7 +159,7 @@ const LandingPage: React.FC = () => {
             }}
           />
         </div>
-      </section>
+      </section> */}
 
       {/* Header */}
       <Navbar onContactClick={scrollToDemoSection} onFaqClick={scrollToFaqs} />
