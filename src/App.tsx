@@ -2,63 +2,53 @@ import React, { Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Authenticator } from '@aws-amplify/ui-react';
 import ProtectedRoute from './ProtectedRoute';
-import ErrorBoundary from './ErrorBoundary';
-import NotFoundPage from './NotFoundPage';
+import ErrorBoundary from './ErrorBoundary'; // Import ErrorBoundary
+import NotFoundPage from './NotFoundPage'; // Import NotFoundPage
 
-// 🚀 Eager-loaded components (Critical Paths)
+// 🚀 Eager-loaded component
 import Landing from './landingNew/main';
-import ProModeChatUI from './components/ProMode/chat';
-import ExpertMode from './components/ExpertMode/ExpertMode';
-import Questions from './components/LightningMode/Questions';
 
 // 🔄 Lazy-loaded components (Non-critical Paths)
-const Login = React.lazy(() => import('./components/Login'));
-const Catalogue = React.lazy(() => import('./components/BrowseCatalogue/Catalogue'));
-const Orders = React.lazy(() => import('./components/BrowseCatalogue/Orders'));
+const AIimages = React.lazy(() => import('./components/AIimages'));
 const JewelryForm = React.lazy(() => import('./components/Basic/BasicForm'));
 const Option = React.lazy(() => import('./components/Basic/Option'));
 const Modes = React.lazy(() => import('./components/Basic/Modes'));
-const TeamComponent = React.lazy(() => import('./landingNew/KinMitraTeam'));
-const AdminLayout = React.lazy(() => import('./components/Dashboards/Admin/AdminLayout'));
-const ImageGrid = React.lazy(() => import('./components/ImageManager/ImageGrid'));
-const FilteredImageGrid = React.lazy(() => import('./components/ImageManager/FilteredImageGrid'));
+const Questions = React.lazy(() => import('./components/LightningMode/Questions'));
+const Login = React.lazy(() => import('./components/Login'));
+const Catalogue = React.lazy(() => import('./components/BrowseCatalogue/Catalogue'));
+const DetailedImageView = React.lazy(() => import('./components/BrowseCatalogue/DetailedImageView'));
 const EditImageData = React.lazy(() => import('./components/BrowseCatalogue/EditImageData'));
 const LikedImages = React.lazy(() => import('./components/BrowseCatalogue/LikedImages'));
 const DashboardPage = React.lazy(() => import('./components/Dashboards/Admin/DashboardPage'));
 const OrderPage = React.lazy(() => import('./components/Dashboards/Admin/OrderPage'));
+const AdminLayout = React.lazy(() => import('./components/Dashboards/Admin/AdminLayout'));
+const Orders = React.lazy(() => import('./components/BrowseCatalogue/Orders'));
 const OrderDetailsPage = React.lazy(() => import('./components/Dashboards/Admin/OrderDetailsPage'));
 const CADPage = React.lazy(() => import('./components/Dashboards/Admin/CADPage'));
 const CADDetailsPage = React.lazy(() => import('./components/Dashboards/Admin/CADDetailsPage'));
-const MetadataEditor = React.lazy(() => import('./components/BrowseCatalogue/MetadataEditor'));
+const ImageGrid = React.lazy(() => import('./components/ImageManager/ImageGrid'));
+const FilteredImageGrid = React.lazy(() => import('./components/ImageManager/FilteredImageGrid'));
+const ProModeChatUI = React.lazy(() => import('./components/ProMode/chat'));
+const ContextProvider = React.lazy(() => import('./context/context'));
+const ImgVar = React.lazy(() => import('./components/ProMode/ImageVariation/imgVar'));
+const SetGen = React.lazy(() => import('./components/ProMode/SetGeneration/SetGen'));
+const ExpertMode = React.lazy(() => import('./components/ExpertMode/ExpertMode'));
+const DemoForm = React.lazy(() => import('./components/Contact/contactSAP'));
 const UserProfile = React.lazy(() => import('./components/UserProfile/UserProfile'));
+const AstrologyForm = React.lazy(() => import('./AstrologyFeature/AstrologyForm'));
+const AstrologySignature = React.lazy(() => import('./AstrologyFeature/AstrologySignature'));
+const AstroJewelryApp = React.lazy(() => import('./AstrologyFeature/images'));
+const SketchToJwellery = React.lazy(() => import('./SketchToJwellery/Sketch2Jwellery_landing'));
+const SketchModification = React.lazy(() => import('./SketchToJwellery/Sketchmodification'));
+const MetadataEditor = React.lazy(() => import('./components/BrowseCatalogue/MetadataEditor'));
+const TermsAndConditions = React.lazy(() => import('./components/LandingPage/terms_and_conditions'));
+const PrivacyNotice = React.lazy(() => import('./components/LandingPage/privacy_notice'));
+const TeamComponent = React.lazy(() => import('./landingNew/KinMitraTeam'));
 
+// Defining the router with lazy-loaded routes
 const router = createBrowserRouter([
   // 🚀 Eager-loaded routes
   { path: '/', element: <Landing /> },
-  {
-    path: '/promode',
-    element: (
-      <ProtectedRoute>
-        <ProModeChatUI />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/expert-mode',
-    element: (
-      <ProtectedRoute>
-        <ExpertMode />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/lightningMode',
-    element: (
-      <ProtectedRoute>
-        <Questions />
-      </ProtectedRoute>
-    ),
-  },
 
   // 🔄 Lazy-loaded routes with Suspense fallback
   {
@@ -70,10 +60,26 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/catalog',
+    path: '/Contact-Us',
     element: (
-      <Suspense fallback={<div>Loading Catalogue...</div>}>
-        <Catalogue />
+      <Suspense fallback={<div>Loading Contact Form...</div>}>
+        <DemoForm />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/terms-and-conditions',
+    element: (
+      <Suspense fallback={<div>Loading Terms and Conditions...</div>}>
+        <TermsAndConditions />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/privacy-Notice',
+    element: (
+      <Suspense fallback={<div>Loading Privacy Notice...</div>}>
+        <PrivacyNotice />
       </Suspense>
     ),
   },
@@ -81,16 +87,8 @@ const router = createBrowserRouter([
     path: '/orders',
     element: (
       <Suspense fallback={<div>Loading Orders...</div>}>
-        <Orders />
-      </Suspense>
-    ),
-  },
-  {
-    path: '/form',
-    element: (
-      <Suspense fallback={<div>Loading Jewelry Form...</div>}>
         <ProtectedRoute>
-          <JewelryForm />
+          <Orders />
         </ProtectedRoute>
       </Suspense>
     ),
@@ -124,9 +122,99 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: '/form',
+    element: (
+      <Suspense fallback={<div>Loading Jewelry Form...</div>}>
+        <ProtectedRoute>
+          <JewelryForm />
+        </ProtectedRoute>
+      </Suspense>
+    ),
+  },
+  {
+    path: '/lightningMode',
+    element: (
+      <Suspense fallback={<div>Loading Lightning Mode...</div>}>
+        <ProtectedRoute>
+          <Questions />
+        </ProtectedRoute>
+      </Suspense>
+    ),
+  },
+  {
+    path: '/aiimages',
+    element: (
+      <Suspense fallback={<div>Loading AI Images...</div>}>
+        <ProtectedRoute>
+          <AIimages />
+        </ProtectedRoute>
+      </Suspense>
+    ),
+  },
+  {
+    path: '/catalog',
+    element: (
+      <Suspense fallback={<div>Loading Catalogue...</div>}>
+        <ProtectedRoute>
+          <Catalogue />
+        </ProtectedRoute>
+      </Suspense>
+    ),
+  },
+  {
+    path: '/catalog/likedimages',
+    element: (
+      <Suspense fallback={<div>Loading Liked Images...</div>}>
+        <ProtectedRoute>
+          <LikedImages />
+        </ProtectedRoute>
+      </Suspense>
+    ),
+  },
+  {
+    path: '/catalog/:url',
+    element: (
+      <Suspense fallback={<div>Loading Detailed Image...</div>}>
+        <ProtectedRoute>
+          <DetailedImageView />
+        </ProtectedRoute>
+      </Suspense>
+    ),
+  },
+  {
+    path: '/edit',
+    element: (
+      <Suspense fallback={<div>Loading Edit Image Data...</div>}>
+        <ProtectedRoute>
+          <EditImageData />
+        </ProtectedRoute>
+      </Suspense>
+    ),
+  },
+  {
+    path: '/metadata-editor',
+    element: (
+      <Suspense fallback={<div>Loading Metadata Editor...</div>}>
+        <ProtectedRoute>
+          <MetadataEditor />
+        </ProtectedRoute>
+      </Suspense>
+    ),
+  },
+  {
+    path: '/profile-page',
+    element: (
+      <Suspense fallback={<div>Loading Profile...</div>}>
+        <ProtectedRoute>
+          <UserProfile />
+        </ProtectedRoute>
+      </Suspense>
+    ),
+  },
+  {
     path: '/admin/*',
     element: (
-      <Suspense fallback={<div>Loading Admin Dashboard...</div>}>
+      <Suspense fallback={<div>Loading Admin Layout...</div>}>
         <ProtectedRoute>
           <AdminLayout />
         </ProtectedRoute>
@@ -179,29 +267,124 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/metadata-editor',
+    path: '/promode',
     element: (
-      <Suspense fallback={<div>Loading Metadata Editor...</div>}>
+      <Suspense fallback={<div>Loading ProMode...</div>}>
         <ProtectedRoute>
-          <MetadataEditor />
+          <ContextProvider>
+            <ProModeChatUI />
+          </ContextProvider>
+        </ProtectedRoute>
+      </Suspense>
+    ),
+    children: [
+      {
+        path: 'ImageVariation',
+        element: (
+          <Suspense fallback={<div>Loading Image Variation...</div>}>
+            <ProtectedRoute>
+              <ImgVar />
+            </ProtectedRoute>
+          </Suspense>
+        ),
+      },
+      {
+        path: 'SetGeneration',
+        element: (
+          <Suspense fallback={<div>Loading Set Generation...</div>}>
+            <ProtectedRoute>
+              <SetGen />
+            </ProtectedRoute>
+          </Suspense>
+        ),
+      },
+    ],
+  },
+  {
+    path: '/expert-mode',
+    element: (
+      <Suspense fallback={<div>Loading Expert Mode...</div>}>
+        <ProtectedRoute>
+          <ExpertMode />
         </ProtectedRoute>
       </Suspense>
     ),
   },
   {
-    path: '/profile-page',
+    path: '/expert-mode/set-generation',
     element: (
-      <Suspense fallback={<div>Loading Profile...</div>}>
+      <Suspense fallback={<div>Loading Set Generation...</div>}>
         <ProtectedRoute>
-          <UserProfile />
+          <SetGen />
         </ProtectedRoute>
       </Suspense>
     ),
   },
   {
+    path: '/expert-mode/image-variation',
+    element: (
+      <Suspense fallback={<div>Loading Image Variation...</div>}>
+        <ProtectedRoute>
+          <ImgVar />
+        </ProtectedRoute>
+      </Suspense>
+    ),
+  },
+  {
+    path: '/expert-mode/astrology',
+    element: (
+      <Suspense fallback={<div>Loading Astrology...</div>}>
+        <ProtectedRoute>
+          <AstrologyForm />
+        </ProtectedRoute>
+      </Suspense>
+    ),
+  },
+  {
+    path: '/expert-mode/astrology/astroSign',
+    element: (
+      <Suspense fallback={<div>Loading Astrology Signature...</div>}>
+        <ProtectedRoute>
+          <AstrologySignature />
+        </ProtectedRoute>
+      </Suspense>
+    ),
+  },
+  {
+    path: '/expert-mode/astrology/astroSign/astro-images',
+    element: (
+      <Suspense fallback={<div>Loading Astro Jewelry App...</div>}>
+        <ProtectedRoute>
+          <AstroJewelryApp />
+        </ProtectedRoute>
+      </Suspense>
+    ),
+  },
+  {
+    path: '/expert-mode/sketchToJwellery',
+    element: (
+      <Suspense fallback={<div>Loading Sketch to Jewelry...</div>}>
+        <ProtectedRoute>
+          <SketchToJwellery />
+        </ProtectedRoute>
+      </Suspense>
+    ),
+  },
+  {
+    path: '/expert-mode/sketchToJwellery/sketchModification',
+    element: (
+      <Suspense fallback={<div>Loading Sketch Modification...</div>}>
+        <ProtectedRoute>
+          <SketchModification />
+        </ProtectedRoute>
+      </Suspense>
+    ),
+  },
+  {
+    // Catch-all route for navigation errors (404)
     path: '*',
     element: <NotFoundPage />,
-    errorElement: <NotFoundPage />,
+    errorElement: <NotFoundPage />, // Handle navigation errors
   },
 ]);
 
