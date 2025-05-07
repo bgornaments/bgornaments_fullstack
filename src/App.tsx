@@ -1,85 +1,53 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import AIimages from './components/AIimages';
-import JewelryForm from './components/Basic/BasicForm';
-import Option from './components/Basic/Option';
-import Modes from './components/Basic/Modes';
-import Questions from './components/LightningMode/Questions';
-import Login from './components/Login';
 import { Authenticator } from '@aws-amplify/ui-react';
-import Catalogue from './components/BrowseCatalogue/Catalogue';
-import DetailedImageView from './components/BrowseCatalogue/DetailedImageView';
-import EditImageData from './components/BrowseCatalogue/EditImageData';
-import LikedImages from './components/BrowseCatalogue/LikedImages';
-import DashboardPage from './components/Dashboards/Admin/DashboardPage';
-import OrderPage from './components/Dashboards/Admin/OrderPage';
-import AdminLayout from './components/Dashboards/Admin/AdminLayout';
-import Orders from './components/BrowseCatalogue/Orders';
-import OrderDetailsPage from './components/Dashboards/Admin/OrderDetailsPage';
-import CADPage from './components/Dashboards/Admin/CADPage';
-import CADDetailsPage from './components/Dashboards/Admin/CADDetailsPage';
-import ImageGrid from './components/ImageManager/ImageGrid';
-import FilteredImageGrid from './components/ImageManager/FilteredImageGrid';
-import ProModeChatUI from './components/ProMode/chat';
-import ContextProvider from './context/context';
-import ImgVar from './components/ProMode/ImageVariation/imgVar';
-import SetGen from './components/ProMode/SetGeneration/SetGen';
 import ProtectedRoute from './ProtectedRoute';
-import ExpertMode from './components/ExpertMode/ExpertMode';
-import DemoForm from './components/Contact/contactSAP';
-import UserProfile from './components/UserProfile/UserProfile';
-import AstrologyForm from './AstrologyFeature/AstrologyForm';
-import AstrologySignature from './AstrologyFeature/AstrologySignature';
-import AstroJewelryApp from './AstrologyFeature/images';
-import SketchToJwellery from './SketchToJwellery/Sketch2Jwellery_landing';
-import SketchModification from './SketchToJwellery/Sketchmodification';
-import MetadataEditor from './components/BrowseCatalogue/MetadataEditor';
-import TermsAndConditions from './components/LandingPage/terms_and_conditions';
-import PrivacyNotice from './components/LandingPage/privacy_notice';
+import ErrorBoundary from './ErrorBoundary';
+import NotFoundPage from './NotFoundPage';
+
+// 🚀 Eager-loaded components (Critical Paths)
 import Landing from './landingNew/main';
-import TeamComponent from './landingNew/KinMitraTeam';
-import ErrorBoundary from './ErrorBoundary'; // Import ErrorBoundary
-import NotFoundPage from './NotFoundPage'; // Import NotFoundPage
+import ProModeChatUI from './components/ProMode/chat';
+import ExpertMode from './components/ExpertMode/ExpertMode';
+import Questions from './components/LightningMode/Questions';
+
+// 🔄 Lazy-loaded components (Non-critical Paths)
+const Login = React.lazy(() => import('./components/Login'));
+const Catalogue = React.lazy(() => import('./components/BrowseCatalogue/Catalogue'));
+const Orders = React.lazy(() => import('./components/BrowseCatalogue/Orders'));
+const JewelryForm = React.lazy(() => import('./components/Basic/BasicForm'));
+const Option = React.lazy(() => import('./components/Basic/Option'));
+const Modes = React.lazy(() => import('./components/Basic/Modes'));
+const TeamComponent = React.lazy(() => import('./landingNew/KinMitraTeam'));
+const AdminLayout = React.lazy(() => import('./components/Dashboards/Admin/AdminLayout'));
+const ImageGrid = React.lazy(() => import('./components/ImageManager/ImageGrid'));
+const FilteredImageGrid = React.lazy(() => import('./components/ImageManager/FilteredImageGrid'));
+const EditImageData = React.lazy(() => import('./components/BrowseCatalogue/EditImageData'));
+const LikedImages = React.lazy(() => import('./components/BrowseCatalogue/LikedImages'));
+const DashboardPage = React.lazy(() => import('./components/Dashboards/Admin/DashboardPage'));
+const OrderPage = React.lazy(() => import('./components/Dashboards/Admin/OrderPage'));
+const OrderDetailsPage = React.lazy(() => import('./components/Dashboards/Admin/OrderDetailsPage'));
+const CADPage = React.lazy(() => import('./components/Dashboards/Admin/CADPage'));
+const CADDetailsPage = React.lazy(() => import('./components/Dashboards/Admin/CADDetailsPage'));
+const MetadataEditor = React.lazy(() => import('./components/BrowseCatalogue/MetadataEditor'));
+const UserProfile = React.lazy(() => import('./components/UserProfile/UserProfile'));
 
 const router = createBrowserRouter([
+  // 🚀 Eager-loaded routes
   { path: '/', element: <Landing /> },
-  { path: '/login', element: <Login /> },
-  { path: '/Contact-Us', element: <DemoForm /> },
-  { path: '/terms-and-conditions', element: <TermsAndConditions /> },
-  { path: '/privacy-Notice', element: <PrivacyNotice /> },
   {
-    path: '/orders',
+    path: '/promode',
     element: (
       <ProtectedRoute>
-        <Orders />
+        <ProModeChatUI />
       </ProtectedRoute>
     ),
   },
   {
-    path: '/option',
+    path: '/expert-mode',
     element: (
       <ProtectedRoute>
-        <Option />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/modes',
-    element: (
-      <ProtectedRoute>
-        <Modes />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/kinmitra_team',
-    element: <TeamComponent />,
-  },
-  {
-    path: '/form',
-    element: (
-      <ProtectedRoute>
-        <JewelryForm />
+        <ExpertMode />
       </ProtectedRoute>
     ),
   },
@@ -91,68 +59,78 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
+
+  // 🔄 Lazy-loaded routes with Suspense fallback
   {
-    path: '/aiimages',
+    path: '/login',
     element: (
-      <ProtectedRoute>
-        <AIimages />
-      </ProtectedRoute>
+      <Suspense fallback={<div>Loading Login...</div>}>
+        <Login />
+      </Suspense>
     ),
   },
   {
     path: '/catalog',
     element: (
-      <ProtectedRoute>
+      <Suspense fallback={<div>Loading Catalogue...</div>}>
         <Catalogue />
-      </ProtectedRoute>
+      </Suspense>
     ),
   },
   {
-    path: '/catalog/likedimages',
+    path: '/orders',
     element: (
-      <ProtectedRoute>
-        <LikedImages />
-      </ProtectedRoute>
+      <Suspense fallback={<div>Loading Orders...</div>}>
+        <Orders />
+      </Suspense>
     ),
   },
   {
-    path: '/catalog/:url',
+    path: '/form',
     element: (
-      <ProtectedRoute>
-        <DetailedImageView />
-      </ProtectedRoute>
+      <Suspense fallback={<div>Loading Jewelry Form...</div>}>
+        <ProtectedRoute>
+          <JewelryForm />
+        </ProtectedRoute>
+      </Suspense>
     ),
   },
   {
-    path: '/edit',
+    path: '/option',
     element: (
-      <ProtectedRoute>
-        <EditImageData />
-      </ProtectedRoute>
+      <Suspense fallback={<div>Loading Options...</div>}>
+        <ProtectedRoute>
+          <Option />
+        </ProtectedRoute>
+      </Suspense>
     ),
   },
   {
-    path: '/metadata-editor',
+    path: '/modes',
     element: (
-      <ProtectedRoute>
-        <MetadataEditor />
-      </ProtectedRoute>
+      <Suspense fallback={<div>Loading Modes...</div>}>
+        <ProtectedRoute>
+          <Modes />
+        </ProtectedRoute>
+      </Suspense>
     ),
   },
   {
-    path: '/profile-page',
+    path: '/kinmitra_team',
     element: (
-      <ProtectedRoute>
-        <UserProfile />
-      </ProtectedRoute>
+      <Suspense fallback={<div>Loading Team...</div>}>
+        <TeamComponent />
+      </Suspense>
     ),
   },
   {
     path: '/admin/*',
     element: (
-      <ProtectedRoute>
-        <AdminLayout />
-      </ProtectedRoute>
+      <Suspense fallback={<div>Loading Admin Dashboard...</div>}>
+        <ProtectedRoute>
+          <AdminLayout />
+        </ProtectedRoute>
+      </Suspense>
     ),
     children: [
       { path: '', element: <DashboardPage /> },
@@ -163,132 +141,67 @@ const router = createBrowserRouter([
   {
     path: '/order/:orderID',
     element: (
-      <ProtectedRoute>
-        <OrderDetailsPage />
-      </ProtectedRoute>
+      <Suspense fallback={<div>Loading Order Details...</div>}>
+        <ProtectedRoute>
+          <OrderDetailsPage />
+        </ProtectedRoute>
+      </Suspense>
     ),
   },
   {
     path: '/cad/:cadId',
     element: (
-      <ProtectedRoute>
-        <CADDetailsPage />
-      </ProtectedRoute>
+      <Suspense fallback={<div>Loading CAD Details...</div>}>
+        <ProtectedRoute>
+          <CADDetailsPage />
+        </ProtectedRoute>
+      </Suspense>
     ),
   },
   {
     path: '/imageManager',
     element: (
-      <ProtectedRoute>
-        <ImageGrid />
-      </ProtectedRoute>
+      <Suspense fallback={<div>Loading Image Manager...</div>}>
+        <ProtectedRoute>
+          <ImageGrid />
+        </ProtectedRoute>
+      </Suspense>
     ),
   },
   {
     path: '/filteredImages',
     element: (
-      <ProtectedRoute>
-        <FilteredImageGrid />
-      </ProtectedRoute>
+      <Suspense fallback={<div>Loading Filtered Images...</div>}>
+        <ProtectedRoute>
+          <FilteredImageGrid />
+        </ProtectedRoute>
+      </Suspense>
     ),
   },
   {
-    path: '/promode',
+    path: '/metadata-editor',
     element: (
-      <ProtectedRoute>
-        <ContextProvider>
-          <ProModeChatUI />
-        </ContextProvider>
-      </ProtectedRoute>
+      <Suspense fallback={<div>Loading Metadata Editor...</div>}>
+        <ProtectedRoute>
+          <MetadataEditor />
+        </ProtectedRoute>
+      </Suspense>
     ),
-    children: [
-      {
-        path: 'ImageVariation',
-        element: (
-          <ProtectedRoute>
-            <ImgVar />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'SetGeneration',
-        element: (
-          <ProtectedRoute>
-            <SetGen />
-          </ProtectedRoute>
-        ),
-      },
-    ],
   },
   {
-    path: '/expert-mode',
+    path: '/profile-page',
     element: (
-      <ProtectedRoute>
-        <ExpertMode />
-      </ProtectedRoute>
+      <Suspense fallback={<div>Loading Profile...</div>}>
+        <ProtectedRoute>
+          <UserProfile />
+        </ProtectedRoute>
+      </Suspense>
     ),
   },
   {
-    path: '/expert-mode/set-generation',
-    element: (
-      <ProtectedRoute>
-        <SetGen />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/expert-mode/image-variation',
-    element: (
-      <ProtectedRoute>
-        <ImgVar />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/expert-mode/astrology',
-    element: (
-      <ProtectedRoute>
-        <AstrologyForm />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/expert-mode/astrology/astroSign',
-    element: (
-      <ProtectedRoute>
-        <AstrologySignature />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/expert-mode/astrology/astroSign/astro-images',
-    element: (
-      <ProtectedRoute>
-        <AstroJewelryApp />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/expert-mode/sketchToJwellery',
-    element: (
-      <ProtectedRoute>
-        <SketchToJwellery />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/expert-mode/sketchToJwellery/sketchModification',
-    element: (
-      <ProtectedRoute>
-        <SketchModification />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    // Catch-all route for navigation errors (404)
     path: '*',
     element: <NotFoundPage />,
-    errorElement: <NotFoundPage />, // Handle navigation errors
+    errorElement: <NotFoundPage />,
   },
 ]);
 

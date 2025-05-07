@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useAuthenticator } from "@aws-amplify/ui-react";
 // import vid from '../assets/LandingPageVideo.mp4';
+import home_image from '../assets/home_image.png';
 
 const HeroSection: React.FC = () => {
   const [isTinyScreen, setIsTinyScreen] = useState(false);
@@ -57,7 +58,7 @@ const HeroSection: React.FC = () => {
 
   return (
     <section className="relative h-[100vh] overflow-hidden text-white text-center flex flex-col justify-center items-center">
-      <video
+      {/* <video
         autoPlay
         loop
         muted
@@ -66,7 +67,20 @@ const HeroSection: React.FC = () => {
         className="absolute inset-0 w-full h-full object-cover filter brightness-[0.4] contrast-[1.1] saturate-[1.2] sepia-[0.1]"
         // src={vid}
         src="https://dm0qx8t0i9gc9.cloudfront.net/watermarks/video/H2qwMhbkqkzg2flz4/videoblocks-646c7a82cdf8cd05c427ac1b_rrp7owas3__0405133d275c6b206830714a02f00c75__P360.mp4"
+      /> */}
+
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        poster={home_image} // Placeholder image
+        className="absolute inset-0 w-full h-full object-cover filter brightness-[0.4] contrast-[1.1] saturate-[1.2] sepia-[0.1]"
+        src="https://dm0qx8t0i9gc9.cloudfront.net/watermarks/video/H2qwMhbkqkzg2flz4/videoblocks-646c7a82cdf8cd05c427ac1b_rrp7owas3__0405133d275c6b206830714a02f00c75__P360.mp4"
       />
+
+
       <div
         className="absolute inset-0 z-10 pointer-events-none"
         style={{
