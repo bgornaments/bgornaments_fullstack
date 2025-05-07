@@ -25,28 +25,63 @@ const SetGen: React.FC = () => {
 
   const [sourceType, setSourceType] = useState("Necklace");
   const [targetType, setTargetType] = useState("Necklace");
-
-  const sessionId = localStorage.getItem('sessionId');
-  const trialDaysLeft = parseInt(localStorage.getItem('trial_days_left') || '0');
-  const trialStatus = localStorage.getItem('trial_status')?.toLowerCase();
+  const [sessionId, setSessionId] = useState<string | null>(null);;
+  // const sessionId = localStorage.getItem('sessionId');
+  // const trialDaysLeft = parseInt(localStorage.getItem('trial_days_left') || '0');
+  // const trialStatus = localStorage.getItem('trial_status')?.toLowerCase();
   const [showComponent, setShowComponent] = useState<boolean>(false);
   const demoSectionRef = useRef<HTMLDivElement>(null);
   const base_url = Set_Gen;
   const faqsRef = useRef<HTMLDivElement>(null);
 
+  // useEffect(() => {
+  //   if (trialStatus && trialDaysLeft > 0) {
+  //     setShowComponent(true);
+  //   } else {
+  //     setShowComponent(false);
+  //   }
+  // }, [trialDaysLeft, trialStatus]);
+
   useEffect(() => {
+    const trialDaysLeft = parseInt(localStorage.getItem('trial_days_left') || '0');
+    const trialStatus = localStorage.getItem('trial_status')?.toLowerCase();
+
+    console.log("trialDaysLeft:", trialDaysLeft);
+    console.log("trialStatus:", trialStatus);
+
     if (trialStatus && trialDaysLeft > 0) {
       setShowComponent(true);
     } else {
       setShowComponent(false);
     }
-  }, [trialDaysLeft, trialStatus]);
+  }, []);
 
   useEffect(() => {
-    if (!sessionId) {
-      alert('Session ID not found. Please refresh the page.');
+    const existingSessionId = sessionStorage.getItem("sessionId");
+
+    if (existingSessionId) {
+      console.log(`Session ID ${existingSessionId} is being deleted.`)
+
+      sessionStorage.removeItem("sessionId");
+      localStorage.removeItem("sessionId");
+      const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+      sessionStorage.setItem("sessionId", newSessionId);
+      localStorage.setItem("sessionId", newSessionId);
+      console.log("New Session ID created:", newSessionId);
     }
-  }, [sessionId]);
+
+    if (!existingSessionId) {
+      const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+      sessionStorage.setItem("sessionId", newSessionId);
+      localStorage.setItem("sessionId", newSessionId);
+      console.log("New Session ID created:", newSessionId);
+      setSessionId(newSessionId);
+    }
+
+    // if (!sessionId) {
+    //   alert('Session ID not found. Please refresh the page.');
+    // }
+  },);
 
   const callLambda = async (endpointUrl: string, payload: object) => {
     setIsLoading(true);

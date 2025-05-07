@@ -7,6 +7,7 @@ import s2d from '../assets/sketch.png';
 import outfitmatch from '../assets/outfit_matching_icon.jpg';
 import setgen from '../assets/set_generator_icon.jpg';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
+import GlassComponent from '../components/GlassComponent';
 
 interface GeoSuggestion {
   formatted: string;
@@ -25,13 +26,56 @@ const AstrologyForm: React.FC = () => {
   const [selectedGeoLocation, setSelectedGeoLocation] = useState<{ lat: number; lon: number } | null>(null);
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
   const [transitioning, setTransitioning] = useState(false);
+  // const [sessionId, setSessionId] = useState<string | null>(null);;
+  const [showComponent, setShowComponent] = useState<boolean>(false);
 
   const tabsRef = useRef<(HTMLElement | null)[]>([]);
   const [tabUnderlineWidth, setTabUnderlineWidth] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   const demoSectionRef = useRef<HTMLDivElement>(null);
   const faqsRef = useRef<HTMLDivElement>(null);
-  
+
+  useEffect(() => {
+    const trialDaysLeft = parseInt(localStorage.getItem('trial_days_left') || '0');
+    const trialStatus = localStorage.getItem('trial_status')?.toLowerCase();
+
+    console.log("trialDaysLeft:", trialDaysLeft);
+    console.log("trialStatus:", trialStatus);
+
+    if (trialStatus && trialDaysLeft > 0) {
+      setShowComponent(true);
+    } else {
+      setShowComponent(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const existingSessionId = sessionStorage.getItem("sessionId");
+
+    if (existingSessionId) {
+      console.log(`Session ID ${existingSessionId} is being deleted.`)
+
+      sessionStorage.removeItem("sessionId");
+      localStorage.removeItem("sessionId");
+      const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+      sessionStorage.setItem("sessionId", newSessionId);
+      localStorage.setItem("sessionId", newSessionId);
+      console.log("New Session ID created:", newSessionId);
+    }
+
+    if (!existingSessionId) {
+      const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+      sessionStorage.setItem("sessionId", newSessionId);
+      localStorage.setItem("sessionId", newSessionId);
+      console.log("New Session ID created:", newSessionId);
+      // setSessionId(newSessionId);
+    }
+
+    // if (!sessionId) {
+    //   alert('Session ID not found. Please refresh the page.');
+    // }
+  },);
+
   useEffect(() => {
     if (activeTabIndex === null) return;
     const setTabPosition = () => {
@@ -165,232 +209,238 @@ const AstrologyForm: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-starry">
-      <Navbar
-        onContactClick={() => {
-          demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-        }}
-        onFaqClick={() => {
-          faqsRef.current?.scrollIntoView({ behavior: 'smooth' });
-        }}
-      />
-      <div className="flex-grow flex flex-col justify-center items-center">
-        <div className="w-[85%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen/2 shadow-[2px_2px_4px_rgba(0,0,0,0.1),-2px_-2px_4px_rgba(0,0,0,0.1),2px_-2px_4px_rgba(0,0,0,0.1),-2px_2px_4px_rgba(0,0,0,0.1)]">
-          <div className="header w-full text-center z-20 mb-36 sm:mb-32 md:mb-44">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-custom font-bold text-lightGolden">
-              Astrology Based Jewellery
-            </h1>
-            <p className="text-lightGreen mb-6 sm:mb-8 text-base sm:text-lg lg:text-xl">
-              Let the stars and Vedas guide you to get the right jewelry piece
-            </p>
-          </div>
-          <div className="form bg-gray-100 p-4 sm:p-6 rounded-lg border border-yellow-600 lg:p-10 max-w-3xl w-full mt-24 sm:mt-20 lg:mt-32 z-10 relative">
-            <div className="flex justify-center mb-4 relative flex-row mx-auto flex h-12 rounded-3xl border border-[#e0ae2a] bg-[#e0ae2aaa] px-2 backdrop-blur-lg sm:px-4">
-              <span
-                className="absolute bottom-0 top-0 -z-10 flex overflow-hidden rounded-3xl py-2 transition-all duration-300"
-                style={{ left: tabUnderlineLeft, width: tabUnderlineWidth }}
-              >
-                <span className="h-full w-full rounded-3xl bg-[#e0ae2a]" />
-              </span>
-              {allTabs.map((tab, index) => (
-                <button
-                  key={index}
-                  ref={(el) => (tabsRef.current[index] = el)}
-                  className={`my-auto cursor-pointer select-none rounded-full px-4 text-center font-bold text-white`}
-                  onClick={() => handleTabChange(index)}
-                >
-                  {tab.name}
-                </button>
-              ))}
-            </div>
-
-            <div className={`text-left transition-all duration-500 ${transitioning ? 'opacity-0' : 'opacity-100'}`}>
-              {activeTabIndex === 0 ? (
-                <>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 lg:text-lg">Month of Birth</label>
-                    <input
-                      type="month"
-                      className="w-full mt-1 p-2 border border-gray-300 rounded lg:p-3"
-                      value={monthOfBirth}
-                      onChange={handleMonthChange}
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 lg:text-lg">Gender</label>
-                    <div className="flex mt-1">
-                      <button
-                        className={`w-1/2 p-2 border border-gray-300 rounded-l ${gender === 'Male' ? 'bg-yellow-300' : ''}`}
-                        onClick={() => handleGenderSelect('Male')}
-                      >
-                        Male
-                      </button>
-                      <button
-                        className={`w-1/2 p-2 border border-gray-300 rounded-r ${gender === 'Female' ? 'bg-yellow-300' : ''}`}
-                        onClick={() => handleGenderSelect('Female')}
-                      >
-                        Female
-                      </button>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 lg:text-lg">Date of Birth</label>
-                    <input
-                      type="date"
-                      className="w-full mt-1 p-2 border border-gray-300 rounded lg:p-3"
-                      value={dateOfBirth.toISOString().split('T')[0]}
-                      onChange={handleDateChange}
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 lg:text-lg">Time of Birth</label>
-                    <TextField
-                      label="Choose Time"
-                      type="time"
-                      value={timeOfBirth}
-                      onChange={handleTimeChange}
-                      InputLabelProps={{ shrink: true }}
-                      inputProps={{ step: 300 }}
-                      className="w-full mt-1"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 lg:text-lg">Gender</label>
-                    <div className="flex mt-1">
-                      <button
-                        className={`w-1/2 p-2 border border-gray-300 rounded-l ${gender === 'Male' ? 'bg-yellow-300' : ''}`}
-                        onClick={() => handleGenderSelect('Male')}
-                      >
-                        Male
-                      </button>
-                      <button
-                        className={`w-1/2 p-2 border border-gray-300 rounded-r ${gender === 'Female' ? 'bg-yellow-300' : ''}`}
-                        onClick={() => handleGenderSelect('Female')}
-                      >
-                        Female
-                      </button>
-                    </div>
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 lg:text-lg">Location</label>
-                    <input
-                      type="text"
-                      className="w-full mt-1 p-2 border border-gray-300 rounded lg:p-3"
-                      value={location}
-                      onChange={handleLocationChange}
-                      placeholder="Start typing a location"
-                    />
-                    {suggestions.length > 0 && (
-                      <ul className="mt-2 max-h-40 overflow-y-auto bg-white border border-gray-300 rounded p-2">
-                        {suggestions.map((suggestion, index) => (
-                          <li
-                            key={index}
-                            className="p-1 cursor-pointer hover:bg-gray-200"
-                            onClick={() => {
-                              setLocation(suggestion.formatted);
-                              setSelectedGeoLocation({ lat: suggestion.lat, lon: suggestion.lon });
-                              setSuggestions([]);
-                            }}
-                          >
-                            {suggestion.formatted}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-
-          <button onClick={handleSubmit} className="mt-6 bg-yellow-500 text-white py-2 px-4 rounded-full hover:bg-yellow-600 sm:py-3 sm:px-6 z-20">
-            See My Astrology Jewelry
-          </button>
-        </div>
-        <div className="h-16"></div>
-
-        {/* Features Section */}
-        <div className="w-full bg-gray-100 border-t border-b border-gray-300">
-          <div className="py-6 font-custom mx-8">
-            <div className="container mx-auto px-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                {features.map((feature, index) => (
-                  <Link
-                    to={feature.link}
-                    key={index}
-                    className="bg-white rounded-2xl shadow text-center border border-orange-200 min-h-[350px] flex flex-col justify-between max-w-[80%] mx-auto hover:shadow-xl transition-shadow duration-300"
+    <>
+      {showComponent ? (
+        <div className="min-h-screen flex flex-col bg-starry">
+          <Navbar
+            onContactClick={() => {
+              demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            onFaqClick={() => {
+              faqsRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          />
+          <div className="flex-grow flex flex-col justify-center items-center">
+            <div className="w-[85%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen/2 shadow-[2px_2px_4px_rgba(0,0,0,0.1),-2px_-2px_4px_rgba(0,0,0,0.1),2px_-2px_4px_rgba(0,0,0,0.1),-2px_2px_4px_rgba(0,0,0,0.1)]">
+              <div className="header w-full text-center z-20 mb-36 sm:mb-32 md:mb-44">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-custom font-bold text-lightGolden">
+                  Astrology Based Jewellery
+                </h1>
+                <p className="text-lightGreen mb-6 sm:mb-8 text-base sm:text-lg lg:text-xl">
+                  Let the stars and Vedas guide you to get the right jewelry piece
+                </p>
+              </div>
+              <div className="form bg-gray-100 p-4 sm:p-6 rounded-lg border border-yellow-600 lg:p-10 max-w-3xl w-full mt-24 sm:mt-20 lg:mt-32 z-10 relative">
+                <div className="flex justify-center mb-4 relative flex-row mx-auto flex h-12 rounded-3xl border border-[#e0ae2a] bg-[#e0ae2aaa] px-2 backdrop-blur-lg sm:px-4">
+                  <span
+                    className="absolute bottom-0 top-0 -z-10 flex overflow-hidden rounded-3xl py-2 transition-all duration-300"
+                    style={{ left: tabUnderlineLeft, width: tabUnderlineWidth }}
                   >
-                    <h2 className="text-orange-600 text-lg font-semibold mb-2 bg-orange-100 p-3 rounded-t-2xl">
-                      {feature.title}
-                    </h2>
-                    <div className="flex-grow flex flex-col items-center justify-center px-4">
-                      <img
-                        src={feature.imgSrc}
-                        alt={feature.alt}
-                        width={150}
-                        height={150}
-                        className="mb-8"
-                      />
-                      <p className="text-gray-600 text-base">{feature.description}</p>
-                    </div>
-                  </Link>
-                ))}
+                    <span className="h-full w-full rounded-3xl bg-[#e0ae2a]" />
+                  </span>
+                  {allTabs.map((tab, index) => (
+                    <button
+                      key={index}
+                      ref={(el) => (tabsRef.current[index] = el)}
+                      className={`my-auto cursor-pointer select-none rounded-full px-4 text-center font-bold text-white`}
+                      onClick={() => handleTabChange(index)}
+                    >
+                      {tab.name}
+                    </button>
+                  ))}
+                </div>
+
+                <div className={`text-left transition-all duration-500 ${transitioning ? 'opacity-0' : 'opacity-100'}`}>
+                  {activeTabIndex === 0 ? (
+                    <>
+                      <div className="mb-4">
+                        <label className="block text-gray-700 lg:text-lg">Month of Birth</label>
+                        <input
+                          type="month"
+                          className="w-full mt-1 p-2 border border-gray-300 rounded lg:p-3"
+                          value={monthOfBirth}
+                          onChange={handleMonthChange}
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label className="block text-gray-700 lg:text-lg">Gender</label>
+                        <div className="flex mt-1">
+                          <button
+                            className={`w-1/2 p-2 border border-gray-300 rounded-l ${gender === 'Male' ? 'bg-yellow-300' : ''}`}
+                            onClick={() => handleGenderSelect('Male')}
+                          >
+                            Male
+                          </button>
+                          <button
+                            className={`w-1/2 p-2 border border-gray-300 rounded-r ${gender === 'Female' ? 'bg-yellow-300' : ''}`}
+                            onClick={() => handleGenderSelect('Female')}
+                          >
+                            Female
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="mb-4">
+                        <label className="block text-gray-700 lg:text-lg">Date of Birth</label>
+                        <input
+                          type="date"
+                          className="w-full mt-1 p-2 border border-gray-300 rounded lg:p-3"
+                          value={dateOfBirth.toISOString().split('T')[0]}
+                          onChange={handleDateChange}
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label className="block text-gray-700 lg:text-lg">Time of Birth</label>
+                        <TextField
+                          label="Choose Time"
+                          type="time"
+                          value={timeOfBirth}
+                          onChange={handleTimeChange}
+                          InputLabelProps={{ shrink: true }}
+                          inputProps={{ step: 300 }}
+                          className="w-full mt-1"
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label className="block text-gray-700 lg:text-lg">Gender</label>
+                        <div className="flex mt-1">
+                          <button
+                            className={`w-1/2 p-2 border border-gray-300 rounded-l ${gender === 'Male' ? 'bg-yellow-300' : ''}`}
+                            onClick={() => handleGenderSelect('Male')}
+                          >
+                            Male
+                          </button>
+                          <button
+                            className={`w-1/2 p-2 border border-gray-300 rounded-r ${gender === 'Female' ? 'bg-yellow-300' : ''}`}
+                            onClick={() => handleGenderSelect('Female')}
+                          >
+                            Female
+                          </button>
+                        </div>
+                      </div>
+                      <div className="mb-4">
+                        <label className="block text-gray-700 lg:text-lg">Location</label>
+                        <input
+                          type="text"
+                          className="w-full mt-1 p-2 border border-gray-300 rounded lg:p-3"
+                          value={location}
+                          onChange={handleLocationChange}
+                          placeholder="Start typing a location"
+                        />
+                        {suggestions.length > 0 && (
+                          <ul className="mt-2 max-h-40 overflow-y-auto bg-white border border-gray-300 rounded p-2">
+                            {suggestions.map((suggestion, index) => (
+                              <li
+                                key={index}
+                                className="p-1 cursor-pointer hover:bg-gray-200"
+                                onClick={() => {
+                                  setLocation(suggestion.formatted);
+                                  setSelectedGeoLocation({ lat: suggestion.lat, lon: suggestion.lon });
+                                  setSuggestions([]);
+                                }}
+                              >
+                                {suggestion.formatted}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <button onClick={handleSubmit} className="mt-6 bg-yellow-500 text-white py-2 px-4 rounded-full hover:bg-yellow-600 sm:py-3 sm:px-6 z-20">
+                See My Astrology Jewelry
+              </button>
+            </div>
+            <div className="h-16"></div>
+
+            {/* Features Section */}
+            <div className="w-full bg-gray-100 border-t border-b border-gray-300">
+              <div className="py-6 font-custom mx-8">
+                <div className="container mx-auto px-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                    {features.map((feature, index) => (
+                      <Link
+                        to={feature.link}
+                        key={index}
+                        className="bg-white rounded-2xl shadow text-center border border-orange-200 min-h-[350px] flex flex-col justify-between max-w-[80%] mx-auto hover:shadow-xl transition-shadow duration-300"
+                      >
+                        <h2 className="text-orange-600 text-lg font-semibold mb-2 bg-orange-100 p-3 rounded-t-2xl">
+                          {feature.title}
+                        </h2>
+                        <div className="flex-grow flex flex-col items-center justify-center px-4">
+                          <img
+                            src={feature.imgSrc}
+                            alt={feature.alt}
+                            width={150}
+                            height={150}
+                            className="mb-8"
+                          />
+                          <p className="text-gray-600 text-base">{feature.description}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
+
+            <div className="h-16"></div>
+
+            {/* Footer */}
+            <footer ref={demoSectionRef} className="w-full bg-[#f8f8f8] py-8 text-sm text-gray-600 px-8">
+              <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+                <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
+                  <Link to="/">
+                    <img src={logo} alt="Company Logo" className="mb-4 w-32" />
+                  </Link>
+                  <p className="text-center md:text-left mb-4 text-2xl font-custom">
+                    Your Style, Our Craftsmanship — Together,
+                    <br />
+                    We Sparkle with Elegance.
+                  </p>
+                  <div className="flex space-x-4 text-xl">
+                    <a className="text-gray-600 hover:text-gray-800" href="https://www.facebook.com/profile.php?id=61574416178019" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
+                    <a className="text-gray-600 hover:text-gray-800" href="https://twitter.com" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
+                    <a className="text-gray-600 hover:text-gray-800" href="https://instagram.com/kinmitra_com" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
+                    <a className="text-gray-600 hover:text-gray-800" href="https://linkedin.com/company/bgornaments" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
+                    <a className="text-gray-600 hover:text-gray-800" href="https://youtube.com" target="_blank" rel="noopener noreferrer"><FaYoutube /></a>
+                  </div>
+                </div>
+
+                <div className="flex flex-col md:flex-row md:space-x-16 text-center md:text-left">
+                  <div className="mb-6 md:mb-0">
+                    <h3 className="text-gray-800 font-bold mb-4 text-2xl font-custom">Company</h3>
+                    <ul className="space-y-2">
+                      <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Home</Link></li>
+                      <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Our Work</Link></li>
+                      <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/catalog">AI Design</Link></li>
+                      <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Pricing</Link></li>
+                      <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/Contact-Us">Contact Us</Link></li>
+                      <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/kinmitra_team">Our Team</Link></li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="text-gray-800 font-bold mb-4 text-2xl font-custom">Support</h3>
+                    <ul className="space-y-2">
+                      <li className="text-gray-600 text-base">+91 (835) 608-5861</li>
+                      <li className="text-gray-600 text-base">ceo@kinmitra.com</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </footer>
           </div>
         </div>
-
-        <div className="h-16"></div>
-
-        {/* Footer */}
-        <footer ref={demoSectionRef} className="w-full bg-[#f8f8f8] py-8 text-sm text-gray-600 px-8">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
-            <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
-              <Link to="/">
-                <img src={logo} alt="Company Logo" className="mb-4 w-32" />
-              </Link>
-              <p className="text-center md:text-left mb-4 text-2xl font-custom">
-                Your Style, Our Craftsmanship — Together,
-                <br />
-                We Sparkle with Elegance.
-              </p>
-              <div className="flex space-x-4 text-xl">
-                <a className="text-gray-600 hover:text-gray-800" href="https://www.facebook.com/profile.php?id=61574416178019" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
-                <a className="text-gray-600 hover:text-gray-800" href="https://twitter.com" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
-                <a className="text-gray-600 hover:text-gray-800" href="https://instagram.com/kinmitra_com" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
-                <a className="text-gray-600 hover:text-gray-800" href="https://linkedin.com/company/bgornaments" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
-                <a className="text-gray-600 hover:text-gray-800" href="https://youtube.com" target="_blank" rel="noopener noreferrer"><FaYoutube /></a>
-              </div>
-            </div>
-
-            <div className="flex flex-col md:flex-row md:space-x-16 text-center md:text-left">
-              <div className="mb-6 md:mb-0">
-                <h3 className="text-gray-800 font-bold mb-4 text-2xl font-custom">Company</h3>
-                <ul className="space-y-2">
-                  <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Home</Link></li>
-                  <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Our Work</Link></li>
-                  <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/catalog">AI Design</Link></li>
-                  <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Pricing</Link></li>
-                  <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/Contact-Us">Contact Us</Link></li>
-                  <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/kinmitra_team">Our Team</Link></li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-gray-800 font-bold mb-4 text-2xl font-custom">Support</h3>
-                <ul className="space-y-2">
-                  <li className="text-gray-600 text-base">+91 (835) 608-5861</li>
-                  <li className="text-gray-600 text-base">ceo@kinmitra.com</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </footer>
-      </div>
-    </div>
+      ) : (
+        <GlassComponent />
+      )}
+    </>
   );
 };
 

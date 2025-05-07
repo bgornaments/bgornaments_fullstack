@@ -83,7 +83,7 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
 
         const trialStartDate = new Date().toISOString();
         const trialEndDate = new Date();
-        trialEndDate.setDate(trialEndDate.getDate() + 10);
+        trialEndDate.setDate(trialEndDate.getDate() + 3);
         const trialEndDateString = trialEndDate.toISOString();
 
         const trialData = {
@@ -113,6 +113,17 @@ const Navbar: React.FC<NavbarProps> = ({ onContactClick, onFaqClick }) => {
             text: responseData.message || "Your free trial has been successfully started.",
             icon: "success",
           });
+          localStorage.setItem("trial_status", trialData.trial_status.toLowerCase());
+          localStorage.setItem("trial_start_date", trialData.trial_start_date);
+          localStorage.setItem("trial_end_date", trialData.trial_end_date);
+
+          const trialDaysLeft = Math.max(
+            0,
+            Math.ceil((new Date(trialData.trial_end_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+          );
+          localStorage.setItem("trial_days_left", trialDaysLeft.toString());
+
+
         } else {
           Swal.fire({
             title: "Trial Status",

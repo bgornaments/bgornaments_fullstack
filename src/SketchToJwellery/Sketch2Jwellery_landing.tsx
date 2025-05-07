@@ -1,4 +1,4 @@
-import React, { useState, useRef, ChangeEvent } from 'react';
+import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import UploadImg from '../components/ProMode/UploadImg';
 import SketchCanvas, { SketchCanvasHandle } from './SketchCanvas';
@@ -9,6 +9,8 @@ import astro from '../assets/vedic-astrology.png'
 import outfitmatch from '../assets/outfit_matching_icon.jpg';
 import imgVar from '../assets/image_variations_icon.jpg';
 import Navbar from '../landingNew/navbar';
+import GlassComponent from '../components/GlassComponent';
+
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 
 const SketchToDesign: React.FC = () => {
@@ -16,15 +18,60 @@ const SketchToDesign: React.FC = () => {
     const [isUploadVisible, setUploadVisible] = useState(false);
     const [uploadedImage, setUploadedImage] = useState<string | null>(null);
     const [showModal, setShowModal] = useState(false);
+    const [sessionId, setSessionId] = useState<string | null>(null);;
     const sketchRef = useRef<SketchCanvasHandle>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const demoSectionRef = useRef<HTMLDivElement>(null);
     const faqsRef = useRef<HTMLDivElement>(null);
-    const getSessionId = () => {
-        const sessionId = sessionStorage.getItem("sessionId") || localStorage.getItem("sessionId");
-        console.log("Retrieved sessionId:", sessionId);
-        return sessionId;
-    };
+    // const getSessionId = () => {
+    //     const sessionId = sessionStorage.getItem("sessionId") || localStorage.getItem("sessionId");
+    //     console.log("Retrieved sessionId:", sessionId);
+    //     return sessionId;
+    // };
+
+    const [showComponent, setShowComponent] = useState<boolean>(false);
+
+    useEffect(() => {
+        const trialDaysLeft = parseInt(localStorage.getItem('trial_days_left') || '0');
+        const trialStatus = localStorage.getItem('trial_status')?.toLowerCase();
+
+        console.log("trialDaysLeft:", trialDaysLeft);
+        console.log("trialStatus:", trialStatus);
+
+        if (trialStatus && trialDaysLeft > 0) {
+            setShowComponent(true);
+        } else {
+            setShowComponent(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        const existingSessionId = sessionStorage.getItem("sessionId");
+
+        if (existingSessionId) {
+            console.log(`Session ID ${existingSessionId} is being deleted.`)
+
+            sessionStorage.removeItem("sessionId");
+            localStorage.removeItem("sessionId");
+            const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+            sessionStorage.setItem("sessionId", newSessionId);
+            localStorage.setItem("sessionId", newSessionId);
+            console.log("New Session ID created:", newSessionId);
+        }
+
+        if (!existingSessionId) {
+            const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+            sessionStorage.setItem("sessionId", newSessionId);
+            localStorage.setItem("sessionId", newSessionId);
+            console.log("New Session ID created:", newSessionId);
+            setSessionId(newSessionId);
+        }
+
+        // if (!sessionId) {
+        //   alert('Session ID not found. Please refresh the page.');
+        // }
+    },);
+
 
     const AddPaddingToBase64 = ({ base64Image, bgColor = "white" }: { base64Image: string; bgColor?: string }): Promise<string> => {
         console.log("Starting AddPaddingToBase64...");
@@ -150,58 +197,60 @@ const SketchToDesign: React.FC = () => {
         },
     ];
     return (
-        <div className="min-h-screen bg-white flex flex-col">
-            <Navbar
-                onContactClick={() => {
-                    demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                onFaqClick={() => {
-                    faqsRef.current?.scrollIntoView({ behavior: 'smooth' });
-                }}
-            />
-            {/* Header */}
-            <div className="w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen shadow-[4px_4px_4px_rgba(0,0,0,0.1),-4px_-4px_4px_rgba(0,0,0,0.1),4px_-4px_4px_rgba(0,0,0,0.1),-4px_4px_4px_rgba(0,0,0,0.1)]">
-                <header className="py-6 text-center">
-                    <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
-                        Sketch to Design
-                    </h1>
-                    <p className="text-lightGreen mb-6 lg:text-xl">
-                        Transform your sketch to jewelry design
-                    </p>
-                </header>
+        <>
+            {showComponent ? (
+                <div className="min-h-screen bg-white flex flex-col">
+                    <Navbar
+                        onContactClick={() => {
+                            demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        onFaqClick={() => {
+                            faqsRef.current?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                    />
+                    {/* Header */}
+                    <div className="w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen shadow-[4px_4px_4px_rgba(0,0,0,0.1),-4px_-4px_4px_rgba(0,0,0,0.1),4px_-4px_4px_rgba(0,0,0,0.1),-4px_4px_4px_rgba(0,0,0,0.1)]">
+                        <header className="py-6 text-center">
+                            <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
+                                Sketch to Design
+                            </h1>
+                            <p className="text-lightGreen mb-6 lg:text-xl">
+                                Transform your sketch to jewelry design
+                            </p>
+                        </header>
 
-                {/* Main content */}
-                <main className="flex-grow flex items-center justify-center px-4">
-                    <div className="flex flex-col md:flex-row items-center justify-center md:space-x-8 space-y-6 md:space-y-0">
-                        {/* Buttons column */}
-                        <div className="inline-block md:-mt-12 md:mb-12 md:mr-16">
-                            <div className="flex flex-col items-stretch space-y-3 md:space-y-8 w-72">
-                                <button
-                                    onClick={handleUploadClick}
-                                    className="w-full whitespace-nowrap px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-600 rounded-md"
-                                >
-                                    Upload a sketch
-                                </button>
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    ref={fileInputRef}
-                                    className="hidden"
-                                    onChange={handleFileChange}
-                                />
-                                <p className="text-black font-semibold text-center">OR</p>
-                                <button
-                                    onClick={handleDrawClick}
-                                    className="w-full whitespace-nowrap px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-600 rounded-md"
-                                >
-                                    Draw a sketch
-                                </button>
-                            </div>
-                        </div>
+                        {/* Main content */}
+                        <main className="flex-grow flex items-center justify-center px-4">
+                            <div className="flex flex-col md:flex-row items-center justify-center md:space-x-8 space-y-6 md:space-y-0">
+                                {/* Buttons column */}
+                                <div className="inline-block md:-mt-12 md:mb-12 md:mr-16">
+                                    <div className="flex flex-col items-stretch space-y-3 md:space-y-8 w-72">
+                                        <button
+                                            onClick={handleUploadClick}
+                                            className="w-full whitespace-nowrap px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-600 rounded-md"
+                                        >
+                                            Upload a sketch
+                                        </button>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            ref={fileInputRef}
+                                            className="hidden"
+                                            onChange={handleFileChange}
+                                        />
+                                        <p className="text-black font-semibold text-center">OR</p>
+                                        <button
+                                            onClick={handleDrawClick}
+                                            className="w-full whitespace-nowrap px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-600 rounded-md"
+                                        >
+                                            Draw a sketch
+                                        </button>
+                                    </div>
+                                </div>
 
-                        {/* Image preview column */}
-                        <div className="flex flex-col items-center">
-                            <div className="
+                                {/* Image preview column */}
+                                <div className="flex flex-col items-center">
+                                    <div className="
                             border-4
                             w-80 h-80 
                             md:w-96 md:h-96 
@@ -210,152 +259,156 @@ const SketchToDesign: React.FC = () => {
                             2xl:w-[28em] 2xl:h-[28rem] 
                             flex items-center justify-center
                         ">
-                                {uploadedImage ? (
-                                    <img src={uploadedImage} alt="Uploaded Sketch" className="w-full h-full object-contain" />
-                                ) : (
-                                    <p className="text-gray-400 text-center">
-                                        Your uploaded/drawn sketch
-                                    </p>
-                                )}
-                            </div>
-                            <button
-                                onClick={handleNext}
-                                className="mt-4 md:mt-6 px-8 md:px-10 py-3 md:py-4 bg-yellow-600 text-white rounded-md"
-                            >
-                                Next
-                            </button>
-                        </div>
-                    </div>
-                </main>
-
-                {/* Upload Image Component - Shows when upload button is clicked */}
-                {isUploadVisible && (
-                    <UploadImg
-                        sessionId={getSessionId()}
-                        onImageSelect={handleImageSelect}
-                        onClose={() => setUploadVisible(false)}
-                    />
-                )}
-            </div>
-            {/* Modal Popup for Drawing Sketch */}
-            {showModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-4xl mx-4">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-semibold">Draw your Sketch</h2>
-                            <button
-                                className="text-gray-500 hover:text-gray-700"
-                                onClick={() => setShowModal(false)}
-                            >
-                                &times;
-                            </button>
-                        </div>
-                        {/* SketchCanvas component inside the modal */}
-                        <SketchCanvas ref={sketchRef} />
-                        <div className="flex justify-end mt-4 space-x-2">
-                            <button
-                                className="px-4 py-2 bg-gray-300 text-gray-800 rounded"
-                                onClick={() => setShowModal(false)}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                className="px-4 py-2 bg-yellow-600 text-white rounded"
-                                onClick={handleDoneDrawing}
-                            >
-                                Done
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-            <div className='h-16'></div>
-            <div className="w-full bg-gray-100 border-t border-b border-gray-300">
-                <div className="py-6 font-custom mx-8">
-                    <div className="container mx-auto px-4">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                            {features.map((feature, index) => (
-                                <Link
-                                    to={feature.link}
-                                    key={index}
-                                    className="bg-white rounded-2xl shadow text-center border border-orange-200 min-h-[350px] flex flex-col justify-between max-w-[80%] mx-auto hover:shadow-xl transition-shadow duration-300"
-                                >
-                                    <h2 className="text-orange-600 text-lg font-semibold mb-2 bg-orange-100 p-3 rounded-t-2xl">
-                                        {feature.title}
-                                    </h2>
-                                    <div className="flex-grow flex flex-col items-center justify-center px-4">
-                                        <img
-                                            src={feature.imgSrc}
-                                            alt={feature.alt}
-                                            width={150}
-                                            height={150}
-                                            className="mb-8"
-                                        />
-                                        <p className="text-gray-600 text-base">{feature.description}</p>
+                                        {uploadedImage ? (
+                                            <img src={uploadedImage} alt="Uploaded Sketch" className="w-full h-full object-contain" />
+                                        ) : (
+                                            <p className="text-gray-400 text-center">
+                                                Your uploaded/drawn sketch
+                                            </p>
+                                        )}
                                     </div>
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className='h-16'></div>
-            <footer className="bg-[#f8f8f8] py-8 text-sm text-gray-600 px-8">
-                <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
-                    {/* Logo & Tagline */}
-                    <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
-                        <Link to="/">
-                            <img src={logo} alt="Company Logo" className="mb-4 w-32" />
-                        </Link>
-                        <p className="text-center md:text-left mb-4 text-2xl font-custom">
-                            Your Style, Our Craftsmanship — Together,
-                            <br />
-                            We Sparkle with Elegance.
-                        </p>
-                        <div className="flex space-x-4 text-xl">
-                            <a className="text-gray-600 hover:text-gray-800" href="https://www.facebook.com/profile.php?id=61574416178019" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
-                            <a className="text-gray-600 hover:text-gray-800" href="https://twitter.com" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
-                            <a className="text-gray-600 hover:text-gray-800" href="https://instagram.com/kinmitra_com" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
-                            <a className="text-gray-600 hover:text-gray-800" href="https://linkedin.com/company/bgornaments" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
-                            <a className="text-gray-600 hover:text-gray-800" href="https://youtube.com" target="_blank" rel="noopener noreferrer"><FaYoutube /></a>
-                        </div>
-                    </div>
+                                    <button
+                                        onClick={handleNext}
+                                        className="mt-4 md:mt-6 px-8 md:px-10 py-3 md:py-4 bg-yellow-600 text-white rounded-md"
+                                    >
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
+                        </main>
 
-                    {/* Navigation Links */}
-                    <div className="flex flex-col md:flex-row md:space-x-16 text-center md:text-left">
-                        <div className="mb-6 md:mb-0">
-                            <h3 className="text-gray-800 font-bold mb-4 text-2xl font-custom">Company</h3>
-                            <ul className="space-y-2">
-                                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Home</Link></li>
-                                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Our Work</Link></li>
-                                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/catalog">AI Design</Link></li>
-                                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Pricing</Link></li>
-                                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/Contact-Us">Contact Us</Link></li>
-                                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/kinmitra_team">Our Team</Link></li>
-                            </ul>
+                        {/* Upload Image Component - Shows when upload button is clicked */}
+                        {isUploadVisible && (
+                            <UploadImg
+                                sessionId={sessionId}
+                                onImageSelect={handleImageSelect}
+                                onClose={() => setUploadVisible(false)}
+                            />
+                        )}
+                    </div>
+                    {/* Modal Popup for Drawing Sketch */}
+                    {showModal && (
+                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                            <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-4xl mx-4">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h2 className="text-xl font-semibold">Draw your Sketch</h2>
+                                    <button
+                                        className="text-gray-500 hover:text-gray-700"
+                                        onClick={() => setShowModal(false)}
+                                    >
+                                        &times;
+                                    </button>
+                                </div>
+                                {/* SketchCanvas component inside the modal */}
+                                <SketchCanvas ref={sketchRef} />
+                                <div className="flex justify-end mt-4 space-x-2">
+                                    <button
+                                        className="px-4 py-2 bg-gray-300 text-gray-800 rounded"
+                                        onClick={() => setShowModal(false)}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        className="px-4 py-2 bg-yellow-600 text-white rounded"
+                                        onClick={handleDoneDrawing}
+                                    >
+                                        Done
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-
-                        {/* Contact Info */}
-                        <div>
-                            <h3 className="text-gray-800 font-bold mb-4 text-2xl font-custom">Support</h3>
-                            <ul className="space-y-2">
-                                <li className="text-gray-600 text-base">+91 (835) 608-5861</li>
-                                <li className="text-gray-600 text-base">ceo@kinmitra.com</li>
-                            </ul>
-                            <div className="mt-4">
-                                <a href="/privacy-Notice" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-800 text-base block">Privacy Notice</a>
-                                <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-800 text-base block mt-1">Terms & Conditions</a>
+                    )}
+                    <div className='h-16'></div>
+                    <div className="w-full bg-gray-100 border-t border-b border-gray-300">
+                        <div className="py-6 font-custom mx-8">
+                            <div className="container mx-auto px-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                                    {features.map((feature, index) => (
+                                        <Link
+                                            to={feature.link}
+                                            key={index}
+                                            className="bg-white rounded-2xl shadow text-center border border-orange-200 min-h-[350px] flex flex-col justify-between max-w-[80%] mx-auto hover:shadow-xl transition-shadow duration-300"
+                                        >
+                                            <h2 className="text-orange-600 text-lg font-semibold mb-2 bg-orange-100 p-3 rounded-t-2xl">
+                                                {feature.title}
+                                            </h2>
+                                            <div className="flex-grow flex flex-col items-center justify-center px-4">
+                                                <img
+                                                    src={feature.imgSrc}
+                                                    alt={feature.alt}
+                                                    width={150}
+                                                    height={150}
+                                                    className="mb-8"
+                                                />
+                                                <p className="text-gray-600 text-base">{feature.description}</p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div className='h-16'></div>
+                    <footer className="bg-[#f8f8f8] py-8 text-sm text-gray-600 px-8">
+                        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+                            {/* Logo & Tagline */}
+                            <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
+                                <Link to="/">
+                                    <img src={logo} alt="Company Logo" className="mb-4 w-32" />
+                                </Link>
+                                <p className="text-center md:text-left mb-4 text-2xl font-custom">
+                                    Your Style, Our Craftsmanship — Together,
+                                    <br />
+                                    We Sparkle with Elegance.
+                                </p>
+                                <div className="flex space-x-4 text-xl">
+                                    <a className="text-gray-600 hover:text-gray-800" href="https://www.facebook.com/profile.php?id=61574416178019" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
+                                    <a className="text-gray-600 hover:text-gray-800" href="https://twitter.com" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
+                                    <a className="text-gray-600 hover:text-gray-800" href="https://instagram.com/kinmitra_com" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
+                                    <a className="text-gray-600 hover:text-gray-800" href="https://linkedin.com/company/bgornaments" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
+                                    <a className="text-gray-600 hover:text-gray-800" href="https://youtube.com" target="_blank" rel="noopener noreferrer"><FaYoutube /></a>
+                                </div>
+                            </div>
+
+                            {/* Navigation Links */}
+                            <div className="flex flex-col md:flex-row md:space-x-16 text-center md:text-left">
+                                <div className="mb-6 md:mb-0">
+                                    <h3 className="text-gray-800 font-bold mb-4 text-2xl font-custom">Company</h3>
+                                    <ul className="space-y-2">
+                                        <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Home</Link></li>
+                                        <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Our Work</Link></li>
+                                        <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/catalog">AI Design</Link></li>
+                                        <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/">Pricing</Link></li>
+                                        <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/Contact-Us">Contact Us</Link></li>
+                                        <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/kinmitra_team">Our Team</Link></li>
+                                    </ul>
+                                </div>
+
+                                {/* Contact Info */}
+                                <div>
+                                    <h3 className="text-gray-800 font-bold mb-4 text-2xl font-custom">Support</h3>
+                                    <ul className="space-y-2">
+                                        <li className="text-gray-600 text-base">+91 (835) 608-5861</li>
+                                        <li className="text-gray-600 text-base">ceo@kinmitra.com</li>
+                                    </ul>
+                                    <div className="mt-4">
+                                        <a href="/privacy-Notice" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-800 text-base block">Privacy Notice</a>
+                                        <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-800 text-base block mt-1">Terms & Conditions</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* Bottom copyright */}
+                        <div className="border-t border-gray-200 mt-8 pt-4 text-center text-xs text-gray-500">
+                            Copyright © 2025 KinMitra. All rights reserved. <br /> Unauthorized reproduction or distribution is prohibited.
+                            KinMitra is a registered trademark of Bharat Gold Ornaments Pvt. Ltd.
+                        </div>
+                    </footer>
                 </div>
-                {/* Bottom copyright */}
-                <div className="border-t border-gray-200 mt-8 pt-4 text-center text-xs text-gray-500">
-                    Copyright © 2025 KinMitra. All rights reserved. <br /> Unauthorized reproduction or distribution is prohibited.
-                    KinMitra is a registered trademark of Bharat Gold Ornaments Pvt. Ltd.
-                </div>
-            </footer>
-        </div>
+            ) : (
+                <GlassComponent />
+            )}
+        </>
     );
 };
 

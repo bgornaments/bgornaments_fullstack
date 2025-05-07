@@ -223,18 +223,34 @@ const Login: React.FC<LoginProps> = ({ children }) => {
 
             const responseData = await response.json();
             console.log("GET request backend response:", responseData);
+            if (response.ok) {
+              const { trial_start_date, trial_end_date, trial_status, cognito_username } = responseData.data;
+              // Persist session data in sessionStorage
+              localStorage.setItem("cognito_username", cognito_username);
+              localStorage.setItem("trial_status", trial_status.toLowerCase());
+              localStorage.setItem("trial_start_date", trial_start_date);
+              localStorage.setItem("trial_end_date", trial_end_date);
 
-            if (response.ok && responseData.trial_exists) {
-              // Trial exists, mark as done
-              setMessage("Trial is already active.");
+              const trialDaysLeft = Math.max(
+                0,
+                Math.ceil((new Date(trial_end_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+              );
+              localStorage.setItem("trial_days_left", trialDaysLeft.toString());
+
+              setMessage("Trial status retrieved successfully.");
               setMessageType("success");
+
+              if (trialDaysLeft > 0) {
+                alert(`${trialDaysLeft} days left in your trial version.`);
+              } else {
+                alert("Your trial version has expired.");
+              }
             } else {
-              // Trial doesn't exist, do nothing
-              setMessage("No active trial found.");
-              setMessageType("warn");
+              setMessage(responseData.message || "Failed to retrieve trial status.");
+              setMessageType("error");
             }
           } else {
-            setMessage("ID Token payload is not available in the session.");
+            setMessage("ID Token payload is unavailable in the session.");
             setMessageType("error");
           }
         } catch (err) {

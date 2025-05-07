@@ -44,6 +44,7 @@ const ImgVar: React.FC = () => {
   const [maskS3url, setMaskS3url] = useState<string | null>(null);
   const [isMaskExported, setIsMaskExported] = useState<boolean>(false);
   const [, setGeneratedImages] = useState<string[]>([]);
+  const [sessionId, setSessionId] = useState<string | null>(null);;
 
   const handleShowMaskingPopup = () => {
     console.log("handleShowMaskingPopup: Running – setting showMaskingPopup to true.");
@@ -119,7 +120,7 @@ const ImgVar: React.FC = () => {
   const imageToDownload = generatedImageUrl;
   const demoSectionRef = useRef<HTMLDivElement>(null);
   const faqsRef = useRef<HTMLDivElement>(null);
-  const sessionId = localStorage.getItem('sessionId');
+  // const sessionId = localStorage.getItem('sessionId');
 
   const base_url = Img_Var_Base;
   const [showComponent, setShowComponent] = useState<boolean>(false);
@@ -139,10 +140,31 @@ const ImgVar: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!sessionId) {
-      alert('Session ID not found. Please refresh the page.');
+    const existingSessionId = sessionStorage.getItem("sessionId");
+
+    if (existingSessionId) {
+      console.log(`Session ID ${existingSessionId} is being deleted.`)
+
+      sessionStorage.removeItem("sessionId");
+      localStorage.removeItem("sessionId");
+      const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+      sessionStorage.setItem("sessionId", newSessionId);
+      localStorage.setItem("sessionId", newSessionId);
+      console.log("New Session ID created:", newSessionId);
     }
-  }, [sessionId]);
+
+    if (!existingSessionId) {
+      const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+      sessionStorage.setItem("sessionId", newSessionId);
+      localStorage.setItem("sessionId", newSessionId);
+      console.log("New Session ID created:", newSessionId);
+      setSessionId(newSessionId);
+    }
+
+    // if (!sessionId) {
+    //   alert('Session ID not found. Please refresh the page.');
+    // }
+  },);
 
   const callLambda = async (endpointUrl: string, payload: object) => {
     console.log("callLambda: Running with endpointUrl:", endpointUrl, "and payload:", payload);

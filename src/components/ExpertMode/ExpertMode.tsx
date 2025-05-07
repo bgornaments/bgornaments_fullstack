@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Card from "../Basic/Card";
 import setgen from "/src/assets/set_generator_icon.jpg";
 import imgvar from "/src/assets/image_variations_icon.jpg";
@@ -8,17 +8,17 @@ import sketch from "/src/assets/sketch.png";
 
 const ExpertMode: React.FC = () => {
 
-  useEffect(() => {
-    const existingSessionId = sessionStorage.getItem("sessionId");
-    if (!existingSessionId) {
-      const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
-      sessionStorage.setItem("sessionId", newSessionId);
-      localStorage.setItem("sessionId", newSessionId);
-      console.log("New Session ID created:", newSessionId);
-    } else {
-      console.log(`Session ID already exists: ${existingSessionId}`);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const existingSessionId = sessionStorage.getItem("sessionId");
+  //   if (!existingSessionId) {
+  //     const newSessionId = (Math.floor(Math.random() * 1000000)).toString();
+  //     sessionStorage.setItem("sessionId", newSessionId);
+  //     localStorage.setItem("sessionId", newSessionId);
+  //     console.log("New Session ID created:", newSessionId);
+  //   } else {
+  //     console.log(`Session ID already exists: ${existingSessionId}`);
+  //   }
+  // }, []);
 
   return (
     <div className="w-full min-h-screen flex justify-center items-center">
