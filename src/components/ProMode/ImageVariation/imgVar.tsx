@@ -28,7 +28,7 @@ const ImgVar: React.FC = () => {
   const [modifications, setModifications] = useState<string[]>([]);
   const [selectedModification, setSelectedModification] = useState<string | null>(null);
   const [customModification, setCustomModification] = useState<string>('');
-  const [finalPrompt, setFinalPrompt] = useState<string>(''); // To store the final prompt
+  // const [finalPrompt, setFinalPrompt] = useState<string>(''); // To store the final prompt
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null); // To store the generated image URL
   const [s3Link, setS3Link] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Loading state
@@ -313,21 +313,22 @@ const ImgVar: React.FC = () => {
       return;
     }
     const instruction = selectedModification === 'Other' ? customModification : selectedModification;
-    const payload = {
-      description: caption,
-      instruction: instruction,
-    };
+    // const payload = {
+    //   description: caption,
+    //   instruction: instruction,
+    // };
 
-    console.log('payload for after modification prompt generation:', payload);
+    // console.log('payload for after modification prompt generation:', payload);
 
-    const response = await callLambda(
-      `${base_url}generate_variation_sd_prompt`,
-      payload
-    );
-    if (response && response.output_prompt) {
-      setFinalPrompt(response.output_prompt);
-      await generateImageUrl(response.output_prompt, s3Link);
-    }
+    // const response = await callLambda(
+    //   `${base_url}generate_variation_sd_prompt`,
+    //   payload
+    // );
+    // if (response && response.output_prompt) {
+    //   // setFinalPrompt(response.output_prompt);
+    //   await generateImageUrl(response.output_prompt, s3Link);
+    // }
+    await generateImageUrl(instruction, s3Link);
     setIsProcessing(false);
   };
 
@@ -419,7 +420,7 @@ const ImgVar: React.FC = () => {
     setModifications([]);
     setSelectedModification(null);
     setCustomModification('');
-    setFinalPrompt('');
+    // setFinalPrompt('');
     setGeneratedImageUrl(null);
     setS3Link('');
     setGeneratedImages([]);
@@ -448,12 +449,12 @@ const ImgVar: React.FC = () => {
             }}
           />
           <div className="absolute top-0 left-0 right-0 bottom-0 bg-white opacity-60 z-[-90]"></div>
-          <main className="w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen shadow-[4px_4px_4px_rgba(0,0,0,0.1),-4px_-4px_4px_rgba(0,0,0,0.1),4px_-4px_4px_rgba(0,0,0,0.1),-4px_4px_4px_rgba(0,0,0,0.1)]">
+          <main className="w-[70%] mx-auto bg-[#ffffff] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen shadow-[4px_4px_4px_rgba(0,0,0,0.1),-4px_-4px_4px_rgba(0,0,0,0.1),4px_-4px_4px_rgba(0,0,0,0.1),-4px_4px_4px_rgba(0,0,0,0.1)]">
             <div className="flex items-center justify-center text-xl p-5 text-[#585858] relative w-full">
               <header className="text-center">
                 {/* Title */}
                 <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
-                  Image Variation
+                  Design Variation
                 </h1>
                 {/* Subtitle */}
                 <p className="text-lightGreen lg:text-xl">
@@ -682,12 +683,12 @@ const ImgVar: React.FC = () => {
                 </div>
               </div>
             )}
-            {finalPrompt && (
+            {/* {finalPrompt && (
               <div className="mt-6 p-4 bg-white rounded-lg">
                 <h3 className="text-lg font-bold">Generated Prompt:</h3>
                 <p>{finalPrompt}</p>
               </div>
-            )}
+            )} */}
           </main>
           {/* Upload Image Modal */}
           {isUploadVisible && (
