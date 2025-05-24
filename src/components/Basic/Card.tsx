@@ -87,7 +87,7 @@ const Card: React.FC<CardProps> = ({
       {/* Description Section */}
       <p
         // className="text-customBlack/70 text-center xs:max-w-[35vw] md:max-w-[16vw]"
-        className="text-lightGreen text-center xs:max-w-[35vw] md:max-w-[16vw]"
+        className="text-customBlack/70 text-center xs:max-w-[35vw] md:max-w-[16vw]"
         style={{ fontSize: pSize }}
       >
         {pText}

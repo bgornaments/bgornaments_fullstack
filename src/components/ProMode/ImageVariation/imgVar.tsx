@@ -3,14 +3,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import UploadImg from '../UploadImg'; // Ensure correct import path
 import axios from 'axios';
 // import '/src/assets/kinmitraAnimation.mp4'
-import kinmitraAnimation from '/src/assets/kinmitraAnimation.gif';
+import '../message.css';
+// import kinmitraAnimation from '/src/assets/kinmitraAnimation.gif';
 import GlassComponent from '../../GlassComponent';
 import DownloadButton from '../../DownloadButton';
 import { Dialog } from "@headlessui/react";
 import ImageMaskingPopup, { ImageMaskingPopupHandle } from '../../MaskImage';
 import { Img_Var_Base } from '../../../constantsAWS';
 import { IMAGE_GENERATOR_LEONARDO_NEW } from '../../../constantsAWS';
-import Navbar from '../../../landingNew/navbar';
+// import Navbar from '../../../landingNew/navbar';
+import Navbar from '../../../landingNew/navbarFeature';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/image.png';
@@ -44,7 +46,9 @@ const ImgVar: React.FC = () => {
   const [maskS3url, setMaskS3url] = useState<string | null>(null);
   const [isMaskExported, setIsMaskExported] = useState<boolean>(false);
   const [, setGeneratedImages] = useState<string[]>([]);
-  const [sessionId, setSessionId] = useState<string | null>(null);;
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  const [showVideoModal, setShowVideoModal] = useState(false);
 
   const handleShowMaskingPopup = () => {
     console.log("handleShowMaskingPopup: Running – setting showMaskingPopup to true.");
@@ -118,8 +122,8 @@ const ImgVar: React.FC = () => {
   }, []);
 
   const imageToDownload = generatedImageUrl;
-  const demoSectionRef = useRef<HTMLDivElement>(null);
-  const faqsRef = useRef<HTMLDivElement>(null);
+  // const demoSectionRef = useRef<HTMLDivElement>(null);
+  // const faqsRef = useRef<HTMLDivElement>(null);
   // const sessionId = localStorage.getItem('sessionId');
 
   const base_url = Img_Var_Base;
@@ -210,6 +214,7 @@ const ImgVar: React.FC = () => {
   const handleProcessImage = async () => {
     console.log("handleProcessImage: Running.");
     setIsProcessing(true);
+    setMessage("Processing Image")
 
     if (selectedImage) {
       const payload = {
@@ -235,6 +240,7 @@ const ImgVar: React.FC = () => {
       }
     }
     setIsProcessing(false);
+    setMessage("")
   };
 
   const fetchModifiableParams = async (caption: string) => {
@@ -254,6 +260,7 @@ const ImgVar: React.FC = () => {
     }
   };
   const fetchModifications = async (selectedParam: string) => {
+    setMessage("Generating Variation Suggestions")
     if (caption && selectedParam) {
       const payload = { parameter: selectedParam, description: caption };
 
@@ -273,6 +280,7 @@ const ImgVar: React.FC = () => {
         }
       }
     }
+    setMessage("")
   };
 
   const features = [
@@ -308,6 +316,7 @@ const ImgVar: React.FC = () => {
 
   const handleNext = async () => {
     setIsProcessing(true);
+    setMessage("Generating Design")
     if (!selectedModification) {
       alert('Please select a modification or enter a custom one.');
       return;
@@ -330,6 +339,7 @@ const ImgVar: React.FC = () => {
     // }
     await generateImageUrl(instruction, s3Link);
     setIsProcessing(false);
+    setMessage("")
   };
 
   const generateImageUrl = async (finalPrompt: string, references3url: string) => {
@@ -431,23 +441,62 @@ const ImgVar: React.FC = () => {
       {showComponent ? (
         <div className="flex flex-col min-h-screen">
           {/* Loading Overlay */}
+          {/* {isLoading && (
+            // <div className="fixed inset-0 flex items-center justify-center bg-gray-100 bg-opacity-70 z-50">
+            //   <img
+            //     src={kinmitraAnimation}
+            //     alt="Loading Animation"
+            //     className="w-[200px] h-[200px] object-cover"
+            //   />
+            // </div>
+            <div className="fullscreen-loader">
+              <div className="generator"></div>
+            </div>
+          )} */}
           {isLoading && (
-            <div className="fixed inset-0 flex items-center justify-center bg-gray-100 bg-opacity-70 z-50">
-              <img
-                src={kinmitraAnimation}
-                alt="Loading Animation"
-                className="w-[200px] h-[200px] object-cover"
-              />
+            <div className="fullscreen-loader">
+              <div className="generator" data-message={message}></div>
             </div>
           )}
           <Navbar
-            onContactClick={() => {
-              demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            onFaqClick={() => {
-              faqsRef.current?.scrollIntoView({ behavior: 'smooth' });
-            }}
+            // onContactClick={() => {
+            //   demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+            // }}
+            // onFaqClick={() => {
+            //   faqsRef.current?.scrollIntoView({ behavior: 'smooth' });
+            // }}
+            onTutorialClick={() => setShowVideoModal(true)}
           />
+
+
+          {/* Video Modal here */}
+          {showVideoModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-lg p-6 max-w-5xl w-full max-h-[95vh] h-[700px] relative flex flex-col">
+                <button
+                  className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-3xl font-bold"
+                  onClick={() => setShowVideoModal(false)}
+                >
+                  ×
+                </button>
+                <div className="flex-grow">
+                  <div className="w-full h-full aspect-w-16 aspect-h-9">
+                    <iframe
+                      className="w-full h-full rounded-md"
+                      src="https://www.youtube.com/embed/HfwFYSPnvk4"
+                      title="Tutorial Video"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+
+
           <div className="absolute top-0 left-0 right-0 bottom-0 bg-white opacity-60 z-[-90]"></div>
           <main className="w-[70%] mx-auto bg-[#ffffff] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen shadow-[4px_4px_4px_rgba(0,0,0,0.1),-4px_-4px_4px_rgba(0,0,0,0.1),4px_-4px_4px_rgba(0,0,0,0.1),-4px_4px_4px_rgba(0,0,0,0.1)]">
             <div className="flex items-center justify-center text-xl p-5 text-[#585858] relative w-full">

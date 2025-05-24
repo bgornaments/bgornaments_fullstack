@@ -1,0 +1,42 @@
+/* Import the font at the top */
+@import url('https://fonts.googleapis.com/css2?family=Quattrocento+Sans&display=swap');
+
+.fullscreen-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    font-family: 'Quattrocento Sans', sans-serif;
+}
+
+.generator {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: transparent;
+    -webkit-text-stroke: 1px #e0ae2a;
+    background:
+        radial-gradient(1.13em at 50% 1.6em, #e0ae2a 99%, white 101%) calc(50% - 1.6em) 0/3.2em 100% text,
+        radial-gradient(1.13em at 50% -0.8em, white 99%, #e0ae2a 101%) 50% 0.8em/3.2em 100% repeat-x text;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: shimmer-animate 2s linear infinite;
+}
+
+.generator::before {
+    content: attr(data-message);
+    /* Dynamically pick from HTML attribute */
+}
+
+
+@keyframes shimmer-animate {
+    to {
+        background-position: calc(50% + 1.6em) 0, calc(50% + 3.2em) 0.8em;
+    }
+}

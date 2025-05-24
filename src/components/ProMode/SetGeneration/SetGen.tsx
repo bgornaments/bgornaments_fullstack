@@ -1,19 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import UploadImg from '../UploadImg';
-import kinmitraAnimation from '/src/assets/kinmitraAnimation.gif';
+// import kinmitraAnimation from '/src/assets/kinmitraAnimation.gif';
 import GlassComponent from '../../GlassComponent';
 import DownloadButton from '../../DownloadButton';
 import { Set_Gen } from '../../../constantsAWS';
-import Navbar from '../../../landingNew/navbar';
+import Navbar from '../../../landingNew/navbarFeature';
 import logo from '../../../assets/image.png';
 import imgVar from '../../../assets/image_variations_icon.jpg';
 import s2d from '../../../assets/sketch.png';
 import outfitmatch from '../../../assets/outfit_matching_icon.jpg';
 import astro from '../../../assets/vedic-astrology.png';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
+import '../message.css';
 
 const SetGen: React.FC = () => {
   const [isUploadVisible, setIsUploadVisible] = useState(false);
@@ -30,9 +31,11 @@ const SetGen: React.FC = () => {
   // const trialDaysLeft = parseInt(localStorage.getItem('trial_days_left') || '0');
   // const trialStatus = localStorage.getItem('trial_status')?.toLowerCase();
   const [showComponent, setShowComponent] = useState<boolean>(false);
-  const demoSectionRef = useRef<HTMLDivElement>(null);
+  // const demoSectionRef = useRef<HTMLDivElement>(null);
   const base_url = Set_Gen;
-  const faqsRef = useRef<HTMLDivElement>(null);
+  // const faqsRef = useRef<HTMLDivElement>(null);
+  const [showVideoModal, setShowVideoModal] = useState(false);
+
 
   // useEffect(() => {
   //   if (trialStatus && trialDaysLeft > 0) {
@@ -225,22 +228,64 @@ const SetGen: React.FC = () => {
   return (
     <>
       {showComponent ? (
-        <div className="flex-1 min-h-screen relative">
+        <div className="flex flex-col min-h-screen">
+          {/* Loading Overlay */}
+          {/* {isLoading && (
+            // <div className="fixed inset-0 flex items-center justify-center bg-gray-100 bg-opacity-70 z-50">
+            //   <img
+            //     src={kinmitraAnimation}
+            //     alt="Loading Animation"
+            //     className="w-[200px] h-[200px] object-cover"
+            //   />
+            // </div>
+            <div className="fullscreen-loader">
+              <div className="generator"></div>
+            </div>
+          )} */}
           {isLoading && (
-            <div className="fixed inset-0 flex items-center justify-center bg-gray-100 bg-opacity-70 z-50">
-              <img src={kinmitraAnimation} alt="Loading Animation" className="w-[200px] h-[200px] object-cover" />
+            <div className="fullscreen-loader">
+              <div className="generator" data-message={`Generating Matching - ${targetType}`}></div>
             </div>
           )}
-          <Navbar
+          {/* <Navbar
             onContactClick={() => {
               demoSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
             }}
             onFaqClick={() => {
               faqsRef.current?.scrollIntoView({ behavior: 'smooth' });
             }}
+          /> */}
+          <Navbar
+            onTutorialClick={() => setShowVideoModal(true)}
           />
+          {/* Video Modal here */}
+          {showVideoModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-lg p-6 max-w-5xl w-full max-h-[95vh] h-[700px] relative flex flex-col">
+                <button
+                  className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-3xl font-bold"
+                  onClick={() => setShowVideoModal(false)}
+                >
+                  ×
+                </button>
+                <div className="flex-grow">
+                  <div className="w-full h-full aspect-w-16 aspect-h-9">
+                    <iframe
+                      className="w-full h-full rounded-md"
+                      src="https://www.youtube.com/embed/HfwFYSPnvk4"
+                      title="Tutorial Video"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="absolute top-0 left-0 right-0 bottom-0 bg-white opacity-80 z-[-90]"></div>
-          <div className="w-[70%] mx-auto bg-[#fffdfa] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen shadow-[4px_4px_4px_rgba(0,0,0,0.1),-4px_-4px_4px_rgba(0,0,0,0.1),4px_-4px_4px_rgba(0,0,0,0.1),-4px_4px_4px_rgba(0,0,0,0.1)]">
+          <div className="w-[70%] mx-auto bg-[#ffffff] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen shadow-[4px_4px_4px_rgba(0,0,0,0.1),-4px_-4px_4px_rgba(0,0,0,0.1),4px_-4px_4px_rgba(0,0,0,0.1),-4px_4px_4px_rgba(0,0,0,0.1)]">
             <div className="flex items-center justify-center text-xl p-5 text-[#585858] relative z-10 w-full">
               <header className="text-center">
                 <h1 className="text-4xl md:text-5xl font-custom font-bold text-lightGolden">
@@ -273,9 +318,9 @@ const SetGen: React.FC = () => {
                 </div>
 
                 {generatedImages.length > 0 ? (
-                  <div className="grid grid-cols-2 gap-4">
+                  <div>
                     {generatedImages.map((imageUrl, index) => (
-                      <div key={index} className="relative h-[250px] w-[250px] border-2 flex items-center justify-center p-4">
+                      <div key={index} className="h-[250px] w-[250px] md:h-[350px] md:w-[350px] border-4 flex items-center justify-center cursor-pointer p-4">
                         <img
                           src={imageUrl}
                           alt={`Generated Variation ${index + 1}`}
@@ -326,7 +371,7 @@ const SetGen: React.FC = () => {
               {selectedImage && !isProcessing && (
                 <button
                   onClick={handleProcessImage}
-                  className="mt-6 px-8 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
+                  className="mt-6 px-8 py-3 bg-[#e0ae2a] text-white rounded-lg shadow hover:bg-[#d49b1f] transition"
                   disabled={isProcessing}
                 >
                   Process Image
