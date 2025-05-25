@@ -479,23 +479,55 @@ const ImgVar: React.FC = () => {
                 >
                   ×
                 </button>
-                <div className="flex-grow">
+                <div className="flex-grow overflow-auto space-y-4">
                   <div className="w-full h-full aspect-w-16 aspect-h-9">
                     <iframe
                       className="w-full h-full rounded-md"
-                      src="https://www.youtube.com/embed/YrEiZof6bAQ"
-                      title="Tutorial Video"
+                      src="https://www.youtube.com/embed/1XRHwWMForM"
+                      title="Tutorial Video 1"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                  <div className="w-full h-full aspect-w-16 aspect-h-9">
+                    <iframe
+                      className="w-full h-full rounded-md"
+                      src="https://www.youtube.com/embed/9No2cTJhwl4"
+                      title="Tutorial Video 2"
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     ></iframe>
                   </div>
                 </div>
+
               </div>
             </div>
           )}
-
-
+          {/* 
+          <div className="flex-grow overflow-auto space-y-4">
+            <div className="w-full aspect-w-16 aspect-h-9">
+              <iframe
+                className="w-full h-full rounded-md"
+                src="https://www.youtube.com/embed/1XRHwWMForM"
+                title="Tutorial Video 1"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <div className="w-full aspect-w-16 aspect-h-9">
+              <iframe
+                className="w-full h-full rounded-md"
+                src="https://www.youtube.com/embed/YOUR_SECOND_VIDEO_ID"
+                title="Tutorial Video 2"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div> */}
 
           <div className="absolute top-0 left-0 right-0 bottom-0 bg-white opacity-60 z-[-90]"></div>
           <main className="w-[70%] mx-auto bg-[#ffffff] flex flex-col items-center flex-grow p-6 relative z-10 mt-8 min-h-screen shadow-[4px_4px_4px_rgba(0,0,0,0.1),-4px_-4px_4px_rgba(0,0,0,0.1),4px_-4px_4px_rgba(0,0,0,0.1),-4px_4px_4px_rgba(0,0,0,0.1)]">

@@ -155,7 +155,7 @@ const NavbarFeature: React.FC<NavbarProps> = ({ onTutorialClick }) => {
             />
           </Link>
 
-          <Link
+          {/* <Link
             to="/tutorial"
             className={`block text-lg relative ${activeLink === "Tutorial" ? "text-[#e0ae2a]" : ""}`}
             onClick={() => {
@@ -168,7 +168,20 @@ const NavbarFeature: React.FC<NavbarProps> = ({ onTutorialClick }) => {
               className={`absolute bottom-[-2px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === "Tutorial" ? "scale-x-100" : "scale-x-0"
                 }`}
             />
-          </Link>
+          </Link> */}
+
+          <span
+            className={`block text-lg cursor-pointer ${activeLink === "Tutorial" ? "text-[#e0ae2a]" : "text-black"}`}
+            onClick={onTutorialClick}
+          >
+            Tutorial
+            {/* Underline spans */}
+            <span className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+            <span
+              className={`absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#e0ae2a] ${activeLink === "Tutorial" ? "scale-x-100" : "scale-x-0"
+                }`}
+            />
+          </span>
 
 
 
