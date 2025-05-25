@@ -322,22 +322,22 @@ const ImgVar: React.FC = () => {
       return;
     }
     const instruction = selectedModification === 'Other' ? customModification : selectedModification;
-    // const payload = {
-    //   description: caption,
-    //   instruction: instruction,
-    // };
+    const payload = {
+      description: caption,
+      instruction: instruction,
+    };
 
-    // console.log('payload for after modification prompt generation:', payload);
+    console.log('payload for after modification prompt generation:', payload);
 
-    // const response = await callLambda(
-    //   `${base_url}generate_variation_sd_prompt`,
-    //   payload
-    // );
-    // if (response && response.output_prompt) {
-    //   // setFinalPrompt(response.output_prompt);
-    //   await generateImageUrl(response.output_prompt, s3Link);
-    // }
-    await generateImageUrl(instruction, s3Link);
+    const response = await callLambda(
+      `${base_url}generate_variation_sd_prompt`,
+      payload
+    );
+    if (response && response.output_prompt) {
+      // setFinalPrompt(response.output_prompt);
+      await generateImageUrl(response.output_prompt, s3Link);
+    }
+    // await generateImageUrl(instruction, s3Link);
     setIsProcessing(false);
     setMessage("")
   };
