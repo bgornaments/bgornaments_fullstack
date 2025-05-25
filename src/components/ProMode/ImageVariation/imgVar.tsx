@@ -483,7 +483,7 @@ const ImgVar: React.FC = () => {
                   <div className="w-full h-full aspect-w-16 aspect-h-9">
                     <iframe
                       className="w-full h-full rounded-md"
-                      src="https://www.youtube.com/embed/HfwFYSPnvk4"
+                      src="https://www.youtube.com/embed/YrEiZof6bAQ"
                       title="Tutorial Video"
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
