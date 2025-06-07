@@ -268,13 +268,60 @@ const Login: React.FC<LoginProps> = ({ children }) => {
     fetchSession();
   }, [user]);
 
+
   useEffect(() => {
-    if (route === "authenticated") {
-      const redirectPath = localStorage.getItem("redirectPath") || "/";
-      localStorage.removeItem("redirectPath");
-      navigate(redirectPath);
-    }
-  }, [route, navigate]);
+    const fetchSession = async () => {
+      if (user) {
+        const redirectTo = sessionStorage.getItem("redirectTo");
+        if (redirectTo) {
+          sessionStorage.removeItem("redirectTo"); // Clear the redirect path after use
+          navigate(redirectTo);
+        } else {
+          navigate("/"); // Default fallback
+        }
+      }
+    };
+
+    fetchSession();
+  }, [user, navigate]);
+
+  // Ensure localStorage is cleared when all tabs are closed
+  useEffect(() => {
+    const onTabClose = () => {
+      const otherTabs = localStorage.getItem("openTabsCount");
+      if (otherTabs === "0") {
+        // Clear localStorage when all tabs are closed
+        localStorage.clear();
+      }
+    };
+
+    const incrementTabCount = () => {
+      const count = localStorage.getItem("openTabsCount");
+      localStorage.setItem("openTabsCount", (parseInt(count || "1") + 1).toString());
+    };
+
+    const decrementTabCount = () => {
+      const count = localStorage.getItem("openTabsCount");
+      localStorage.setItem("openTabsCount", (parseInt(count || "0") - 1).toString());
+    };
+
+    window.addEventListener("beforeunload", onTabClose);
+    incrementTabCount();
+
+    // Cleanup on tab close
+    return () => {
+      decrementTabCount();
+      window.removeEventListener("beforeunload", onTabClose);
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   if (route === "authenticated") {
+  //     const redirectPath = localStorage.getItem("redirectPath") || "/";
+  //     localStorage.removeItem("redirectPath");
+  //     navigate(redirectPath);
+  //   }
+  // }, [route, navigate]);
 
   const messageStyles = {
     success: "bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4",
