@@ -183,7 +183,7 @@ const formFields = {
 };
 
 const Login: React.FC<LoginProps> = ({ children }) => {
-  const { route, user } = useAuthenticator();
+  const { user } = useAuthenticator();
   const navigate = useNavigate();
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<"success" | "error" | "warn" | null>(null);
