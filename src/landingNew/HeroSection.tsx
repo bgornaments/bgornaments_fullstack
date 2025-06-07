@@ -90,7 +90,7 @@ const HeroSection: React.FC = () => {
       <div className="relative z-20 px-4">
         <h1 className="text-6xl font-bold mb-6 font-custom">Design Smarter. Create Faster.</h1>
         <p className="max-w mx-auto text-gray-200 text-xl mb-10">
-          The AI-powered design studio for modern jewelry designers.
+          The AI-powered jewellery design assistant for modern jewellers.
           {/* {user && <span className="text-base italic ml-2">{user.signInDetails?.loginId}</span>} */}
         </p>
         <div className={`${isTinyScreen ? "flex flex-col items-center gap-2" : "space-x-4"}`}>

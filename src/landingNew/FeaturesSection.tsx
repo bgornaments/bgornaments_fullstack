@@ -52,13 +52,13 @@ const FeaturesSection: React.FC = () => {
         {/* Left Column */}
         <div className={`${isSmallScreen ? "text-center" : "md:w-1/2 text-left"}`}>
           <h2 className={`text-5xl font-semibold text-[#e0ae2a] mb-6 font-custom tracking-wide leading-tight ${isSmallScreen ? "mx-auto" : "lg:ml-16"}`}>
-            Designed for Jewellery Designers
+            Designed for Modern Jewellers
           </h2>
           <p className={`text-gray-700 max-w-lg mb-8 text-xl mt-6 ${isSmallScreen ? "mx-auto text-center" : "text-center md:text-left lg:ml-16"}`}>
-            KinMitra is your AI co-designer, helping you craft stunning jewellery designs faster than ever.
+            KinMitra is your AI Design Assistant, helping you craft stunning jewellery designs faster than ever.
           </p>
           <p className={`text-gray-700 max-w-lg mb-0 text-xl ${isSmallScreen ? "mx-auto text-center" : "text-center md:text-left lg:ml-16"}`}>
-            Revolutionize your creative journey with KinMitra's intelligent jewellery design tools to ideate, visualize, and refine your creations — all in one place.
+            Turn customer ideas into jewellery designs INSTANTLY — Help them decide faster and buy sooner.
           </p>
         </div>
 
@@ -80,7 +80,7 @@ const FeaturesSection: React.FC = () => {
                 <div className="animate-counter-spin">
                   <FeatureCircle
                     icon={<Target size={iconSize} />}
-                    text="Effortless Personalization"
+                    text="Instant Personalization"
                     textSize={textSizeClass}
                     containerSize={featureCircleWidth}
                   />
@@ -110,7 +110,7 @@ const FeaturesSection: React.FC = () => {
                 <div className="animate-counter-spin">
                   <FeatureCircle
                     icon={<Puzzle size={iconSize} />}
-                    text="Synthesizable Designs"
+                    text="Manufacturable Designs"
                     textSize={textSizeClass}
                     containerSize={featureCircleWidth}
                   />
