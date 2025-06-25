@@ -302,7 +302,7 @@ const LandingPage: React.FC = () => {
                 <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/catalog">AI Designs</Link></li>
                 <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/pricing">Pricing</Link></li>
                 {/* <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/Contact-Us">Contact Us</Link></li> */}
-                {/* <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/kinmitra_team">Our Team</Link></li> */}
+                <li><Link className="text-gray-600 hover:text-gray-800 text-base" to="/kinmitra_team">Our Team</Link></li>
               </ul>
             </div>
 

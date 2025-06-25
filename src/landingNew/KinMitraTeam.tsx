@@ -20,6 +20,14 @@ const TeamComponent: React.FC = () => {
             isCEO: true,
         },
         {
+            name: "Vinayak Bhamblani",
+            role: "Artificial Intelligence Intern",
+            description: "IIT Bombay Undergraduate Student",
+            imageUrl: "",
+            githubUrl: "https://github.com/Vinayak2104",
+            linkedinUrl: "https://www.linkedin.com/in/vinayak-bhamblani-3b8952276/",
+        },
+        {
             name: "Akhil Gakhar",
             role: "Artificial Intelligence Researcher and Collaborator",
             description: "IIT Bombay Graduate",
@@ -30,15 +38,15 @@ const TeamComponent: React.FC = () => {
         {
             name: "Ayush Hurkat",
             role: "Full Stack Development Intern",
-            description: "B.Tech (IT) student at MITS Gwalior, Batch of 2021–2025",
+            description: "B.Tech (IT) student at MITS Gwalior",
             imageUrl: Ayush,
             githubUrl: "https://github.com/AyushHurkat0022",
             linkedinUrl: "https://www.linkedin.com/in/ayushhurkat/",
-        },        
+        },
         {
             name: "Vanshika Sharma",
             role: "Frontend Development Intern",
-            description: "IT Undergraduate Student",
+            description: "B.Tech (IT) student at MITS Gwalior",
             imageUrl: vanshika,
             githubUrl: "https://github.com",
             linkedinUrl: "https://www.linkedin.com/in/vanshikasharma-it/",
@@ -105,7 +113,7 @@ const TeamComponent: React.FC = () => {
 
             {/* Team Members */}
             <div className="container mx-auto px-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10">
                     {otherMembers.map((member, index) => (
                         <div key={index} className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 text-center hover:shadow-xl transition duration-300">
                             <div className="relative -mt-16">
