@@ -22,44 +22,177 @@
     }
   }
 
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer components {
-  .custom-scrollbar::-webkit-scrollbar {
-    display: none; /* Hides the scrollbar */
-  /* } */
-
-  /* .custom-scrollbar {
-    -ms-overflow-style: none; /* Hides scrollbar in IE and Edge */
-    /* scrollbar-width: none; Hides scrollbar in Firefox */
-  /* } */
-
-  /* @keyframes gradient-left-to-right { */
-    /* 0% { */
-      /* background-position: 200% 0; */
-    /* } */
-    /* 100% { */
-      /* background-position: -200% 0; */
-    /* } */
-  /* } */
-
-  /* .animate-gradient {
-    animation: gradient-left-to-right 2.5s linear infinite;
-    background-size: 200% 100%;
-  } */
-
-  /* Staggered animation delays */
-  /* .animation-delay-0 {
-    animation-delay: 0s;
-  } */
-
-  /* .animation-delay-200 {
-    animation-delay: 0.2s;
+/* Chat Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  .animation-delay-400 {
-    animation-delay: 0.4s;
-  } */
-/* } */
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Message Styles with Lighter Colors */
+.user-message {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fbbf24 100%) !important;
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.user-message:hover {
+  box-shadow: 0 8px 25px rgba(251, 191, 36, 0.3), 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  transform: translateY(-2px) !important;
+}
+
+.user-message::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.8s ease;
+}
+
+.user-message:hover::before {
+  transform: translateX(100%);
+}
+
+.ai-message {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%) !important;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.ai-message:hover {
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3), 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  transform: translateY(-2px) !important;
+}
+
+.ai-message::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.8s ease;
+}
+
+.ai-message:hover::before {
+  transform: translateX(100%);
+}
+
+/* Enhanced Avatar Animations */
+.user-avatar, .ai-avatar {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.user-avatar {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fbbf24 100%) !important;
+}
+
+.ai-avatar {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%) !important;
+}
+
+.user-avatar::after, .ai-avatar::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: rotate 4s linear infinite;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.user-avatar:hover::after, .ai-avatar:hover::after {
+  opacity: 1;
+}
+
+.user-avatar:hover, .ai-avatar:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Enhanced Loading Animation */
+.loader {
+  position: relative;
+}
+
+.loader div {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #e0e7ff 0%, #c7d2fe 50%, #a5b4fc 100%) !important;
+}
+
+.loader div::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Staggered animation delays */
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animation-delay-400 {
+  animation-delay: 0.4s;
+}
+
+/* Glow effect for active elements */
+.user-message:active, .ai-message:active {
+  transform: scale(0.98) !important;
+  transition: transform 0.1s ease !important;
+}
+
+/* Floating animation for new messages */
+@keyframes floatIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.conversation-item:last-child {
+  animation: floatIn 0.8s ease-out;
+}
